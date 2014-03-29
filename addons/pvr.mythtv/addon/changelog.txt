@@ -1,0 +1,3 @@
+v1.9.13
+- Initial version based on pvr.mythtv.cmyth
+- Using new C++ library CPPMyth created by Jean-Luc Barrière

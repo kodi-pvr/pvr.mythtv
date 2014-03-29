@@ -1,0 +1,21 @@
+!!! In development !!!
+
+** Build it on GNU:
+
+a - First create and go to your build folder:
+
+mkdir build
+cd build
+
+b - Launch "cmake" tool:
+
+cmake {path to cppmyth sources folder}
+
+eg. cmake $HOME/cppmyth
+
+c - Finally build it launching "make" tool:
+
+make
+
+** Run unit test:
+./test/cppmythtest [Master Backend IP]
