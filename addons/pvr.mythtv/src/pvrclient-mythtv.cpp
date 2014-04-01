@@ -86,7 +86,7 @@ void Log(int level, char *msg)
   }
 }
 
-bool PVRClientMythTV::Connect()
+void PVRClientMythTV::SetDebug()
 {
   // Setup libcppmyth logging
   if (g_bExtraDebug)
@@ -94,7 +94,11 @@ bool PVRClientMythTV::Connect()
   else
     Myth::DBGLevel(MYTH_DBG_ERROR);
   Myth::SetDBGMsgCallback(Log);
+}
 
+bool PVRClientMythTV::Connect()
+{
+  SetDebug();
   m_control = new Myth::Control(g_szMythHostname, g_iProtoPort);
   if (!m_control->IsOpen())
   {

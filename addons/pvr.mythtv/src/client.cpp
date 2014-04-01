@@ -415,7 +415,11 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'extra debug' from %u to %u", g_bExtraDebug, *(bool*)settingValue);
     if (g_bExtraDebug != *(bool*)settingValue)
-     g_bExtraDebug = *(bool*)settingValue;
+    {
+      g_bExtraDebug = *(bool*)settingValue;
+      if (g_client)
+        g_client->SetDebug();
+    }
   }
   else if (str == "livetv")
   {

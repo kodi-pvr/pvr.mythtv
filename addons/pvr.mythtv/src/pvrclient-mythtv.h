@@ -44,6 +44,7 @@ public:
   virtual ~PVRClientMythTV();
 
   // Server
+  void SetDebug();
   bool Connect();
   const char *GetBackendName();
   const char *GetBackendVersion();
