@@ -49,6 +49,7 @@ bool          g_bRecAutoRunJob4         = false;
 bool          g_bRecAutoExpire          = false;
 int           g_iRecTranscoder          = 0;
 bool          g_bDemuxing               = DEFAULT_HANDLE_DEMUXING;
+int           g_iTuneDelay              = DEFAULT_TUNE_DELAY;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -218,6 +219,15 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     XBMC->Log(LOG_ERROR, "Couldn't get 'demuxing' setting, falling back to '%b' as default", DEFAULT_HANDLE_DEMUXING);
     g_bDemuxing = DEFAULT_HANDLE_DEMUXING;
   }
+
+  /* Read setting "tunedelay" from settings.xml */
+  if (!XBMC->GetSetting("tunedelay", &g_iTuneDelay))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'port' setting, falling back to '%d' as default", DEFAULT_TUNE_DELAY);
+    g_iProtoPort = DEFAULT_TUNE_DELAY;
+  }
+
   /* Read setting "host_ether" from settings.xml */
   if (XBMC->GetSetting("host_ether", buffer))
     g_szMythHostEther = buffer;
@@ -481,6 +491,12 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     XBMC->Log(LOG_INFO, "Changed Setting 'rec_autoexpire' from %u to %u", g_bRecAutoExpire, *(bool*)settingValue);
     if (g_bRecAutoExpire != *(bool*)settingValue)
       g_bRecAutoExpire = *(bool*)settingValue;
+  }
+  else if (str == "tunedelay")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'tunedelay' from %d to %d", g_iTuneDelay, *(int*)settingValue);
+    if (g_iTuneDelay != *(int*)settingValue)
+      g_iTuneDelay = *(int*)settingValue;
   }
   return ADDON_STATUS_OK;
 }

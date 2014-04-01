@@ -54,6 +54,7 @@
 #define MENUHOOK_EPG_REC_NEW_EPISODES       8
 
 #define DEFAULT_HANDLE_DEMUXING             false
+#define DEFAULT_TUNE_DELAY                  5
 
 /*!
  * @brief PVR macros for string exchange
@@ -91,6 +92,7 @@ extern bool         g_bRecAutoRunJob4;
 extern bool         g_bRecAutoExpire;
 extern int          g_iRecTranscoder;
 extern bool         g_bDemuxing;
+extern int          g_iTuneDelay;
 
 extern ADDON::CHelper_libXBMC_addon *XBMC;
 extern CHelper_libXBMC_pvr   *PVR;

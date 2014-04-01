@@ -145,7 +145,11 @@ msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr ""
 
-#empty strings from id 30053 to 30099
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr ""
+
+#empty strings from id 30054 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"

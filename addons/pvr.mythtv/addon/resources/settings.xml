@@ -25,5 +25,6 @@
   <category label="30050">
     <setting id="extradebug" type="bool" label="30005" default="false" />
     <setting id="demuxing" type="bool" label="30052" default="false" />
+    <setting id="tunedelay" type="slider" option="int" range="5,1,30" label="30053" />
   </category>
 </settings>
