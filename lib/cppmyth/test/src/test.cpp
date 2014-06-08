@@ -38,6 +38,8 @@ int main(int argc, char** argv)
     Myth::DBGLevel(MYTH_DBG_WARN);
     Myth::WSAPI ws(backendIP, 6544);
 
+    fprintf(stderr, "\nBackend server hostname = %s\n", ws.GetServerHostName().c_str());
+    
     fprintf(stderr, "\n***\n*** Testing web service GetSetting\n***\n");
     Myth::SettingPtr set = ws.GetSetting("LiveTVPriority", true);
     if (set)
@@ -52,7 +54,7 @@ int main(int argc, char** argv)
     Myth::ProgramList pl = ws.GetRecordedList();
     for (Myth::ProgramList::const_iterator it = pl.begin(); it != pl.end(); ++it)
     {
-      fprintf(stderr, "%s | %ld | %s | %s |", (*it)->fileName.c_str(), (long)(*it)->fileSize, (*it)->category.c_str(), (*it)->title.c_str());
+      fprintf(stderr, "%s:%s | %ld | %s | %s |", (*it)->hostName.c_str(), (*it)->fileName.c_str(), (long)(*it)->fileSize, (*it)->category.c_str(), (*it)->title.c_str());
       fprintf(stderr, " %s | %u\n", (*it)->recording.storageGroup.c_str(), (*it)->channel.chanId);
       for (std::vector<Myth::Artwork>::const_iterator ita = (*it)->artwork.begin(); ita != (*it)->artwork.end(); ++ita)
         fprintf(stderr, ">>>> Artwork: %s | %s\n", ita->fileName.c_str(), ita->type.c_str());
