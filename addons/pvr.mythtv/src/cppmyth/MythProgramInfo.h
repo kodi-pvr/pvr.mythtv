@@ -41,6 +41,7 @@ public:
   std::string ProgramID() const;
   std::string Title() const;
   std::string Subtitle() const;
+  std::string HostName() const;
   std::string FileName() const;
   std::string Description() const;
   int Duration() const;

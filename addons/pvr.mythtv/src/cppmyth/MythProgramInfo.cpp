@@ -129,6 +129,11 @@ std::string MythProgramInfo::Subtitle() const
   return (m_proginfo ? m_proginfo->subTitle : "");
 }
 
+std::string MythProgramInfo::HostName() const
+{
+  return (m_proginfo ? m_proginfo->hostName : "");
+}
+
 std::string MythProgramInfo::FileName() const
 {
   return (m_proginfo ? m_proginfo->fileName : "");
