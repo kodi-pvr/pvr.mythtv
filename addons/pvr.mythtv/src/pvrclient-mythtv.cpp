@@ -1775,10 +1775,15 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   // Suspend fileOps to avoid connection hang
   m_fileOps->Suspend();
 
-  // Currently we only request the stream from the master backend.
-  // Future implementations could request the stream from slaves if not available on the master.
   if (!m_recordingStream)
-    m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+  {
+    if (prog.HostName() == m_wsapi->GetServerHostName())
+      // Request the stream from our master using the opened event handler.
+      m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+    else
+      // Request the stream from slave host. A dedicated event handler will be opened.
+      m_recordingStream = new Myth::RecordingPlayback(prog.HostName(), g_iProtoPort);
+  }
   else
     m_recordingStream->Open();
 
