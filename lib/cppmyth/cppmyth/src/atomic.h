@@ -45,7 +45,19 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
 {
   atomic_t __val;
 
-#if defined __i486__ || defined __i586__ || defined __i686__
+#if defined _MSC_VER
+  __val = InterlockedIncrement(valp);
+
+#elif defined __APPLE__
+  __val = OSAtomicIncrement32(valp);
+
+#elif defined ANDROID
+  __val = __sync_add_and_fetch(valp, 1);
+
+#elif defined __mips__
+  __val = atomic_increment_val(valp);
+
+#elif defined __i486__ || defined __i586__ || defined __i686__
   __asm__ volatile (
     "lock xaddl %0, (%1);"
     "     inc   %0;"
@@ -75,14 +87,17 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
     : "r" (valp)
     : "cc", "memory");
 
-#elif defined _MSC_VER
-  __val = InterlockedIncrement(valp);
-
-#elif defined __APPLE__
-  __val = OSAtomicIncrement32(valp);
-
-#elif defined ANDROID
-  __val = __sync_add_and_fetch(valp, 1);
+#elif defined __sparcv9__
+  atomic_t __newval, __oldval = (*valp);
+  do {
+    __newval = __oldval + 1;
+    __asm__ (
+      "cas	[%4], %2, %0"
+      : "=r" (__oldval), "=m" (*valp)
+      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
+  } while (__newval != __oldval);
+  /*  The value for __val is in '__oldval' */
+  __val = __oldval;
 
 #elif defined __arm__ && !defined __thumb__
   int tmp1, tmp2;
@@ -99,21 +114,6 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
     : "=&r"(tmp1), "=&r"(__val), "=&r"(tmp2)
     : "r" (valp), "r"(inc)
     : "cc", "memory");
-
-#elif defined __mips__
-  __val = atomic_increment_val(valp);
-
-#elif defined __sparcv9__
-  atomic_t __newval, __oldval = (*valp);
-  do {
-    __newval = __oldval + 1;
-    __asm__ (
-      "cas	[%4], %2, %0"
-      : "=r" (__oldval), "=m" (*valp)
-      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
-  } while (__newval != __oldval);
-  /*  The value for __val is in '__oldval' */
-  __val = __oldval;
 
 #elif defined __GNUC__
   /*
@@ -135,9 +135,23 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
  * \param valp address of atomic variable
  * \return decremented reference count
  */
-static CC_INLINE unsigned atomic_decrement(atomic_t *valp) {
+static CC_INLINE unsigned atomic_decrement(atomic_t *valp)
+{
   atomic_t __val;
-#if defined __i486__ || defined __i586__ || defined __i686__
+
+#if defined _MSC_VER
+  __val = InterlockedDecrement(valp);
+
+#elif defined __APPLE__
+  __val = OSAtomicDecrement32(valp);
+
+#elif defined ANDROID
+  __val = __sync_sub_and_fetch(valp, 1);
+
+#elif defined __mips__
+  __val = atomic_decrement_val(valp);
+
+#elif defined __i486__ || defined __i586__ || defined __i686__
   __asm__ volatile (
     "lock xaddl %0, (%1);"
     "     dec   %0;"
@@ -167,14 +181,17 @@ static CC_INLINE unsigned atomic_decrement(atomic_t *valp) {
     : "r" (valp)
     : "cc", "memory");
 
-#elif defined _MSC_VER
-  __val = InterlockedDecrement(valp);
-
-#elif defined __APPLE__
-  __val = OSAtomicDecrement32(valp);
-
-#elif defined ANDROID
-  __val = __sync_sub_and_fetch(valp, 1);
+#elif defined __sparcv9__
+  atomic_t __newval, __oldval = (*valp);
+  do {
+    __newval = __oldval - 1;
+    __asm__ (
+      "cas	[%4], %2, %0"
+      : "=r" (__oldval), "=m" (*valp)
+      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
+  } while (__newval != __oldval);
+  /*  The value for __val is in '__oldval' */
+  __val = __oldval;
 
 #elif defined __arm__ && !defined __thumb__
   int tmp1, tmp2;
@@ -191,21 +208,6 @@ static CC_INLINE unsigned atomic_decrement(atomic_t *valp) {
     : "=&r"(tmp1), "=&r"(__val), "=&r"(tmp2)
     : "r" (valp), "r"(inc)
     : "cc", "memory");
-
-#elif defined __mips__
-  __val = atomic_decrement_val(valp);
-
-#elif defined __sparcv9__
-  atomic_t __newval, __oldval = (*valp);
-  do {
-    __newval = __oldval - 1;
-    __asm__ (
-      "cas	[%4], %2, %0"
-      : "=r" (__oldval), "=m" (*valp)
-      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
-  } while (__newval != __oldval);
-  /*  The value for __val is in '__oldval' */
-  __val = __oldval;
 
 #elif defined __GNUC__
   /*
