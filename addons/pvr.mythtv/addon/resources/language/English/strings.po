@@ -69,7 +69,11 @@ msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
 msgstr ""
 
-#empty strings from id 30013 to 30018
+msgctxt "#30013"
+msgid "MythTV Backend status Port"
+msgstr ""
+
+#empty strings from id 30014 to 30018
 
 msgctxt "#30019"
 msgid "General"
