@@ -76,6 +76,7 @@ namespace Myth
 
     ProgramPtr RcvProgramInfo()
     {
+      if (m_protoVersion >= 82) return RcvProgramInfo82();
       if (m_protoVersion >= 79) return RcvProgramInfo79();
       if (m_protoVersion >= 76) return RcvProgramInfo76();
       return RcvProgramInfo75();
@@ -83,7 +84,8 @@ namespace Myth
 
     void MakeProgramInfo(Program& program, std::string& msg)
     {
-      if (m_protoVersion >= 79) MakeProgramInfo79(program, msg);
+      if (m_protoVersion >= 82) MakeProgramInfo82(program, msg);
+      else if (m_protoVersion >= 79) MakeProgramInfo79(program, msg);
       else if (m_protoVersion >= 76) MakeProgramInfo76(program, msg);
       else MakeProgramInfo75(program, msg);
     }
@@ -94,9 +96,11 @@ namespace Myth
     ProgramPtr RcvProgramInfo75();
     ProgramPtr RcvProgramInfo76();
     ProgramPtr RcvProgramInfo79();
+    ProgramPtr RcvProgramInfo82();
     void MakeProgramInfo75(Program& program, std::string& msg);
     void MakeProgramInfo76(Program& program, std::string& msg);
     void MakeProgramInfo79(Program& program, std::string& msg);
+    void MakeProgramInfo82(Program& program, std::string& msg);
 
   };
 

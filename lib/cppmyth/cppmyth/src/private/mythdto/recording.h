@@ -38,6 +38,7 @@ namespace MythDTORecording
   void SetRecording_RecGroup(Myth::Recording *obj, const char *val) { obj->recGroup = val; }
   void SetRecording_StorageGroup(Myth::Recording *obj, const char *val) { obj->storageGroup = val; }
   void SetRecording_PlayGroup(Myth::Recording *obj, const char *val) { obj->playGroup = val; }
+  void SetRecording_RecordedId(Myth::Recording *obj, uint32_t *val) { obj->recordedId = *val; }
 }
 
 #endif	/* MYTHDTO_RECORDING_H */

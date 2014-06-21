@@ -42,6 +42,7 @@ static myth_protomap_t protomap[] = {
   {79, "BasaltGiant"},
   {80, "TaDah!"},
   {81, "MultiRecDos"},
+  {82, "IdIdO"},
   {0, ""}
 };
 
@@ -718,6 +719,126 @@ out:
   return program;
 }
 
+ProgramPtr ProtoBase::RcvProgramInfo82()
+{
+  int64_t tmpi;
+  std::string field;
+  ProgramPtr program(new Program());
+
+  if (!ReadField(program->title))
+    goto out;
+  if (!ReadField(program->subTitle))
+    goto out;
+  if (!ReadField(program->description))
+    goto out;
+  if (!ReadField(field) || str2uint16(field.c_str(), &(program->season)))
+    goto out;
+  if (!ReadField(field) || str2uint16(field.c_str(), &(program->episode)))
+    goto out;
+  if (!ReadField(field)) // total episodes
+    goto out;
+  if (!ReadField(field)) // syndicated episode
+    goto out;
+  if (!ReadField(program->category))
+    goto out;
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.chanId)))
+    goto out;
+  if (!ReadField(program->channel.chanNum))
+    goto out;
+  if (!ReadField(program->channel.callSign))
+    goto out;
+  if (!ReadField(program->channel.channelName))
+    goto out;
+  if (!ReadField(program->fileName))
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &(program->fileSize)))
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->startTime = (time_t)tmpi;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->endTime = (time_t)tmpi;
+  if (!ReadField(field)) // findid
+    goto out;
+  if (!ReadField(program->hostName))
+    goto out;
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.sourceId)))
+    goto out;
+  if (!ReadField(field)) // cardid
+    goto out;
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.inputId)))
+    goto out;
+  if (!ReadField(field) || str2int32(field.c_str(), &(program->recording.priority)))
+    goto out;
+  if (!ReadField(field) || str2int8(field.c_str(), &(program->recording.status)))
+    goto out;
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordId)))
+    goto out;
+  if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.recType)))
+    goto out;
+  if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupInType)))
+    goto out;
+  if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupMethod)))
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->recording.startTs = (time_t)tmpi;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->recording.endTs = (time_t)tmpi;
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->programFlags)))
+    goto out;
+  if (!ReadField(program->recording.recGroup))
+    goto out;
+  if (!ReadField(program->channel.chanFilters))
+    goto out;
+  if (!ReadField(program->seriesId))
+    goto out;
+  if (!ReadField(program->programId))
+    goto out;
+  if (!ReadField(program->inetref))
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->lastModified = (time_t)tmpi;
+  if (!ReadField(program->stars))
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->airdate = (time_t)tmpi;
+  if (!ReadField(program->recording.playGroup))
+    goto out;
+  if (!ReadField(field)) // recpriority2
+    goto out;
+  if (!ReadField(field)) // parentid
+    goto out;
+  if (!ReadField(program->recording.storageGroup))
+    goto out;
+  if (!ReadField(field) || str2uint16(field.c_str(), &(program->audioProps)))
+    goto out;
+  if (!ReadField(field) || str2uint16(field.c_str(), &(program->videoProps)))
+    goto out;
+  if (!ReadField(field) || str2uint16(field.c_str(), &(program->subProps)))
+    goto out;
+  if (!ReadField(field)) // year
+    goto out;
+  if (!ReadField(field)) // part number
+    goto out;
+  if (!ReadField(field)) // part total
+    goto out;
+  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+    goto out;
+  program->catType = CategoryTypeToString(m_protoVersion, CategoryTypeFromNum(m_protoVersion, (int)tmpi));
+  if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordedId)))
+    goto out;
+  return program;
+out:
+  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  program.reset();
+  return program;
+}
+
 void ProtoBase::MakeProgramInfo75(Program& program, std::string& msg)
 {
   char buf[32];
@@ -943,5 +1064,86 @@ void ProtoBase::MakeProgramInfo79(Program& program, std::string& msg)
   msg.append("0").append(PROTO_STR_SEPARATOR); // part number
   msg.append("0").append(PROTO_STR_SEPARATOR); // part total
   uint8str((uint8_t)CategoryTypeToNum(m_protoVersion, CategoryTypeFromString(m_protoVersion, program.catType)), buf);
+  msg.append(buf);
+}
+
+void ProtoBase::MakeProgramInfo82(Program& program, std::string& msg)
+{
+  char buf[32];
+  msg.clear();
+
+  msg.append(program.title).append(PROTO_STR_SEPARATOR);
+  msg.append(program.subTitle).append(PROTO_STR_SEPARATOR);
+  msg.append(program.description).append(PROTO_STR_SEPARATOR);
+  uint16str(program.season, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint16str(program.episode, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append("0").append(PROTO_STR_SEPARATOR); // total episodes
+  msg.append(PROTO_STR_SEPARATOR); // syndicated episode
+  msg.append(program.category).append(PROTO_STR_SEPARATOR);
+  uint32str(program.channel.chanId, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append(program.channel.chanNum).append(PROTO_STR_SEPARATOR);
+  msg.append(program.channel.callSign).append(PROTO_STR_SEPARATOR);
+  msg.append(program.channel.channelName).append(PROTO_STR_SEPARATOR);
+  msg.append(program.fileName).append(PROTO_STR_SEPARATOR);
+  int64str(program.fileSize, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.startTime, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.endTime, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append("0").append(PROTO_STR_SEPARATOR); // findid
+  msg.append(program.hostName).append(PROTO_STR_SEPARATOR);
+  uint32str(program.channel.sourceId, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append("0").append(PROTO_STR_SEPARATOR); // cardid
+  uint32str(program.channel.inputId, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int32str(program.recording.priority, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int8str(program.recording.status, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint32str(program.recording.recordId, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint8str(program.recording.recType, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint8str(program.recording.dupInType, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint8str(program.recording.dupMethod, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.recording.startTs, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.recording.endTs, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint32str(program.programFlags, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append(program.recording.recGroup).append(PROTO_STR_SEPARATOR);
+  msg.append(program.channel.chanFilters).append(PROTO_STR_SEPARATOR);
+  msg.append(program.seriesId).append(PROTO_STR_SEPARATOR);
+  msg.append(program.programId).append(PROTO_STR_SEPARATOR);
+  msg.append(program.inetref).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.lastModified, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append(program.stars).append(PROTO_STR_SEPARATOR);
+  int64str((int64_t)program.airdate, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append(program.recording.playGroup).append(PROTO_STR_SEPARATOR);
+  msg.append("0").append(PROTO_STR_SEPARATOR); // recpriority2
+  msg.append("0").append(PROTO_STR_SEPARATOR); // parentid
+  msg.append(program.recording.storageGroup).append(PROTO_STR_SEPARATOR);
+  uint16str(program.audioProps, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint16str(program.videoProps, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint16str(program.subProps, buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  msg.append("0").append(PROTO_STR_SEPARATOR); // year
+  msg.append("0").append(PROTO_STR_SEPARATOR); // part number
+  msg.append("0").append(PROTO_STR_SEPARATOR); // part total
+  uint8str((uint8_t)CategoryTypeToNum(m_protoVersion, CategoryTypeFromString(m_protoVersion, program.catType)), buf);
+  msg.append(buf).append(PROTO_STR_SEPARATOR);
+  uint32str(program.recording.recordedId, buf);
   msg.append(buf);
 }

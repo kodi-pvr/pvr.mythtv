@@ -21,6 +21,7 @@
 #include "mythdto.h"
 #include "mythdto75.h"  // Base protocol version 75
 #include "mythdto76.h"  // Add protocol version 76
+#include "mythdto82.h"  // Add protocol version 82
 
 #include <cstddef>
 
@@ -45,6 +46,8 @@ const bindings_t *MythDTO::getChannelBindArray(unsigned proto)
 
 const bindings_t *MythDTO::getRecordingBindArray(unsigned proto)
 {
+  if (proto >= 82)
+    return &MythDTO82::RecordingBindArray;
   if (proto >= 75)
     return &MythDTO75::RecordingBindArray;
   return NULL;

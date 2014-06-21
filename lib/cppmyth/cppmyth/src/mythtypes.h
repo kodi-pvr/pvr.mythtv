@@ -244,6 +244,7 @@ namespace Myth
     std::string         recGroup;
     std::string         storageGroup;
     std::string         playGroup;
+    uint32_t            recordedId; // Since proto 82
   };
 
   typedef MYTH_SHARED_PTR<Recording> RecordingPtr;
