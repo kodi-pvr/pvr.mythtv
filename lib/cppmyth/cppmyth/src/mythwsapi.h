@@ -92,7 +92,13 @@ namespace Myth
      * @param sourceid
      * @return ChannelList
      */
-    ChannelList GetChannelList(uint32_t sourceid);
+    ChannelList GetChannelList(uint32_t sourceid)
+    {
+      unsigned proto = CheckService();
+      if (proto >= 82) return GetChannelList82(sourceid);
+      if (proto >= 75) return GetChannelList75(sourceid);
+      return ChannelList();
+    };
     /**
      * @brief Query the guide information for a particular time period and a channel
      * @param chanid
@@ -220,6 +226,8 @@ namespace Myth
     bool CheckServerHostName();
     bool CheckVersion();
 
+    ChannelList GetChannelList75(uint32_t sourceid);
+    ChannelList GetChannelList82(uint32_t sourceid);
     void ProcessRecordIN(unsigned proto, RecordSchedule& record);
     void ProcessRecordOUT(unsigned proto, RecordSchedule& record);
     bool AddRecordSchedule75(RecordSchedule& record);

@@ -581,7 +581,7 @@ VideoSourceList WSAPI::GetVideoSourceList()
   return ret;
 }
 
-ChannelList WSAPI::GetChannelList(uint32_t sourceid)
+ChannelList WSAPI::GetChannelList75(uint32_t sourceid)
 {
   ChannelList ret;
   char buf[32];
@@ -603,6 +603,83 @@ ChannelList WSAPI::GetChannelList(uint32_t sourceid)
   do
   {
     req.ClearContent();
+    uint32str(sourceid, buf);
+    req.SetContentParam("SourceID", buf);
+    int32str(req_index, buf);
+    req.SetContentParam("StartIndex", buf);
+    int32str(req_count, buf);
+    req.SetContentParam("Count", buf);
+
+    DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
+    WSResponse resp(req);
+    if (!resp.IsValid())
+    {
+      DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+      break;
+    }
+    JanssonPtr root = ParseResponseJSON(resp);
+    if (!root.isValid() || !json_is_object(root.get()))
+    {
+      DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+      break;
+    }
+    DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+    // Object: ChannelInfoList
+    const json_t *clist = json_object_get(root.get(), "ChannelInfoList");
+    ItemList list = ItemList(); // Using default constructor
+    MythJSON::BindObject(clist, &list, bindlist);
+    // List has ProtoVer. Check it or sound alarm
+    if (list.protoVer != proto)
+    {
+      InvalidateService();
+      break;
+    }
+    count = 0;
+    // Object: ChannelInfos[]
+    const json_t *chans = json_object_get(clist, "ChannelInfos");
+    // Iterates over the sequence elements.
+    for (size_t ci = 0; ci < json_array_size(chans); ++ci)
+    {
+      ++count;
+      const json_t *chan = json_array_get(chans, ci);
+      ChannelPtr channel(new Channel());  // Using default constructor
+      // Bind the new channel
+      MythJSON::BindObject(chan, channel.get(), bindchan);
+      ret.push_back(channel);
+    }
+    DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
+    req_index += count; // Set next requested index
+  }
+  while (count == req_count);
+
+  return ret;
+}
+
+ChannelList WSAPI::GetChannelList82(uint32_t sourceid)
+{
+  ChannelList ret;
+  char buf[32];
+  int32_t req_index = 0, req_count = 100, count = 0;
+  unsigned proto;
+
+  if (!(proto = CheckService()))
+    return ret;
+
+  // Get bindings for protocol version
+  const bindings_t *bindlist = MythDTO::getListBindArray(proto);
+  const bindings_t *bindchan = MythDTO::getChannelBindArray(proto);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Channel/GetChannelInfoList");
+
+  do
+  {
+    req.ClearContent();
+    req.SetContentParam("Details", "true");
+    req.SetContentParam("OnlyVisible", "false");
     uint32str(sourceid, buf);
     req.SetContentParam("SourceID", buf);
     int32str(req_index, buf);
