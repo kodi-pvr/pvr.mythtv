@@ -145,9 +145,9 @@ void MythScheduleManager::Setup()
   {
     SAFE_DELETE(m_versionHelper);
     if (m_protoVersion >= 76)
-      m_versionHelper = new MythScheduleHelper76(m_wsapi);
+      m_versionHelper = new MythScheduleHelper76(this, m_wsapi);
     else if (m_protoVersion >= 75)
-      m_versionHelper = new MythScheduleHelper75(m_wsapi);
+      m_versionHelper = new MythScheduleHelper75(this, m_wsapi);
     else
       m_versionHelper = new MythScheduleHelperNoHelper();
   }
@@ -603,12 +603,15 @@ void MythScheduleManager::Update()
   Myth::RecordScheduleList records = m_wsapi->GetRecordScheduleList();
   m_rules.clear();
   m_rulesById.clear();
+  m_templates.clear();
   for (Myth::RecordScheduleList::iterator it = records.begin(); it != records.end(); ++it)
   {
     MythRecordingRule rule(*it);
     RecordingRuleNodePtr node = RecordingRuleNodePtr(new MythRecordingRuleNode(rule));
     m_rules.push_back(node);
     m_rulesById.insert(NodeById::value_type(rule.RecordID(), node));
+    if (node->GetRule().Type() == Myth::RT_TemplateRecord)
+      m_templates.push_back(node);
   }
 
   for (NodeList::iterator it = m_rules.begin(); it != m_rules.end(); ++it)
@@ -713,6 +716,11 @@ MythRecordingRule MythScheduleManager::NewChannelRecord(MythEPGInfo &epgInfo)
 MythRecordingRule MythScheduleManager::NewOneRecord(MythEPGInfo &epgInfo)
 {
   return m_versionHelper->NewOneRecord(epgInfo);
+}
+
+TemplateRuleList MythScheduleManager::GetTemplateRules() const
+{
+  return m_templates;
 }
 
 bool MythScheduleManager::ToggleShowNotRecording()
@@ -911,11 +919,49 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
   switch (g_iRecTemplateType)
   {
   case 1: // Template provider is 'MythTV', then load the template from backend.
-//    if (!epgInfo.IsNull())
-//      rule = m_db.LoadRecordingRuleTemplate(epgInfo.Category(), epgInfo.CategoryType());
-//    else
-//      rule = m_db.LoadRecordingRuleTemplate("", "");
-//    break;
+    if (!epgInfo.IsNull())
+    {
+      TemplateRuleList templates = m_manager->GetTemplateRules();
+      TemplateRuleList::const_iterator tplIt = templates.end();
+      for (TemplateRuleList::const_iterator it = templates.begin(); it != templates.end(); ++it)
+      {
+        if ((*it)->GetRule().Category() == epgInfo.Category())
+        {
+          tplIt = it;
+        break;
+        }
+        if ((*it)->GetRule().Category() == "Default")
+          tplIt = it;
+      }
+      if (tplIt != templates.end())
+      {
+        XBMC->Log(LOG_INFO, "Overriding the rule with template %" PRIu32 " '%s'", (*tplIt)->GetRule().RecordID(), (*tplIt)->GetRule().Title().c_str());
+        rule.SetPriority((*tplIt)->GetRule().Priority());
+        rule.SetStartOffset((*tplIt)->GetRule().StartOffset());
+        rule.SetEndOffset((*tplIt)->GetRule().EndOffset());
+        rule.SetSearchType((*tplIt)->GetRule().SearchType());
+        rule.SetDuplicateControlMethod((*tplIt)->GetRule().DuplicateControlMethod());
+        rule.SetCheckDuplicatesInType((*tplIt)->GetRule().CheckDuplicatesInType());
+        rule.SetRecordingGroup((*tplIt)->GetRule().RecordingGroup());
+        rule.SetRecordingProfile((*tplIt)->GetRule().RecordingProfile());
+        rule.SetStorageGroup((*tplIt)->GetRule().StorageGroup());
+        rule.SetPlaybackGroup((*tplIt)->GetRule().PlaybackGroup());
+        rule.SetUserJob(1, (*tplIt)->GetRule().UserJob(1));
+        rule.SetUserJob(2, (*tplIt)->GetRule().UserJob(2));
+        rule.SetUserJob(3, (*tplIt)->GetRule().UserJob(3));
+        rule.SetUserJob(4, (*tplIt)->GetRule().UserJob(4));
+        rule.SetAutoTranscode((*tplIt)->GetRule().AutoTranscode());
+        rule.SetAutoCommFlag((*tplIt)->GetRule().AutoCommFlag());
+        rule.SetAutoExpire((*tplIt)->GetRule().AutoExpire());
+        rule.SetAutoMetadata((*tplIt)->GetRule().AutoMetadata());
+        rule.SetMaxEpisodes((*tplIt)->GetRule().MaxEpisodes());
+        rule.SetNewExpiresOldRecord((*tplIt)->GetRule().NewExpiresOldRecord());
+        rule.SetFilter((*tplIt)->GetRule().Filter());
+      }
+      else
+        XBMC->Log(LOG_INFO, "No template found for the category '%s'", epgInfo.Category().c_str());
+    }
+    break;
   case 0: // Template provider is 'Internal', then set rule with settings
     rule.SetAutoCommFlag(g_bRecAutoCommFlag);
     rule.SetAutoMetadata(g_bRecAutoMetadata);

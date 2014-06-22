@@ -33,6 +33,7 @@
 
 class MythRecordingRuleNode;
 typedef MYTH_SHARED_PTR<MythRecordingRuleNode> RecordingRuleNodePtr;
+typedef std::vector<RecordingRuleNodePtr> TemplateRuleList;
 
 typedef std::vector<MythRecordingRule> OverrideRuleList;
 
@@ -125,6 +126,8 @@ public:
   MythRecordingRule NewWeeklyRecord(MythEPGInfo &epgInfo);
   MythRecordingRule NewChannelRecord(MythEPGInfo &epgInfo);
   MythRecordingRule NewOneRecord(MythEPGInfo &epgInfo);
+  
+  TemplateRuleList GetTemplateRules() const;
 
   bool ToggleShowNotRecording();
 
@@ -152,6 +155,7 @@ private:
   NodeById m_rulesById;
   RecordingList m_recordings;
   RecordingIndexByRuleId m_recordingIndexByRuleId;
+  TemplateRuleList m_templates;
 
   bool m_showNotRecording;
 };
@@ -183,7 +187,9 @@ public:
 
 class MythScheduleHelper75 : public MythScheduleHelperNoHelper {
 public:
-  MythScheduleHelper75(Myth::WSAPI *wsapi) : m_wsapi(wsapi) {
+  MythScheduleHelper75(MythScheduleManager *manager, Myth::WSAPI *wsapi)
+  : m_manager(manager)
+  , m_wsapi(wsapi) {
   }
   virtual bool SameTimeslot(MythRecordingRule &first, MythRecordingRule &second) const;
   virtual RuleMetadata GetMetadata(const MythRecordingRule &rule) const;
@@ -194,6 +200,7 @@ public:
   virtual MythRecordingRule NewChannelRecord(MythEPGInfo &epgInfo);
   virtual MythRecordingRule NewOneRecord(MythEPGInfo &epgInfo);
 protected:
+  MythScheduleManager *m_manager;
   Myth::WSAPI *m_wsapi;
 };
 
@@ -201,7 +208,8 @@ protected:
 
 class MythScheduleHelper76 : public MythScheduleHelper75 {
 public:
-  MythScheduleHelper76(Myth::WSAPI *wsapi) : MythScheduleHelper75(wsapi) {
+  MythScheduleHelper76(MythScheduleManager *manager, Myth::WSAPI *wsapi)
+  : MythScheduleHelper75(manager, wsapi) {
   }
   virtual RuleMetadata GetMetadata(const MythRecordingRule &rule) const;
   virtual MythRecordingRule NewDailyRecord(MythEPGInfo &epgInfo);
