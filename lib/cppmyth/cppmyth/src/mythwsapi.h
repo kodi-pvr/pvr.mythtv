@@ -90,13 +90,14 @@ namespace Myth
     /**
      * @brief Get all configured channels for a video source
      * @param sourceid
+     * @param onlyVisible (default true)
      * @return ChannelList
      */
-    ChannelList GetChannelList(uint32_t sourceid)
+    ChannelList GetChannelList(uint32_t sourceid, bool onlyVisible = true)
     {
       unsigned proto = CheckService();
-      if (proto >= 82) return GetChannelList82(sourceid);
-      if (proto >= 75) return GetChannelList75(sourceid);
+      if (proto >= 82) return GetChannelList82(sourceid, onlyVisible);
+      if (proto >= 75) return GetChannelList75(sourceid, onlyVisible);
       return ChannelList();
     };
     /**
@@ -226,8 +227,8 @@ namespace Myth
     bool CheckServerHostName();
     bool CheckVersion();
 
-    ChannelList GetChannelList75(uint32_t sourceid);
-    ChannelList GetChannelList82(uint32_t sourceid);
+    ChannelList GetChannelList75(uint32_t sourceid, bool onlyVisible);
+    ChannelList GetChannelList82(uint32_t sourceid, bool onlyVisible);
     void ProcessRecordIN(unsigned proto, RecordSchedule& record);
     void ProcessRecordOUT(unsigned proto, RecordSchedule& record);
     bool AddRecordSchedule75(RecordSchedule& record);

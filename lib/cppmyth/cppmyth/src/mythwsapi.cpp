@@ -581,7 +581,7 @@ VideoSourceList WSAPI::GetVideoSourceList()
   return ret;
 }
 
-ChannelList WSAPI::GetChannelList75(uint32_t sourceid)
+ChannelList WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
 {
   ChannelList ret;
   char buf[32];
@@ -646,7 +646,8 @@ ChannelList WSAPI::GetChannelList75(uint32_t sourceid)
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
       MythJSON::BindObject(chan, channel.get(), bindchan);
-      ret.push_back(channel);
+      if (!onlyVisible || channel->visible)
+        ret.push_back(channel);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -656,7 +657,7 @@ ChannelList WSAPI::GetChannelList75(uint32_t sourceid)
   return ret;
 }
 
-ChannelList WSAPI::GetChannelList82(uint32_t sourceid)
+ChannelList WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
 {
   ChannelList ret;
   char buf[32];
@@ -679,7 +680,7 @@ ChannelList WSAPI::GetChannelList82(uint32_t sourceid)
   {
     req.ClearContent();
     req.SetContentParam("Details", "true");
-    req.SetContentParam("OnlyVisible", "false");
+    req.SetContentParam("OnlyVisible", BOOLSTR(onlyVisible));
     uint32str(sourceid, buf);
     req.SetContentParam("SourceID", buf);
     int32str(req_index, buf);
