@@ -392,3 +392,13 @@ void MythRecordingRule::SetSeriesID(const std::string& seriesid)
 {
   m_recordSchedule->seriesId = seriesid;
 }
+
+std::string MythRecordingRule::RecordingProfile() const
+{
+  return m_recordSchedule->recProfile;
+}
+
+void MythRecordingRule::SetRecordingProfile(const std::string& profile)
+{
+  m_recordSchedule->recProfile = profile;
+}

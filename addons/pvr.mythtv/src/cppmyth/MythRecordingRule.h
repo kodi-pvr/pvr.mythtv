@@ -128,6 +128,9 @@ public:
   std::string SeriesID() const;
   void SetSeriesID(const std::string& seriesid);
 
+  std::string RecordingProfile() const;
+  void SetRecordingProfile(const std::string& profile);
+
 private:
   Myth::RecordSchedulePtr m_recordSchedule;
 };
