@@ -935,7 +935,7 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
       }
       if (tplIt != templates.end())
       {
-        XBMC->Log(LOG_INFO, "Overriding the rule with template %" PRIu32 " '%s'", (*tplIt)->GetRule().RecordID(), (*tplIt)->GetRule().Title().c_str());
+        XBMC->Log(LOG_INFO, "Overriding the rule with template %u '%s'", (unsigned)(*tplIt)->GetRule().RecordID(), (*tplIt)->GetRule().Title().c_str());
         rule.SetPriority((*tplIt)->GetRule().Priority());
         rule.SetStartOffset((*tplIt)->GetRule().StartOffset());
         rule.SetEndOffset((*tplIt)->GetRule().EndOffset());
