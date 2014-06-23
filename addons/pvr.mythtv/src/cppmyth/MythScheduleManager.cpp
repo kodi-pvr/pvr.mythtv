@@ -928,9 +928,14 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
         if ((*it)->GetRule().Category() == epgInfo.Category())
         {
           tplIt = it;
-        break;
+          break;
         }
-        if ((*it)->GetRule().Category() == "Default")
+        if ((*it)->GetRule().Category() == epgInfo.CategoryType())
+        {
+          tplIt = it;
+          continue;
+        }
+        if ((*it)->GetRule().Category() == "Default" && tplIt == templates.end())
           tplIt = it;
       }
       if (tplIt != templates.end())
