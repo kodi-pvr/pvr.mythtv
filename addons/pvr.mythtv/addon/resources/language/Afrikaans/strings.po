@@ -1,7 +1,7 @@
 # XBMC Media Center language file
-# Addon Name: MythTV cmyth PVR Client
-# Addon id: pvr.mythtv.cmyth
-# Addon Provider: Christian Fetzer, Jean-Luc Barrière, Tonny Petersen
+# Addon Name: MythTV PVR Client
+# Addon id: pvr.mythtv
+# Addon Provider: Christian Fetzer, Jean-Luc Barrière
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Main\n"

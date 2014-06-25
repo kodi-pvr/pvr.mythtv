@@ -1,5 +1,5 @@
 #
-# Makefile for the MythTV (using libcmyth) add-on for XBMC PVR
+# Makefile for the MythTV (using libcppmyth) add-on for XBMC PVR
 #
 # See the README for copyright information and
 # how to reach the author.

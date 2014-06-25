@@ -1,3 +1,3 @@
-v1.9.13
-- Initial version based on pvr.mythtv.cmyth
-- Using new C++ library CPPMyth created by Jean-Luc Barrière
+v1.9.14
+- Fork of pvr.mythtv.cmyth
+- Use C++ library CPPMyth for MythTV backend 0.27 to 0.28-pre
