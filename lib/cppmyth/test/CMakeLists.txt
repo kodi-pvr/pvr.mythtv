@@ -46,7 +46,7 @@ add_dependencies(cppmythtest cppmyth jansson)
 if(MSVC)
   target_link_libraries(cppmythtest cppmyth jansson ws2_32.lib)
 else(MSVC)
-  target_link_libraries(cppmythtest cppmyth jansson pthread)
+  target_link_libraries(cppmythtest cppmyth jansson rt pthread)
 endif(MSVC)
 
 ###############################################################################
