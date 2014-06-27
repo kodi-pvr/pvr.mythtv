@@ -233,26 +233,29 @@ size_t TcpSocket::ReadResponse(void *buf, size_t n)
 
 void TcpSocket::Disconnect()
 {
-  char buf[256];
-  struct timeval tv;
-  fd_set fds;
-  int r = 0;
-
-  shutdown(m_socket, SHUT_RDWR);
-
-  tv.tv_sec = 5;
-  tv.tv_usec = 0;
-  do
+  if (m_socket != INVALID_SOCKET_VALUE)
   {
-    FD_ZERO(&fds);
-    FD_SET(m_socket, &fds);
-    r = select(m_socket + 1, &fds, NULL, NULL, &tv);
-    if (r > 0)
-      r = recv(m_socket, buf, sizeof(buf), 0);
-  } while (r > 0);
+    char buf[256];
+    struct timeval tv;
+    fd_set fds;
+    int r = 0;
 
-  closesocket(m_socket);
-  m_socket = INVALID_SOCKET_VALUE;
+    shutdown(m_socket, SHUT_RDWR);
+
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+    do
+    {
+      FD_ZERO(&fds);
+      FD_SET(m_socket, &fds);
+      r = select(m_socket + 1, &fds, NULL, NULL, &tv);
+      if (r > 0)
+        r = recv(m_socket, buf, sizeof(buf), 0);
+    } while (r > 0);
+
+    closesocket(m_socket);
+    m_socket = INVALID_SOCKET_VALUE;
+  }
 }
 
 const char *TcpSocket::GetMyHostName()
