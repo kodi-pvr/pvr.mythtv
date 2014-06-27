@@ -38,12 +38,18 @@ namespace Myth
     TcpSocket();
     ~TcpSocket();
 
-    int GetErrNo() const;
+    int GetErrNo() const
+    {
+      return m_errno;
+    }
     bool Connect(const char *server, unsigned port, int rcvbuf);
     bool SendMessage(const char *msg, size_t size);
     size_t ReadResponse(void *buf, size_t n);
     void Disconnect();
-    bool IsConnected() const;
+    bool IsConnected() const
+    {
+      return (m_socket == INVALID_SOCKET_VALUE ? false : true);
+    }
     int Listen(timeval *timeout);
 
     static const char *GetMyHostName();

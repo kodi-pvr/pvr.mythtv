@@ -67,13 +67,8 @@ TcpSocket::TcpSocket()
 
 TcpSocket::~TcpSocket()
 {
-  if (m_socket != INVALID_SOCKET_VALUE)
+  if (IsConnected())
     Disconnect();
-}
-
-int TcpSocket::GetErrNo() const
-{
-  return m_errno;
 }
 
 static int __connectAddr(struct addrinfo *addr, tcp_socket_t *s, int rcvbuf)
@@ -258,11 +253,6 @@ void TcpSocket::Disconnect()
 
   closesocket(m_socket);
   m_socket = INVALID_SOCKET_VALUE;
-}
-
-bool TcpSocket::IsConnected() const
-{
-  return (m_socket == INVALID_SOCKET_VALUE ? false : true);
 }
 
 const char *TcpSocket::GetMyHostName()
