@@ -6,7 +6,6 @@ cmake_policy (VERSION 2.6)
 set (MODULES
   ${CMAKE_SOURCE_DIR}/jansson
   ${CMAKE_SOURCE_DIR}/cppmyth
-  ${CMAKE_SOURCE_DIR}/test)
 
 #
 # Include each CMakeLists.txt for each module.

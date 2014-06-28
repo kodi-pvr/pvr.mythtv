@@ -66,7 +66,6 @@ AC_CONFIG_FILES([
         cppmyth/cppmyth.pc
         cppmyth/Makefile
         cppmyth/src/cppmyth_config.h
-        test/Makefile
 ])
 
 AC_OUTPUT
