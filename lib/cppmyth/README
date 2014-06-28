@@ -1,21 +1,23 @@
-!!! In development !!!
+=============================
+       Linux, OS-X, BSD
+=============================
 
-** Build it on GNU:
+Build:
+------
 
-a - First create and go to your build folder:
+Start by configuring the build folder:
 
 mkdir build
 cd build
+cmake <root path of cppmyth>
 
-b - Launch "cmake" tool:
-
-cmake {path to cppmyth sources folder}
-
-eg. cmake $HOME/cppmyth
-
-c - Finally build it launching "make" tool:
+Then build the lib:
 
 make
 
-** Run unit test:
-./test/cppmythtest [Master Backend IP]
+
+Generate the documentation:
+---------------------------
+
+doxygen <root path of cppmyth>/docs/doxygen-user.cfg
+doxygen <root path of cppmyth>/docs/doxygen-dev.cfg
