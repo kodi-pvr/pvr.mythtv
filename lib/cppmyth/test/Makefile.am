@@ -5,8 +5,6 @@ cppmythtest_SOURCES = src/test.cpp
 
 AM_CPPFLAGS = -I@abs_top_srcdir@/cppmyth/src
 
-LIBS = -lrt -lpthread
-
 cppmythtest_LDFLAGS = -static
 
 cppmythtest_LDADD   = \
