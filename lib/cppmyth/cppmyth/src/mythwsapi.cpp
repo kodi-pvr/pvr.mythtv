@@ -167,9 +167,13 @@ std::string WSAPI::GetServerHostName()
   return m_serverHostName;
 }
 
-Version WSAPI::GetVersion()
+VersionPtr WSAPI::GetVersion()
 {
-  return m_version;
+  Version *p = new Version();
+  p->version = m_version.version;
+  p->protocol = m_version.protocol;
+  p->schema = m_version.schema;
+  return VersionPtr(p);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

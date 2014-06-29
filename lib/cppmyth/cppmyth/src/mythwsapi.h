@@ -42,7 +42,7 @@ namespace Myth
     unsigned CheckService();
     void InvalidateService();
     std::string GetServerHostName();
-    Version GetVersion();
+    VersionPtr GetVersion();
 
     /**
      * @brief Query setting by its key
