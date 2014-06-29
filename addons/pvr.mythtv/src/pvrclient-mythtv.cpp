@@ -38,8 +38,6 @@ PVRClientMythTV::PVRClientMythTV()
 , m_recordingStream(NULL)
 , m_fileOps(NULL)
 , m_scheduleManager(NULL)
-, m_backendVersion("")
-, m_connectionString("")
 , m_categories()
 , m_channelGroups()
 , m_demux(NULL)
@@ -138,28 +136,25 @@ bool PVRClientMythTV::Connect()
 
 const char *PVRClientMythTV::GetBackendName()
 {
-  m_backendName = "MythTV ";
-  m_backendName.append("(").append(m_wsapi->GetServerHostName()).append(")");
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, m_backendName.c_str());
-  return m_backendName.c_str();
+  std::string label;
+  label.append("MythTV (").append(m_wsapi->GetServerHostName()).append(")");
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, label.c_str());
+  return label.c_str();
 }
 
 const char *PVRClientMythTV::GetBackendVersion()
 {
-  Myth::Version version = m_wsapi->GetVersion();
-  m_backendVersion = version.version;
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, m_backendVersion.c_str());
-  return m_backendVersion.c_str();
+  Myth::VersionPtr version = m_wsapi->GetVersion();
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, version->version.c_str());
+  return version->version.c_str();
 }
 
 const char *PVRClientMythTV::GetConnectionString()
 {
-  char buf[16];
-  sprintf(buf, ":%u", g_iWSApiPort);
-  m_connectionString = "http://";
-  m_connectionString.append(g_szMythHostname).append(buf);
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, m_connectionString.c_str());
-  return m_connectionString.c_str();
+  std::string cs;
+  cs.append("http://").append(g_szMythHostname).append(":").append(Myth::IntToString(g_iWSApiPort));
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, cs.c_str());
+  return cs.c_str();
 }
 
 PVR_ERROR PVRClientMythTV::GetDriveSpace(long long *iTotal, long long *iUsed)

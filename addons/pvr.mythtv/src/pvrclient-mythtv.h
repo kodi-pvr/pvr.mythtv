@@ -140,10 +140,6 @@ private:
   MythScheduleManager *m_scheduleManager;
   PLATFORM::CMutex m_lock;
 
-  std::string m_backendName;
-  std::string m_backendVersion;
-  std::string m_connectionString;
-
   // Categories
   Categories m_categories;
 
