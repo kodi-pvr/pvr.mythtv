@@ -58,8 +58,8 @@ bool ProtoRecorder::IsPlaying() const
 bool ProtoRecorder::IsTunable(const Channel& channel)
 {
   bool ok = false;
-  CardInputList inputlist = GetFreeInputs();
-  for (CardInputList::const_iterator it = inputlist.begin(); it != inputlist.end(); ++it)
+  CardInputListPtr inputlist = GetFreeInputs();
+  for (CardInputList::const_iterator it = inputlist->begin(); it != inputlist->end(); ++it)
   {
     const CardInput *input = (*it).get();
     if (input->sourceId != channel.sourceId)
@@ -230,9 +230,9 @@ out:
   return -1;
 }
 
-CardInputList ProtoRecorder::GetFreeInputs75()
+CardInputListPtr ProtoRecorder::GetFreeInputs75()
 {
-  CardInputList list;
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
   char buf[32];
   std::string field;
 
@@ -263,15 +263,15 @@ CardInputList ProtoRecorder::GetFreeInputs75()
       break;
     if (!ReadField(field) || str2uint8(field.c_str(), &(input->liveTVOrder)))
       break;
-    list.push_back(input);
+    list->push_back(input);
   }
   FlushMessage();
   return list;
 }
 
-CardInputList ProtoRecorder::GetFreeInputs79()
+CardInputListPtr ProtoRecorder::GetFreeInputs79()
 {
-  CardInputList list;
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
   char buf[32];
   std::string field;
 
@@ -310,7 +310,7 @@ CardInputList ProtoRecorder::GetFreeInputs79()
       break;
     if (!ReadField(field)) // quickTune
       break;
-    list.push_back(input);
+    list->push_back(input);
   }
   FlushMessage();
   return list;

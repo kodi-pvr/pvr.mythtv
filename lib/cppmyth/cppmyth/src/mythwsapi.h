@@ -54,9 +54,9 @@ namespace Myth
     /**
      * @brief Query all settings
      * @param myhost
-     * @return SettingMap
+     * @return SettingMapPtr
      */
-    SettingMap GetSettings(bool myhost);
+    SettingMapPtr GetSettings(bool myhost);
     /**
      * @brief Put setting
      * @param key
@@ -69,9 +69,9 @@ namespace Myth
      * @brief Query information on all recorded programs
      * @param n
      * @param descending
-     * @return ProgramList
+     * @return ProgramListPtr
      */
-    ProgramList GetRecordedList(unsigned n = 0, bool descending = false);
+    ProgramListPtr GetRecordedList(unsigned n = 0, bool descending = false);
     /**
      * @brief Query information on a single item from recordings
      * @param chanid
@@ -93,40 +93,40 @@ namespace Myth
     }
     /**
      * @brief Get all configured capture devices
-     * @return CaptureCardList
+     * @return CaptureCardListPtr
      */
-    CaptureCardList GetCaptureCardList();
+    CaptureCardListPtr GetCaptureCardList();
     /**
      * @brief Get all video sources
-     * @return VideoSourceList
+     * @return VideoSourceListPtr
      */
-    VideoSourceList GetVideoSourceList();
+    VideoSourceListPtr GetVideoSourceList();
     /**
      * @brief Get all configured channels for a video source
      * @param sourceid
      * @param onlyVisible (default true)
-     * @return ChannelList
+     * @return ChannelListPtr
      */
-    ChannelList GetChannelList(uint32_t sourceid, bool onlyVisible = true)
+    ChannelListPtr GetChannelList(uint32_t sourceid, bool onlyVisible = true)
     {
       unsigned proto = CheckService();
       if (proto >= 82) return GetChannelList82(sourceid, onlyVisible);
       if (proto >= 75) return GetChannelList75(sourceid, onlyVisible);
-      return ChannelList();
+      return ChannelListPtr(new ChannelList);
     };
     /**
      * @brief Query the guide information for a particular time period and a channel
      * @param chanid
      * @param starttime
      * @param endtime
-     * @return ProgramMap
+     * @return ProgramMapPtr
      */
-    ProgramMap GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime);
+    ProgramMapPtr GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime);
     /**
      * @brief Query all configured recording rules
-     * @return RecordScheduleList
+     * @return RecordScheduleListPtr
      */
-    RecordScheduleList GetRecordScheduleList();
+    RecordScheduleListPtr GetRecordScheduleList();
     /**
      * @brief Get a single recording rule, by record id
      * @param recordid
@@ -176,25 +176,25 @@ namespace Myth
     bool RemoveRecordSchedule(uint32_t recordid);
     /**
      * @brief Query information on all upcoming programs matching recording rules
-     * @return ProgramList
+     * @return ProgramListPtr
      */
-    ProgramList GetUpcomingList()
+    ProgramListPtr GetUpcomingList()
     {
       unsigned proto = CheckService();
       if (proto >= 79) return GetUpcomingList79();
       if (proto >= 75) return GetUpcomingList75();
-      return ProgramList();
+      return ProgramListPtr(new ProgramList);
     }
     /**
      * @brief Query information on upcoming items which will not record due to conflicts
-     * @return ProgramList
+     * @return ProgramListPtr
      */
-    ProgramList GetConflictList();
+    ProgramListPtr GetConflictList();
     /**
      * @brief Query information on recorded programs which are set to expire
-     * @return ProgramList
+     * @return ProgramListPtr
      */
-    ProgramList GetExpiringList();
+    ProgramListPtr GetExpiringList();
     /**
      * @brief Download a given file from a given storage group
      * @param filename
@@ -241,15 +241,15 @@ namespace Myth
     bool CheckServerHostName();
     bool CheckVersion();
 
-    ChannelList GetChannelList75(uint32_t sourceid, bool onlyVisible);
-    ChannelList GetChannelList82(uint32_t sourceid, bool onlyVisible);
+    ChannelListPtr GetChannelList75(uint32_t sourceid, bool onlyVisible);
+    ChannelListPtr GetChannelList82(uint32_t sourceid, bool onlyVisible);
     void ProcessRecordIN(unsigned proto, RecordSchedule& record);
     void ProcessRecordOUT(unsigned proto, RecordSchedule& record);
     bool AddRecordSchedule75(RecordSchedule& record);
     bool AddRecordSchedule76(RecordSchedule& record);
     bool UpdateRecordSchedule76(RecordSchedule& record);
-    ProgramList GetUpcomingList75();
-    ProgramList GetUpcomingList79();
+    ProgramListPtr GetUpcomingList75();
+    ProgramListPtr GetUpcomingList79();
     bool UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bool watched);
   };
 

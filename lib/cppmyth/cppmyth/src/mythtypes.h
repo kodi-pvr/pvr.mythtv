@@ -213,6 +213,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<Setting> SettingPtr;
   typedef std::map<std::string, SettingPtr> SettingMap;
+  typedef MYTH_SHARED_PTR<SettingMap> SettingMapPtr;
 
   struct Artwork
   {
@@ -224,6 +225,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<Artwork> ArtworkPtr;
   typedef std::vector<ArtworkPtr> ArtworkList;
+  typedef MYTH_SHARED_PTR<ArtworkList> ArtworkListPtr;
 
   struct Channel
   {
@@ -242,6 +244,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<Channel> ChannelPtr;
   typedef std::vector<ChannelPtr> ChannelList;
+  typedef MYTH_SHARED_PTR<ChannelList> ChannelListPtr;
 
   struct Recording
   {
@@ -263,6 +266,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<Recording> RecordingPtr;
   typedef std::vector<RecordingPtr> RecordingList;
+  typedef MYTH_SHARED_PTR<RecordingList> RecordingListPtr;
 
   struct Program
   {
@@ -296,7 +300,9 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<Program> ProgramPtr;
   typedef std::vector<ProgramPtr> ProgramList;
+  typedef MYTH_SHARED_PTR<ProgramList> ProgramListPtr;
   typedef std::map<time_t, ProgramPtr> ProgramMap;
+  typedef MYTH_SHARED_PTR<ProgramMap> ProgramMapPtr;
 
   struct CaptureCard
   {
@@ -307,6 +313,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<CaptureCard> CaptureCardPtr;
   typedef std::vector<CaptureCardPtr> CaptureCardList;
+  typedef MYTH_SHARED_PTR<CaptureCardList> CaptureCardListPtr;
 
   struct CardInput
   {
@@ -320,6 +327,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<CardInput> CardInputPtr;
   typedef std::vector<CardInputPtr> CardInputList;
+  typedef MYTH_SHARED_PTR<CardInputList> CardInputListPtr;
 
   struct VideoSource
   {
@@ -329,6 +337,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<VideoSource> VideoSourcePtr;
   typedef std::vector<VideoSourcePtr> VideoSourceList;
+  typedef MYTH_SHARED_PTR<VideoSourceList> VideoSourceListPtr;
 
   struct RecordSchedule
   {
@@ -382,6 +391,7 @@ namespace Myth
 
   typedef MYTH_SHARED_PTR<RecordSchedule> RecordSchedulePtr;
   typedef std::vector<RecordSchedulePtr> RecordScheduleList;
+  typedef MYTH_SHARED_PTR<RecordScheduleList> RecordScheduleListPtr;
 
   struct SignalStatus
   {

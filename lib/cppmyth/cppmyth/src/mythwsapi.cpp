@@ -233,9 +233,9 @@ SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
   return ret;
 }
 
-SettingMap WSAPI::GetSettings(bool myhost)
+SettingMapPtr WSAPI::GetSettings(bool myhost)
 {
-  SettingMap ret;
+  SettingMapPtr ret(new SettingMap);
   unsigned proto;
 
   if (!(proto = CheckService()))
@@ -278,7 +278,7 @@ SettingMap WSAPI::GetSettings(bool myhost)
         SettingPtr setting(new Setting());  // Using default constructor
         setting->key = json_object_iter_key(it);
         setting->value = json_string_value(val);
-        ret.insert(SettingMap::value_type(setting->key, setting));
+        ret->insert(SettingMap::value_type(setting->key, setting));
       }
       it = json_object_iter_next(sts, it);
     }
@@ -323,9 +323,9 @@ bool WSAPI::PutSetting(const std::string& key, const std::string& value, bool my
   return true;
 }
 
-ProgramList WSAPI::GetRecordedList(unsigned n, bool descending)
+ProgramListPtr WSAPI::GetRecordedList(unsigned n, bool descending)
 {
-  ProgramList ret;
+  ProgramListPtr ret(new ProgramList);
   char buf[32];
   uint32_t req_index = 0, req_count = 100, count = 0, total = 0;
   unsigned proto;
@@ -409,7 +409,7 @@ ProgramList WSAPI::GetRecordedList(unsigned n, bool descending)
         MythJSON::BindObject(artw, &artwork, bindartw);
         program->artwork.push_back(artwork);
       }
-      ret.push_back(program);
+      ret->push_back(program);
       ++total;
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -514,9 +514,9 @@ bool WSAPI::UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bo
   return true;
 }
 
-CaptureCardList WSAPI::GetCaptureCardList()
+CaptureCardListPtr WSAPI::GetCaptureCardList()
 {
-  CaptureCardList ret;
+  CaptureCardListPtr ret(new CaptureCardList);
   unsigned proto;
 
   if (!(proto = CheckService()))
@@ -555,14 +555,14 @@ CaptureCardList WSAPI::GetCaptureCardList()
     CaptureCardPtr captureCard(new CaptureCard());  // Using default constructor
     // Bind the new captureCard
     MythJSON::BindObject(card, captureCard.get(), bindcard);
-    ret.push_back(captureCard);
+    ret->push_back(captureCard);
   }
   return ret;
 }
 
-VideoSourceList WSAPI::GetVideoSourceList()
+VideoSourceListPtr WSAPI::GetVideoSourceList()
 {
-  VideoSourceList ret;
+  VideoSourceListPtr ret(new VideoSourceList);
   unsigned proto;
 
   if (!(proto = CheckService()))
@@ -600,14 +600,14 @@ VideoSourceList WSAPI::GetVideoSourceList()
     VideoSourcePtr videoSource(new VideoSource());  // Using default constructor
     // Bind the new videoSource
     MythJSON::BindObject(vsrc, videoSource.get(), bindvsrc);
-    ret.push_back(videoSource);
+    ret->push_back(videoSource);
   }
   return ret;
 }
 
-ChannelList WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
+ChannelListPtr WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
 {
-  ChannelList ret;
+  ChannelListPtr ret(new ChannelList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -671,7 +671,7 @@ ChannelList WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
       // Bind the new channel
       MythJSON::BindObject(chan, channel.get(), bindchan);
       if (!onlyVisible || channel->visible)
-        ret.push_back(channel);
+        ret->push_back(channel);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -681,9 +681,9 @@ ChannelList WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
   return ret;
 }
 
-ChannelList WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
+ChannelListPtr WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
 {
-  ChannelList ret;
+  ChannelListPtr ret(new ChannelList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -748,7 +748,7 @@ ChannelList WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
       MythJSON::BindObject(chan, channel.get(), bindchan);
-      ret.push_back(channel);
+      ret->push_back(channel);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -758,9 +758,9 @@ ChannelList WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
   return ret;
 }
 
-ProgramMap WSAPI::GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime)
+ProgramMapPtr WSAPI::GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime)
 {
-  ProgramMap ret;
+  ProgramMapPtr ret(new ProgramMap);
   char buf[32];
   int32_t count = 0;
   unsigned proto;
@@ -829,7 +829,7 @@ ProgramMap WSAPI::GetProgramGuide(uint32_t chanid, time_t starttime, time_t endt
       // Bind the new program
       MythJSON::BindObject(prog, program.get(), bindprog);
       program->channel = channel;
-      ret.insert(std::make_pair(program->startTime, program));
+      ret->insert(std::make_pair(program->startTime, program));
     }
   }
   DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -863,9 +863,9 @@ void WSAPI::ProcessRecordOUT(unsigned proto, RecordSchedule& record)
   record.dupIn = DupInToString(proto, record.dupIn_t);
 }
 
-RecordScheduleList WSAPI::GetRecordScheduleList()
+RecordScheduleListPtr WSAPI::GetRecordScheduleList()
 {
-  RecordScheduleList ret;
+  RecordScheduleListPtr ret(new RecordScheduleList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -927,7 +927,7 @@ RecordScheduleList WSAPI::GetRecordScheduleList()
       // Bind the new record
       MythJSON::BindObject(rec, record.get(), bindrec);
       ProcessRecordIN(proto, *record);
-      ret.push_back(record);
+      ret->push_back(record);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -1352,23 +1352,23 @@ bool WSAPI::RemoveRecordSchedule(uint32_t recordid)
   return true;
 }
 
-ProgramList WSAPI::GetUpcomingList75()
+ProgramListPtr WSAPI::GetUpcomingList75()
 {
   // Only for backward compatibility (0.27)
-  ProgramList ret = GetUpcomingList79();
+  ProgramListPtr ret = GetUpcomingList79();
   // Add being recorded (https://code.mythtv.org/trac/changeset/3084ebc/mythtv)
-  ProgramList recordings = GetRecordedList(20, true);
-  for (Myth::ProgramList::iterator it = recordings.begin(); it != recordings.end(); ++it)
+  ProgramListPtr recordings = GetRecordedList(20, true);
+  for (Myth::ProgramList::iterator it = recordings->begin(); it != recordings->end(); ++it)
   {
     if ((*it)->recording.status == RS_RECORDING)
-      ret.push_back(*it);
+      ret->push_back(*it);
   }
   return ret;
 }
 
-ProgramList WSAPI::GetUpcomingList79()
+ProgramListPtr WSAPI::GetUpcomingList79()
 {
-  ProgramList ret;
+  ProgramListPtr ret(new ProgramList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -1438,7 +1438,7 @@ ProgramList WSAPI::GetUpcomingList79()
       // Bind recording of program
       const json_t *reco = json_object_get(prog, "Recording");
       MythJSON::BindObject(reco, &(program->recording), bindreco);
-      ret.push_back(program);
+      ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -1448,9 +1448,9 @@ ProgramList WSAPI::GetUpcomingList79()
   return ret;
 }
 
-ProgramList WSAPI::GetConflictList()
+ProgramListPtr WSAPI::GetConflictList()
 {
-  ProgramList ret;
+  ProgramListPtr ret(new ProgramList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -1519,7 +1519,7 @@ ProgramList WSAPI::GetConflictList()
       // Bind recording of program
       const json_t *reco = json_object_get(prog, "Recording");
       MythJSON::BindObject(reco, &(program->recording), bindreco);
-      ret.push_back(program);
+      ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
@@ -1529,9 +1529,9 @@ ProgramList WSAPI::GetConflictList()
   return ret;
 }
 
-ProgramList WSAPI::GetExpiringList()
+ProgramListPtr WSAPI::GetExpiringList()
 {
-  ProgramList ret;
+  ProgramListPtr ret(new ProgramList);
   char buf[32];
   int32_t req_index = 0, req_count = 100, count = 0;
   unsigned proto;
@@ -1600,7 +1600,7 @@ ProgramList WSAPI::GetExpiringList()
       // Bind recording of program
       const json_t *reco = json_object_get(prog, "Recording");
       MythJSON::BindObject(reco, &(program->recording), bindreco);
-      ret.push_back(program);
+      ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index

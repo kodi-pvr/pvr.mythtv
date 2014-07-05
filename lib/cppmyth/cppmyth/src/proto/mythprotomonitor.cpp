@@ -398,8 +398,8 @@ MarkListPtr ProtoMonitor::GetCutList75(Program& program, int unit)
   char buf[32];
   std::string field;
   int32_t nb;
-  MarkListPtr list = MarkListPtr(new MarkList());
-  
+  MarkListPtr list(new MarkList);
+
   PLATFORM::CLockObject lock(*m_mutex);
   if (!IsOpen() || unit > 0)
     return list;
@@ -408,7 +408,7 @@ MarkListPtr ProtoMonitor::GetCutList75(Program& program, int unit)
   cmd.append(buf).append(" ");
   int64str(program.recording.startTs, buf);
   cmd.append(buf);
-  
+
   if (!SendCommand(cmd.c_str()))
     return list;
 
@@ -441,8 +441,8 @@ MarkListPtr ProtoMonitor::GetCutListXX(Program& program, int unit)
   char buf[32];
   std::string field;
   int32_t nb;
-  MarkListPtr list = MarkListPtr(new MarkList());
-  
+  MarkListPtr list(new MarkList);
+
   PLATFORM::CLockObject lock(*m_mutex);
   if (!IsOpen())
     return list;
@@ -455,7 +455,7 @@ MarkListPtr ProtoMonitor::GetCutListXX(Program& program, int unit)
     cmd.append(" Position");
   else if (unit == 2)
     cmd.append(" Duration");
-  
+
   if (!SendCommand(cmd.c_str()))
     return list;
 
@@ -488,8 +488,8 @@ MarkListPtr ProtoMonitor::GetCommBreakList75(Program& program, int unit)
   char buf[32];
   std::string field;
   int32_t nb;
-  MarkListPtr list = MarkListPtr(new MarkList());
-  
+  MarkListPtr list(new MarkList);
+
   PLATFORM::CLockObject lock(*m_mutex);
   if (!IsOpen() || unit > 0)
     return list;
@@ -498,7 +498,7 @@ MarkListPtr ProtoMonitor::GetCommBreakList75(Program& program, int unit)
   cmd.append(buf).append(" ");
   int64str(program.recording.startTs, buf);
   cmd.append(buf);
-  
+
   if (!SendCommand(cmd.c_str()))
     return list;
 
@@ -531,8 +531,8 @@ MarkListPtr ProtoMonitor::GetCommBreakListXX(Program& program, int unit)
   char buf[32];
   std::string field;
   int32_t nb;
-  MarkListPtr list = MarkListPtr(new MarkList());
-  
+  MarkListPtr list(new MarkList);
+
   PLATFORM::CLockObject lock(*m_mutex);
   if (!IsOpen())
     return list;
@@ -545,7 +545,7 @@ MarkListPtr ProtoMonitor::GetCommBreakListXX(Program& program, int unit)
     cmd.append(" Position");
   else if (unit == 2)
     cmd.append(" Duration");
-  
+
   if (!SendCommand(cmd.c_str()))
     return list;
 

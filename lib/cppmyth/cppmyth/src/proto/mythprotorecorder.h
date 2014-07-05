@@ -77,7 +77,7 @@ namespace Myth
     {
       return GetFilePosition75();
     }
-    CardInputList GetFreeInputs()
+    CardInputListPtr GetFreeInputs()
     {
       if (m_protoVersion >= 79) return GetFreeInputs79();
       return GetFreeInputs75();
@@ -102,8 +102,8 @@ namespace Myth
     bool CheckChannel75(const std::string& channum);
     ProgramPtr GetCurrentRecording75();
     int64_t GetFilePosition75();
-    CardInputList GetFreeInputs75();
-    CardInputList GetFreeInputs79();
+    CardInputListPtr GetFreeInputs75();
+    CardInputListPtr GetFreeInputs79();
     bool SetLiveRecording75(bool keep);
     bool FinishRecording75();
   };
