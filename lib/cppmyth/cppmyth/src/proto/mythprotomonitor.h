@@ -82,6 +82,16 @@ namespace Myth
     {
       return QuerySGFile75(hostname, sgname, filename);
     }
+    MarkListPtr GetCutList(Program& program, int unit = 0)
+    {
+      //if (m_protoVersion >= ??) return GetCutListXX(program, unit);
+      return GetCutList75(program, unit);
+    }
+    MarkListPtr GetCommBreakList(Program& program, int unit = 0)
+    {
+      //if (m_protoVersion >= ??) return GetCommBreakListXX(program, unit);
+      return GetCommBreakList75(program, unit);
+    }
 
   private:
     bool Announce75();
@@ -99,11 +109,14 @@ namespace Myth
     bool CancelNextRecording75(int rnum, bool cancel);
     StorageGroupFilePtr QuerySGFile75(const std::string& hostname, const std::string& sgname, const std::string& filename);
 
+    MarkListPtr GetCutList75(Program& program, int unit);
+    MarkListPtr GetCutListXX(Program& program, int unit);
+    MarkListPtr GetCommBreakList75(Program& program, int unit);
+    MarkListPtr GetCommBreakListXX(Program& program, int unit);
+
     // Not implemented
     //int64_t GetBookmark75(Program& program);
     //bool SetBookmark75(Program& program, int64_t bookmark);
-    //void GetCutList75(Program& program);
-    //void GetCommbreakList75(Program& program);
     //bool UpdateSchedules75();
     //bool UpdateSchedules75(uint32_t recordid);
   };

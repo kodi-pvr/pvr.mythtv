@@ -392,3 +392,183 @@ StorageGroupFilePtr ProtoMonitor::QuerySGFile75(const std::string& hostname, con
   sgfile.reset();
   return sgfile;
 }
+
+MarkListPtr ProtoMonitor::GetCutList75(Program& program, int unit)
+{
+  char buf[32];
+  std::string field;
+  int32_t nb;
+  MarkListPtr list = MarkListPtr(new MarkList());
+  
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen() || unit > 0)
+    return list;
+  std::string cmd("QUERY_CUTLIST ");
+  uint32str(program.channel.chanId, buf);
+  cmd.append(buf).append(" ");
+  int64str(program.recording.startTs, buf);
+  cmd.append(buf);
+  
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  if (!ReadField(field) || str2int32(field.c_str(), &nb))
+    goto out;
+  if (nb > 0)
+  {
+    list->reserve(nb);
+    do
+    {
+      MarkPtr mark = MarkPtr(new Mark());
+      if (!ReadField(field) || str2int8(field.c_str(), (int8_t*)&(mark->markType)))
+        break;
+      if (!ReadField(field) || str2int64(field.c_str(), &(mark->markValue)))
+        break;
+      list->push_back(mark);
+    }
+    while (--nb > 0);
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: succeeded (%s)\n", __FUNCTION__, program.fileName.c_str());
+  return list;
+  out:
+  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  FlushMessage();
+  return list;
+}
+
+MarkListPtr ProtoMonitor::GetCutListXX(Program& program, int unit)
+{
+  char buf[32];
+  std::string field;
+  int32_t nb;
+  MarkListPtr list = MarkListPtr(new MarkList());
+  
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("QUERY_CUTLIST ");
+  uint32str(program.channel.chanId, buf);
+  cmd.append(buf).append(" ");
+  int64str(program.recording.startTs, buf);
+  cmd.append(buf);
+  if (unit == 1)
+    cmd.append(" Position");
+  else if (unit == 2)
+    cmd.append(" Duration");
+  
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  if (!ReadField(field) || str2int32(field.c_str(), &nb))
+    goto out;
+  if (nb > 0)
+  {
+    list->reserve(nb);
+    do
+    {
+      MarkPtr mark = MarkPtr(new Mark());
+      if (!ReadField(field) || str2int8(field.c_str(), (int8_t*)&(mark->markType)))
+        break;
+      if (!ReadField(field) || str2int64(field.c_str(), &(mark->markValue)))
+        break;
+      list->push_back(mark);
+    }
+    while (--nb > 0);
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: succeeded (%s)\n", __FUNCTION__, program.fileName.c_str());
+  return list;
+  out:
+  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  FlushMessage();
+  return list;
+}
+
+MarkListPtr ProtoMonitor::GetCommBreakList75(Program& program, int unit)
+{
+  char buf[32];
+  std::string field;
+  int32_t nb;
+  MarkListPtr list = MarkListPtr(new MarkList());
+  
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen() || unit > 0)
+    return list;
+  std::string cmd("QUERY_COMMBREAK ");
+  uint32str(program.channel.chanId, buf);
+  cmd.append(buf).append(" ");
+  int64str(program.recording.startTs, buf);
+  cmd.append(buf);
+  
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  if (!ReadField(field) || str2int32(field.c_str(), &nb))
+    goto out;
+  if (nb > 0)
+  {
+    list->reserve(nb);
+    do
+    {
+      MarkPtr mark = MarkPtr(new Mark());
+      if (!ReadField(field) || str2int8(field.c_str(), (int8_t*)&(mark->markType)))
+        break;
+      if (!ReadField(field) || str2int64(field.c_str(), &(mark->markValue)))
+        break;
+      list->push_back(mark);
+    }
+    while (--nb > 0);
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: succeeded (%s)\n", __FUNCTION__, program.fileName.c_str());
+  return list;
+  out:
+  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  FlushMessage();
+  return list;
+}
+
+MarkListPtr ProtoMonitor::GetCommBreakListXX(Program& program, int unit)
+{
+  char buf[32];
+  std::string field;
+  int32_t nb;
+  MarkListPtr list = MarkListPtr(new MarkList());
+  
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("QUERY_COMMBREAK ");
+  uint32str(program.channel.chanId, buf);
+  cmd.append(buf).append(" ");
+  int64str(program.recording.startTs, buf);
+  cmd.append(buf);
+  if (unit == 1)
+    cmd.append(" Position");
+  else if (unit == 2)
+    cmd.append(" Duration");
+  
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  if (!ReadField(field) || str2int32(field.c_str(), &nb))
+    goto out;
+  if (nb > 0)
+  {
+    list->reserve(nb);
+    do
+    {
+      MarkPtr mark = MarkPtr(new Mark());
+      if (!ReadField(field) || str2int8(field.c_str(), (int8_t*)&(mark->markType)))
+        break;
+      if (!ReadField(field) || str2int64(field.c_str(), &(mark->markValue)))
+        break;
+      list->push_back(mark);
+    }
+    while (--nb > 0);
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: succeeded (%s)\n", __FUNCTION__, program.fileName.c_str());
+  return list;
+  out:
+  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  FlushMessage();
+  return list;
+}

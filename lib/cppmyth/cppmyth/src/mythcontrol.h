@@ -72,6 +72,26 @@ namespace Myth
     {
       return ProtoMonitor::QuerySGFile(hostname, sgname, filename);
     }
+    /**
+     * @brief Request a set of cut list marks for a recording
+     * @param program
+     * @param unit 0 = Frame count, 1 = Position, 2 = Duration ms
+     * @return MarkListPtr
+     */
+    MarkListPtr GetCutList(Program& program, int unit = 0)
+    {
+      return ProtoMonitor::GetCutList(program, unit);
+    }
+    /**
+     * @brief Request a set of commercial break marks for a recording
+     * @param program
+     * @param unit 0 = Frame count, 1 = Position, 2 = Duration ms
+     * @return MarkListPtr
+     */
+    MarkListPtr GetCommBreakList(Program& program, int unit = 0)
+    {
+      return ProtoMonitor::GetCommBreakList(program, unit);
+    }
   };
 
 }
