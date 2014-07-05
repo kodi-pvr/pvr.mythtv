@@ -600,11 +600,11 @@ void MythScheduleManager::Update()
 
   // Setup VersionHelper for the new set
   this->Setup();
-  Myth::RecordScheduleList records = m_wsapi->GetRecordScheduleList();
+  Myth::RecordScheduleListPtr records = m_wsapi->GetRecordScheduleList();
   m_rules.clear();
   m_rulesById.clear();
   m_templates.clear();
-  for (Myth::RecordScheduleList::iterator it = records.begin(); it != records.end(); ++it)
+  for (Myth::RecordScheduleList::iterator it = records->begin(); it != records->end(); ++it)
   {
     MythRecordingRule rule(*it);
     RecordingRuleNodePtr node = RecordingRuleNodePtr(new MythRecordingRuleNode(rule));
@@ -640,8 +640,8 @@ void MythScheduleManager::Update()
   m_recordings.clear();
   m_recordingIndexByRuleId.clear();
   // Add upcoming recordings
-  Myth::ProgramList recordings = m_wsapi->GetUpcomingList();
-  for (Myth::ProgramList::iterator it = recordings.begin(); it != recordings.end(); ++it)
+  Myth::ProgramListPtr recordings = m_wsapi->GetUpcomingList();
+  for (Myth::ProgramList::iterator it = recordings->begin(); it != recordings->end(); ++it)
   {
     ScheduledPtr scheduled = ScheduledPtr(new MythProgramInfo(*it));
     uint32_t index = MakeIndex(scheduled);

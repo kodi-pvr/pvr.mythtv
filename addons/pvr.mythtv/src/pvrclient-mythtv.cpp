@@ -354,9 +354,9 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
 
   if (!channel.bIsHidden)
   {
-    Myth::ProgramMap EPG = m_wsapi->GetProgramGuide(channel.iUniqueId, iStart, iEnd);
+    Myth::ProgramMapPtr EPG = m_wsapi->GetProgramGuide(channel.iUniqueId, iStart, iEnd);
     // Transfer EPG for the given channel
-    for (Myth::ProgramMap::reverse_iterator it = EPG.rbegin(); it != EPG.rend(); ++it)
+    for (Myth::ProgramMap::reverse_iterator it = EPG->rbegin(); it != EPG->rend(); ++it)
     {
       EPG_TAG tag;
       memset(&tag, 0, sizeof(EPG_TAG));
@@ -552,13 +552,13 @@ void PVRClientMythTV::LoadChannelsAndChannelGroups()
     return;
 
   // For each source create a channels group
-  Myth::VideoSourceList sources = m_wsapi->GetVideoSourceList();
-  for (Myth::VideoSourceList::iterator its = sources.begin(); its != sources.end(); ++its)
+  Myth::VideoSourceListPtr sources = m_wsapi->GetVideoSourceList();
+  for (Myth::VideoSourceList::iterator its = sources->begin(); its != sources->end(); ++its)
   {
-    Myth::ChannelList channels = m_wsapi->GetChannelList((*its)->sourceId);
+    Myth::ChannelListPtr channels = m_wsapi->GetChannelList((*its)->sourceId);
     std::vector<uint32_t> channelIDs;
-    channelIDs.reserve(channels.size());
-    for (Myth::ChannelList::iterator itc = channels.begin(); itc != channels.end(); ++itc)
+    channelIDs.reserve(channels->size());
+    for (Myth::ChannelList::iterator itc = channels->begin(); itc != channels->end(); ++itc)
     {
       MythChannel channel((*itc));
       m_channelsById.insert(std::make_pair(channel.ID(), channel));
@@ -718,8 +718,8 @@ int PVRClientMythTV::FillRecordings()
 
   // Load recordings map
   m_recordings.clear();
-  Myth::ProgramList programs = m_wsapi->GetRecordedList();
-  for (Myth::ProgramList::iterator it = programs.begin(); it != programs.end(); ++it)
+  Myth::ProgramListPtr programs = m_wsapi->GetRecordedList();
+  for (Myth::ProgramList::iterator it = programs->begin(); it != programs->end(); ++it)
   {
     MythProgramInfo prog = MythProgramInfo(*it);
     m_recordings.insert(std::make_pair(prog.UID(), prog));
@@ -1357,9 +1357,9 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
         }
       }
 
-      Myth::ProgramMap epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
-      Myth::ProgramMap::reverse_iterator epgit = epg.rbegin(); // Get last found
-      if (epgit != epg.rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
+      Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+      Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
+      if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
       {
         epgInfo = MythEPGInfo(epgit->second);
         epgFound = true;
@@ -1371,9 +1371,9 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
     else if (timer.iWeekdays == 0x7F)
     {
       // Create a DAILY record rule
-      Myth::ProgramMap epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
-      Myth::ProgramMap::reverse_iterator epgit = epg.rbegin(); // Get last found
-      if (epgit != epg.rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
+      Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+      Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
+      if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
       {
         epgInfo = MythEPGInfo(epgit->second);
         epgFound = true;
@@ -1387,9 +1387,9 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
   {
     // Find the program info at the given start time with the same title
     // When no entry was found with the same title, then the record rule type is manual
-    Myth::ProgramMap epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
-    Myth::ProgramMap::reverse_iterator epgit = epg.rbegin(); // Get last found
-    if (epgit != epg.rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
+    Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+    Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
+    if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
     {
       epgInfo = MythEPGInfo(epgit->second);
       epgFound = true;
@@ -1929,9 +1929,9 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     unsigned int chanid;
     BreakBroadcastID(item.data.iEpgUid, &chanid, &attime);
     MythEPGInfo epgInfo;
-    Myth::ProgramMap epg = m_wsapi->GetProgramGuide(chanid, attime, attime);
-    Myth::ProgramMap::reverse_iterator epgit = epg.rbegin(); // Get last found
-    if (epgit != epg.rend())
+    Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(chanid, attime, attime);
+    Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
+    if (epgit != epg->rend())
     {
       epgInfo = MythEPGInfo(epgit->second);
       // Scheduling actions
