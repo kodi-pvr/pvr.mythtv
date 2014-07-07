@@ -99,6 +99,8 @@ void LiveTVPlayback::SetTuneDelay(unsigned delay)
     m_tuneDelay = MIN_TUNE_DELAY;
   else if (delay > MAX_TUNE_DELAY)
     m_tuneDelay = MAX_TUNE_DELAY;
+  else
+    m_tuneDelay = delay;
 }
 
 bool LiveTVPlayback::SpawnLiveTV(const Channel& channel, uint32_t prefcardid)
