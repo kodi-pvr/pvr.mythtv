@@ -225,8 +225,8 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("tunedelay", &g_iTuneDelay))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'port' setting, falling back to '%d' as default", DEFAULT_TUNE_DELAY);
-    g_iProtoPort = DEFAULT_TUNE_DELAY;
+    XBMC->Log(LOG_ERROR, "Couldn't get 'tunedelay' setting, falling back to '%d' as default", DEFAULT_TUNE_DELAY);
+    g_iTuneDelay = DEFAULT_TUNE_DELAY;
   }
 
   /* Read setting "host_ether" from settings.xml */
