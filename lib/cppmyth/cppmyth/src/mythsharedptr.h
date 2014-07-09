@@ -24,6 +24,8 @@
 
 #include "atomic.h"
 
+#include <cstddef>  // for NULL
+
 namespace Myth
 {
 
@@ -32,13 +34,13 @@ namespace Myth
   {
   public:
 
-    shared_ptr() : p(), c() { }
+    shared_ptr() : p(NULL), c(NULL) { }
 
     explicit shared_ptr(T* s) : p(s), c(new atomic_t(1)) { }
 
     shared_ptr(const shared_ptr& s) : p(s.p), c(s.c)
     {
-      if (c)
+      if (c != NULL)
         atomic_increment(c);
     }
 
@@ -49,7 +51,7 @@ namespace Myth
         reset();
         p = s.p;
         c = s.c;
-        if (c)
+        if (c != NULL)
           atomic_increment(c);
       }
       return *this;
@@ -62,15 +64,15 @@ namespace Myth
 
     void reset()
     {
-      if (c)
+      if (c != NULL)
       {
         if (*c == 1)
           delete p;
         if (!atomic_decrement(c))
           delete c;
       }
-      c = 0;
-      p = 0;
+      c = NULL;
+      p = NULL;
     }
 
     void reset(T* s)
@@ -78,7 +80,7 @@ namespace Myth
       if (p != s)
       {
         reset();
-        if (s)
+        if (s != NULL)
         {
           p = s;
           c = new atomic_t(1);
@@ -88,7 +90,7 @@ namespace Myth
 
     T *get() const
     {
-      return (c) ? p : 0;
+      return (c != NULL) ? p : NULL;
     }
 
     void swap(shared_ptr<T>& s)
@@ -113,12 +115,12 @@ namespace Myth
 
     operator bool() const
     {
-      return p != 0;
+      return p != NULL;
     }
 
     bool operator!() const
     {
-      return p == 0;
+      return p == NULL;
     }
 
   protected:

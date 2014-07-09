@@ -33,19 +33,17 @@ void MythJSON::BindObject(const json_t *json, void *obj, const bindings_t *bl)
   const char *value;
   int i, err;
 
-  if (!bl)
+  if (bl == NULL)
     return;
 
   for (i = 0; i < bl->attr_count; ++i)
   {
     // jansson
     json_t *field = json_object_get(json, bl->attr_bind[i].field);
-    if (!field)
+    if (field == NULL)
       continue;
     value = json_string_value(field);
-    // jsoncpp
-    //value = json.get(bl->attr_bind[i].field, nil).asString().c_str();
-    if (value)
+    if (value != NULL)
     {
       err = 0;
       switch (bl->attr_bind[i].type)

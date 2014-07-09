@@ -22,6 +22,7 @@
 #include "mythwsresponse.h"
 #include "mythsocket.h"
 #include "../mythdebug.h"
+#include "../private/platform/util/util.h"
 
 #include <cstdlib>  // for atol
 #include <cstdio>
@@ -40,7 +41,7 @@ static bool __readHeaderLine(TcpSocket *socket, const char *eol, std::string& li
   int p = 0, p_eol = 0, l_eol;
   size_t l = 0;
 
-  if (eol)
+  if (eol != NULL)
     s_eol = eol;
   else
     s_eol = "\n";
@@ -114,7 +115,7 @@ WSResponse::WSResponse(const WSRequest &request)
 
 WSResponse::~WSResponse()
 {
-  delete m_socket;
+  SAFE_DELETE(m_socket);
 }
 
 bool WSResponse::SendRequest(const WSRequest &request)

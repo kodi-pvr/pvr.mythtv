@@ -28,6 +28,7 @@
 #include "private/mythwsrequest.h"
 #include "private/mythwsresponse.h"
 #include "private/platform/threads/mutex.h"
+#include "private/platform/util/util.h"
 
 #include <jansson.h>
 
@@ -73,7 +74,7 @@ WSAPI::WSAPI(const std::string& server, unsigned port)
 
 WSAPI::~WSAPI()
 {
-  delete m_mutex;
+  SAFE_DELETE(m_mutex);
 }
 
 bool WSAPI::CheckServerHostName()
@@ -94,10 +95,10 @@ bool WSAPI::CheckServerHostName()
   if (root.isValid() && json_is_object(root.get()))
   {
     const json_t *field = json_object_get(root.get(), "String");
-    if (field)
+    if (field != NULL)
     {
       const char *val = json_string_value(field);
-      if (val)
+      if (val != NULL)
       {
         m_serverHostName = val;
         return true;
@@ -127,7 +128,7 @@ bool WSAPI::CheckVersion()
   if (root.isValid() && json_is_object(root.get()))
   {
     const json_t *con = json_object_get(root.get(), "ConnectionInfo");
-    if (con)
+    if (con != NULL)
     {
       const json_t *ver = json_object_get(con, "Version");
       MythJSON::BindObject(ver, &m_version, MythDTO::getVersionBindArray(0));
@@ -219,10 +220,10 @@ SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
   if (json_is_object(sts))
   {
     void *it = json_object_iter(sts);
-    if (it)
+    if (it != NULL)
     {
       const json_t *val = json_object_iter_value(it);
-      if (val)
+      if (val != NULL)
       {
         ret.reset(new Setting());  // Using default constructor
         ret->key = json_object_iter_key(it);
@@ -273,7 +274,7 @@ SettingMapPtr WSAPI::GetSettings(bool myhost)
     while (it)
     {
       const json_t *val = json_object_iter_value(it);
-      if (val)
+      if (val != NULL)
       {
         SettingPtr setting(new Setting());  // Using default constructor
         setting->key = json_object_iter_key(it);

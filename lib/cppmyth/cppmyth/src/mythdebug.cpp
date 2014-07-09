@@ -66,7 +66,7 @@ static inline void __dbg(debug_ctx_t *ctx, int level, const char *fmt, va_list a
 {
 	char msg[4096];
 	int len;
-	if (!ctx) {
+	if (ctx == NULL) {
 		return;
 	}
 	if ((ctx->selector && ctx->selector(level, ctx->cur_level)) ||

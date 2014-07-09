@@ -35,6 +35,7 @@ namespace Myth
   class WSStream : public Stream
   {
   public:
+    WSStream();
     WSStream(WSResponse *response);
     ~WSStream();
 

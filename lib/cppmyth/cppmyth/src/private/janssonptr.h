@@ -25,12 +25,13 @@
 #include "../atomic.h"
 
 #include <jansson.h>
+#include <cstddef>  // for NULL
 
 class JanssonPtr
 {
 public:
 
-  JanssonPtr() : p(), c() { }
+  JanssonPtr() : p(NULL), c(NULL) { }
 
   explicit JanssonPtr(json_t *s) : p(s), c(new atomic_t(1)) { }
 
@@ -47,7 +48,7 @@ public:
       reset();
       p = s.p;
       c = s.c;
-      if (c)
+      if (c != NULL)
         atomic_increment(c);
     }
     return *this;
@@ -60,20 +61,20 @@ public:
 
   bool isValid()
   {
-    return p != 0;
+    return p != NULL;
   }
 
   void reset()
   {
-    if (c)
+    if (c != NULL)
     {
       if (*c == 1)
         json_decref(p);
       if (!atomic_decrement(c))
         delete c;
     }
-    c = 0;
-    p = 0;
+    c = NULL;
+    p = NULL;
   }
 
   void reset(json_t *s)
@@ -81,7 +82,7 @@ public:
     if (p != s)
     {
       reset();
-      if (s)
+      if (s != NULL)
       {
         p = s;
         c = new atomic_t(1);
@@ -91,7 +92,7 @@ public:
 
   json_t *get() const
   {
-    return (c) ? p : 0;
+    return (c != NULL) ? p : NULL;
   }
 
   json_t *operator->() const
@@ -106,12 +107,12 @@ public:
 
   operator bool() const
   {
-    return p != 0;
+    return p != NULL;
   }
 
   bool operator!() const
   {
-    return p == 0;
+    return p == NULL;
   }
 
 protected:

@@ -31,7 +31,7 @@ int __str2int64(const char *str, int64_t *num)
   int sign = 1;
   uint64_t limit = INT64_MAX;
 
-  if (!str)
+  if (str == NULL)
     return -(EINVAL);
   while (isspace(*str))
   {
@@ -68,7 +68,7 @@ int __str2int32(const char *str, int32_t *num)
   int sign = 1;
   uint64_t limit = INT32_MAX;
 
-  if (!str)
+  if (str == NULL)
     return -(EINVAL);
   while (isspace(*str))
   {
@@ -132,7 +132,7 @@ int __str2uint32(const char *str, uint32_t *num)
   uint64_t val = 0;
   uint64_t limit = UINT32_MAX;
 
-  if (!str)
+  if (str == NULL)
     return -(EINVAL);
   while (isspace(*str))
   {

@@ -33,7 +33,7 @@ static void __form_urlencode(std::string& encoded, const char *str)
   size_t i, len = 0;
 
   encoded.clear();
-  if (str)
+  if (str != NULL)
     len = strlen(str);
   encoded.reserve(len * 3);
 

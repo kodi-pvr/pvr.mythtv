@@ -24,6 +24,7 @@
 #include "../private/builtin.h"
 #include "../private/mythsocket.h"
 #include "../private/platform/threads/mutex.h"
+#include "../private/platform/util/util.h"
 
 #include <limits>
 #include <cstdio>
@@ -63,8 +64,8 @@ ProtoBase::ProtoBase(const std::string& server, unsigned port)
 ProtoBase::~ProtoBase()
 {
   this->Close();
-  delete m_socket;
-  delete m_mutex;
+  SAFE_DELETE(m_socket);
+  SAFE_DELETE(m_mutex);
 }
 
 void ProtoBase::HangException()

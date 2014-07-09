@@ -24,6 +24,7 @@
 #include "proto/mythprotoevent.h"
 #include "private/builtin.h"
 #include "private/platform/threads/threads.h"
+#include "private/platform/util/util.h"
 
 #include <vector>
 #include <map>
@@ -36,16 +37,13 @@ using namespace Myth;
 ////
 
 EventHandler::EventHandlerThread::EventHandlerThread(const std::string& server, unsigned port)
-: m_event(NULL)
+: m_event(new ProtoEvent(server,port))
 {
-  m_event = new ProtoEvent(server,port);
 }
 
 EventHandler::EventHandlerThread::~EventHandlerThread()
 {
-  if (m_event)
-    delete m_event;
-  m_event = NULL;
+  SAFE_DELETE(m_event);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,9 +94,7 @@ BasicEventHandler::~BasicEventHandler()
 {
   if (m_event->IsOpen())
     this->Stop();
-  if (m_mutex)
-    delete m_mutex;
-  m_mutex = NULL;
+  SAFE_DELETE(m_mutex);
 }
 
 std::string BasicEventHandler::GetServer() const
