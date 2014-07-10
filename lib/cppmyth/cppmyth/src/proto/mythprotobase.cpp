@@ -503,9 +503,8 @@ ProgramPtr ProtoBase::RcvProgramInfo75()
   if (!ReadField(program->stars))
     goto out;
   ++i;
-  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+  if (!ReadField(field) || str2time(field.c_str(), &(program->airdate)))
     goto out;
-  program->airdate = (time_t)tmpi;
   ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
@@ -652,9 +651,8 @@ ProgramPtr ProtoBase::RcvProgramInfo76()
   if (!ReadField(program->stars))
     goto out;
   ++i;
-  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+  if (!ReadField(field) || str2time(field.c_str(), &(program->airdate)))
     goto out;
-  program->airdate = (time_t)tmpi;
   ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
@@ -816,9 +814,8 @@ ProgramPtr ProtoBase::RcvProgramInfo79()
   if (!ReadField(program->stars))
     goto out;
   ++i;
-  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+  if (!ReadField(field) || str2time(field.c_str(), &(program->airdate)))
     goto out;
-  program->airdate = (time_t)tmpi;
   ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
@@ -984,9 +981,8 @@ ProgramPtr ProtoBase::RcvProgramInfo82()
   if (!ReadField(program->stars))
     goto out;
   ++i;
-  if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
+  if (!ReadField(field) || str2time(field.c_str(), &(program->airdate)))
     goto out;
-  program->airdate = (time_t)tmpi;
   ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
@@ -1089,7 +1085,7 @@ void ProtoBase::MakeProgramInfo75(Program& program, std::string& msg)
   int64str((int64_t)program.lastModified, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.stars).append(PROTO_STR_SEPARATOR);
-  int64str((int64_t)program.airdate, buf);
+  time2isodate(program.airdate, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.recording.playGroup).append(PROTO_STR_SEPARATOR);
   msg.append("0").append(PROTO_STR_SEPARATOR); // recpriority2
@@ -1163,7 +1159,7 @@ void ProtoBase::MakeProgramInfo76(Program& program, std::string& msg)
   int64str((int64_t)program.lastModified, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.stars).append(PROTO_STR_SEPARATOR);
-  int64str((int64_t)program.airdate, buf);
+  time2isodate(program.airdate, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.recording.playGroup).append(PROTO_STR_SEPARATOR);
   msg.append("0").append(PROTO_STR_SEPARATOR); // recpriority2
@@ -1240,7 +1236,7 @@ void ProtoBase::MakeProgramInfo79(Program& program, std::string& msg)
   int64str((int64_t)program.lastModified, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.stars).append(PROTO_STR_SEPARATOR);
-  int64str((int64_t)program.airdate, buf);
+  time2isodate(program.airdate, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.recording.playGroup).append(PROTO_STR_SEPARATOR);
   msg.append("0").append(PROTO_STR_SEPARATOR); // recpriority2
@@ -1319,7 +1315,7 @@ void ProtoBase::MakeProgramInfo82(Program& program, std::string& msg)
   int64str((int64_t)program.lastModified, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.stars).append(PROTO_STR_SEPARATOR);
-  int64str((int64_t)program.airdate, buf);
+  time2isodate(program.airdate, buf);
   msg.append(buf).append(PROTO_STR_SEPARATOR);
   msg.append(program.recording.playGroup).append(PROTO_STR_SEPARATOR);
   msg.append("0").append(PROTO_STR_SEPARATOR); // recpriority2

@@ -144,6 +144,9 @@ extern void time2iso8601utc(time_t time, char *str);
 #define time2iso8601 __time2iso8601
 extern void time2iso8601(time_t time, char *str);
 
+#define time2isodate __time2isodate
+extern void time2isodate(time_t time, char *str);
+
 #if defined __cplusplus
 }
 #endif

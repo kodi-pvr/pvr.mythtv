@@ -381,3 +381,18 @@ void __time2iso8601(time_t time, char *str)
           time_tm.tm_min,
           time_tm.tm_sec);
 }
+
+void __time2isodate(time_t time, char *str)
+{
+  struct tm time_tm;
+
+  if (time == INVALID_TIME || NULL == localtime_r(&time, &time_tm))
+  {
+    str[0] = '\0';
+    return;
+  }
+  sprintf(str, "%4.4d-%2.2d-%2.2d",
+          time_tm.tm_year + 1900,
+          time_tm.tm_mon + 1,
+          time_tm.tm_mday);
+}
