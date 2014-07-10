@@ -206,6 +206,7 @@
     <ClCompile Include="..\..\..\jansson\src\dump.c" />
     <ClCompile Include="..\..\..\jansson\src\error.c" />
     <ClCompile Include="..\..\..\jansson\src\hashtable.c" />
+    <ClCompile Include="..\..\..\jansson\src\hashtable_seed.c" />
     <ClCompile Include="..\..\..\jansson\src\load.c" />
     <ClCompile Include="..\..\..\jansson\src\memory.c" />
     <ClCompile Include="..\..\..\jansson\src\pack_unpack.c" />

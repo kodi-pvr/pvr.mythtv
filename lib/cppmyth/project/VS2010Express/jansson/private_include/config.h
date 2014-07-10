@@ -1,33 +1,34 @@
-/* Reduced down to the defines that are actually used in the code */
-
-/* Define to 1 if you have the <inttypes.h> (and friends) header file. */
-/* #undef HAVE_INTTYPES_H */
+/* #undef HAVE_ENDIAN_H */
+#define HAVE_FCNTL_H 1
+/* #undef HAVE_SCHED_H */
+/* #undef HAVE_UNISTD_H */
+/* #undef HAVE_SYS_PARAM_H */
+#define HAVE_SYS_STAT_H 1
+/* #undef HAVE_SYS_TIME_H */
+/* #undef HAVE_SYS_TYPES_H */
 #define HAVE_STDINT_H 1
-#define HAVE_SYS_TYPES_H 1
 
-/* We must include this here, as in (eg) utf.h it will want to use
-   the integer type, which in MSVC2010 will be in stdint.h
-   (there is no inttypes.h in MSVC2010) */
-#if defined(HAVE_STDINT_H)
-#  include <stdint.h>
-#elif defined(HAVE_INTTYPES_H)
-#  include <inttypes.h>
-#elif defined(HAVE_SYS_TYPES_H)
-#  include <sys/types.h>
-#endif
+#define HAVE_CLOSE 1
+#define HAVE_GETPID 1
+/* #undef HAVE_GETTIMEOFDAY */
+#define HAVE_OPEN 1
+#define HAVE_READ 1
+/* #undef HAVE_SCHED_YIELD */
 
-/* Define to 1 if you have the <locale.h> header file. */
+/* #undef HAVE_SYNC_BUILTINS */
+/* #undef HAVE_ATOMIC_BUILTINS */
+
 #define HAVE_LOCALE_H 1
-
-/* Define to 1 if you have the 'setlocale' function. */
 #define HAVE_SETLOCALE 1
 
-/* Define to the type of a signed integer type of width exactly 32 bits if
-   such a type exists and the standard includes do not define it. */
 #define HAVE_INT32_T 1
-
 #ifndef HAVE_INT32_T
 #  define int32_t int32_t
+#endif
+
+#define HAVE_UINT32_T 1
+#ifndef HAVE_UINT32_T
+#  define uint32_t uint32_t
 #endif
 
 /* #undef HAVE_SSIZE_T */
@@ -43,3 +44,6 @@
 #endif
 
 /* #undef HAVE_VSNPRINTF */
+
+/*#define USE_URANDOM 1*/
+#define USE_WINDOWS_CRYPTOAPI 1
