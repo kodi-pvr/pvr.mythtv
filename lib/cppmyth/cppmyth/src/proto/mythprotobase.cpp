@@ -390,101 +390,143 @@ ProgramPtr ProtoBase::RcvProgramInfo75()
   int64_t tmpi;
   std::string field;
   ProgramPtr program(new Program());
+  int i = 0;
 
+  ++i;
   if (!ReadField(program->title))
     goto out;
+  ++i;
   if (!ReadField(program->subTitle))
     goto out;
+  ++i;
   if (!ReadField(program->description))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->season)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->episode)))
     goto out;
+  ++i;
   if (!ReadField(program->category))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.chanId)))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanNum))
     goto out;
+  ++i;
   if (!ReadField(program->channel.callSign))
     goto out;
+  ++i;
   if (!ReadField(program->channel.channelName))
     goto out;
+  ++i;
   if (!ReadField(program->fileName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &(program->fileSize)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->startTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->endTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field)) // findid
     goto out;
+  ++i;
   if (!ReadField(program->hostName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.sourceId)))
     goto out;
+  ++i;
   if (!ReadField(field)) // cardid
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.inputId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int32(field.c_str(), &(program->recording.priority)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int8(field.c_str(), &(program->recording.status)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.recType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupInType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupMethod)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.startTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.endTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->programFlags)))
     goto out;
+  ++i;
   if (!ReadField(program->recording.recGroup))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanFilters))
     goto out;
+  ++i;
   if (!ReadField(program->seriesId))
     goto out;
+  ++i;
   if (!ReadField(program->programId))
     goto out;
+  ++i;
   if (!ReadField(program->inetref))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->lastModified = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->stars))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->airdate = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
+  ++i;
   if (!ReadField(field)) // recpriority2
     goto out;
+  ++i;
   if (!ReadField(field)) // parentid
     goto out;
+  ++i;
   if (!ReadField(program->recording.storageGroup))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->audioProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->videoProps)))
     goto out;
-
   return program;
 out:
-  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  DBG(MYTH_DBG_ERROR, "%s: failed (%d) buf='%s'\n", __FUNCTION__, i, field.c_str());
   program.reset();
   return program;
 }
@@ -494,111 +536,158 @@ ProgramPtr ProtoBase::RcvProgramInfo76()
   int64_t tmpi;
   std::string field;
   ProgramPtr program(new Program());
+  int i = 0;
 
+  ++i;
   if (!ReadField(program->title))
     goto out;
+  ++i;
   if (!ReadField(program->subTitle))
     goto out;
+  ++i;
   if (!ReadField(program->description))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->season)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->episode)))
     goto out;
+  ++i;
   if (!ReadField(field)) // syndicated episode
     goto out;
+  ++i;
   if (!ReadField(program->category))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.chanId)))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanNum))
     goto out;
+  ++i;
   if (!ReadField(program->channel.callSign))
     goto out;
+  ++i;
   if (!ReadField(program->channel.channelName))
     goto out;
+  ++i;
   if (!ReadField(program->fileName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &(program->fileSize)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->startTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->endTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field)) // findid
     goto out;
+  ++i;
   if (!ReadField(program->hostName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.sourceId)))
     goto out;
+  ++i;
   if (!ReadField(field)) // cardid
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.inputId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int32(field.c_str(), &(program->recording.priority)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int8(field.c_str(), &(program->recording.status)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.recType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupInType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupMethod)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.startTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.endTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->programFlags)))
     goto out;
+  ++i;
   if (!ReadField(program->recording.recGroup))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanFilters))
     goto out;
+  ++i;
   if (!ReadField(program->seriesId))
     goto out;
+  ++i;
   if (!ReadField(program->programId))
     goto out;
+  ++i;
   if (!ReadField(program->inetref))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->lastModified = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->stars))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->airdate = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
+  ++i;
   if (!ReadField(field)) // recpriority2
     goto out;
+  ++i;
   if (!ReadField(field)) // parentid
     goto out;
+  ++i;
   if (!ReadField(program->recording.storageGroup))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->audioProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->videoProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->subProps)))
     goto out;
+  ++i;
   if (!ReadField(field)) // year
     goto out;
+  ++i;
   if (!ReadField(field)) // part number
     goto out;
+  ++i;
   if (!ReadField(field)) // part total
     goto out;
-
   return program;
 out:
-  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  DBG(MYTH_DBG_ERROR, "%s: failed (%d) buf='%s'\n", __FUNCTION__, i, field.c_str());
   program.reset();
   return program;
 }
@@ -608,115 +697,165 @@ ProgramPtr ProtoBase::RcvProgramInfo79()
   int64_t tmpi;
   std::string field;
   ProgramPtr program(new Program());
+  int i = 0;
 
+  ++i;
   if (!ReadField(program->title))
     goto out;
+  ++i;
   if (!ReadField(program->subTitle))
     goto out;
+  ++i;
   if (!ReadField(program->description))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->season)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->episode)))
     goto out;
+  ++i;
   if (!ReadField(field)) // total episodes
     goto out;
+  ++i;
   if (!ReadField(field)) // syndicated episode
     goto out;
+  ++i;
   if (!ReadField(program->category))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.chanId)))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanNum))
     goto out;
+  ++i;
   if (!ReadField(program->channel.callSign))
     goto out;
+  ++i;
   if (!ReadField(program->channel.channelName))
     goto out;
+  ++i;
   if (!ReadField(program->fileName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &(program->fileSize)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->startTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->endTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field)) // findid
     goto out;
+  ++i;
   if (!ReadField(program->hostName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.sourceId)))
     goto out;
+  ++i;
   if (!ReadField(field)) // cardid
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.inputId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int32(field.c_str(), &(program->recording.priority)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int8(field.c_str(), &(program->recording.status)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.recType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupInType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupMethod)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.startTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.endTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->programFlags)))
     goto out;
+  ++i;
   if (!ReadField(program->recording.recGroup))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanFilters))
     goto out;
+  ++i;
   if (!ReadField(program->seriesId))
     goto out;
+  ++i;
   if (!ReadField(program->programId))
     goto out;
+  ++i;
   if (!ReadField(program->inetref))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->lastModified = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->stars))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->airdate = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
+  ++i;
   if (!ReadField(field)) // recpriority2
     goto out;
+  ++i;
   if (!ReadField(field)) // parentid
     goto out;
+  ++i;
   if (!ReadField(program->recording.storageGroup))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->audioProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->videoProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->subProps)))
     goto out;
+  ++i;
   if (!ReadField(field)) // year
     goto out;
+  ++i;
   if (!ReadField(field)) // part number
     goto out;
+  ++i;
   if (!ReadField(field)) // part total
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->catType = CategoryTypeToString(m_protoVersion, CategoryTypeFromNum(m_protoVersion, (int)tmpi));
   return program;
 out:
-  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  DBG(MYTH_DBG_ERROR, "%s: failed (%d) buf='%s'\n", __FUNCTION__, i, field.c_str());
   program.reset();
   return program;
 }
@@ -726,117 +865,168 @@ ProgramPtr ProtoBase::RcvProgramInfo82()
   int64_t tmpi;
   std::string field;
   ProgramPtr program(new Program());
+  int i = 0;
 
+  ++i;
   if (!ReadField(program->title))
     goto out;
+  ++i;
   if (!ReadField(program->subTitle))
     goto out;
+  ++i;
   if (!ReadField(program->description))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->season)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->episode)))
     goto out;
+  ++i;
   if (!ReadField(field)) // total episodes
     goto out;
+  ++i;
   if (!ReadField(field)) // syndicated episode
     goto out;
+  ++i;
   if (!ReadField(program->category))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.chanId)))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanNum))
     goto out;
+  ++i;
   if (!ReadField(program->channel.callSign))
     goto out;
+  ++i;
   if (!ReadField(program->channel.channelName))
     goto out;
+  ++i;
   if (!ReadField(program->fileName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &(program->fileSize)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->startTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->endTime = (time_t)tmpi;
+  ++i;
   if (!ReadField(field)) // findid
     goto out;
+  ++i;
   if (!ReadField(program->hostName))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.sourceId)))
     goto out;
+  ++i;
   if (!ReadField(field)) // cardid
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->channel.inputId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int32(field.c_str(), &(program->recording.priority)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int8(field.c_str(), &(program->recording.status)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordId)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.recType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupInType)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint8(field.c_str(), &(program->recording.dupMethod)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.startTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->recording.endTs = (time_t)tmpi;
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->programFlags)))
     goto out;
+  ++i;
   if (!ReadField(program->recording.recGroup))
     goto out;
+  ++i;
   if (!ReadField(program->channel.chanFilters))
     goto out;
+  ++i;
   if (!ReadField(program->seriesId))
     goto out;
+  ++i;
   if (!ReadField(program->programId))
     goto out;
+  ++i;
   if (!ReadField(program->inetref))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->lastModified = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->stars))
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->airdate = (time_t)tmpi;
+  ++i;
   if (!ReadField(program->recording.playGroup))
     goto out;
+  ++i;
   if (!ReadField(field)) // recpriority2
     goto out;
+  ++i;
   if (!ReadField(field)) // parentid
     goto out;
+  ++i;
   if (!ReadField(program->recording.storageGroup))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->audioProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->videoProps)))
     goto out;
+  ++i;
   if (!ReadField(field) || str2uint16(field.c_str(), &(program->subProps)))
     goto out;
+  ++i;
   if (!ReadField(field)) // year
     goto out;
+  ++i;
   if (!ReadField(field)) // part number
     goto out;
+  ++i;
   if (!ReadField(field)) // part total
     goto out;
+  ++i;
   if (!ReadField(field) || str2int64(field.c_str(), &tmpi))
     goto out;
   program->catType = CategoryTypeToString(m_protoVersion, CategoryTypeFromNum(m_protoVersion, (int)tmpi));
+  ++i;
   if (!ReadField(field) || str2uint32(field.c_str(), &(program->recording.recordedId)))
     goto out;
   return program;
 out:
-  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+  DBG(MYTH_DBG_ERROR, "%s: failed (%d) buf='%s'\n", __FUNCTION__, i, field.c_str());
   program.reset();
   return program;
 }
