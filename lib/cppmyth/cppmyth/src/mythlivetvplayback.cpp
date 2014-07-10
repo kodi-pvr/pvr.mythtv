@@ -220,22 +220,19 @@ void LiveTVPlayback::HandleChainUpdate(ProtoRecorder& recorder)
             m_chain.UID.c_str(), prog->fileName.c_str());
     ProtoTransferPtr transfer(new ProtoTransfer(recorder.GetServer(), recorder.GetPort()));
     transfer->Open(prog->fileName, prog->recording.storageGroup);
-    /*
-     * file in the chain could be dummy and then
-     * backend close file transfer socket immediately.
-     * In other cases add the chain else wait next chain update to
-     * add a valid program.
-     */
-    if (transfer->fileSize) // dummy file has zero size
+    if (transfer->IsOpen())
     {
+      // Pop dummy file if exists then add the new into the chain
+      if (m_chain.lastSequence && m_chain.chained[m_chain.lastSequence - 1].first->fileSize == 0)
+      {
+        --m_chain.lastSequence;
+        m_chain.chained.pop_back();
+      }
       m_chain.chained.push_back(std::make_pair(transfer, prog));
       m_chain.lastSequence = m_chain.chained.size();
-      /*
-       * New program is inserted.
-       * Switch to the new file when required (switchOnCreate)
-       * Release watch signal
-       */
-      if (m_chain.switchOnCreate && SwitchChainLast())
+      // Wait the filling of the file before switching. If file is empty now then
+      // we will switch later on the event 'UPDATE_FILE_SIZE'
+      if (transfer->fileSize > 0 && m_chain.switchOnCreate && SwitchChainLast())
         m_chain.switchOnCreate = false;
       m_chain.watch = false;
       DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u), watching (%u)\n", __FUNCTION__,
@@ -243,7 +240,7 @@ void LiveTVPlayback::HandleChainUpdate(ProtoRecorder& recorder)
     }
     else
     {
-      DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): transfer was closed by backend\n", __FUNCTION__,
+      DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): cannot open transfer\n", __FUNCTION__,
               m_chain.UID.c_str());
     }
   }
@@ -376,9 +373,14 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
           if (0 == str2int64(msg.subject[3].c_str(), &newsize))
           {
             if (m_chain.chained[m_chain.lastSequence - 1].first->fileSize < newsize)
+            {
               m_chain.chained[m_chain.lastSequence - 1].first->fileSize = newsize;
-            DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u) filesize %" PRIi64 "\n", __FUNCTION__,
-                    m_chain.UID.c_str(), m_chain.lastSequence, newsize);
+              // Is wait the filling before switching ?
+              if (m_chain.switchOnCreate && SwitchChainLast())
+                m_chain.switchOnCreate = false;
+              DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u) filesize %" PRIi64 "\n", __FUNCTION__,
+                      m_chain.UID.c_str(), m_chain.lastSequence, newsize);
+            }
           }
         }
       }
