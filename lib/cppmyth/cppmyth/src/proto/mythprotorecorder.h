@@ -94,8 +94,8 @@ namespace Myth
 
   private:
     int m_num;
-    bool m_playing;
-    bool m_liveRecording;
+    volatile bool m_playing;
+    volatile bool m_liveRecording;
 
     bool SpawnLiveTV75(const std::string& chainid, const std::string& channum);
     bool StopLiveTV75();

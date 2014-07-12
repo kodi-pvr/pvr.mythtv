@@ -157,6 +157,7 @@ bool LiveTVPlayback::SpawnLiveTV(const Channel& channel, uint32_t prefcardid)
       m_recorder = GetNextFreeRecorder(m_recorder->GetNum());
     }
     while (m_recorder && m_recorder->GetNum() != rnum);
+    ClearChain();
   }
   return false;
 }
@@ -182,12 +183,23 @@ void LiveTVPlayback::InitChain()
   time2iso8601(time(NULL), buf);
   m_chain.UID = m_socket->GetMyHostName();
   m_chain.UID.append("-").append(buf);
-  m_chain.chained.clear();
-  m_chain.currentTransfer.reset();
   m_chain.currentSequence = 0;
   m_chain.lastSequence = 0;
   m_chain.watch = false;
   m_chain.switchOnCreate = true;
+  m_chain.chained.clear();
+  m_chain.currentTransfer.reset();
+}
+
+void LiveTVPlayback::ClearChain()
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  m_chain.currentSequence = 0;
+  m_chain.lastSequence = 0;
+  m_chain.watch = false;
+  m_chain.switchOnCreate = false;
+  m_chain.chained.clear();
+  m_chain.currentTransfer.reset();
 }
 
 int LiveTVPlayback::GetRecorderNum()

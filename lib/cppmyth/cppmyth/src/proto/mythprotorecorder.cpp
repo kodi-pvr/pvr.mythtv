@@ -111,15 +111,19 @@ bool ProtoRecorder::SpawnLiveTV75(const std::string& chainid, const std::string&
   cmd.append(PROTO_STR_SEPARATOR).append("0").append(PROTO_STR_SEPARATOR);
   cmd.append(channum);
 
-  if (!SendCommand(cmd.c_str()))
-    return false;
-  if (!ReadField(field) || !IsMessageOK(field))
-  {
-      FlushMessage();
-      return false;
-  }
+  DBG(MYTH_DBG_DEBUG, "%s: starting ...\n", __FUNCTION__);
   m_playing = true;
-  return true;
+  if (!SendCommand(cmd.c_str()))
+  {
+    m_playing = false;
+  }
+  else if (!ReadField(field) || !IsMessageOK(field))
+  {
+    m_playing = false;
+    FlushMessage();
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: %s\n", __FUNCTION__, (m_playing ? "succeeded" : "failed"));
+  return m_playing;
 }
 
 bool ProtoRecorder::StopLiveTV75()

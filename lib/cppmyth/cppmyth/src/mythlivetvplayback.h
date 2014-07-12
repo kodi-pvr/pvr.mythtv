@@ -85,6 +85,7 @@ namespace Myth
     } m_chain;
 
     void InitChain();
+    void ClearChain();
     int GetRecorderNum();
     bool IsChained(const Program& program);
     void HandleChainUpdate(ProtoRecorder& recorder);
