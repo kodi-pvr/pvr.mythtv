@@ -144,7 +144,7 @@ int ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
 
   if (!SendCommand(cmd.c_str()))
     return -1;
-  if (!ReadField(field) || 0 != str2int32(field.c_str(), &rlen))
+  if (!ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
   {
       FlushMessage();
       return -1;
