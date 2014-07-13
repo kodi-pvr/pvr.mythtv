@@ -78,7 +78,7 @@ namespace MythDTO75
   attr_bind_t recording[] =
   {
     { "RecordId",       IS_UINT32,  (setter_t)MythDTORecording::SetRecording_RecordId },
-    { "Priority",       IS_UINT32,  (setter_t)MythDTORecording::SetRecording_Priority },
+    { "Priority",       IS_INT32,   (setter_t)MythDTORecording::SetRecording_Priority },
     { "Status",         IS_INT8,    (setter_t)MythDTORecording::SetRecording_Status },
     { "EncoderId",      IS_UINT32,  (setter_t)MythDTORecording::SetRecording_EncoderId },
     { "RecType",        IS_UINT8,   (setter_t)MythDTORecording::SetRecording_RecType },
