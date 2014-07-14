@@ -1,3 +1,6 @@
+v1.9.17
+- Fix buffer request limit
+
 v1.9.16
 - Fix timeout on buffer read in rare circumstances
 - Not open dummy file for transfer
