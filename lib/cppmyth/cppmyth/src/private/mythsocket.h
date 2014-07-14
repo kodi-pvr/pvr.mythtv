@@ -51,6 +51,7 @@ namespace Myth
       return (m_socket == INVALID_SOCKET_VALUE ? false : true);
     }
     int Listen(timeval *timeout);
+    tcp_socket_t GetSocket() const;
 
     static const char *GetMyHostName();
 

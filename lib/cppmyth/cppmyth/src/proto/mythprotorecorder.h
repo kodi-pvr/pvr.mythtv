@@ -65,9 +65,9 @@ namespace Myth
     {
       return ProtoPlayback::TransferIsOpen(transfer);
     }
-    int TransferRequestBlock(ProtoTransfer& transfer, unsigned n)
+    int TransferRequestBlock(ProtoTransfer& transfer, void *buffer, unsigned n)
     {
-      return ProtoPlayback::TransferRequestBlock(transfer, n);
+      return ProtoPlayback::TransferRequestBlock(transfer, buffer, n);
     }
     int64_t TransferSeek(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence)
     {

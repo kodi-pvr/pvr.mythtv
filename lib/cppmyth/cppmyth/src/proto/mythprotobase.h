@@ -54,6 +54,7 @@ namespace Myth
     virtual std::string GetServer() const;
     virtual unsigned GetPort() const;
     virtual int GetSocketErrNo() const;
+    virtual int GetSocket() const;
 
   protected:
     PLATFORM::CMutex *m_mutex;

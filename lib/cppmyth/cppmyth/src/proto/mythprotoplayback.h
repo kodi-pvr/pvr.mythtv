@@ -46,10 +46,7 @@ namespace Myth
     {
       return TransferIsOpen75(transfer);
     }
-    int TransferRequestBlock(ProtoTransfer& transfer, unsigned n)
-    {
-      return TransferRequestBlock75(transfer, n);
-    }
+    int TransferRequestBlock(ProtoTransfer& transfer, void *buffer, unsigned n);
     int64_t TransferSeek(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence)
     {
       return TransferSeek75(transfer, offset, whence);
@@ -59,7 +56,7 @@ namespace Myth
     bool Announce75();
     void TransferDone75(ProtoTransfer& transfer);
     bool TransferIsOpen75(ProtoTransfer& transfer);
-    int TransferRequestBlock75(ProtoTransfer& transfer, unsigned n);
+    bool TransferRequestBlock75(ProtoTransfer& transfer, unsigned n);
     int64_t TransferSeek75(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence);
   };
 

@@ -271,5 +271,12 @@ int TcpSocket::Listen(timeval *timeout)
   FD_ZERO(&fds);
   FD_SET(m_socket, &fds);
   r = select(m_socket + 1, &fds, NULL, NULL, timeout);
+  if (r < 0)
+    m_errno = LASTERROR;
   return r;
+}
+
+tcp_socket_t TcpSocket::GetSocket() const
+{
+  return m_socket;
 }

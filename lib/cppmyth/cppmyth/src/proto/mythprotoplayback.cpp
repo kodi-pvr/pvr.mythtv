@@ -28,6 +28,13 @@
 #include <limits>
 #include <cstdio>
 
+#if defined _MSC_VER
+#include <Ws2tcpip.h>
+#else
+#include <sys/socket.h> // for recv
+#include <sys/select.h> // for select
+#endif /* _MSC_VER */
+
 using namespace Myth;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,19 +127,123 @@ bool ProtoPlayback::TransferIsOpen75(ProtoTransfer& transfer)
   return true;
 }
 
-int ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
+int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, unsigned n)
 {
-  char buf[32];
-  int32_t rlen = 0;
-  std::string field;
+  bool request = false, data = false;
+  int r = 0, nfds = 0, fdc, fdd;
+  char *p = (char*)buffer;
+  struct timeval tv;
+  fd_set fds;
+  unsigned s = 0;
 
+  if (n == 0)
+    return n;
+
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
+
+  fdc = GetSocket();
+  if (INVALID_SOCKET_VALUE == (tcp_socket_t)fdc)
+    return -1;
+  fdd = transfer.GetSocket();
+  if (INVALID_SOCKET_VALUE == (tcp_socket_t)fdd)
+    return -1;
   // Max size is RCVBUF size
   if (n > PROTO_TRANSFER_RCVBUF)
     n = PROTO_TRANSFER_RCVBUF;
+  if ((transfer.filePosition + n) > transfer.fileRequest)
+  {
+    n -= (unsigned)(transfer.fileRequest - transfer.filePosition);
+    if (!TransferRequestBlock75(transfer, n))
+      return -1;
+    request = true;
+  }
 
-  PLATFORM::CLockObject lock(*m_mutex);
+  do
+  {
+    FD_ZERO(&fds);
+    if (request)
+    {
+      FD_SET((tcp_socket_t)fdc, &fds);
+      if (nfds < fdc)
+        nfds = fdc;
+    }
+    FD_SET((tcp_socket_t)fdd, &fds);
+    if (nfds < fdd)
+      nfds = fdd;
+
+    if (data)
+    {
+      // Read directly to get all queued packets
+      tv.tv_sec = 0;
+      tv.tv_usec = 0;
+    }
+    else
+    {
+      // Wait and read for new packet
+      tv.tv_sec = 10;
+      tv.tv_usec = 0;
+    }
+
+    r = select (nfds+1, &fds, NULL, NULL, &tv);
+    if (r < 0)
+    {
+      DBG(MYTH_DBG_ERROR, "%s: select error (%d)\n", __FUNCTION__, r);
+      goto err;
+    }
+    if (r == 0 && !data)
+    {
+      DBG(MYTH_DBG_ERROR, "%s: select timeout\n", __FUNCTION__);
+      goto err;
+    }
+    // Check for data
+    data = false;
+    if (FD_ISSET((tcp_socket_t)fdd, &fds))
+    {
+      r = recv((tcp_socket_t)fdd, p, (size_t)(n - s), 0);
+      if (r < 0)
+      {
+        DBG(MYTH_DBG_ERROR, "%s: recv data error (%d)\n", __FUNCTION__, r);
+        goto err;
+      }
+      if (r > 0)
+      {
+        data = true;
+        s += r;
+        p += r;
+        transfer.filePosition += r;
+      }
+    }
+    // Check for response of request
+    if (request && FD_ISSET((tcp_socket_t)fdc, &fds))
+    {
+      int32_t rlen = 0;
+      std::string field;
+      if (!RcvMessageLength() || !ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
+      {
+        DBG(MYTH_DBG_ERROR, "%s: invalid response for request block (%s)\n", __FUNCTION__, field.c_str());
+        FlushMessage();
+        goto err;
+      }
+      DBG(MYTH_DBG_DEBUG, "%s: receive block size (%u)\n", __FUNCTION__, (unsigned)rlen);
+      request = false; // now request is closed
+      if (rlen == 0 && !data)
+        break; // no more data
+      transfer.fileRequest += rlen;
+    }
+  } while (request || data || !s);
+  DBG(MYTH_DBG_DEBUG, "%s: data read (%u)\n", __FUNCTION__, s);
+  return (int)s;
+err:
+  return -1;
+}
+
+bool ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
+{
+  char buf[32];
+
   if (!transfer.IsOpen())
-    return -1;
+    return false;
   std::string cmd("QUERY_FILETRANSFER ");
   uint32str(transfer.GetFileId(), buf);
   cmd.append(buf);
@@ -142,15 +253,10 @@ int ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
   uint32str(n, buf);
   cmd.append(buf);
 
-  if (!SendCommand(cmd.c_str()))
-    return -1;
-  if (!ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
-  {
-      FlushMessage();
-      return -1;
-  }
-  transfer.filePosition += rlen;
-  return (int)rlen;
+  // No wait for feedback
+  if (!SendCommand(cmd.c_str(), false))
+    return false;
+  return true;
 }
 
 int64_t ProtoPlayback::TransferSeek75(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence)
@@ -209,6 +315,6 @@ int64_t ProtoPlayback::TransferSeek75(ProtoTransfer& transfer, int64_t offset, W
       FlushMessage();
       return -1;
   }
-  transfer.filePosition = position;
+  transfer.filePosition = transfer.fileRequest = position;
   return position;
 }

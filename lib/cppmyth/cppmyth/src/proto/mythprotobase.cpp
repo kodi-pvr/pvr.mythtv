@@ -380,9 +380,14 @@ unsigned ProtoBase::GetPort() const
   return m_port;
 }
 
-int ProtoBase::GetSocketErrNo() const
+inline int ProtoBase::GetSocketErrNo() const
 {
   return m_socket->GetErrNo();
+}
+
+inline int ProtoBase::GetSocket() const
+{
+  return (int)(m_socket->GetSocket());
 }
 
 ProgramPtr ProtoBase::RcvProgramInfo75()
