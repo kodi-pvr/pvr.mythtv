@@ -37,7 +37,7 @@ using namespace Myth;
 
 FilePlayback::FilePlayback(const std::string& server, unsigned port)
 : ProtoPlayback(server, port)
-, m_transfer(new ProtoTransfer(server, port))
+, m_transfer(NULL)
 {
   ProtoPlayback::Open();
 }
@@ -61,54 +61,64 @@ bool FilePlayback::OpenTransfer(const std::string& pathname, const std::string& 
   if (!IsOpen())
     return false;
   CloseTransfer();
-  if (m_transfer->Open(pathname, sgname))
+  m_transfer.reset(new ProtoTransfer(m_server, m_port, pathname, sgname));
+  if (m_transfer->Open())
     return true;
   return false;
 }
 
 void FilePlayback::CloseTransfer()
 {
-  TransferDone(*m_transfer);
-  m_transfer->Close();
+  if (m_transfer)
+  {
+    TransferDone(*m_transfer);
+    m_transfer->Close();
+    m_transfer.reset();
+  }
 }
 
 bool FilePlayback::TransferIsOpen()
 {
-  return ProtoPlayback::TransferIsOpen(*m_transfer);
+  if (m_transfer)
+    return ProtoPlayback::TransferIsOpen(*m_transfer);
+  return false;
 }
 
 int64_t FilePlayback::GetSize() const
 {
-  return m_transfer->fileSize;
+  if (m_transfer)
+    return m_transfer->fileSize;
+  return 0;
 }
 
 int FilePlayback::Read(void *buffer, unsigned n)
 {
-  int r = 0;
-  int64_t s;
-
-  s = m_transfer->fileSize - m_transfer->filePosition; // Acceptable block size
-  if (s > 0)
+  if (m_transfer)
   {
-    if (s < (int64_t)n)
-    n = (unsigned)s ;
-
-    r = TransferRequestBlock(*m_transfer, n);
-    if (r > 0)
+    int r = 0;
+    int64_t s = m_transfer->fileSize - m_transfer->filePosition; // Acceptable block size
+    if (s > 0)
     {
-      // Read block data from transfer socket
-      r = (int)m_transfer->ReadData(buffer, (size_t)r);
+      if (s < (int64_t)n)
+      n = (unsigned)s ;
+      // Request block data from transfer socket
+      r = TransferRequestBlock(*m_transfer, buffer, n);
     }
+    return r;
   }
-  return r;
+  return -1;
 }
 
 int64_t FilePlayback::Seek(int64_t offset, WHENCE_t whence)
 {
-  return TransferSeek(*m_transfer, offset, whence);
+  if (m_transfer)
+    return TransferSeek(*m_transfer, offset, whence);
+  return -1;
 }
 
 int64_t FilePlayback::GetPosition() const
 {
-  return m_transfer->filePosition;
+  if (m_transfer)
+    return m_transfer->filePosition;
+  return 0;
 }

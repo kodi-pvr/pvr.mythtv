@@ -35,26 +35,24 @@ namespace Myth
   class ProtoTransfer : public ProtoBase
   {
   public:
-    ProtoTransfer(const std::string& server, unsigned port);
+    ProtoTransfer(const std::string& server, unsigned port, const std::string& pathname, const std::string& sgname);
 
     void Close();
-    bool Open(const std::string& pathname, const std::string& sgname);
+    bool Open();
     uint32_t GetFileId() const;
     std::string GetPathName() const;
     std::string GetStorageGroupName() const;
 
-    size_t ReadData(void *buffer, size_t n);
-
     int64_t fileSize;
     int64_t filePosition;
+    int64_t fileRequest;
 
   private:
     uint32_t m_fileId;
     std::string m_pathName;
     std::string m_storageGroupName;
 
-    bool Open();
-    bool Announce75(const std::string& pathname, const std::string& sgname);
+    bool Announce75();
   };
 
 }

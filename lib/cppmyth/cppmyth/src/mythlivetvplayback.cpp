@@ -230,41 +230,40 @@ void LiveTVPlayback::HandleChainUpdate(ProtoRecorder& recorder)
   {
     DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): adding new transfer %s\n", __FUNCTION__,
             m_chain.UID.c_str(), prog->fileName.c_str());
-    ProtoTransferPtr transfer(new ProtoTransfer(recorder.GetServer(), recorder.GetPort()));
-    transfer->Open(prog->fileName, prog->recording.storageGroup);
-    if (transfer->IsOpen())
+    ProtoTransferPtr transfer(new ProtoTransfer(recorder.GetServer(), recorder.GetPort(), prog->fileName, prog->recording.storageGroup));
+    // Pop previous dummy file if exists then add the new into the chain
+    if (m_chain.lastSequence && m_chain.chained[m_chain.lastSequence - 1].first->fileSize == 0)
     {
-      // Pop dummy file if exists then add the new into the chain
-      if (m_chain.lastSequence && m_chain.chained[m_chain.lastSequence - 1].first->fileSize == 0)
-      {
-        --m_chain.lastSequence;
-        m_chain.chained.pop_back();
-      }
-      m_chain.chained.push_back(std::make_pair(transfer, prog));
-      m_chain.lastSequence = m_chain.chained.size();
-      // Wait the filling of the file before switching. If file is empty now then
-      // we will switch later on the event 'UPDATE_FILE_SIZE'
-      if (transfer->fileSize > 0 && m_chain.switchOnCreate && SwitchChainLast())
-        m_chain.switchOnCreate = false;
-      m_chain.watch = false;
-      DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u), watching (%u)\n", __FUNCTION__,
-              m_chain.UID.c_str(), m_chain.lastSequence, m_chain.currentSequence);
+      --m_chain.lastSequence;
+      m_chain.chained.pop_back();
     }
-    else
-    {
-      DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): cannot open transfer\n", __FUNCTION__,
-              m_chain.UID.c_str());
-    }
+    m_chain.chained.push_back(std::make_pair(transfer, prog));
+    m_chain.lastSequence = m_chain.chained.size();
+    /*
+     * If file is filled then switch immediatly.
+     * Else we will switch later on the event 'UPDATE_FILE_SIZE'
+     */
+    if (transfer->fileSize > 0 && m_chain.switchOnCreate && SwitchChainLast())
+      m_chain.switchOnCreate = false;
+    m_chain.watch = false;
+    DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u), watching (%u)\n", __FUNCTION__,
+            m_chain.UID.c_str(), m_chain.lastSequence, m_chain.currentSequence);
   }
 }
 
 bool LiveTVPlayback::SwitchChain(unsigned sequence)
 {
   PLATFORM::CLockObject lock(*m_mutex);
+  // Check for out of range
   if (sequence < 1 || sequence > m_chain.lastSequence)
+    return false;
+  // If closed then try to open
+  if (!m_chain.chained[sequence - 1].first->IsOpen() && !m_chain.chained[sequence - 1].first->Open())
     return false;
   m_chain.currentTransfer = m_chain.chained[sequence - 1].first;
   m_chain.currentSequence = sequence;
+  DBG(MYTH_DBG_DEBUG, "%s: switch to file (%u) %s\n", __FUNCTION__,
+          (unsigned)m_chain.currentTransfer->GetFileId(), m_chain.currentTransfer->GetPathName().c_str());
   return true;
 }
 
@@ -478,12 +477,7 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
   if (s < (int64_t)n)
     n = (unsigned)s ;
 
-  r = recorder->TransferRequestBlock(*(m_chain.currentTransfer), n);
-  if (r > 0)
-  {
-    // Read block data from transfer socket
-    r = (int)m_chain.currentTransfer->ReadData(buffer, (size_t)r);
-  }
+  r = recorder->TransferRequestBlock(*(m_chain.currentTransfer), buffer, n);
   return r;
 }
 

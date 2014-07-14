@@ -38,8 +38,8 @@ RecordingPlayback::RecordingPlayback(EventHandler& handler)
 : ProtoPlayback(handler.GetServer(), handler.GetPort()), EventSubscriber()
 , m_eventHandler(handler)
 , m_eventSubscriberId(0)
-, m_transfer(new ProtoTransfer(handler.GetServer(), handler.GetPort()))
-, m_recording()
+, m_transfer(NULL)
+, m_recording(NULL)
 {
   m_eventSubscriberId = m_eventHandler.CreateSubscription(this);
   m_eventHandler.SubscribeForEvent(m_eventSubscriberId, EVENT_UPDATE_FILE_SIZE);
@@ -50,8 +50,8 @@ RecordingPlayback::RecordingPlayback(const std::string& server, unsigned port)
 : ProtoPlayback(server, port), EventSubscriber()
 , m_eventHandler(server, port)
 , m_eventSubscriberId(0)
-, m_transfer(new ProtoTransfer(server, port))
-, m_recording()
+, m_transfer(NULL)
+, m_recording(NULL)
 {
   // Start my private handler. It will be stopped and closed by destructor.
   m_eventHandler.Start();
@@ -81,82 +81,99 @@ bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
   if (!IsOpen())
     return false;
   CloseTransfer();
-  if (recording && m_transfer->Open(recording->fileName, recording->recording.storageGroup))
+  if (recording)
   {
-    m_recording.swap(recording);
-    m_recording->fileSize = m_transfer->fileSize;
-    return true;
+    m_transfer.reset(new ProtoTransfer(m_server, m_port, recording->fileName, recording->recording.storageGroup));
+    if (m_transfer->Open())
+    {
+      m_recording.swap(recording);
+      m_recording->fileSize = m_transfer->fileSize;
+      return true;
+    }
+    m_transfer.reset();
   }
   return false;
 }
 
 void RecordingPlayback::CloseTransfer()
 {
-  TransferDone(*m_transfer);
-  m_transfer->Close();
   m_recording.reset();
+  if (m_transfer)
+  {
+    TransferDone(*m_transfer);
+    m_transfer->Close();
+    m_transfer.reset();
+  }
 }
 
 bool RecordingPlayback::TransferIsOpen()
 {
-  return ProtoPlayback::TransferIsOpen(*m_transfer);
+  if (m_transfer)
+    return ProtoPlayback::TransferIsOpen(*m_transfer);
+  return false;
 }
 
 int64_t RecordingPlayback::GetSize() const
 {
-  return m_transfer->fileSize;
+  if (m_transfer)
+    return m_transfer->fileSize;
+  return 0;
 }
 
 int RecordingPlayback::Read(void *buffer, unsigned n)
 {
-  int r = 0;
-  int64_t s;
-
-  s = m_transfer->fileSize - m_transfer->filePosition; // Acceptable block size
-  if (s > 0)
+  if (m_transfer)
   {
-    if (s < (int64_t)n)
-    n = (unsigned)s ;
-
-    r = TransferRequestBlock(*m_transfer, n);
-    if (r > 0)
+    int r = 0;
+    int64_t s = m_transfer->fileSize - m_transfer->filePosition; // Acceptable block size
+    if (s > 0)
     {
-      // Read block data from transfer socket
-      r = (int)m_transfer->ReadData(buffer, (size_t)r);
+      if (s < (int64_t)n)
+      n = (unsigned)s ;
+      // Request block data from transfer socket
+      r = TransferRequestBlock(*m_transfer, buffer, n);
     }
+    return r;
   }
-  return r;
+  return -1;
 }
 
 int64_t RecordingPlayback::Seek(int64_t offset, WHENCE_t whence)
 {
-  return TransferSeek(*m_transfer, offset, whence);
+  if (m_transfer)
+    return TransferSeek(*m_transfer, offset, whence);
+  return -1;
 }
 
 int64_t RecordingPlayback::GetPosition() const
 {
-  return m_transfer->filePosition;
+  if (m_transfer)
+    return m_transfer->filePosition;
+  return 0;
 }
 
 void RecordingPlayback::HandleBackendMessage(const EventMessage& msg)
 {
+  // First of all i hold shared resources using copies
+  ProgramPtr recording(m_recording);
+  ProtoTransferPtr transfer(m_transfer);
   switch (msg.event)
   {
     case EVENT_UPDATE_FILE_SIZE:
-      if (msg.subject.size() >= 4 && m_recording)
+      if (msg.subject.size() >= 4 && recording && transfer)
       {
         uint32_t chanid;
         time_t startts;
         if (str2uint32(msg.subject[1].c_str(), &chanid) || str2time(msg.subject[2].c_str(), &startts))
           break;
-        if (m_recording->channel.chanId == chanid && m_recording->recording.startTs == startts)
+        if (recording->channel.chanId == chanid && recording->recording.startTs == startts)
         {
           int64_t newsize;
           if (0 == str2int64(msg.subject[3].c_str(), &newsize))
           {
-            m_recording->fileSize = m_transfer->fileSize = newsize;
+            recording->fileSize = transfer->fileSize = newsize;
             DBG(MYTH_DBG_DEBUG, "%s: (%d) %s %" PRIi64 "\n", __FUNCTION__,
-                    msg.event, m_recording->fileName.c_str(), newsize);
+                    msg.event, recording->fileName.c_str(), newsize);
           }
         }
       }

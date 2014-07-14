@@ -35,57 +35,55 @@ using namespace Myth;
 //// Protocol connection to transfer file
 ////
 
-ProtoTransfer::ProtoTransfer(const std::string& server, unsigned port)
+ProtoTransfer::ProtoTransfer(const std::string& server, unsigned port, const std::string& pathname, const std::string& sgname)
 : ProtoBase(server, port)
 , fileSize(0)
 , filePosition(0)
+, fileRequest(0)
 , m_fileId(0)
-, m_pathName()
-, m_storageGroupName()
+, m_pathName(pathname)
+, m_storageGroupName(sgname)
 {
 }
 
 void ProtoTransfer::Close()
 {
   ProtoBase::Close();
-  filePosition = fileSize = 0;
+  filePosition = fileRequest = 0;
   m_fileId = 0;
-}
-
-bool ProtoTransfer::Open(const std::string& pathname, const std::string& sgname)
-{
-  bool ok = false;
-
-  if (!OpenConnection(PROTO_TRANSFER_RCVBUF))
-    return false;
-
-  if (m_protoVersion >= 75)
-    ok = Announce75(pathname, sgname);
-
-  if (ok)
-  {
-    m_pathName = pathname;
-    m_storageGroupName = sgname;
-    return true;
-  }
-  this->Close();
-  return false;
 }
 
 bool ProtoTransfer::Open()
 {
-  return false;
+  bool ok = false;
+
+  if (IsOpen())
+    return true;
+  if (!OpenConnection(PROTO_TRANSFER_RCVBUF))
+    return false;
+
+  if (m_protoVersion >= 75)
+    ok = Announce75();
+
+  if (!ok)
+  {
+    // Close without notice
+    m_hang = true;
+    this->Close();
+    return false;
+  }
+  return true;
 }
 
-bool ProtoTransfer::Announce75(const std::string& pathname, const std::string& sgname)
+bool ProtoTransfer::Announce75()
 {
   PLATFORM::CLockObject lock(*m_mutex);
-  filePosition = fileSize = 0;
+  filePosition = fileSize = fileRequest = 0;
   std::string cmd("ANN FileTransfer ");
   cmd.append(m_socket->GetMyHostName());
   cmd.append(" 0 0 1000" PROTO_STR_SEPARATOR);
-  cmd.append(pathname).append(PROTO_STR_SEPARATOR);
-  cmd.append(sgname);
+  cmd.append(m_pathName).append(PROTO_STR_SEPARATOR);
+  cmd.append(m_storageGroupName);
   if (!SendCommand(cmd.c_str()))
     return false;
 
@@ -116,9 +114,4 @@ std::string ProtoTransfer::GetPathName() const
 std::string ProtoTransfer::GetStorageGroupName() const
 {
   return m_storageGroupName;
-}
-
-size_t ProtoTransfer::ReadData(void *buffer, size_t n)
-{
-  return m_socket->ReadResponse(buffer, n);
 }
