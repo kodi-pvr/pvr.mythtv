@@ -57,6 +57,7 @@ namespace Myth
     void TransferDone75(ProtoTransfer& transfer);
     bool TransferIsOpen75(ProtoTransfer& transfer);
     bool TransferRequestBlock75(ProtoTransfer& transfer, unsigned n);
+    int32_t TransferRequestBlockFeedback75();
     int64_t TransferSeek75(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence);
   };
 

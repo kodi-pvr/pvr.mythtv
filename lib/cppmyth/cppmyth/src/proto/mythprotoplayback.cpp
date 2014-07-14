@@ -139,9 +139,6 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
   if (n == 0)
     return n;
 
-  // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
-
   fdc = GetSocket();
   if (INVALID_SOCKET_VALUE == (tcp_socket_t)fdc)
     return -1;
@@ -153,8 +150,14 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     n = PROTO_TRANSFER_RCVBUF;
   if ((transfer.filePosition + n) > transfer.fileRequest)
   {
-    if (!TransferRequestBlock75(transfer, n))
-      return -1;
+    // Begin critical section
+    m_mutex->Lock();
+    bool ok = TransferRequestBlock75(transfer, n);
+    if (!ok)
+    {
+      m_mutex->Unlock();
+      goto err;
+    }
     request = true;
   }
 
@@ -216,16 +219,12 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     // Check for response of request
     if (request && FD_ISSET((tcp_socket_t)fdc, &fds))
     {
-      int32_t rlen = 0;
-      std::string field;
-      if (!RcvMessageLength() || !ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
-      {
-        DBG(MYTH_DBG_ERROR, "%s: invalid response for request block (%s)\n", __FUNCTION__, field.c_str());
-        FlushMessage();
+      int32_t rlen = TransferRequestBlockFeedback75();
+      request = false; // request is completed
+      m_mutex->Unlock();
+      if (rlen < 0)
         goto err;
-      }
       DBG(MYTH_DBG_DEBUG, "%s: receive block size (%u)\n", __FUNCTION__, (unsigned)rlen);
-      request = false; // now request is closed
       if (rlen == 0 && !data)
         break; // no more data
       transfer.fileRequest += rlen;
@@ -234,11 +233,21 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
   DBG(MYTH_DBG_DEBUG, "%s: data read (%u)\n", __FUNCTION__, s);
   return (int)s;
 err:
+  if (request)
+  {
+    if (RcvMessageLength())
+      FlushMessage();
+    m_mutex->Unlock();
+  }
+  // Recover the file position or die
+  if (TransferSeek(transfer, transfer.filePosition, WHENCE_SET) < 0)
+    HangException();
   return -1;
 }
 
 bool ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
 {
+  // Note: Caller has to hold mutex until feedback or cancel point
   char buf[32];
 
   if (!transfer.IsOpen())
@@ -256,6 +265,19 @@ bool ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
   if (!SendCommand(cmd.c_str(), false))
     return false;
   return true;
+}
+
+int32_t ProtoPlayback::TransferRequestBlockFeedback75()
+{
+  int32_t rlen = 0;
+  std::string field;
+  if (!RcvMessageLength() || !ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response for request block (%s)\n", __FUNCTION__, field.c_str());
+    FlushMessage();
+    return -1;
+  }
+  return rlen;
 }
 
 int64_t ProtoPlayback::TransferSeek75(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence)

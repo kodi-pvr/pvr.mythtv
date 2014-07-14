@@ -49,7 +49,6 @@ FilePlayback::~FilePlayback()
 
 void FilePlayback::Close()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
   CloseTransfer();
   if (IsOpen())
     ProtoPlayback::Close();
@@ -57,6 +56,7 @@ void FilePlayback::Close()
 
 bool FilePlayback::OpenTransfer(const std::string& pathname, const std::string& sgname)
 {
+  // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
   if (!IsOpen())
     return false;
@@ -69,6 +69,8 @@ bool FilePlayback::OpenTransfer(const std::string& pathname, const std::string& 
 
 void FilePlayback::CloseTransfer()
 {
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
   if (m_transfer)
   {
     TransferDone(*m_transfer);
@@ -79,30 +81,33 @@ void FilePlayback::CloseTransfer()
 
 bool FilePlayback::TransferIsOpen()
 {
-  if (m_transfer)
-    return ProtoPlayback::TransferIsOpen(*m_transfer);
+  ProtoTransferPtr transfer(m_transfer);
+  if (transfer)
+    return ProtoPlayback::TransferIsOpen(*transfer);
   return false;
 }
 
 int64_t FilePlayback::GetSize() const
 {
-  if (m_transfer)
-    return m_transfer->fileSize;
+  ProtoTransferPtr transfer(m_transfer);
+  if (transfer)
+    return transfer->fileSize;
   return 0;
 }
 
 int FilePlayback::Read(void *buffer, unsigned n)
 {
-  if (m_transfer)
+  ProtoTransferPtr transfer(m_transfer);
+  if (transfer)
   {
     int r = 0;
-    int64_t s = m_transfer->fileSize - m_transfer->filePosition; // Acceptable block size
+    int64_t s = transfer->fileSize - transfer->filePosition; // Acceptable block size
     if (s > 0)
     {
       if (s < (int64_t)n)
       n = (unsigned)s ;
       // Request block data from transfer socket
-      r = TransferRequestBlock(*m_transfer, buffer, n);
+      r = TransferRequestBlock(*transfer, buffer, n);
     }
     return r;
   }
@@ -111,14 +116,16 @@ int FilePlayback::Read(void *buffer, unsigned n)
 
 int64_t FilePlayback::Seek(int64_t offset, WHENCE_t whence)
 {
-  if (m_transfer)
-    return TransferSeek(*m_transfer, offset, whence);
+  ProtoTransferPtr transfer(m_transfer);
+  if (transfer)
+    return TransferSeek(*transfer, offset, whence);
   return -1;
 }
 
 int64_t FilePlayback::GetPosition() const
 {
-  if (m_transfer)
-    return m_transfer->filePosition;
+  ProtoTransferPtr transfer(m_transfer);
+  if (transfer)
+    return transfer->filePosition;
   return 0;
 }

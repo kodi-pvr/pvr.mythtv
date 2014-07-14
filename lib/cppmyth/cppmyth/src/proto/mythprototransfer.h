@@ -43,9 +43,9 @@ namespace Myth
     std::string GetPathName() const;
     std::string GetStorageGroupName() const;
 
-    int64_t fileSize;
-    int64_t filePosition;
-    int64_t fileRequest;
+    int64_t fileSize;                 ///< Size of file
+    int64_t filePosition;             ///< Current read position
+    int64_t fileRequest;              ///< Current requested position
 
   private:
     uint32_t m_fileId;

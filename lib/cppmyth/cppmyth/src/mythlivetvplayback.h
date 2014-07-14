@@ -88,7 +88,7 @@ namespace Myth
     void ClearChain();
     int GetRecorderNum();
     bool IsChained(const Program& program);
-    void HandleChainUpdate(ProtoRecorder& recorder);
+    void HandleChainUpdate();
     bool SwitchChain(unsigned sequence);
     bool SwitchChainLast();
   };
