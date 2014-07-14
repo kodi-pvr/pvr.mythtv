@@ -153,7 +153,6 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     n = PROTO_TRANSFER_RCVBUF;
   if ((transfer.filePosition + n) > transfer.fileRequest)
   {
-    n -= (unsigned)(transfer.fileRequest - transfer.filePosition);
     if (!TransferRequestBlock75(transfer, n))
       return -1;
     request = true;
