@@ -1,3 +1,8 @@
+v1.9.16
+- Fix timeout on buffer read in rare circumstances
+- Not open dummy file for transfer
+- Recording priority is signed value
+
 v1.9.15
 - Manage late spawn response
 - Upgrade to jansson 2.6 (security fix)
