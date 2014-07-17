@@ -788,7 +788,7 @@ PVR_ERROR PVRClientMythTV::DeleteAndForgetRecording(const PVR_RECORDING &recordi
       else
         return PVR_ERROR_FAILED;
     }
-    bool ret = m_control->DeleteRecording(*(it->second.GetPtr()));
+    bool ret = m_control->DeleteRecording(*(it->second.GetPtr()), false, true);
     if (ret)
     {
       XBMC->Log(LOG_DEBUG, "%s: Deleted and forget recording %s", __FUNCTION__, recording.strRecordingId);
