@@ -52,9 +52,9 @@ namespace Myth
     {
       return ProtoMonitor::QueryGenpixmap(program);
     }
-    bool DeleteRecording(Program& program)
+    bool DeleteRecording(Program& program, bool force = false, bool forget = false)
     {
-      return ProtoMonitor::DeleteRecording(program);
+      return ProtoMonitor::DeleteRecording(program, force, forget);
     }
     bool UndeleteRecording(Program& program)
     {
