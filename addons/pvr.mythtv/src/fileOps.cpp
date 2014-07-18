@@ -28,8 +28,6 @@
 #include <algorithm>
 
 #define FILEOPS_STREAM_BUFFER_SIZE    32000  // Buffer size to download artworks
-#define FILEOPS_CHANNELICON_PATH      "channels"
-#define FILEOPS_PREVIEWICON_PATH      "previews"
 
 using namespace ADDON;
 using namespace PLATFORM;
@@ -74,7 +72,7 @@ std::string FileOps::GetChannelIconPath(const MythChannel& channel)
     return it->second;
 
   // Determine filename
-  std::string localFilename = m_localBasePath + FILEOPS_CHANNELICON_PATH + PATH_SEPARATOR_CHAR + uid;
+  std::string localFilename = m_localBasePath + GetTypeNameByFileType(FileTypeChannelIcon) + PATH_SEPARATOR_CHAR + uid;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: determined localFilename: %s", __FUNCTION__, localFilename.c_str());
 
@@ -104,7 +102,7 @@ std::string FileOps::GetPreviewIconPath(const MythProgramInfo& recording)
     return it->second;
 
   // Determine local filename
-  std::string localFilename = m_localBasePath + FILEOPS_PREVIEWICON_PATH + PATH_SEPARATOR_CHAR + uid;
+  std::string localFilename = m_localBasePath + GetTypeNameByFileType(FileTypeThumbnail) + PATH_SEPARATOR_CHAR + uid;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: determined localFilename: %s", __FUNCTION__, localFilename.c_str());
 
@@ -126,7 +124,7 @@ std::string FileOps::GetArtworkPath(const MythProgramInfo& recording, FileType t
 
   std::string uid = recording.UID();
   if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG, "%s: %s: %s", __FUNCTION__, GetFolderNameByFileType(type), uid.c_str());
+    XBMC->Log(LOG_DEBUG, "%s: %s: %s", __FUNCTION__, GetTypeNameByFileType(type), uid.c_str());
 
   // Check local directory
   std::pair<FileType, std::string> key = std::make_pair(type, uid);
@@ -135,7 +133,7 @@ std::string FileOps::GetArtworkPath(const MythProgramInfo& recording, FileType t
     return iter->second;
 
   // Determine local filename
-  std::string localFilename = m_localBasePath + GetFolderNameByFileType(type) + PATH_SEPARATOR_CHAR + uid.c_str();
+  std::string localFilename = m_localBasePath + GetTypeNameByFileType(type) + PATH_SEPARATOR_CHAR + uid.c_str();
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: determined localFilename: %s", __FUNCTION__, localFilename.c_str());
 
@@ -211,7 +209,7 @@ void *FileOps::Process()
         break;
       case FileTypeCoverart:
       case FileTypeFanart:
-        fileStream = m_wsapi->GetRecordingArtwork(GetFolderNameByFileType(job.m_fileType), job.m_recording.Inetref(), job.m_recording.Season());
+        fileStream = m_wsapi->GetRecordingArtwork(GetTypeNameByFileType(job.m_fileType), job.m_recording.Inetref(), job.m_recording.Season());
         break;
       default:
         break;
@@ -355,11 +353,10 @@ void FileOps::CleanCache()
   std::vector<std::string> directories;
   for (it = fileTypes.begin(); it != fileTypes.end(); ++it)
   {
-    std::string directory(GetFolderNameByFileType(*it));
-    if (!directory.empty())
+    std::string directory(GetTypeNameByFileType(*it));
+    if (!directory.empty() && *it != FileTypeChannelIcon)
       directories.push_back(m_localBasePath + directory);
   }
-  directories.push_back(m_localBasePath + FILEOPS_PREVIEWICON_PATH);
   std::vector<std::string>::const_iterator it2;
   for (it2 = directories.begin(); it2 != directories.end(); ++it2)
   {
@@ -372,6 +369,7 @@ void FileOps::CleanCache()
   // Clear the cached local filenames so that new cache jobs get generated
   m_icons.clear();
   m_preview.clear();
+  m_artworks.clear();
 
   XBMC->Log(LOG_DEBUG, "%s: Cleaned cache %s", __FUNCTION__, m_localBasePath.c_str());
 }

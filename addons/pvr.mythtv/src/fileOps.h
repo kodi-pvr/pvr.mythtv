@@ -37,6 +37,7 @@ class FileOps : public PLATFORM::CThread
 public:
   enum FileType
   {
+    FileTypePreview,
     FileTypeThumbnail,
     FileTypeCoverart,
     FileTypeFanart,
@@ -52,10 +53,10 @@ public:
   static std::vector<FileType> GetFileTypes()
   {
     std::vector<FileType> ret;
+    ret.push_back(FileTypeChannelIcon);
     ret.push_back(FileTypeThumbnail);
     ret.push_back(FileTypeCoverart);
     ret.push_back(FileTypeFanart);
-    ret.push_back(FileTypeChannelIcon);
     ret.push_back(FileTypeBanner);
     ret.push_back(FileTypeScreenshot);
     ret.push_back(FileTypePoster);
@@ -65,20 +66,20 @@ public:
     return ret;
   }
 
-  static const char *GetFolderNameByFileType(FileType fileType)
+  static const char *GetTypeNameByFileType(FileType fileType)
   {
     switch(fileType)
     {
+    case FileTypeChannelIcon: return "channelIcon";
+    case FileTypeThumbnail: return "thumbnail";
     case FileTypeCoverart: return "coverart";
     case FileTypeFanart: return "fanart";
-    case FileTypeChannelIcon: return "ChannelIcons";
     case FileTypeBanner: return "banner";
     case FileTypeScreenshot: return "screenshot";
     case FileTypePoster: return "poster";
     case FileTypeBackcover: return "backcover";
     case FileTypeInsidecover: return "insidecover";
     case FileTypeCDImage: return "cdimage";
-    // FileTypeThumbnail: Thumbnails are located within their recording folders
     default: return "";
     }
   }
