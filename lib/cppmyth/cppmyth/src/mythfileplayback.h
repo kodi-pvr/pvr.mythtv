@@ -29,13 +29,15 @@
 namespace Myth
 {
 
-  class FilePlayback : public ProtoPlayback, public Stream
+  class FilePlayback : private ProtoPlayback, public Stream
   {
   public:
     FilePlayback(const std::string& server, unsigned port);
     ~FilePlayback();
 
+    bool Open();
     void Close();
+    bool IsOpen() { return ProtoPlayback::IsOpen(); }
     bool OpenTransfer(const std::string& pathname, const std::string& sgname);
     void CloseTransfer();
     bool TransferIsOpen();

@@ -56,8 +56,16 @@ bool ProtoMonitor::Open()
   }
   if (ok)
     return true;
-  this->Close();
+  Close();
   return false;
+}
+
+bool ProtoMonitor::IsOpen()
+{
+  // Try reconnect
+  if (m_hang)
+    return Open();
+  return ProtoBase::IsOpen();
 }
 
 bool ProtoMonitor::Announce75()

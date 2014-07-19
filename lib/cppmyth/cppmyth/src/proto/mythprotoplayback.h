@@ -36,8 +36,8 @@ namespace Myth
     ProtoPlayback(const std::string& server, unsigned port);
 
     bool Open();
+    bool IsOpen();
 
-  protected:
     void TransferDone(ProtoTransfer& transfer)
     {
       TransferDone75(transfer);

@@ -93,7 +93,7 @@ BasicEventHandler::BasicEventHandler(const std::string& server, unsigned port)
 BasicEventHandler::~BasicEventHandler()
 {
   if (m_event->IsOpen())
-    this->Stop();
+    Stop();
   SAFE_DELETE(m_mutex);
 }
 
@@ -109,7 +109,7 @@ unsigned BasicEventHandler::GetPort() const
 
 bool BasicEventHandler::Start()
 {
-  this->Stop();
+  Stop();
   if (!m_event->Open())
     return false;
   PLATFORM::CThread::CreateThread();

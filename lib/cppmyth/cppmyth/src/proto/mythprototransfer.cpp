@@ -46,13 +46,6 @@ ProtoTransfer::ProtoTransfer(const std::string& server, unsigned port, const std
 {
 }
 
-void ProtoTransfer::Close()
-{
-  ProtoBase::Close();
-  filePosition = fileRequest = 0;
-  m_fileId = 0;
-}
-
 bool ProtoTransfer::Open()
 {
   bool ok = false;
@@ -69,10 +62,17 @@ bool ProtoTransfer::Open()
   {
     // Close without notice
     m_hang = true;
-    this->Close();
+    Close();
     return false;
   }
   return true;
+}
+
+void ProtoTransfer::Close()
+{
+  ProtoBase::Close();
+  filePosition = fileRequest = 0;
+  m_fileId = 0;
 }
 
 bool ProtoTransfer::Announce75()

@@ -36,8 +36,8 @@ namespace Myth
     ProtoMonitor(const std::string& server, unsigned port);
 
     bool Open();
+    bool IsOpen();
 
-  protected:
     ProtoRecorderPtr GetNextFreeRecorder(int rnum)
     {
       return GetNextFreeRecorder75(rnum);

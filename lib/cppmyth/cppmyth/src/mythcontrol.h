@@ -24,53 +24,56 @@
 
 #include "proto/mythprotomonitor.h"
 #include "mythtypes.h"
+#include "mythwsapi.h"
 
 namespace Myth
 {
 
-  class Control : public ProtoMonitor
+  class Control
   {
   public:
-    Control(const std::string& server, unsigned port);
+    Control(const std::string& server, unsigned protoPort, unsigned wsapiPort);
     ~Control();
 
+    bool Open();
     void Close();
+    bool IsOpen() { return m_monitor.IsOpen(); }
 
     bool QueryFreeSpaceSummary(int64_t *total, int64_t *used)
     {
-      return ProtoMonitor::QueryFreeSpaceSummary(total, used);
+      return m_monitor.QueryFreeSpaceSummary(total, used);
     }
     std::string GetSetting(const std::string& hostname, const std::string& setting)
     {
-      return ProtoMonitor::GetSetting(hostname, setting);
+      return m_monitor.GetSetting(hostname, setting);
     }
     bool SetSetting(const std::string& hostname, const std::string& setting, const std::string& value)
     {
-      return ProtoMonitor::SetSetting(hostname, setting, value);
+      return m_monitor.SetSetting(hostname, setting, value);
     }
     bool QueryGenPixmap(Program& program)
     {
-      return ProtoMonitor::QueryGenpixmap(program);
+      return m_monitor.QueryGenpixmap(program);
     }
     bool DeleteRecording(Program& program, bool force = false, bool forget = false)
     {
-      return ProtoMonitor::DeleteRecording(program, force, forget);
+      return m_monitor.DeleteRecording(program, force, forget);
     }
     bool UndeleteRecording(Program& program)
     {
-      return ProtoMonitor::UndeleteRecording(program);
+      return m_monitor.UndeleteRecording(program);
     }
     bool StopRecording(Program& program)
     {
-      return ProtoMonitor::StopRecording(program);
+      return m_monitor.StopRecording(program);
     }
     bool CancelNextRecording(int rnum, bool cancel)
     {
-      return ProtoMonitor::CancelNextRecording(rnum, cancel);
+      return m_monitor.CancelNextRecording(rnum, cancel);
     }
     StorageGroupFilePtr QuerySGFile(const std::string& hostname, const std::string& sgname, const std::string& filename)
     {
-      return ProtoMonitor::QuerySGFile(hostname, sgname, filename);
+      return m_monitor.QuerySGFile(hostname, sgname, filename);
     }
     /**
      * @brief Request a set of cut list marks for a recording
@@ -80,7 +83,7 @@ namespace Myth
      */
     MarkListPtr GetCutList(Program& program, int unit = 0)
     {
-      return ProtoMonitor::GetCutList(program, unit);
+      return m_monitor.GetCutList(program, unit);
     }
     /**
      * @brief Request a set of commercial break marks for a recording
@@ -90,8 +93,13 @@ namespace Myth
      */
     MarkListPtr GetCommBreakList(Program& program, int unit = 0)
     {
-      return ProtoMonitor::GetCommBreakList(program, unit);
+      return m_monitor.GetCommBreakList(program, unit);
     }
+
+  private:
+    ProtoMonitor m_monitor;
+    WSAPI m_wsapi;
+
   };
 
 }

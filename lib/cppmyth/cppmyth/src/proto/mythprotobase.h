@@ -49,7 +49,7 @@ namespace Myth
 
     virtual bool Open() = 0;
     virtual void Close();
-    virtual bool IsOpen() const;
+    virtual bool IsOpen() { return m_isOpen; }
     virtual unsigned GetProtoVersion() const;
     virtual std::string GetServer() const;
     virtual unsigned GetPort() const;
@@ -60,7 +60,6 @@ namespace Myth
     PLATFORM::CMutex *m_mutex;
     TcpSocket *m_socket;
     unsigned m_protoVersion;
-    bool m_isOpen;
     std::string m_server;
     unsigned m_port;
     bool m_hang;
@@ -93,6 +92,8 @@ namespace Myth
     }
 
   private:
+    bool m_isOpen;
+
     bool RcvVersion(unsigned *version);
 
     ProgramPtr RcvProgramInfo75();

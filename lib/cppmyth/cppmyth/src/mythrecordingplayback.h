@@ -30,14 +30,16 @@
 namespace Myth
 {
 
-  class RecordingPlayback : public ProtoPlayback, public Stream, private EventSubscriber
+  class RecordingPlayback : private ProtoPlayback, public Stream, private EventSubscriber
   {
   public:
     RecordingPlayback(EventHandler& handler);
     RecordingPlayback(const std::string& server, unsigned port);
     ~RecordingPlayback();
 
+    bool Open();
     void Close();
+    bool IsOpen() { return ProtoPlayback::IsOpen(); }
     bool OpenTransfer(ProgramPtr recording);
     void CloseTransfer();
     bool TransferIsOpen();

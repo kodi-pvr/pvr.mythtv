@@ -44,13 +44,24 @@ FilePlayback::FilePlayback(const std::string& server, unsigned port)
 
 FilePlayback::~FilePlayback()
 {
-  this->Close();
+  Close();
+}
+
+bool FilePlayback::Open()
+{
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (ProtoPlayback::IsOpen())
+    return true;
+  return ProtoPlayback::Open();
 }
 
 void FilePlayback::Close()
 {
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
   CloseTransfer();
-  if (IsOpen())
+  if (ProtoPlayback::IsOpen())
     ProtoPlayback::Close();
 }
 
@@ -58,7 +69,7 @@ bool FilePlayback::OpenTransfer(const std::string& pathname, const std::string& 
 {
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
-  if (!IsOpen())
+  if (!ProtoPlayback::IsOpen())
     return false;
   CloseTransfer();
   m_transfer.reset(new ProtoTransfer(m_server, m_port, pathname, sgname));

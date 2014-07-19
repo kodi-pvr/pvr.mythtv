@@ -62,15 +62,26 @@ RecordingPlayback::RecordingPlayback(const std::string& server, unsigned port)
 
 RecordingPlayback::~RecordingPlayback()
 {
-  this->Close();
+  Close();
   if (m_eventSubscriberId)
     m_eventHandler.RevokeSubscription(m_eventSubscriberId);
 }
 
+bool RecordingPlayback::Open()
+{
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (ProtoPlayback::IsOpen())
+    return true;
+  return ProtoPlayback::Open();
+}
+
 void RecordingPlayback::Close()
 {
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
   CloseTransfer();
-  if (IsOpen())
+  if (ProtoPlayback::IsOpen())
     ProtoPlayback::Close();
 }
 
@@ -78,7 +89,7 @@ bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
 {
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
-  if (!IsOpen())
+  if (!ProtoPlayback::IsOpen())
     return false;
   CloseTransfer();
   if (recording)
@@ -187,7 +198,7 @@ void RecordingPlayback::HandleBackendMessage(const EventMessage& msg)
       break;
     //case EVENT_HANDLER_STATUS:
     //  if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
-    //    this->closeTransfer();
+    //    closeTransfer();
     //  break;
     default:
       break;

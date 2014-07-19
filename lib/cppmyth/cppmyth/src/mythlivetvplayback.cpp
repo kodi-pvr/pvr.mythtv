@@ -82,7 +82,16 @@ LiveTVPlayback::~LiveTVPlayback()
 {
   if (m_eventSubscriberId)
     m_eventHandler.RevokeSubscription(m_eventSubscriberId);
-  this->Close();
+  Close();
+}
+
+bool LiveTVPlayback::Open()
+{
+  // Begin critical section
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (ProtoMonitor::IsOpen())
+    return true;
+  return ProtoMonitor::Open();
 }
 
 void LiveTVPlayback::Close()
@@ -90,7 +99,7 @@ void LiveTVPlayback::Close()
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
   m_recorder.reset();
-  if (IsOpen())
+  if (ProtoMonitor::IsOpen())
     ProtoMonitor::Close();
 }
 
@@ -109,10 +118,10 @@ bool LiveTVPlayback::SpawnLiveTV(const Channel& channel, uint32_t prefcardid)
   int rnum = 0; // first selected recorder num
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
-  if (!IsOpen() || !m_eventHandler.IsConnected())
+  if (!ProtoMonitor::IsOpen() || !m_eventHandler.IsConnected())
     return false;
 
-  this->StopLiveTV();
+  StopLiveTV();
   // if i have'nt yet recorder then choose one
   if (!m_recorder)
   {
@@ -410,7 +419,7 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
       break;
     //case EVENT_HANDLER_STATUS:
     //  if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
-    //    this->closeTransfer();
+    //    closeTransfer();
     //  break;
     default:
       break;

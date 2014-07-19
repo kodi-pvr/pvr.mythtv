@@ -59,8 +59,16 @@ bool ProtoPlayback::Open()
 
   if (ok)
     return true;
-  this->Close();
+  Close();
   return false;
+}
+
+bool ProtoPlayback::IsOpen()
+{
+  // Try reconnect
+  if (m_hang)
+    return Open();
+  return ProtoBase::IsOpen();
 }
 
 bool ProtoPlayback::Announce75()

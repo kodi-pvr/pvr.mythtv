@@ -34,14 +34,16 @@
 namespace Myth
 {
 
-  class LiveTVPlayback : public ProtoMonitor, public Stream, private EventSubscriber
+  class LiveTVPlayback : private ProtoMonitor, public Stream, private EventSubscriber
   {
   public:
     LiveTVPlayback(EventHandler& handler);
     LiveTVPlayback(const std::string& server, unsigned port);
     ~LiveTVPlayback();
 
+    bool Open();
     void Close();
+    bool IsOpen() { return ProtoMonitor::IsOpen(); }
     void SetTuneDelay(unsigned delay);
     bool SpawnLiveTV(const Channel& channel, uint32_t prefcardid = 0);
     void StopLiveTV();

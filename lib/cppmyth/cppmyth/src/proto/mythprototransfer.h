@@ -37,8 +37,9 @@ namespace Myth
   public:
     ProtoTransfer(const std::string& server, unsigned port, const std::string& pathname, const std::string& sgname);
 
-    void Close();
     bool Open();
+    void Close();
+
     uint32_t GetFileId() const;
     std::string GetPathName() const;
     std::string GetStorageGroupName() const;

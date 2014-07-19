@@ -187,5 +187,5 @@ int ProtoEvent::RcvBackendMessage(unsigned timeout, EventMessage& msg)
   else if (r < 0)
     return r;
 
-  return ((m_isOpen && !m_hang) ? 0 : -(ENOTCONN));
+  return ((ProtoBase::IsOpen() && !m_hang) ? 0 : -(ENOTCONN));
 }

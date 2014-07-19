@@ -23,18 +23,26 @@
 
 using namespace Myth;
 
-Control::Control(const std::string& server, unsigned port)
-: ProtoMonitor(server, port)
+Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPort)
+: m_monitor(server, protoPort)
+, m_wsapi(server, wsapiPort)
 {
-  ProtoMonitor::Open();
+  m_monitor.Open();
 }
 
 Control::~Control()
 {
-  this->Close();
+  Close();
+}
+
+bool Control::Open()
+{
+  if (m_monitor.IsOpen())
+    return true;
+  return m_monitor.Open();
 }
 
 void Control::Close()
 {
-  ProtoMonitor::Close();
+  m_monitor.Close();
 }

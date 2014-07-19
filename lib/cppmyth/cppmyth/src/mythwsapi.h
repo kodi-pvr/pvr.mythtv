@@ -92,6 +92,20 @@ namespace Myth
       return false;
     }
     /**
+     * @brief Remove a Recording from the database and disk.
+     * @param chanid
+     * @param recstartts
+     * @param forceDelete (default false)
+     * @param allowRerecord (default false)
+     * @return bool
+     */
+    bool RemoveRecorded(uint32_t chanid, time_t recstartts, bool forceDelete = false, bool allowRerecord = false)
+    {
+      unsigned proto = CheckService();
+      if (proto >= 82) return RemoveRecorded82(chanid, recstartts, forceDelete, allowRerecord);
+      return false;
+    }
+    /**
      * @brief Get all configured capture devices
      * @return CaptureCardListPtr
      */
@@ -251,6 +265,7 @@ namespace Myth
     ProgramListPtr GetUpcomingList75();
     ProgramListPtr GetUpcomingList79();
     bool UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bool watched);
+    bool RemoveRecorded82(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord);
   };
 
 }
