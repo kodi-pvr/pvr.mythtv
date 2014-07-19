@@ -33,7 +33,6 @@ using namespace PLATFORM;
 PVRClientMythTV::PVRClientMythTV()
 : m_eventHandler(NULL)
 , m_control(NULL)
-, m_wsapi(NULL)
 , m_liveStream(NULL)
 , m_recordingStream(NULL)
 , m_eventSubscriberId(0)
@@ -53,7 +52,6 @@ PVRClientMythTV::~PVRClientMythTV()
   SAFE_DELETE(m_fileOps);
   SAFE_DELETE(m_scheduleManager);
   SAFE_DELETE(m_eventHandler);
-  SAFE_DELETE(m_wsapi);
   SAFE_DELETE(m_control);
 }
 
@@ -108,10 +106,8 @@ bool PVRClientMythTV::Connect()
     XBMC->Log(LOG_ERROR, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
     return false;
   }
-  m_wsapi = new Myth::WSAPI(g_szMythHostname, g_iWSApiPort);
-  if (!m_wsapi->CheckService())
+  if (!m_control->CheckService())
   {
-    SAFE_DELETE(m_wsapi);
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iWSApiPort);
     return false;
@@ -128,7 +124,7 @@ bool PVRClientMythTV::Connect()
   m_eventHandler->Start();
 
   // Create schedule manager
-  m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iWSApiPort, g_iProtoPort);
+  m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort);
 
   // Create file operation helper (image caching)
   m_fileOps = new FileOps(g_szMythHostname, g_iWSApiPort);
@@ -139,14 +135,14 @@ bool PVRClientMythTV::Connect()
 const char *PVRClientMythTV::GetBackendName()
 {
   std::string label;
-  label.append("MythTV (").append(m_wsapi->GetServerHostName()).append(")");
+  label.append("MythTV (").append(m_control->GetServerHostName()).append(")");
   XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, label.c_str());
   return label.c_str();
 }
 
 const char *PVRClientMythTV::GetBackendVersion()
 {
-  Myth::VersionPtr version = m_wsapi->GetVersion();
+  Myth::VersionPtr version = m_control->GetVersion();
   XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, version->version.c_str());
   return version->version.c_str();
 }
@@ -292,7 +288,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
   {
     uint32_t chanid = Myth::StringToId(msg.subject[2]);
     time_t startts = Myth::StringToTime(msg.subject[3]);
-    MythProgramInfo prog(m_wsapi->GetRecorded(chanid, startts));
+    MythProgramInfo prog(m_control->GetRecorded(chanid, startts));
     if (!prog.IsNull())
     {
       CLockObject lock(m_recordingsLock);
@@ -331,7 +327,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     // On first we delete recording. On second program will not be found.
     uint32_t chanid = Myth::StringToId(msg.subject[2]);
     time_t startts = Myth::StringToTime(msg.subject[3]);
-    MythProgramInfo prog(m_wsapi->GetRecorded(chanid, startts));
+    MythProgramInfo prog(m_control->GetRecorded(chanid, startts));
     if (!prog.IsNull())
     {
       CLockObject lock(m_recordingsLock);
@@ -368,7 +364,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
 
   if (!channel.bIsHidden)
   {
-    Myth::ProgramMapPtr EPG = m_wsapi->GetProgramGuide(channel.iUniqueId, iStart, iEnd);
+    Myth::ProgramMapPtr EPG = m_control->GetProgramGuide(channel.iUniqueId, iStart, iEnd);
     // Transfer EPG for the given channel
     for (Myth::ProgramMap::reverse_iterator it = EPG->rbegin(); it != EPG->rend(); ++it)
     {
@@ -566,10 +562,10 @@ void PVRClientMythTV::LoadChannelsAndChannelGroups()
     return;
 
   // For each source create a channels group
-  Myth::VideoSourceListPtr sources = m_wsapi->GetVideoSourceList();
+  Myth::VideoSourceListPtr sources = m_control->GetVideoSourceList();
   for (Myth::VideoSourceList::iterator its = sources->begin(); its != sources->end(); ++its)
   {
-    Myth::ChannelListPtr channels = m_wsapi->GetChannelList((*its)->sourceId);
+    Myth::ChannelListPtr channels = m_control->GetChannelList((*its)->sourceId);
     std::vector<uint32_t> channelIDs;
     channelIDs.reserve(channels->size());
     for (Myth::ChannelList::iterator itc = channels->begin(); itc != channels->end(); ++itc)
@@ -704,7 +700,7 @@ void PVRClientMythTV::ForceUpdateRecording(ProgramInfoMap::iterator it)
 
   if (!it->second.IsNull())
   {
-    MythProgramInfo prog(m_wsapi->GetRecorded(it->second.ChannelID(), it->second.RecordingStartTime()));
+    MythProgramInfo prog(m_control->GetRecorded(it->second.ChannelID(), it->second.RecordingStartTime()));
     if (!prog.IsNull())
     {
       CLockObject lock(m_recordingsLock);
@@ -732,7 +728,7 @@ int PVRClientMythTV::FillRecordings()
 
   // Load recordings map
   m_recordings.clear();
-  Myth::ProgramListPtr programs = m_wsapi->GetRecordedList();
+  Myth::ProgramListPtr programs = m_control->GetRecordedList();
   for (Myth::ProgramList::iterator it = programs->begin(); it != programs->end(); ++it)
   {
     MythProgramInfo prog = MythProgramInfo(*it);
@@ -828,7 +824,7 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
   {
-    if (m_wsapi->UpdateRecordedWatchedStatus(it->second.ChannelID(), it->second.RecordingStartTime(), (count > 0 ? true : false)))
+    if (m_control->UpdateRecordedWatchedStatus(*(it->second.GetPtr()), (count > 0 ? true : false)))
     {
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Set watched state for %s", __FUNCTION__, recording.strRecordingId);
@@ -1371,7 +1367,7 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
         }
       }
 
-      Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+      Myth::ProgramMapPtr epg = m_control->GetProgramGuide(timer.iClientChannelUid, st, st);
       Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
       if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
       {
@@ -1385,7 +1381,7 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
     else if (timer.iWeekdays == 0x7F)
     {
       // Create a DAILY record rule
-      Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+      Myth::ProgramMapPtr epg = m_control->GetProgramGuide(timer.iClientChannelUid, st, st);
       Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
       if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
       {
@@ -1401,7 +1397,7 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
   {
     // Find the program info at the given start time with the same title
     // When no entry was found with the same title, then the record rule type is manual
-    Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(timer.iClientChannelUid, st, st);
+    Myth::ProgramMapPtr epg = m_control->GetProgramGuide(timer.iClientChannelUid, st, st);
     Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
     if (epgit != epg->rend() && title.compare(0, epgit->second->title.length(), epgit->second->title) == 0)
     {
@@ -1788,7 +1784,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
 
   if (!m_recordingStream)
   {
-    if (prog.HostName() == m_wsapi->GetServerHostName())
+    if (prog.HostName() == m_control->GetServerHostName())
       // Request the stream from our master using the opened event handler.
       m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
     else
@@ -1943,7 +1939,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     unsigned int chanid;
     BreakBroadcastID(item.data.iEpgUid, &chanid, &attime);
     MythEPGInfo epgInfo;
-    Myth::ProgramMapPtr epg = m_wsapi->GetProgramGuide(chanid, attime, attime);
+    Myth::ProgramMapPtr epg = m_control->GetProgramGuide(chanid, attime, attime);
     Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
     if (epgit != epg->rend())
     {
@@ -1991,9 +1987,9 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
 
 bool PVRClientMythTV::GetLiveTVPriority()
 {
-  if (m_wsapi)
+  if (m_control)
   {
-    Myth::SettingPtr setting = m_wsapi->GetSetting("LiveTVPriority", true);
+    Myth::SettingPtr setting = m_control->GetSetting("LiveTVPriority", true);
     return ((setting && setting->value.compare("1") == 0) ? true : false);
   }
   return false;
@@ -2001,10 +1997,10 @@ bool PVRClientMythTV::GetLiveTVPriority()
 
 void PVRClientMythTV::SetLiveTVPriority(bool enabled)
 {
-  if (m_wsapi)
+  if (m_control)
   {
     std::string value = (enabled ? "1" : "0");
-    m_wsapi->PutSetting("LiveTVPriority", value, true);
+    m_control->PutSetting("LiveTVPriority", value, true);
   }
 }
 

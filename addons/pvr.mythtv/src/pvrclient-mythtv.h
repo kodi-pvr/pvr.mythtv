@@ -33,7 +33,6 @@
 #include <mytheventhandler.h>
 #include <mythlivetvplayback.h>
 #include <mythrecordingplayback.h>
-#include <mythwsapi.h>
 #include <mythdebug.h>
 
 #include <string>
@@ -130,7 +129,6 @@ public:
 private:
   Myth::EventHandler *m_eventHandler;
   Myth::Control *m_control;
-  Myth::WSAPI *m_wsapi;
   Myth::LiveTVPlayback *m_liveStream;
   Myth::RecordingPlayback *m_recordingStream;
   unsigned m_eventSubscriberId;

@@ -107,7 +107,6 @@ bool MythRecordingRuleNode::IsInactiveRule() const
 
 MythScheduleManager::MythScheduleManager()
 : m_lock()
-, m_wsapi(NULL)
 , m_control(NULL)
 , m_protoVersion(0)
 , m_versionHelper(new MythScheduleHelperNoHelper())
@@ -115,15 +114,13 @@ MythScheduleManager::MythScheduleManager()
 {
 }
 
-MythScheduleManager::MythScheduleManager(const std::string& server, unsigned wsapiPort, unsigned protoPort)
+MythScheduleManager::MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort)
 : m_lock()
-, m_wsapi(NULL)
 , m_control(NULL)
 , m_protoVersion(0)
 , m_versionHelper(NULL)
 , m_showNotRecording(false)
 {
-  m_wsapi = new Myth::WSAPI(server, wsapiPort);
   m_control = new Myth::Control(server, protoPort, wsapiPort);
   this->Update();
 }
@@ -132,22 +129,21 @@ MythScheduleManager::~MythScheduleManager()
 {
   SAFE_DELETE(m_versionHelper);
   SAFE_DELETE(m_control);
-  SAFE_DELETE(m_wsapi);
 }
 
 void MythScheduleManager::Setup()
 {
   int old = m_protoVersion;
-  m_protoVersion = m_wsapi->CheckService();
+  m_protoVersion = m_control->CheckService();
 
   // On new connection the protocol version could change
   if (m_protoVersion != old)
   {
     SAFE_DELETE(m_versionHelper);
     if (m_protoVersion >= 76)
-      m_versionHelper = new MythScheduleHelper76(this, m_wsapi);
+      m_versionHelper = new MythScheduleHelper76(this, m_control);
     else if (m_protoVersion >= 75)
-      m_versionHelper = new MythScheduleHelper75(this, m_wsapi);
+      m_versionHelper = new MythScheduleHelper75(this, m_control);
     else
       m_versionHelper = new MythScheduleHelperNoHelper();
   }
@@ -178,7 +174,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::ScheduleRecording(MythRecord
   if (rule.Type() == Myth::RT_NotRecording)
     return MSM_ERROR_FAILED;
 
-  if (!m_wsapi->AddRecordSchedule(*(rule.GetPtr())))
+  if (!m_control->AddRecordSchedule(*(rule.GetPtr())))
     return MSM_ERROR_FAILED;
 
   //if (!m_con.UpdateSchedules(rule.RecordID()))
@@ -217,7 +213,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteRecording(unsigned int
           }
         }
         XBMC->Log(LOG_DEBUG, "%s - Delete recording rule %u (modifier of rule %u)", __FUNCTION__, (unsigned)ito->RecordID(), (unsigned)node->m_rule.RecordID());
-        if (!m_wsapi->RemoveRecordSchedule(ito->RecordID()))
+        if (!m_control->RemoveRecordSchedule(ito->RecordID()))
           XBMC->Log(LOG_ERROR, "%s - Delete recording rule failed", __FUNCTION__);
       }
     }
@@ -234,7 +230,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteRecording(unsigned int
       }
     }
     XBMC->Log(LOG_DEBUG, "%s - Delete recording rule %u", __FUNCTION__, node->m_rule.RecordID());
-    if (!m_wsapi->RemoveRecordSchedule(node->m_rule.RecordID()))
+    if (!m_control->RemoveRecordSchedule(node->m_rule.RecordID()))
       XBMC->Log(LOG_ERROR, "%s - Delete recording rule failed", __FUNCTION__);
 
     //if (!m_con.UpdateSchedules(-1))
@@ -318,7 +314,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DisableRecording(unsigned in
     if (method == METHOD_UPDATE_INACTIVE)
     {
       handle.SetInactive(true);
-      if (!m_wsapi->UpdateRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->UpdateRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_rule = handle; // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -333,7 +329,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DisableRecording(unsigned in
       handle.SetStartTime(recording->StartTime());
       handle.SetEndTime(recording->EndTime());
       handle.SetParentID(node->m_rule.RecordID());
-      if (!m_wsapi->AddRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->AddRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_overrideRules.push_back(handle); // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -407,7 +403,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::EnableRecording(unsigned int
     if (method == METHOD_UPDATE_INACTIVE)
     {
       handle.SetInactive(false);
-      if (!m_wsapi->UpdateRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->UpdateRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_rule = handle; // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -422,7 +418,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::EnableRecording(unsigned int
       handle.SetStartTime(recording->StartTime());
       handle.SetEndTime(recording->EndTime());
       handle.SetParentID(node->m_rule.RecordID());
-      if (!m_wsapi->AddRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->AddRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_overrideRules.push_back(handle); // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -518,7 +514,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::UpdateRecording(unsigned int
     }
     if (method == METHOD_DISCREET_UPDATE)
     {
-      if (!m_wsapi->UpdateRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->UpdateRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_rule = handle; // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -533,7 +529,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::UpdateRecording(unsigned int
       handle.SetStartTime(recording->StartTime());
       handle.SetEndTime(recording->EndTime());
       handle.SetParentID(node->m_rule.RecordID());
-      if (!m_wsapi->AddRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->AddRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_overrideRules.push_back(handle); // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -544,7 +540,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::UpdateRecording(unsigned int
     {
       handle = newrule;
       handle.SetRecordID(node->m_rule.RecordID());
-      if (!m_wsapi->UpdateRecordSchedule(*(handle.GetPtr())))
+      if (!m_control->UpdateRecordSchedule(*(handle.GetPtr())))
         return MSM_ERROR_FAILED;
       node->m_rule = handle; // sync node
       //if (!m_con.UpdateSchedules(handle.RecordID()))
@@ -600,7 +596,7 @@ void MythScheduleManager::Update()
 
   // Setup VersionHelper for the new set
   this->Setup();
-  Myth::RecordScheduleListPtr records = m_wsapi->GetRecordScheduleList();
+  Myth::RecordScheduleListPtr records = m_control->GetRecordScheduleList();
   m_rules.clear();
   m_rulesById.clear();
   m_templates.clear();
@@ -640,7 +636,7 @@ void MythScheduleManager::Update()
   m_recordings.clear();
   m_recordingIndexByRuleId.clear();
   // Add upcoming recordings
-  Myth::ProgramListPtr recordings = m_wsapi->GetUpcomingList();
+  Myth::ProgramListPtr recordings = m_control->GetUpcomingList();
   for (Myth::ProgramList::iterator it = recordings->begin(); it != recordings->end(); ++it)
   {
     ScheduledPtr scheduled = ScheduledPtr(new MythProgramInfo(*it));
@@ -653,7 +649,7 @@ void MythScheduleManager::Update()
   /*
   if (m_showNotRecording)
   {
-    Myth::ProgramList norec = m_wsapi->???;
+    Myth::ProgramList norec = m_control->???;
     for (Myth::ProgramList::iterator it = norec.begin(); it != norec.end(); ++it)
     {
       if (m_recordingIndexByRuleId.count(it->second.RecordID()) == 0)
@@ -982,10 +978,10 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
   // Category override
   if (!epgInfo.IsNull())
   {
-    Myth::SettingPtr overTimeCategory = m_wsapi->GetSetting("OverTimeCategory", false);
+    Myth::SettingPtr overTimeCategory = m_control->GetSetting("OverTimeCategory", false);
     if (overTimeCategory && (overTimeCategory->value == epgInfo.Category() || overTimeCategory->value == epgInfo.CategoryType()))
     {
-      Myth::SettingPtr categoryOverTime = m_wsapi->GetSetting("CategoryOverTime", false);
+      Myth::SettingPtr categoryOverTime = m_control->GetSetting("CategoryOverTime", false);
       if (categoryOverTime)
       {
         XBMC->Log(LOG_DEBUG, "Overriding end offset for category %s: +%s", overTimeCategory->value.c_str(), categoryOverTime->value.c_str());

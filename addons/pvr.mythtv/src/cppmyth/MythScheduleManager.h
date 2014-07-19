@@ -19,7 +19,6 @@
  *
  */
 
-#include <mythwsapi.h>
 #include <mythcontrol.h>
 #include "MythRecordingRule.h"
 #include "MythProgramInfo.h"
@@ -80,7 +79,7 @@ public:
   };
 
   MythScheduleManager();
-  MythScheduleManager(const std::string& server, unsigned wsapiPort, unsigned protoPort);
+  MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort);
   ~MythScheduleManager();
 
   // Called by GetTimers
@@ -133,7 +132,6 @@ public:
 
 private:
   mutable PLATFORM::CMutex m_lock;
-  Myth::WSAPI *m_wsapi;
   Myth::Control *m_control;
 
   int m_protoVersion;
@@ -187,9 +185,9 @@ public:
 
 class MythScheduleHelper75 : public MythScheduleHelperNoHelper {
 public:
-  MythScheduleHelper75(MythScheduleManager *manager, Myth::WSAPI *wsapi)
+  MythScheduleHelper75(MythScheduleManager *manager, Myth::Control *control)
   : m_manager(manager)
-  , m_wsapi(wsapi) {
+  , m_control(control) {
   }
   virtual bool SameTimeslot(MythRecordingRule &first, MythRecordingRule &second) const;
   virtual RuleMetadata GetMetadata(const MythRecordingRule &rule) const;
@@ -201,15 +199,15 @@ public:
   virtual MythRecordingRule NewOneRecord(MythEPGInfo &epgInfo);
 protected:
   MythScheduleManager *m_manager;
-  Myth::WSAPI *m_wsapi;
+  Myth::Control *m_control;
 };
 
 // News in 0.27
 
 class MythScheduleHelper76 : public MythScheduleHelper75 {
 public:
-  MythScheduleHelper76(MythScheduleManager *manager, Myth::WSAPI *wsapi)
-  : MythScheduleHelper75(manager, wsapi) {
+  MythScheduleHelper76(MythScheduleManager *manager, Myth::Control *control)
+  : MythScheduleHelper75(manager, control) {
   }
   virtual RuleMetadata GetMetadata(const MythRecordingRule &rule) const;
   virtual MythRecordingRule NewDailyRecord(MythEPGInfo &epgInfo);
