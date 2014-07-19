@@ -45,45 +45,32 @@ namespace Myth
     VersionPtr GetVersion();
 
     /**
-     * @brief Query setting by its key
-     * @param key
-     * @param myhost
-     * @return SettingPtr
+     * @brief GET Myth/GetSetting
      */
     SettingPtr GetSetting(const std::string& key, bool myhost);
+
     /**
-     * @brief Query all settings
-     * @param myhost
-     * @return SettingMapPtr
+     * @brief GET Myth/GetSetting
      */
     SettingMapPtr GetSettings(bool myhost);
+
     /**
-     * @brief Put setting
-     * @param key
-     * @param value
-     * @param myhost
-     * @return bool
+     * @brief POST Myth/PutSetting
      */
     bool PutSetting(const std::string& key, const std::string& value, bool myhost);
+
     /**
-     * @brief Query information on all recorded programs
-     * @param n
-     * @param descending
-     * @return ProgramListPtr
+     * @brief GET Dvr/GetRecordedList
      */
     ProgramListPtr GetRecordedList(unsigned n = 0, bool descending = false);
+
     /**
-     * @brief Query information on a single item from recordings
-     * @param chanid
-     * @param recstartts
-     * @return ProgramPtr
+     * @brief GET Dvr/GetRecorded
      */
     ProgramPtr GetRecorded(uint32_t chanid, time_t recstartts);
+
     /**
-     * @brief Update watched status for a recorded
-     * @param chanid
-     * @param recstartts
-     * @return bool
+     * @brief POST Dvr/UpdateRecordedWatchedStatus
      */
     bool UpdateRecordedWatchedStatus(uint32_t chanid, time_t recstartts, bool watched)
     {
@@ -91,13 +78,9 @@ namespace Myth
       if (proto >= 79) return UpdateRecordedWatchedStatus79(chanid, recstartts, watched);
       return false;
     }
+
     /**
-     * @brief Remove a Recording from the database and disk.
-     * @param chanid
-     * @param recstartts
-     * @param forceDelete (default false)
-     * @param allowRerecord (default false)
-     * @return bool
+     * @brief POST Dvr/RemoveRecorded
      */
     bool RemoveRecorded(uint32_t chanid, time_t recstartts, bool forceDelete = false, bool allowRerecord = false)
     {
@@ -105,21 +88,19 @@ namespace Myth
       if (proto >= 82) return RemoveRecorded82(chanid, recstartts, forceDelete, allowRerecord);
       return false;
     }
+
     /**
-     * @brief Get all configured capture devices
-     * @return CaptureCardListPtr
+     * @brief GET Capture/GetCaptureCardList
      */
     CaptureCardListPtr GetCaptureCardList();
+
     /**
-     * @brief Get all video sources
-     * @return VideoSourceListPtr
+     * @brief GET Channel/GetVideoSourceList
      */
     VideoSourceListPtr GetVideoSourceList();
+
     /**
-     * @brief Get all configured channels for a video source
-     * @param sourceid
-     * @param onlyVisible (default true)
-     * @return ChannelListPtr
+     * @brief GET Channel/GetChannelInfoList
      */
     ChannelListPtr GetChannelList(uint32_t sourceid, bool onlyVisible = true)
     {
@@ -128,29 +109,24 @@ namespace Myth
       if (proto >= 75) return GetChannelList75(sourceid, onlyVisible);
       return ChannelListPtr(new ChannelList);
     };
+
     /**
-     * @brief Query the guide information for a particular time period and a channel
-     * @param chanid
-     * @param starttime
-     * @param endtime
-     * @return ProgramMapPtr
+     * @brief GET Guide/GetProgramGuide
      */
     ProgramMapPtr GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime);
+
     /**
-     * @brief Query all configured recording rules
-     * @return RecordScheduleListPtr
+     * @brief GET Dvr/GetRecordScheduleList
      */
     RecordScheduleListPtr GetRecordScheduleList();
+
     /**
-     * @brief Get a single recording rule, by record id
-     * @param recordid
-     * @return RecordSchedulePtr
+     * @brief GET Dvr/GetRecordSchedule
      */
     RecordSchedulePtr GetRecordSchedule(uint32_t recordid);
+
     /**
-     * @brief Add a new recording rule
-     * @param record
-     * @return status. On success Id is updated with the new.
+     * @brief POST Dvr/AddRecordSchedule
      */
     bool AddRecordSchedule(RecordSchedule& record)
     {
@@ -159,10 +135,9 @@ namespace Myth
       if (proto >= 75) return AddRecordSchedule75(record);
       return false;
     }
+
     /**
-     * @brief Update a recording rule
-     * @param record
-     * @return status
+     * @brief POST Dvr/UpdateRecordSchedule
      */
     bool UpdateRecordSchedule(RecordSchedule& record)
     {
@@ -170,27 +145,24 @@ namespace Myth
       if (proto >= 76) return UpdateRecordSchedule76(record);
       return false;
     }
+
     /**
-     * @brief Disable a recording rule
-     * @param recordid
-     * @return status
+     * @brief POST Dvr/DisableRecordSchedule
      */
     bool DisableRecordSchedule(uint32_t recordid);
+
     /**
-     * @brief Enable a recording rule
-     * @param recordid
-     * @return status
+     * @brief POST Dvr/EnableRecordSchedule
      */
     bool EnableRecordSchedule(uint32_t recordid);
+
     /**
-     * @brief Remove a recording rule
-     * @param recordid
-     * @return status
+     * @brief POST Dvr/RemoveRecordSchedule
      */
     bool RemoveRecordSchedule(uint32_t recordid);
+
     /**
-     * @brief Query information on all upcoming programs matching recording rules
-     * @return ProgramListPtr
+     * @brief GET Dvr/GetUpcomingList
      */
     ProgramListPtr GetUpcomingList()
     {
@@ -199,47 +171,34 @@ namespace Myth
       if (proto >= 75) return GetUpcomingList75();
       return ProgramListPtr(new ProgramList);
     }
+
     /**
-     * @brief Query information on upcoming items which will not record due to conflicts
-     * @return ProgramListPtr
+     * @brief GET Dvr/GetConflictList
      */
     ProgramListPtr GetConflictList();
+
     /**
-     * @brief Query information on recorded programs which are set to expire
-     * @return ProgramListPtr
+     * @brief GET Dvr/GetExpiringList
      */
     ProgramListPtr GetExpiringList();
+
     /**
-     * @brief Download a given file from a given storage group
-     * @param filename
-     * @param sgname
-     * @return WSStreamPtr
+     * @brief GET Content/GetFile
      */
     WSStreamPtr GetFile(const std::string& filename, const std::string& sgname);
+
     /**
-     * @brief Get the icon file for a given channel
-     * @param chanid
-     * @param width (default 0)
-     * @param height (default 0)
-     * @return WSStreamPtr
+     * @brief GET Guide/GetChannelIcon
      */
     WSStreamPtr GetChannelIcon(uint32_t chanid, unsigned width = 0, unsigned height = 0);
+
     /**
-     * @brief Get, and optionally scale, an preview thumbnail for a given recording by timestamp, chanid and starttime
-     * @param chanid
-     * @param recstartts
-     * @param width (default 0)
-     * @param height (default 0)
-     * @return WSStreamPtr
+     * @brief GET Content/GetPreviewImage
      */
     WSStreamPtr GetPreviewImage(uint32_t chanid, time_t recstartts, unsigned width = 0, unsigned height = 0);
+
     /**
-     * @brief Get, and optionally scale, an image file of a given type (coverart, banner, fanart) for a given recording's inetref and season number.
-     * @param chanid
-     * @param recstartts
-     * @param width (default 0)
-     * @param height (default 0)
-     * @return WSStreamPtr
+     * @brief GET Content/GetRecordingArtwork
      */
     WSStreamPtr GetRecordingArtwork(const std::string& type, const std::string& inetref, uint16_t season, unsigned width = 0, unsigned height = 0);
 
