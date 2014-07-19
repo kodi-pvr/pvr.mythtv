@@ -225,7 +225,7 @@ out:
   return false;
 }
 
-bool ProtoMonitor::QueryGenpixmap75(Program& program)
+bool ProtoMonitor::QueryGenpixmap75(const Program& program)
 {
   std::string field;
 
@@ -250,7 +250,7 @@ out:
   return false;
 }
 
-bool ProtoMonitor::DeleteRecording75(Program& program, bool force, bool forget)
+bool ProtoMonitor::DeleteRecording75(const Program& program, bool force, bool forget)
 {
   char buf[32];
   std::string field;
@@ -285,7 +285,7 @@ bool ProtoMonitor::DeleteRecording75(Program& program, bool force, bool forget)
   return false;
 }
 
-bool ProtoMonitor::UndeleteRecording75(Program& program)
+bool ProtoMonitor::UndeleteRecording75(const Program& program)
 {
   std::string field;
 
@@ -310,7 +310,7 @@ bool ProtoMonitor::UndeleteRecording75(Program& program)
   return false;
 }
 
-bool ProtoMonitor::StopRecording75(Program& program)
+bool ProtoMonitor::StopRecording75(const Program& program)
 {
   std::string field;
   int32_t num;
@@ -401,7 +401,7 @@ StorageGroupFilePtr ProtoMonitor::QuerySGFile75(const std::string& hostname, con
   return sgfile;
 }
 
-MarkListPtr ProtoMonitor::GetCutList75(Program& program, int unit)
+MarkListPtr ProtoMonitor::GetCutList75(const Program& program, int unit)
 {
   char buf[32];
   std::string field;
@@ -444,7 +444,7 @@ MarkListPtr ProtoMonitor::GetCutList75(Program& program, int unit)
   return list;
 }
 
-MarkListPtr ProtoMonitor::GetCutListXX(Program& program, int unit)
+MarkListPtr ProtoMonitor::GetCutList__(const Program& program, int unit)
 {
   char buf[32];
   std::string field;
@@ -491,7 +491,7 @@ MarkListPtr ProtoMonitor::GetCutListXX(Program& program, int unit)
   return list;
 }
 
-MarkListPtr ProtoMonitor::GetCommBreakList75(Program& program, int unit)
+MarkListPtr ProtoMonitor::GetCommBreakList75(const Program& program, int unit)
 {
   char buf[32];
   std::string field;
@@ -534,7 +534,7 @@ MarkListPtr ProtoMonitor::GetCommBreakList75(Program& program, int unit)
   return list;
 }
 
-MarkListPtr ProtoMonitor::GetCommBreakListXX(Program& program, int unit)
+MarkListPtr ProtoMonitor::GetCommBreakList__(const Program& program, int unit)
 {
   char buf[32];
   std::string field;

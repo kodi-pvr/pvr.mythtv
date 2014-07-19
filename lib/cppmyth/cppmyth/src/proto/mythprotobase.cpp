@@ -1027,7 +1027,7 @@ out:
   return program;
 }
 
-void ProtoBase::MakeProgramInfo75(Program& program, std::string& msg)
+void ProtoBase::MakeProgramInfo75(const Program& program, std::string& msg)
 {
   char buf[32];
   msg.clear();
@@ -1100,7 +1100,7 @@ void ProtoBase::MakeProgramInfo75(Program& program, std::string& msg)
   msg.append("0"); // year
 }
 
-void ProtoBase::MakeProgramInfo76(Program& program, std::string& msg)
+void ProtoBase::MakeProgramInfo76(const Program& program, std::string& msg)
 {
   char buf[32];
   msg.clear();
@@ -1176,7 +1176,7 @@ void ProtoBase::MakeProgramInfo76(Program& program, std::string& msg)
   msg.append("0"); // part total
 }
 
-void ProtoBase::MakeProgramInfo79(Program& program, std::string& msg)
+void ProtoBase::MakeProgramInfo79(const Program& program, std::string& msg)
 {
   char buf[32];
   msg.clear();
@@ -1255,7 +1255,7 @@ void ProtoBase::MakeProgramInfo79(Program& program, std::string& msg)
   msg.append(buf);
 }
 
-void ProtoBase::MakeProgramInfo82(Program& program, std::string& msg)
+void ProtoBase::MakeProgramInfo82(const Program& program, std::string& msg)
 {
   char buf[32];
   msg.clear();

@@ -58,19 +58,19 @@ namespace Myth
     {
       return SetSetting75(hostname, setting, value);
     }
-    bool QueryGenpixmap(Program& program)
+    bool QueryGenpixmap(const Program& program)
     {
       return QueryGenpixmap75(program);
     }
-    bool DeleteRecording(Program& program, bool force = false, bool forget = false)
+    bool DeleteRecording(const Program& program, bool force = false, bool forget = false)
     {
       return DeleteRecording75(program, force, forget);
     }
-    bool UndeleteRecording(Program& program)
+    bool UndeleteRecording(const Program& program)
     {
       return UndeleteRecording75(program);
     }
-    bool StopRecording(Program& program)
+    bool StopRecording(const Program& program)
     {
       return StopRecording75(program);
     }
@@ -82,14 +82,14 @@ namespace Myth
     {
       return QuerySGFile75(hostname, sgname, filename);
     }
-    MarkListPtr GetCutList(Program& program, int unit = 0)
+    MarkListPtr GetCutList(const Program& program, int unit = 0)
     {
-      //if (m_protoVersion >= ??) return GetCutListXX(program, unit);
+      //if (m_protoVersion >= ??) return GetCutList__(program, unit);
       return GetCutList75(program, unit);
     }
-    MarkListPtr GetCommBreakList(Program& program, int unit = 0)
+    MarkListPtr GetCommBreakList(const Program& program, int unit = 0)
     {
-      //if (m_protoVersion >= ??) return GetCommBreakListXX(program, unit);
+      //if (m_protoVersion >= ??) return GetCommBreakList__(program, unit);
       return GetCommBreakList75(program, unit);
     }
 
@@ -102,17 +102,17 @@ namespace Myth
     std::string GetSetting75(const std::string& hostname, const std::string& setting);
     bool SetSetting75(const std::string& hostname, const std::string& setting, const std::string& value);
 
-    bool QueryGenpixmap75(Program& program);
-    bool DeleteRecording75(Program& program, bool force, bool forget);
-    bool UndeleteRecording75(Program& program);
-    bool StopRecording75(Program& program);
+    bool QueryGenpixmap75(const Program& program);
+    bool DeleteRecording75(const Program& program, bool force, bool forget);
+    bool UndeleteRecording75(const Program& program);
+    bool StopRecording75(const Program& program);
     bool CancelNextRecording75(int rnum, bool cancel);
     StorageGroupFilePtr QuerySGFile75(const std::string& hostname, const std::string& sgname, const std::string& filename);
 
-    MarkListPtr GetCutList75(Program& program, int unit);
-    MarkListPtr GetCutListXX(Program& program, int unit);
-    MarkListPtr GetCommBreakList75(Program& program, int unit);
-    MarkListPtr GetCommBreakListXX(Program& program, int unit);
+    MarkListPtr GetCutList75(const Program& program, int unit);
+    MarkListPtr GetCutList__(const Program& program, int unit);
+    MarkListPtr GetCommBreakList75(const Program& program, int unit);
+    MarkListPtr GetCommBreakList__(const Program& program, int unit);
 
     // Not implemented
     //int64_t GetBookmark75(Program& program);
