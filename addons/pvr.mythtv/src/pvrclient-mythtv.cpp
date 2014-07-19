@@ -36,6 +36,8 @@ PVRClientMythTV::PVRClientMythTV()
 , m_wsapi(NULL)
 , m_liveStream(NULL)
 , m_recordingStream(NULL)
+, m_eventSubscriberId(0)
+, m_hang(false)
 , m_fileOps(NULL)
 , m_scheduleManager(NULL)
 , m_categories()
@@ -99,7 +101,7 @@ void PVRClientMythTV::SetDebug()
 bool PVRClientMythTV::Connect()
 {
   SetDebug();
-  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort);
+  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort);
   if (!m_control->IsOpen())
   {
     SAFE_DELETE(m_control);
@@ -207,6 +209,18 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
     case Myth::EVENT_HANDLER_STATUS:
       if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
       {
+        m_hang = true;
+        if (m_control)
+          m_control->Close();
+        XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // Connection to MythTV backend lost
+      }
+      else if (msg.subject[0] == EVENTHANDLER_CONNECTED)
+      {
+        if (m_hang && m_control && m_control->Open())
+        {
+          m_hang = false;
+          XBMC->QueueNotification(QUEUE_INFO, XBMC->GetLocalizedString(30303)); // Connection to MythTV restored
+        }
       }
       break;
     default:

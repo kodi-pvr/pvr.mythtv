@@ -80,7 +80,7 @@ public:
   };
 
   MythScheduleManager();
-  MythScheduleManager(const std::string& server, unsigned wsapiport, unsigned protoport);
+  MythScheduleManager(const std::string& server, unsigned wsapiPort, unsigned protoPort);
   ~MythScheduleManager();
 
   // Called by GetTimers

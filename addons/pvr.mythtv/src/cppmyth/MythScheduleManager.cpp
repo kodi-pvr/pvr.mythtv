@@ -115,7 +115,7 @@ MythScheduleManager::MythScheduleManager()
 {
 }
 
-MythScheduleManager::MythScheduleManager(const std::string& server, unsigned wsapiport, unsigned protoport)
+MythScheduleManager::MythScheduleManager(const std::string& server, unsigned wsapiPort, unsigned protoPort)
 : m_lock()
 , m_wsapi(NULL)
 , m_control(NULL)
@@ -123,8 +123,8 @@ MythScheduleManager::MythScheduleManager(const std::string& server, unsigned wsa
 , m_versionHelper(NULL)
 , m_showNotRecording(false)
 {
-  m_wsapi = new Myth::WSAPI(server, wsapiport);
-  m_control = new Myth::Control(server, protoport);
+  m_wsapi = new Myth::WSAPI(server, wsapiPort);
+  m_control = new Myth::Control(server, protoPort, wsapiPort);
   this->Update();
 }
 

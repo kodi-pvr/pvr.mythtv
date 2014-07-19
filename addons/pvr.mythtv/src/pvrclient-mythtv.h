@@ -134,6 +134,7 @@ private:
   Myth::LiveTVPlayback *m_liveStream;
   Myth::RecordingPlayback *m_recordingStream;
   unsigned m_eventSubscriberId;
+  bool m_hang;
 
   // Backend
   FileOps *m_fileOps;
