@@ -1,3 +1,8 @@
+v1.9.18
+- Use unified interface of CPPMyth (80c84fb)
+- Get setting of slave backend to open its recording
+- Include API updates for protocol 82 (0.28-pre-1917-g62be166)
+
 v1.9.17
 - Fix buffer request limit
 
