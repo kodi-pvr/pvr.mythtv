@@ -101,12 +101,33 @@ namespace Myth
     /**
      * @brief Query setting by its key
      * @param key
+     * @param hostname
+     * @return SettingPtr
+     */
+    SettingPtr GetSetting(const std::string& key, const std::string hostname)
+    {
+      return m_wsapi.GetSetting(key, hostname);
+    }
+
+    /**
+     * @brief Query setting by its key
+     * @param key
      * @param myhost
      * @return SettingPtr
      */
     SettingPtr GetSetting(const std::string& key, bool myhost)
     {
       return m_wsapi.GetSetting(key, myhost);
+    }
+
+    /**
+     * @brief Query all settings
+     * @param hostname
+     * @return SettingMapPtr
+     */
+    SettingMapPtr GetSettings(const std::string hostname)
+    {
+      return m_wsapi.GetSettings(hostname);
     }
 
     /**
