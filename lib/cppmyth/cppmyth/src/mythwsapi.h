@@ -90,12 +90,22 @@ namespace Myth
     }
 
     /**
-     * @brief POST Dvr/RemoveRecorded
+     * @brief POST Dvr/DeleteRecording
      */
-    bool RemoveRecorded(uint32_t chanid, time_t recstartts, bool forceDelete = false, bool allowRerecord = false)
+    bool DeleteRecording(uint32_t chanid, time_t recstartts, bool forceDelete = false, bool allowRerecord = false)
     {
       unsigned proto = CheckService();
-      if (proto >= 82) return RemoveRecorded82(chanid, recstartts, forceDelete, allowRerecord);
+      if (proto >= 82) return DeleteRecording82(chanid, recstartts, forceDelete, allowRerecord);
+      return false;
+    }
+
+    /**
+     * @brief POST Dvr/UnDeleteRecording
+     */
+    bool UnDeleteRecording(uint32_t chanid, time_t recstartts)
+    {
+      unsigned proto = CheckService();
+      if (proto >= 82) return UnDeleteRecording82(chanid, recstartts);
       return false;
     }
 
@@ -234,7 +244,8 @@ namespace Myth
     ProgramListPtr GetUpcomingList75();
     ProgramListPtr GetUpcomingList79();
     bool UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bool watched);
-    bool RemoveRecorded82(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord);
+    bool DeleteRecording82(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord);
+    bool UnDeleteRecording82(uint32_t chanid, time_t recstartts);
   };
 
 }

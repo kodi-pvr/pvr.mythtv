@@ -525,20 +525,52 @@ bool WSAPI::UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bo
   return true;
 }
 
-bool WSAPI::RemoveRecorded82(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord)
+bool WSAPI::DeleteRecording82(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord)
 {
   char buf[32];
 
   // Initialize request header
   WSRequest req = WSRequest(m_server, m_port);
   req.RequestAccept(CT_JSON);
-  req.RequestService("/Dvr/RemoveRecorded", HRM_POST);
+  req.RequestService("/Dvr/DeleteRecording", HRM_POST);
   uint32str(chanid, buf);
   req.SetContentParam("ChanId", buf);
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
   req.SetContentParam("ForceDelete", BOOLSTR(forceDelete));
   req.SetContentParam("AllowRerecord", BOOLSTR(allowRerecord));
+  WSResponse resp(req);
+  if (!resp.IsValid())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return false;
+  }
+  JanssonPtr root = ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return false;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *field = json_object_get(root.get(), "bool");
+  if (!field || strcmp(json_string_value(field), "true"))
+    return false;
+  return true;
+}
+
+bool WSAPI::UnDeleteRecording82(uint32_t chanid, time_t recstartts)
+{
+  char buf[32];
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/UnDeleteRecording", HRM_POST);
+  uint32str(chanid, buf);
+  req.SetContentParam("ChanId", buf);
+  time2iso8601utc(recstartts, buf);
+  req.SetContentParam("StartTime", buf);
   WSResponse resp(req);
   if (!resp.IsValid())
   {
