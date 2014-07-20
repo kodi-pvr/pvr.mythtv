@@ -551,10 +551,8 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
   {
     pCapabilities->bSupportsTV                    = g_bLiveTV;
     pCapabilities->bSupportsRadio                 = g_bLiveTV;
-    //pCapabilities->bSupportsChannelSettings       = false;
     pCapabilities->bSupportsChannelGroups         = true;
     pCapabilities->bSupportsChannelScan           = false;
-    //pCapabilities->bSupportsTimeshift             = g_bLiveTV;
     pCapabilities->bSupportsEPG                   = true;
     pCapabilities->bSupportsTimers                = true;
 
