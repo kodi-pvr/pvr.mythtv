@@ -182,7 +182,7 @@ VersionPtr WSAPI::GetVersion()
 ////  Service operations
 ////
 
-SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
+SettingPtr WSAPI::GetSetting(const std::string& key, const std::string hostname)
 {
   SettingPtr ret;
   unsigned proto;
@@ -194,9 +194,6 @@ SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
   WSRequest req = WSRequest(m_server, m_port);
   req.RequestAccept(CT_JSON);
   req.RequestService("/Myth/GetSetting");
-  std::string hostname;
-  if (myhost)
-    hostname = TcpSocket::GetMyHostName();
   req.SetContentParam("HostName", hostname);
   req.SetContentParam("Key", key);
   WSResponse resp(req);
@@ -234,7 +231,15 @@ SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
   return ret;
 }
 
-SettingMapPtr WSAPI::GetSettings(bool myhost)
+SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
+{
+  std::string hostname;
+  if (myhost)
+    hostname = TcpSocket::GetMyHostName();
+  return GetSetting(key, hostname);
+}
+
+SettingMapPtr WSAPI::GetSettings(const std::string hostname)
 {
   SettingMapPtr ret(new SettingMap);
   unsigned proto;
@@ -246,9 +251,6 @@ SettingMapPtr WSAPI::GetSettings(bool myhost)
   WSRequest req = WSRequest(m_server, m_port);
   req.RequestAccept(CT_JSON);
   req.RequestService("/Myth/GetSetting");
-  std::string hostname;
-  if (myhost)
-    hostname = TcpSocket::GetMyHostName();
   req.SetContentParam("HostName", hostname);
   WSResponse resp(req);
   if (!resp.IsValid())
@@ -285,6 +287,14 @@ SettingMapPtr WSAPI::GetSettings(bool myhost)
     }
   }
   return ret;
+}
+
+SettingMapPtr WSAPI::GetSettings(bool myhost)
+{
+  std::string hostname;
+  if (myhost)
+    hostname = TcpSocket::GetMyHostName();
+  return GetSettings(hostname);
 }
 
 bool WSAPI::PutSetting(const std::string& key, const std::string& value, bool myhost)

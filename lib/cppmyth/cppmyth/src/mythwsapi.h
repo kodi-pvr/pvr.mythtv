@@ -47,6 +47,16 @@ namespace Myth
     /**
      * @brief GET Myth/GetSetting
      */
+    SettingPtr GetSetting(const std::string& key, const std::string hostname);
+
+    /**
+     * @brief GET Myth/GetSetting
+     */
+    SettingMapPtr GetSettings(const std::string hostname);
+
+    /**
+     * @brief GET Myth/GetSetting
+     */
     SettingPtr GetSetting(const std::string& key, bool myhost);
 
     /**
