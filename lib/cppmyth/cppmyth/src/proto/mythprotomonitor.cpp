@@ -114,6 +114,7 @@ ProtoRecorderPtr ProtoMonitor::GetNextFreeRecorder75(int rnum)
   if (!ReadField(field) || str2uint16(field.c_str(), &port))
     goto out;
   FlushMessage();
+  DBG(MYTH_DBG_DEBUG, "%s: open recorder %d (%s:%u)\n", __FUNCTION__, (int)nextnum, hostname.c_str(), (unsigned)port);
   recorder.reset(new ProtoRecorder(nextnum, hostname, port));
   return recorder;
 out:
@@ -146,6 +147,7 @@ ProtoRecorderPtr ProtoMonitor::GetRecorderFromNum75(int rnum)
   if (!ReadField(field) || str2uint16(field.c_str(), &port))
     goto out;
   FlushMessage();
+  DBG(MYTH_DBG_DEBUG, "%s: open recorder %d (%s:%u)\n", __FUNCTION__, (int)rnum, hostname.c_str(), (unsigned)port);
   recorder.reset(new ProtoRecorder(rnum, hostname, port));
   return recorder;
 out:
