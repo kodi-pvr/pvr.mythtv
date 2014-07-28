@@ -36,6 +36,7 @@
 
 #if defined(__APPLE__)
 #include <sys/time.h>
+#include <mach/mach_time.h>
 #elif defined(__WINDOWS__)
 #include <time.h>
 #else
@@ -79,13 +80,16 @@ namespace PLATFORM
   inline int64_t GetTimeMs()
   {
   #if defined(__APPLE__)
-    //timespec time;
-    timeval  micro = {0, 0};
-    (void)gettimeofday(&micro, NULL);
-    //time.tv_sec = micro.tv_sec;
-    //time.tv_nsec = micro.tv_usec * 1000;
-    //return (int64_t)time.tv_sec * 1000 + time.tv_nsec / 1000000;
-    return (int64_t)micro.tv_sec * 1000 + micro.tv_usec / 1000;
+    int64_t ticks = 0;
+    static mach_timebase_info_data_t timebase;
+    if (timebase.denom == 0) {
+      // Get the timebase if this is the first time we run.
+      // Recommended by Apple's QA1398.
+      (void)mach_timebase_info(&timebase);
+    }
+    // Use timebase to convert absolute time tick units into nanoseconds.
+    ticks = mach_absolute_time() * timebase.numer / timebase.denom;
+    return ticks / 1000000;
   #elif defined(__WINDOWS__)
     LARGE_INTEGER tickPerSecond;
     LARGE_INTEGER tick;
