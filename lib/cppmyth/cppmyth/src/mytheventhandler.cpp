@@ -219,7 +219,7 @@ void *BasicEventHandler::Process()
     }
   }
   // Close connection
-  AnnounceStatus(EVENTHANDLER_DISCONNECTED);
+  AnnounceStatus(EVENTHANDLER_STOPPED);
   m_event->Close();
   return NULL;
 }
