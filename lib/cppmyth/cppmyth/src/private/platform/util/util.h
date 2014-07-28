@@ -1,7 +1,6 @@
 #pragma once
 /*
- *      Copyright (C) 2012 Team XBMC
- *      http://www.xbmc.org
+ *      Copyright (C) 2014 Jean-Luc Barriere
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -14,14 +13,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with XBMC; see the file COPYING.  If not, see
- *  <http://www.gnu.org/licenses/>.
+ *  along with this program; see the file COPYING.  If not, write to
+ *  the Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+ *  MA 02110-1301 USA
+ *  http://www.gnu.org/copyleft/gpl.html
  *
  */
 
-#ifndef SAFE_DELETE
-#define SAFE_DELETE(p)       do { delete (p);     (p)=NULL; } while (0)
-#endif
-#ifndef SAFE_DELETE_ARRAY
-#define SAFE_DELETE_ARRAY(p) do { delete[] (p);   (p)=NULL; } while (0)
-#endif
+#include <cstddef>
+
+#define SAFE_DELETE(p)        if ((p) != NULL) { delete (p);    (p) = NULL; }
+#define SAFE_DELETE_ARRAY(p)  if ((p) != NULL) { delete[] (p);  (p) = NULL; }
