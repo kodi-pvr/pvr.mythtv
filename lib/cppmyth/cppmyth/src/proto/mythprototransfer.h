@@ -39,6 +39,11 @@ namespace Myth
 
     bool Open();
     void Close();
+    /**
+     * @brief Flushing unread data previously requested
+     * @return void
+     */
+    void Flush();
 
     uint32_t GetFileId() const;
     std::string GetPathName() const;

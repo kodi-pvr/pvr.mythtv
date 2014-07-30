@@ -49,6 +49,7 @@ namespace Myth
     int TransferRequestBlock(ProtoTransfer& transfer, void *buffer, unsigned n);
     int64_t TransferSeek(ProtoTransfer& transfer, int64_t offset, WHENCE_t whence)
     {
+      transfer.Flush(); // Flushing unread data previously requested
       return TransferSeek75(transfer, offset, whence);
     }
 

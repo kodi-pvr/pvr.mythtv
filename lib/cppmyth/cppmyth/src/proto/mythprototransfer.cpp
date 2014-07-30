@@ -75,6 +75,24 @@ void ProtoTransfer::Close()
   m_fileId = 0;
 }
 
+void ProtoTransfer::Flush()
+{
+  char buf[PROTO_BUFFER_SIZE];
+  size_t r, f = fileRequest - filePosition;
+
+  while (f > 0)
+  {
+    r = (f > PROTO_BUFFER_SIZE ? PROTO_BUFFER_SIZE : f);
+    if (m_socket->ReadResponse(buf, r) != r)
+    {
+      HangException();
+      break;
+    }
+    f -= r;
+    filePosition += r;
+  }
+}
+
 bool ProtoTransfer::Announce75()
 {
   PLATFORM::CLockObject lock(*m_mutex);
