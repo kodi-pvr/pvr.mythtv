@@ -195,7 +195,7 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
       tv.tv_usec = 0;
     }
 
-    r = select (nfds+1, &fds, NULL, NULL, &tv);
+    r = select (nfds + 1, &fds, NULL, NULL, &tv);
     if (r < 0)
     {
       DBG(MYTH_DBG_ERROR, "%s: select error (%d)\n", __FUNCTION__, r);
@@ -344,6 +344,10 @@ int64_t ProtoPlayback::TransferSeek75(ProtoTransfer& transfer, int64_t offset, W
       FlushMessage();
       return -1;
   }
+  // Reset transfer
+  transfer.Lock();
+  transfer.Flush();
   transfer.filePosition = transfer.fileRequest = position;
+  transfer.Unlock();
   return position;
 }

@@ -39,6 +39,10 @@ namespace Myth
 
     bool Open();
     void Close();
+
+    void Lock();
+    void Unlock();
+    bool TryLock();
     /**
      * @brief Flushing unread data previously requested
      * @return void

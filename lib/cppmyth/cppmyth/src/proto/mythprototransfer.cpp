@@ -75,21 +75,38 @@ void ProtoTransfer::Close()
   m_fileId = 0;
 }
 
+void ProtoTransfer::Lock()
+{
+  m_mutex->Lock();
+}
+
+void ProtoTransfer::Unlock()
+{
+  m_mutex->Unlock();
+}
+
+bool ProtoTransfer::TryLock()
+{
+  return m_mutex->TryLock();
+}
+
 void ProtoTransfer::Flush()
 {
-  char buf[PROTO_BUFFER_SIZE];
-  size_t r, f = fileRequest - filePosition;
-
-  while (f > 0)
+  int64_t unread = fileRequest - filePosition;
+  if (unread > 0)
   {
-    r = (f > PROTO_BUFFER_SIZE ? PROTO_BUFFER_SIZE : f);
-    if (m_socket->ReadResponse(buf, r) != r)
+    char buf[PROTO_BUFFER_SIZE];
+    size_t n = (size_t)unread;
+    while (n > 0)
     {
-      HangException();
-      break;
+      size_t s = (n > PROTO_BUFFER_SIZE ? PROTO_BUFFER_SIZE : n);
+      if(m_socket->ReadResponse(buf, s) != s)
+        break;
+      n -= s;
     }
-    f -= r;
-    filePosition += r;
+    DBG(MYTH_DBG_DEBUG, "%s: remaining bytes (%u)\n", __FUNCTION__, (unsigned)n);
+    // Reset position regardless bytes read
+    filePosition = fileRequest;
   }
 }
 
