@@ -296,7 +296,7 @@ bool Demux::SeekTime(int time, bool backwards, double* startpts)
     it = m_posmap.upper_bound(desired);
     // On end shift back if possible
     if (it == m_posmap.end() && it != m_posmap.begin())
-      --it;
+      return false;
   }
 
   if (g_bExtraDebug)
