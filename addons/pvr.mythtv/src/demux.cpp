@@ -136,7 +136,7 @@ const unsigned char* Demux::ReadAV(uint64_t pos, size_t n)
     int64_t newpos = m_file->Seek((int64_t)pos, Myth::WHENCE_SET);
     if (newpos < 0)
       return NULL;
-    m_av_pos = (uint64_t)newpos;
+    m_av_pos = pos = (uint64_t)newpos;
     m_av_rbs = m_av_rbe = m_av_buf;
   }
   else
@@ -148,11 +148,12 @@ const unsigned char* Demux::ReadAV(uint64_t pos, size_t n)
   size_t dataread = m_av_rbe - m_av_rbs;
   if (dataread >= n)
     return m_av_rbs;
-
+  // flush old data to free up space at the end
   memmove(m_av_buf, m_av_rbs, dataread);
   m_av_rbs = m_av_buf;
   m_av_rbe = m_av_rbs + dataread;
   m_av_pos = pos;
+  // fill new data
   unsigned int len = (unsigned int)(m_av_buf_size - dataread);
   int wait = 5000;
   while (wait > 0 && !IsStopped() )
