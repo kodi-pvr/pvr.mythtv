@@ -133,6 +133,10 @@ const char* ElementaryStream::GetStreamCodecName(STREAM_TYPE stream_type)
       return "mp2";
     case STREAM_TYPE_AUDIO_AAC:
       return "aac";
+    case STREAM_TYPE_AUDIO_AAC_ADTS:
+      return "aac";
+    case STREAM_TYPE_AUDIO_AAC_LATM:
+      return "aac_latm";
     case STREAM_TYPE_VIDEO_MPEG4:
       return "mpeg4video";
     case STREAM_TYPE_VIDEO_H264:
