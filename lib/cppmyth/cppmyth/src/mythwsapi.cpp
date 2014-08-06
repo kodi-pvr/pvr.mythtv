@@ -747,7 +747,7 @@ ChannelListPtr WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
       MythJSON::BindObject(chan, channel.get(), bindchan);
-      if (!onlyVisible || channel->visible)
+      if (channel->chanId && (!onlyVisible || channel->visible))
         ret->push_back(channel);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -825,7 +825,8 @@ ChannelListPtr WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
       MythJSON::BindObject(chan, channel.get(), bindchan);
-      ret->push_back(channel);
+      if (channel->chanId)
+        ret->push_back(channel);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
