@@ -44,4 +44,5 @@ libmythtv_addon_la_SOURCES = src/client.cpp \
                                   src/demuxer/ES_AAC.cpp \
                                   src/demuxer/ES_AC3.cpp \
                                   src/demuxer/ES_Subtitle.cpp \
-                                  src/demuxer/ES_Teletext.cpp
+                                  src/demuxer/ES_Teletext.cpp \
+                                  src/avinfo.cpp
