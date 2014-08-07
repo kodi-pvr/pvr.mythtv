@@ -37,6 +37,12 @@ public:
   bool operator ==(const MythProgramInfo &other);
   bool operator !=(const MythProgramInfo &other);
 
+  void CopyProps(MythProgramInfo &other) { m_props = other.m_props; }
+  void SetPropsFrameRate(float fps);
+  float GetPropsFrameRate() const;
+  void SetPropsAspec(float aspec);
+  float GetPropsAspec() const;
+
   std::string UID() const;
   std::string ProgramID() const;
   std::string Title() const;
@@ -73,6 +79,20 @@ public:
 private:
   Myth::ProgramPtr m_proginfo;
   mutable int32_t m_flags;
+
+  class Props
+  {
+  public:
+    Props()
+    : m_frameRate(0)
+    , m_aspec(0)
+    {}
+    ~Props() {}
+
+    float m_frameRate;
+    float m_aspec;
+  };
+  MYTH_SHARED_PTR<Props> m_props;
 
   bool IsSetup() const;
 };

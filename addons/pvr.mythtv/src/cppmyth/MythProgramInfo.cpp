@@ -33,12 +33,14 @@
 MythProgramInfo::MythProgramInfo()
 : m_proginfo()
 , m_flags(0)
+, m_props()
 {
 }
 
 MythProgramInfo::MythProgramInfo(Myth::ProgramPtr proginfo)
 : m_proginfo()
 , m_flags(0)
+, m_props(new Props())
 {
   m_proginfo.swap(proginfo);
 }
@@ -105,6 +107,28 @@ bool MythProgramInfo::IsSetup() const
       m_flags |= FLAGS_IS_LIVETV;
   }
   return true;
+}
+
+void MythProgramInfo::SetPropsFrameRate(float fps)
+{
+  if (m_props)
+    m_props->m_frameRate = fps;
+}
+
+float MythProgramInfo::GetPropsFrameRate() const
+{
+  return (m_props ? m_props->m_frameRate : 0.0f);
+}
+
+void MythProgramInfo::SetPropsAspec(float aspec)
+{
+  if (m_props)
+    m_props->m_aspec = aspec;
+}
+
+float MythProgramInfo::GetPropsAspec() const
+{
+  return (m_props ? m_props->m_aspec : 0.0f);
 }
 
 std::string MythProgramInfo::UID() const
