@@ -23,6 +23,7 @@
 #include "pvrclient-mythtv.h"
 #include "client.h"
 #include "tools.h"
+#include "avinfo.h"
 
 #include <time.h>
 #include <set>
@@ -314,8 +315,8 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     {
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Update recording: %s", __FUNCTION__, prog.UID().c_str());
-      // Copy cached framerate
-      //prog.SetFrameRate(it->second.FrameRate());
+      // Copy props
+      prog.CopyProps(it->second);
       // Update recording
       it->second = prog;
       ++m_recordingChangePinCount;
@@ -704,8 +705,8 @@ void PVRClientMythTV::ForceUpdateRecording(ProgramInfoMap::iterator it)
     if (!prog.IsNull())
     {
       CLockObject lock(m_recordingsLock);
-      // Copy cached framerate
-      //prog.SetFrameRate(it->second.FrameRate());
+      // Copy props
+      prog.CopyProps(it->second);
       // Update recording
       it->second = prog;
       ++m_recordingChangePinCount;
@@ -935,129 +936,6 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(MythProgramInfo &programInfo
   return bookmark;
 }
 
-PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size)
-{
-  if (g_bExtraDebug)
-  {
-    XBMC->Log(LOG_DEBUG, "%s: Reading edl for: %s", __FUNCTION__, recording.strTitle);
-  }
-
-  CLockObject lock(m_recordingsLock);
-  ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
-  if (it == m_recordings.end())
-  {
-    XBMC->Log(LOG_DEBUG, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
-    *size = 0;
-    return PVR_ERROR_FAILED;
-  }
-
-  bool useFrameRate = true;
-  float frameRate = 0.0f;
-  int64_t psoffset, nsoffset;
-
-  if (m_db.GetSchemaVersion() >= 1309)
-  {
-    if (m_db.GetRecordingSeekOffset(it->second, MARK_DURATION_MS, 0, &psoffset, &nsoffset) > 0)
-    {
-      // mark 33 found for recording. no need convertion using framerate.
-      useFrameRate = false;
-    }
-    else
-    {
-      XBMC->Log(LOG_DEBUG, "%s: Missing recordedseek map, try running 'mythcommflag --rebuild' for recording %s", __FUNCTION__, recording.strRecordingId);
-      XBMC->Log(LOG_DEBUG, "%s: Fallback using framerate ...", __FUNCTION__);
-    }
-  }
-  if (useFrameRate)
-  {
-    frameRate = m_db.GetRecordingFrameRate(it->second) / 1000.0f;
-    if (frameRate <= 0)
-    {
-      XBMC->Log(LOG_DEBUG, "%s: Failed to read framerate for %s", __FUNCTION__, recording.strRecordingId);
-      *size = 0;
-      return PVR_ERROR_FAILED;
-    }
-  }
-
-  Edl commbreakList = m_con.GetCommbreakList(it->second);
-  int commbreakCount = commbreakList.size();
-  XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, commbreakCount, recording.strTitle);
-
-  Edl cutList = m_con.GetCutList(it->second);
-  XBMC->Log(LOG_DEBUG, "%s: Found %d cut list entries for: %s", __FUNCTION__, cutList.size(), recording.strTitle);
-
-  commbreakList.insert(commbreakList.end(), cutList.begin(), cutList.end());
-  int index = 0;
-  Edl::const_iterator edlIt;
-  for (edlIt = commbreakList.begin(); edlIt != commbreakList.end(); ++edlIt)
-  {
-    if (index < *size)
-    {
-      int64_t start, end;
-      start = end = 0;
-
-      // Pull the closest match in the DB if it exists
-      if (useFrameRate)
-      {
-        start = (int64_t)(edlIt->start_mark / frameRate * 1000);
-        end = (int64_t)(edlIt->end_mark / frameRate * 1000);
-        XBMC->Log(LOG_DEBUG, "%s: start_mark: %lld, end_mark: %lld, start: %lld, end: %lld", __FUNCTION__, edlIt->start_mark, edlIt->end_mark, start, end);
-      }
-      else
-      {
-        // mask == 1 ==> Found before the mark (use psoffset, nsoffset is zero)
-        // mask == 2 ==> Found after the mark (use nsoffset, psoffset is zero)
-        // mask == 3 ==> Found around the mark (use nsoffset [next offset / later] for start, psoffset [prev. offset / before] for end)
-        int mask = m_db.GetRecordingSeekOffset(it->second, MARK_DURATION_MS, edlIt->start_mark, &psoffset, &nsoffset);
-        XBMC->Log(LOG_DEBUG, "%s: start_mark offset mask: %d, psoffset: %"PRId64", nsoffset: %"PRId64, __FUNCTION__, mask, psoffset, nsoffset);
-        if (mask > 0)
-        {
-          if (mask == 1)
-            start = psoffset;
-          else if (edlIt->start_mark == 0)
-            start = 0;
-          else
-            start = nsoffset;
-
-          mask = m_db.GetRecordingSeekOffset(it->second, MARK_DURATION_MS, edlIt->end_mark, &psoffset, &nsoffset);
-          XBMC->Log(LOG_DEBUG, "%s: end_mark offset mask: %d, psoffset: %"PRId64", nsoffset: %"PRId64, __FUNCTION__, mask, psoffset, nsoffset);
-          if (mask == 2)
-            end = nsoffset;
-          else if (mask == 1 || mask == 3)
-            end = psoffset;
-          else
-            // By forcing the end to be zero, it will never be > start, which makes the values invalid
-            // This is only for failed lookups for the end position
-            end = 0;
-        }
-        if (mask <= 0)
-          XBMC->Log(LOG_DEBUG, "%s: Failed to retrieve recordedseek offset values", __FUNCTION__);
-      }
-
-      if (start < end)
-      {
-        // We have both a valid start and end value now
-        XBMC->Log(LOG_DEBUG, "%s: start_mark: %"PRId64", end_mark: %"PRId64", start: %"PRId64", end: %"PRId64, __FUNCTION__, edlIt->start_mark, edlIt->end_mark, start, end);
-        PVR_EDL_ENTRY entry;
-        entry.start = start;
-        entry.end = end;
-        entry.type = index < commbreakCount ? PVR_EDL_TYPE_COMBREAK : PVR_EDL_TYPE_CUT;
-        entries[index] = entry;
-        index++;
-      }
-      else
-        XBMC->Log(LOG_DEBUG, "%s: invalid offset: start_mark: %"PRId64", end_mark: %"PRId64", start: %"PRId64", end: %"PRId64, __FUNCTION__, edlIt->start_mark, edlIt->end_mark, start, end);
-    }
-    else
-    {
-      XBMC->Log(LOG_ERROR, "%s: Maximum number of edl entries reached for %s", __FUNCTION__, recording.strTitle);
-      break;
-    }
-  }
-  *size = index;
-  return PVR_ERROR_NO_ERROR;
-}
-
 int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recording)
 {
   // MythTV provides it's bookmarks as frame offsets whereas XBMC expects a time offset.
@@ -1079,6 +957,88 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
   return bookmark;
 }
 */
+
+PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size)
+{
+  if (g_bExtraDebug)
+  {
+    XBMC->Log(LOG_DEBUG, "%s: Reading edl for: %s", __FUNCTION__, recording.strTitle);
+  }
+  // Check recording
+  MythProgramInfo prog;
+  {
+    CLockObject lock(m_recordingsLock);
+    ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
+    if (it == m_recordings.end())
+    {
+      XBMC->Log(LOG_ERROR, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
+      return PVR_ERROR_INVALID_PARAMETERS;
+    }
+    prog = it->second;
+  }
+  // Check required props else return
+  float fps = prog.GetPropsFrameRate();
+  XBMC->Log(LOG_DEBUG, "%s: AV props: FPS = %7.3f", __FUNCTION__, fps);
+  if (fps <= 0)
+  {
+    *size = 0;
+    return PVR_ERROR_NO_ERROR;
+  }
+  // Processing marks
+  Myth::MarkListPtr skpList = m_control->GetCommBreakList(*(prog.GetPtr()));
+  XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, skpList->size(), recording.strTitle);
+  Myth::MarkListPtr cutList = m_control->GetCutList(*(prog.GetPtr()));
+  XBMC->Log(LOG_DEBUG, "%s: Found %d cut list entries for: %s", __FUNCTION__, cutList->size(), recording.strTitle);
+  skpList->insert(skpList->end(), cutList->begin(), cutList->end());
+  int index = 0;
+  Myth::MarkList::const_iterator it;
+  Myth::MarkPtr startPtr;
+  for (it = skpList->begin(); it != skpList->end(); ++it)
+  {
+    switch ((*it)->markType)
+    {
+      case Myth::MARK_COMM_START:
+        startPtr = *it;
+        break;
+      case Myth::MARK_CUT_START:
+        startPtr = *it;
+        break;
+      case Myth::MARK_COMM_END:
+        if (startPtr && startPtr->markType == Myth::MARK_COMM_START && (*it)->markValue > startPtr->markValue)
+        {
+          PVR_EDL_ENTRY entry;
+          double s = (double)(startPtr->markValue) / fps;
+          double e = (double)((*it)->markValue) / fps;
+          entry.start = (int64_t)(s * 1000);
+          entry.end = (int64_t)(e * 1000);
+          entry.type = PVR_EDL_TYPE_COMBREAK;
+          entries[index] = entry;
+          index++;
+          if (g_bExtraDebug)
+            XBMC->Log(LOG_DEBUG, "%s: COMBREAK %9.3f - %9.3f", __FUNCTION__, s, e);
+        }
+      case Myth::MARK_CUT_END:
+        if (startPtr && startPtr->markType == Myth::MARK_CUT_START && (*it)->markValue > startPtr->markValue)
+        {
+          PVR_EDL_ENTRY entry;
+          double s = (double)(startPtr->markValue) / fps;
+          double e = (double)((*it)->markValue) / fps;
+          entry.start = (int64_t)(s * 1000);
+          entry.end = (int64_t)(e * 1000);
+          entry.type = PVR_EDL_TYPE_CUT;
+          entries[index] = entry;
+          index++;
+          if (g_bExtraDebug)
+            XBMC->Log(LOG_DEBUG, "%s: CUT %9.3f - %9.3f", __FUNCTION__, s, e);
+        }
+      default:
+        startPtr.reset();
+    }
+  }
+  *size = index;
+  return PVR_ERROR_NO_ERROR;
+}
+
 MythChannel PVRClientMythTV::FindRecordingChannel(const MythProgramInfo& programInfo)
 {
   ChannelIdMap::iterator channelByIdIt = m_channelsById.find(programInfo.ChannelID());
@@ -1821,6 +1781,16 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   {
     if (g_bExtraDebug)
       XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+    // Gather AV info for later use
+    AVInfo info(m_recordingStream);
+    ADDON::XbmcPvrStream pvrStream;
+    if (info.GetMainStream(&pvrStream) && pvrStream.iCodecType == XBMC_CODEC_TYPE_VIDEO)
+    {
+      if (pvrStream.iFPSScale > 0)
+        prog.SetPropsFrameRate((float)(pvrStream.iFPSRate) / pvrStream.iFPSScale);
+      if (pvrStream.fAspect > 0)
+        prog.SetPropsAspec(pvrStream.fAspect);
+    }
     return true;
   }
 

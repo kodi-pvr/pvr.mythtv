@@ -83,7 +83,7 @@ public:
   PVR_ERROR SetRecordingPlayCount(const PVR_RECORDING &recording, int count);
   //PVR_ERROR SetRecordingLastPlayedPosition(const PVR_RECORDING &recording, int lastplayedposition);
   //int GetRecordingLastPlayedPosition(const PVR_RECORDING &recording);
-  //PVR_ERROR GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size);
+  PVR_ERROR GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size);
 
   // Timers
   int GetTimersAmount();

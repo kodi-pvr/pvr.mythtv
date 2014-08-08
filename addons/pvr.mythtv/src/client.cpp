@@ -562,7 +562,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
     pCapabilities->bSupportsRecordings            = true;
     pCapabilities->bSupportsRecordingPlayCount    = true;
     pCapabilities->bSupportsLastPlayedPosition    = false;
-    pCapabilities->bSupportsRecordingEdl          = false;
+    pCapabilities->bSupportsRecordingEdl          = true;
     return PVR_ERROR_NO_ERROR;
   }
   else
@@ -760,10 +760,7 @@ PVR_ERROR GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[
 {
   if (g_client == NULL)
     return PVR_ERROR_SERVER_ERROR;
-  (void)recording;
-  (void)entries;
-  (void)size;
-  return PVR_ERROR_NOT_IMPLEMENTED;
+  return g_client->GetRecordingEdl(recording, entries, size);
 }
 
 
