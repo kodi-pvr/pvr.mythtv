@@ -46,3 +46,33 @@ void Control::Close()
 {
   m_monitor.Close();
 }
+
+std::string Control::GetBackendServerIP(const std::string& hostName)
+{
+  std::string backend_addr;
+  // Query backend server IP
+  Myth::SettingPtr settingAddr = this->GetSetting("BackendServerIP", hostName);
+  if (settingAddr && !settingAddr->value.empty())
+    backend_addr = settingAddr->value;
+  return backend_addr;
+}
+
+std::string Control::GetBackendServerIP6(const std::string& hostName)
+{
+  std::string backend_addr;
+  // Query backend server IP6
+  Myth::SettingPtr settingAddr = this->GetSetting("BackendServerIP6", hostName);
+  if (settingAddr && !settingAddr->value.empty() && settingAddr->value != "::1")
+    backend_addr = settingAddr->value;
+  return backend_addr;
+}
+
+unsigned Control::GetBackendServerPort(const std::string& hostName)
+{
+  int backend_port;
+  // Query backend server port
+  Myth::SettingPtr settingPort = this->GetSetting("BackendServerPort", hostName);
+  if (settingPort && !settingPort->value.empty() && (backend_port = Myth::StringToInt(settingPort->value)) > 0)
+    return backend_port;
+  return 0;
+}

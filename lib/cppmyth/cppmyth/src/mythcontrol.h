@@ -153,6 +153,27 @@ namespace Myth
     }
 
     /**
+     * @brief Query backend server IP
+     * @param hostName
+     * @return string containing found IP or nil
+     */
+    std::string GetBackendServerIP(const std::string& hostName);
+
+    /**
+     * @brief Query backend server IP6
+     * @param hostName
+     * @return string containing found IP6 or nil
+     */
+    std::string GetBackendServerIP6(const std::string& hostName);
+
+    /**
+     * @brief Query backend server port for protocol commands
+     * @param hostName
+     * @return unsigned more than 0 else invalid
+     */
+    unsigned GetBackendServerPort(const std::string& hostName);
+
+    /**
      * @brief Query information on all recorded programs
      * @param n
      * @param descending
