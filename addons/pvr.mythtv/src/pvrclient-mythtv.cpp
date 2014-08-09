@@ -1749,27 +1749,19 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
     else
     {
-      std::string backend_addr;
-      int backend_port;
       // Query backend server IP 
-      Myth::SettingPtr settingAddr = m_control->GetSetting("BackendServerIP6", prog.HostName());
-      if (settingAddr && !settingAddr->value.empty() && settingAddr->value != "::1")
-        backend_addr = settingAddr->value;
-      else
-      {
-        settingAddr = m_control->GetSetting("BackendServerIP", prog.HostName());
-        if (settingAddr && !settingAddr->value.empty())
-          backend_addr = settingAddr->value;
-        else
-          backend_addr = prog.HostName();
-      }
+      std::string backend_addr(m_control->GetBackendServerIP6(prog.HostName()));
+      if (backend_addr.empty())
+        backend_addr = m_control->GetBackendServerIP(prog.HostName());
+      if (backend_addr.empty())
+        backend_addr = prog.HostName();
       // Query backend server port
-      Myth::SettingPtr settingPort = m_control->GetSetting("BackendServerPort", prog.HostName());
-      if (!settingPort || settingPort->value.empty() || (backend_port = Myth::StringToInt(settingPort->value)) <= 0)
-        backend_port = g_iProtoPort;
+      unsigned backend_port(m_control->GetBackendServerPort(prog.HostName()));
+      if (!backend_port)
+        backend_port = (unsigned)g_iProtoPort;
       // Request the stream from slave host. A dedicated event handler will be opened.
-      XBMC->Log(LOG_INFO, "%s: Connect to remote backend %s:%d", __FUNCTION__, backend_addr.c_str(), backend_port);
-      m_recordingStream = new Myth::RecordingPlayback(backend_addr, (unsigned)backend_port);
+      XBMC->Log(LOG_INFO, "%s: Connect to remote backend %s:%u", __FUNCTION__, backend_addr.c_str(), backend_port);
+      m_recordingStream = new Myth::RecordingPlayback(backend_addr, backend_port);
     }
   }
   else
