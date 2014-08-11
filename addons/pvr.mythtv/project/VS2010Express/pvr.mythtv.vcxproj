@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\avinfo.cpp" />
     <ClCompile Include="..\..\src\categories.cpp" />
     <ClCompile Include="..\..\src\client.cpp" />
     <ClCompile Include="..\..\src\cppmyth\MythChannel.cpp" />

@@ -54,6 +54,7 @@
     <ClCompile Include="..\..\src\demuxer\debug.cpp">
       <Filter>demuxer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\avinfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\client.h" />
