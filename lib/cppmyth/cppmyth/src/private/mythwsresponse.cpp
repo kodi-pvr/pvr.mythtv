@@ -99,6 +99,7 @@ WSResponse::WSResponse(const WSRequest &request)
 {
   if (m_socket->Connect(request.GetServer().c_str(), request.GetPort(), SOCKET_RCVBUF_MINSIZE))
   {
+    m_socket->SetReadAttempt(6); // 60 sec to hang up
     if (SendRequest(request) && GetResponse() && m_statusCode == 200)
       m_isValid = true;
     else if (m_statusCode && m_contentLength)
