@@ -62,6 +62,7 @@ TcpSocket::TcpSocket()
 : m_socket(INVALID_SOCKET_VALUE)
 , m_rcvbuf(SOCKET_RCVBUF_MINSIZE)
 , m_errno(0)
+, m_attempt(SOCKET_READ_ATTEMPT)
 {
 }
 
@@ -205,8 +206,8 @@ size_t TcpSocket::ReadResponse(void *buf, size_t n)
 
   while (n > 0)
   {
-    tv.tv_sec = 10;
-    tv.tv_usec = 0;
+    tv.tv_sec = SOCKET_READ_TIMEOUT_SEC;
+    tv.tv_usec = SOCKET_READ_TIMEOUT_USEC;
     FD_ZERO(&fds);
     FD_SET(m_socket, &fds);
     r = select(m_socket + 1, &fds, NULL, NULL, &tv);
@@ -216,7 +217,7 @@ size_t TcpSocket::ReadResponse(void *buf, size_t n)
     {
       DBG(MYTH_DBG_WARN, "%s: socket(%p) timed out (%d)\n", __FUNCTION__, &m_socket, hangcount);
       m_errno = ETIMEDOUT;
-      if (++hangcount > 2)
+      if (++hangcount >= m_attempt)
         break;
     }
     if (r < 0)

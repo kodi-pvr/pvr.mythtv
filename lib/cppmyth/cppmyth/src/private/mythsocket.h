@@ -28,6 +28,9 @@
 
 #define SOCKET_HOSTNAME_MAXSIZE       1025
 #define SOCKET_RCVBUF_MINSIZE         16384
+#define SOCKET_READ_TIMEOUT_SEC       10
+#define SOCKET_READ_TIMEOUT_USEC      0
+#define SOCKET_READ_ATTEMPT           3
 
 namespace Myth
 {
@@ -44,6 +47,10 @@ namespace Myth
     }
     bool Connect(const char *server, unsigned port, int rcvbuf);
     bool SendMessage(const char *msg, size_t size);
+    void SetReadAttempt(int n)
+    {
+      m_attempt = n;
+    }
     size_t ReadResponse(void *buf, size_t n);
     void Disconnect();
     bool IsConnected() const
@@ -59,6 +66,7 @@ namespace Myth
     tcp_socket_t m_socket;
     int m_rcvbuf;
     int m_errno;
+    int m_attempt;
 
     // prevent copy
     TcpSocket(const TcpSocket&);
