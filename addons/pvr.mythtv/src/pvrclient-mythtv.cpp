@@ -978,7 +978,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   }
   // Check required props else return
   float fps = prog.GetPropsFrameRate();
-  XBMC->Log(LOG_DEBUG, "%s: AV props: FPS = %7.3f", __FUNCTION__, fps);
+  XBMC->Log(LOG_DEBUG, "%s: AV props: Frame Rate = %.3f", __FUNCTION__, fps);
   if (fps <= 0)
   {
     *size = 0;
@@ -1775,13 +1775,12 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
     // Gather AV info for later use
     AVInfo info(m_recordingStream);
-    ADDON::XbmcPvrStream pvrStream;
-    if (info.GetMainStream(&pvrStream) && pvrStream.iCodecType == XBMC_CODEC_TYPE_VIDEO)
+    ElementaryStream::STREAM_INFO mInfo;
+    if (info.GetMainStream(&mInfo) && mInfo.fps_scale > 0)
     {
-      if (pvrStream.iFPSScale > 0)
-        prog.SetPropsFrameRate((float)(pvrStream.iFPSRate) / pvrStream.iFPSScale);
-      if (pvrStream.fAspect > 0)
-        prog.SetPropsAspec(pvrStream.fAspect);
+      prog.SetPropsFrameRate((float)(mInfo.fps_rate) / (mInfo.fps_scale * (mInfo.interlaced ? 2 : 1)));
+      if (mInfo.aspect > 0)
+        prog.SetPropsAspec(mInfo.aspect);
     }
     return true;
   }

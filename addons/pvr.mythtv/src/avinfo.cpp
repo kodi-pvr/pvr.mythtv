@@ -20,7 +20,6 @@
  *
  */
 
-#include "libXBMC_pvr.h"
 #include "xbmc_codec_types.h"
 
 #include "avinfo.h"
@@ -219,22 +218,28 @@ void AVInfo::Process()
   XBMC->Log(LOG_DEBUG, LOGTAG"%s: terminated with status %d", __FUNCTION__, ret);
 }
 
-bool AVInfo::GetMainStream(ADDON::XbmcPvrStream* stream) const
+bool AVInfo::GetMainStream(ElementaryStream::STREAM_INFO* info) const
 {
-  if (m_AVStatus < 0 || !m_nosetup.empty())
+  if (!m_AVContext || m_AVStatus < 0 || !m_nosetup.empty())
     return false;
-  ADDON::XbmcPvrStream* found = m_streams.GetStreamById(m_mainStreamPID);
+  ElementaryStream* found = m_AVContext->GetStream(m_mainStreamPID);
   if (found == NULL)
     return false;
-  *stream = *found;
+  *info = found->stream_info;
   return true;
 }
 
-bool AVInfo::GetStreamProperties(PVR_STREAM_PROPERTIES* props)
+std::vector<ElementaryStream::STREAM_INFO> AVInfo::GetStreams() const
 {
-  if (m_AVStatus < 0 || !m_nosetup.empty())
-    return false;
-  return m_streams.GetProperties(props);
+  std::vector<ElementaryStream::STREAM_INFO> ret;
+  if (!m_AVContext || m_AVStatus < 0 || !m_nosetup.empty())
+    return ret;
+  std::vector<ElementaryStream*> streams = m_AVContext->GetStreams();
+  std::vector<ElementaryStream*>::const_iterator it;
+  ret.reserve(streams.size());
+  for (it = streams.begin(); it < streams.end(); ++it)
+    ret.push_back((*it)->stream_info);
+  return ret;
 }
 
 bool AVInfo::get_stream_data(ElementaryStream::STREAM_PKT* pkt)
@@ -259,27 +264,10 @@ bool AVInfo::get_stream_data(ElementaryStream::STREAM_PKT* pkt)
   return true;
 }
 
-static inline int stream_identifier(int composition_id, int ancillary_id)
-{
-  return ((composition_id & 0xff00) >> 8)
-    | ((composition_id & 0xff) << 8)
-    | ((ancillary_id & 0xff00) << 16)
-    | ((ancillary_id & 0xff) << 24);
-}
-
-static void recode_language(const char* muxLanguage, char* strLanguage)
-{
-  strLanguage[0] = muxLanguage[0];
-  strLanguage[1] = muxLanguage[1];
-  strLanguage[2] = muxLanguage[2];
-  strLanguage[3] = 0;
-}
-
 void AVInfo::populate_pvr_streams()
 {
   uint16_t mainPid = 0xffff;
   int mainType = XBMC_CODEC_TYPE_UNKNOWN;
-  std::vector<XbmcPvrStream> new_streams;
   const std::vector<ElementaryStream*> es_streams = m_AVContext->GetStreams();
   for (std::vector<ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
   {
@@ -300,28 +288,8 @@ void AVInfo::populate_pvr_streams()
         mainPid = (*it)->pid;
         mainType = codec.codec_type;
       }
-
-      XbmcPvrStream new_stream;
-      m_streams.GetStreamData((*it)->pid, &new_stream);
-
-      new_stream.iCodecId       = codec.codec_id;
-      new_stream.iCodecType     = codec.codec_type;
-      recode_language((*it)->stream_info.language, new_stream.strLanguage);
-      new_stream.iIdentifier    = stream_identifier((*it)->stream_info.composition_id, (*it)->stream_info.ancillary_id);
-      new_stream.iFPSScale      = (*it)->stream_info.fps_scale;
-      new_stream.iFPSRate       = (*it)->stream_info.fps_rate;
-      new_stream.iHeight        = (*it)->stream_info.height;
-      new_stream.iWidth         = (*it)->stream_info.width;
-      new_stream.fAspect        = (*it)->stream_info.aspect;
-      new_stream.iChannels      = (*it)->stream_info.channels;
-      new_stream.iSampleRate    = (*it)->stream_info.sample_rate;
-      new_stream.iBlockAlign    = (*it)->stream_info.block_align;
-      new_stream.iBitRate       = (*it)->stream_info.bit_rate;
-      new_stream.iBitsPerSample = (*it)->stream_info.bits_Per_sample;
-
-      new_streams.push_back(new_stream);
+      // Allow streaming for the PID
       m_AVContext->StartStreaming((*it)->pid);
-
       // Add stream to no setup set
       if (!(*it)->has_stream_info)
         m_nosetup.insert((*it)->pid);
@@ -330,7 +298,6 @@ void AVInfo::populate_pvr_streams()
         XBMC->Log(LOG_DEBUG, LOGTAG"%s: register PES %.4x %s", __FUNCTION__, (*it)->pid, codec_name);
     }
   }
-  m_streams.UpdateStreams(new_streams);
   // Renew main stream
   m_mainStreamPID = mainPid;
 }
@@ -344,34 +311,16 @@ bool AVInfo::update_pvr_stream(uint16_t pid)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, LOGTAG"%s: update info PES %.4x %s", __FUNCTION__, es->pid, es->GetStreamCodecName());
 
-  XbmcPvrStream* stream = m_streams.GetStreamById(es->pid);
-  if (stream)
+  if (es->has_stream_info)
   {
-    recode_language(es->stream_info.language, stream->strLanguage);
-    stream->iIdentifier    = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
-    stream->iFPSScale      = es->stream_info.fps_scale;
-    stream->iFPSRate       = es->stream_info.fps_rate;
-    stream->iHeight        = es->stream_info.height;
-    stream->iWidth         = es->stream_info.width;
-    stream->fAspect        = es->stream_info.aspect;
-    stream->iChannels      = es->stream_info.channels;
-    stream->iSampleRate    = es->stream_info.sample_rate;
-    stream->iBlockAlign    = es->stream_info.block_align;
-    stream->iBitRate       = es->stream_info.bit_rate;
-    stream->iBitsPerSample = es->stream_info.bits_Per_sample;
-
-    if (es->has_stream_info)
+    // Now stream is setup. Remove it from no setup set
+    std::set<uint16_t>::iterator it = m_nosetup.find(es->pid);
+    if (it != m_nosetup.end())
     {
-      // Now stream is setup. Remove it from no setup set
-      std::set<uint16_t>::iterator it = m_nosetup.find(es->pid);
-      if (it != m_nosetup.end())
-      {
-        m_nosetup.erase(it);
-        if (m_nosetup.empty())
-          XBMC->Log(LOG_DEBUG, LOGTAG"%s: setup is completed", __FUNCTION__);
-      }
+      m_nosetup.erase(it);
+      if (m_nosetup.empty())
+        XBMC->Log(LOG_DEBUG, LOGTAG"%s: setup is completed", __FUNCTION__);
     }
-    return true;
   }
-  return false;
+  return true;
 }

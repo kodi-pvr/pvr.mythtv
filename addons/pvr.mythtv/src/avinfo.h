@@ -25,9 +25,9 @@
 #include "client.h"
 
 #include <mythstream.h>
-#include <xbmc_stream_utils.hpp>
 
 #include <set>
+#include <vector>
 
 #define AV_BUFFER_SIZE          131072
 
@@ -39,13 +39,12 @@ public:
 
   const unsigned char* ReadAV(uint64_t pos, size_t n);
 
-  bool GetMainStream(ADDON::XbmcPvrStream* stream) const;
-  bool GetStreamProperties(PVR_STREAM_PROPERTIES* props);
+  bool GetMainStream(ElementaryStream::STREAM_INFO* info) const;
+  std::vector<ElementaryStream::STREAM_INFO> GetStreams() const;
 
 private:
   Myth::Stream *m_file;
   uint16_t m_channel;
-  ADDON::XbmcStreamProperties m_streams;
 
   void Process();
 
