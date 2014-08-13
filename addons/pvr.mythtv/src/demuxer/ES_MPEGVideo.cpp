@@ -102,7 +102,7 @@ void ES_MPEG2Video::Parse(STREAM_PKT *pkt)
     if (!m_NeedSPS && !m_NeedIFrame)
     {
       int fpsScale = static_cast<int>(Rescale(m_FrameDuration, RESCALE_TIME_BASE, PTS_TIME_BASE));
-      bool streamChange = SetVideoInformation(fpsScale, RESCALE_TIME_BASE, m_Height, m_Width, m_Dar);
+      bool streamChange = SetVideoInformation(fpsScale, RESCALE_TIME_BASE, m_Height, m_Width, m_Dar, false);
       pkt->pid          = pid;
       pkt->size         = es_consumed - frame_ptr;
       pkt->data         = &es_buf[frame_ptr];
