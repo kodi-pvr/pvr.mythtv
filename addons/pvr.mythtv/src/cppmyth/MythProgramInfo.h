@@ -37,12 +37,21 @@ public:
   bool operator ==(const MythProgramInfo &other);
   bool operator !=(const MythProgramInfo &other);
 
-  void CopyProps(MythProgramInfo &other) { m_props = other.m_props; }
+  /// Reset custom flags and properties
+  void Reset() {  m_flags = 0; m_props.reset(new Props()); }
+  /// Copy reference of properties from other
+  void CopyProps(const MythProgramInfo &other) { m_props = other.m_props; }
+  // Custom flags
+  bool IsVisible() const;
+  bool IsLiveTV() const;
+  bool HasCoverart() const;
+  bool HasFanart() const;
+  // Custom props
   void SetPropsFrameRate(float fps);
   float GetPropsFrameRate() const;
   void SetPropsAspec(float aspec);
   float GetPropsAspec() const;
-
+  // Program fields
   std::string UID() const;
   std::string ProgramID() const;
   std::string Title() const;
@@ -57,12 +66,8 @@ public:
   bool IsWatched() const;
   bool IsDeletePending() const;
   bool HasBookmark() const;
-  bool IsVisible() const;
-  bool IsLiveTV() const;
-
   uint32_t ChannelID() const;
   std::string ChannelName() const;
-
   RecordStatus Status() const;
   std::string RecordingGroup() const;
   uint32_t RecordID() const;
@@ -70,11 +75,8 @@ public:
   time_t RecordingEndTime() const;
   int Priority() const;
   std::string StorageGroup() const;
-
   std::string Inetref() const;
   uint16_t Season() const;
-  bool HasCoverart() const;
-  bool HasFanart() const;
 
 private:
   Myth::ProgramPtr m_proginfo;
