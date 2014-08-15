@@ -1,3 +1,10 @@
+v1.9.20
+- Detect audio codec AAC LATM or AAC ADTS by parsing
+- Enable EDL for MPEG-TS stream
+- Fix timeout: 60 sec to hang up
+- Fix refreshing artwork after program update event
+- Send wol packet magic to wake up backend on startup or not connected
+
 v1.9.19
 - Fix seek stream defect introduced in 1.9.16
 - Support protocol 0.28-pre:83
