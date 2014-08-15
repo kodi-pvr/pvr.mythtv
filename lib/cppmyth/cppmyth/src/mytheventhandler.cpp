@@ -110,8 +110,6 @@ unsigned BasicEventHandler::GetPort() const
 bool BasicEventHandler::Start()
 {
   Stop();
-  if (!m_event->Open())
-    return false;
   PLATFORM::CThread::CreateThread();
   return true;
 }
@@ -120,6 +118,8 @@ void BasicEventHandler::Stop()
 {
   if (PLATFORM::CThread::IsRunning())
     PLATFORM::CThread::StopThread();
+  // After incomplete thread stop the connection still opened
+  // So force closing
   if (m_event->IsOpen())
     m_event->Close();
   m_mutex->Clear();
@@ -199,7 +199,9 @@ void BasicEventHandler::DispatchEvent(const EventMessage& msg)
 
 void *BasicEventHandler::Process()
 {
-  AnnounceStatus(EVENTHANDLER_CONNECTED);
+  // Try to connect
+  if (m_event->Open())
+    AnnounceStatus(EVENTHANDLER_CONNECTED);
   m_timeout = EVENTHANDLER_TIMEOUT;
   while (!PLATFORM::CThread::IsStopped())
   {
