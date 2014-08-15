@@ -105,6 +105,9 @@ bool PVRClientMythTV::Connect()
   {
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
+    // Try wake up for the next attempt
+    if (!g_szMythHostEther.empty())
+      XBMC->WakeOnLan(g_szMythHostEther.c_str());
     return false;
   }
   if (!m_control->CheckService())
@@ -182,7 +185,7 @@ void PVRClientMythTV::OnSleep()
 void PVRClientMythTV::OnWake()
 {
   if (m_eventHandler)
-    m_eventHandler->Start(); // Resume(true)
+    m_eventHandler->Start();
   if (m_fileOps)
     m_fileOps->Resume();
 }
@@ -218,6 +221,12 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
           m_hang = false;
           XBMC->QueueNotification(QUEUE_INFO, XBMC->GetLocalizedString(30303)); // Connection to MythTV restored
         }
+      }
+      else if (msg.subject[0] == EVENTHANDLER_NOTCONNECTED)
+      {
+        // Try wake up
+        if (!g_szMythHostEther.empty())
+          XBMC->WakeOnLan(g_szMythHostEther.c_str());
       }
       break;
     default:
