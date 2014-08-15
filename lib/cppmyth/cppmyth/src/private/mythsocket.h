@@ -53,9 +53,13 @@ namespace Myth
     }
     size_t ReadResponse(void *buf, size_t n);
     void Disconnect();
-    bool IsConnected() const
+    bool IsValid() const
     {
       return (m_socket == INVALID_SOCKET_VALUE ? false : true);
+    }
+    bool IsConnected() const
+    {
+      return IsValid();
     }
     int Listen(timeval *timeout);
     tcp_socket_t GetSocket() const;

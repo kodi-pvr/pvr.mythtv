@@ -184,57 +184,67 @@ bool TcpSocket::Connect(const char *server, unsigned port, int rcvbuf)
 
 bool TcpSocket::SendMessage(const char *msg, size_t size)
 {
-  size_t s = send(m_socket, msg, size, 0);
-  if (s != size)
+  if (IsValid())
   {
-    m_errno = -1;
-    return false;
+    size_t s = send(m_socket, msg, size, 0);
+    if (s != size)
+    {
+      m_errno = ECOMM;
+      return false;
+    }
+    m_errno = 0;
+    return true;
   }
-  m_errno = 0;
-  return true;
+  m_errno = ENOTCONN;
+  return false;
 }
 
 size_t TcpSocket::ReadResponse(void *buf, size_t n)
 {
-  char *p = (char *)buf;
-  struct timeval tv;
-  fd_set fds;
-  int r = 0, hangcount = 0;
-  size_t rcvlen = 0;
-
-  m_errno = 0;
-
-  while (n > 0)
+  if (IsValid())
   {
-    tv.tv_sec = SOCKET_READ_TIMEOUT_SEC;
-    tv.tv_usec = SOCKET_READ_TIMEOUT_USEC;
-    FD_ZERO(&fds);
-    FD_SET(m_socket, &fds);
-    r = select(m_socket + 1, &fds, NULL, NULL, &tv);
-    if (r > 0)
-      r = recv(m_socket, p, n, 0);
-    if (r == 0)
+    char *p = (char *)buf;
+    struct timeval tv;
+    fd_set fds;
+    int r = 0, hangcount = 0;
+    size_t rcvlen = 0;
+
+    m_errno = 0;
+
+    while (n > 0)
     {
-      DBG(MYTH_DBG_WARN, "%s: socket(%p) timed out (%d)\n", __FUNCTION__, &m_socket, hangcount);
-      m_errno = ETIMEDOUT;
-      if (++hangcount >= m_attempt)
+      tv.tv_sec = SOCKET_READ_TIMEOUT_SEC;
+      tv.tv_usec = SOCKET_READ_TIMEOUT_USEC;
+      FD_ZERO(&fds);
+      FD_SET(m_socket, &fds);
+      r = select(m_socket + 1, &fds, NULL, NULL, &tv);
+      if (r > 0)
+        r = recv(m_socket, p, n, 0);
+      if (r == 0)
+      {
+        DBG(MYTH_DBG_WARN, "%s: socket(%p) timed out (%d)\n", __FUNCTION__, &m_socket, hangcount);
+        m_errno = ETIMEDOUT;
+        if (++hangcount >= m_attempt)
+          break;
+      }
+      if (r < 0)
+      {
+        m_errno = LASTERROR;
         break;
+      }
+      rcvlen += r;
+      n -= r;
+      p += r;
     }
-    if (r < 0)
-    {
-      m_errno = LASTERROR;
-      break;
-    }
-    rcvlen += r;
-    n -= r;
-    p += r;
+    return rcvlen;
   }
-  return rcvlen;
+  m_errno = ENOTCONN;
+  return 0;
 }
 
 void TcpSocket::Disconnect()
 {
-  if (m_socket != INVALID_SOCKET_VALUE)
+  if (IsValid())
   {
     char buf[256];
     struct timeval tv;
@@ -266,15 +276,20 @@ const char *TcpSocket::GetMyHostName()
 
 int TcpSocket::Listen(timeval *timeout)
 {
-  fd_set fds;
-  int r;
+  if (IsValid())
+  {
+    fd_set fds;
+    int r;
 
-  FD_ZERO(&fds);
-  FD_SET(m_socket, &fds);
-  r = select(m_socket + 1, &fds, NULL, NULL, timeout);
-  if (r < 0)
-    m_errno = LASTERROR;
-  return r;
+    FD_ZERO(&fds);
+    FD_SET(m_socket, &fds);
+    r = select(m_socket + 1, &fds, NULL, NULL, timeout);
+    if (r < 0)
+      m_errno = LASTERROR;
+    return r;
+  }
+  m_errno = ENOTCONN;
+  return -1;
 }
 
 tcp_socket_t TcpSocket::GetSocket() const
