@@ -1811,3 +1811,49 @@ WSStreamPtr WSAPI::GetRecordingArtwork(const std::string& type, const std::strin
   ret.reset(new WSStream(resp));
   return ret;
 }
+
+ArtworkListPtr WSAPI::GetRecordingArtworkList(uint32_t chanid, time_t recstartts)
+{
+  ArtworkListPtr ret(new ArtworkList);
+  unsigned proto;
+  char buf[32];
+
+  if (!(proto = CheckService()))
+    return ret;
+
+  // Get bindings for protocol version
+  const bindings_t *bindartw = MythDTO::getArtworkBindArray(proto);
+
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Content/GetRecordingArtworkList");
+  uint32str(chanid, buf);
+  req.SetContentParam("ChanId", buf);
+  time2iso8601utc(recstartts, buf);
+  req.SetContentParam("StartTime", buf);
+  WSResponse resp(req);
+  if (!resp.IsValid())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  JanssonPtr root = ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *list = json_object_get(root.get(), "ArtworkInfoList");
+  // Bind artwork list
+  const json_t *arts = json_object_get(list, "ArtworkInfos");
+  for (size_t pa = 0; pa < json_array_size(arts); ++pa)
+  {
+    const json_t *artw = json_array_get(arts, pa);
+    ArtworkPtr artwork(new Artwork());  // Using default constructor
+    MythJSON::BindObject(artw, artwork.get(), bindartw);
+    ret->push_back(artwork);
+  }
+  return ret;
+}

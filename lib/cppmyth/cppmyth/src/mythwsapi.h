@@ -222,6 +222,11 @@ namespace Myth
      */
     WSStreamPtr GetRecordingArtwork(const std::string& type, const std::string& inetref, uint16_t season, unsigned width = 0, unsigned height = 0);
 
+    /**
+     * @brief GET Content/GetRecordingArtworkList
+     */
+    ArtworkListPtr GetRecordingArtworkList(uint32_t chanid, time_t recstartts);
+
   protected:
     PLATFORM::CMutex *m_mutex;
     std::string m_server;

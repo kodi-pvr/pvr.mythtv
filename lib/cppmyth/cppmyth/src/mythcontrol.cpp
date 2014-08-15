@@ -76,3 +76,17 @@ unsigned Control::GetBackendServerPort(const std::string& hostName)
     return backend_port;
   return 0;
 }
+
+bool Control::RefreshRecordedArtwork(Program& program)
+{
+  program.artwork.clear();
+  if (program.inetref.empty())
+    return false;
+  ArtworkListPtr artworks(GetRecordingArtworkList(program.channel.chanId, program.recording.startTs));
+  program.artwork.reserve(artworks->size());
+  for (ArtworkList::const_iterator it = artworks->begin(); it < artworks->end(); ++it)
+  {
+    program.artwork.push_back(*(it->get()));
+  }
+  return (program.artwork.empty() ? false : true);
+}

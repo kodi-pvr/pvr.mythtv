@@ -420,6 +420,24 @@ namespace Myth
     }
 
     /**
+     * @brief Get a list of artwork available for a recording by start time and channel id.
+     * @param chanid
+     * @param recstartts
+     * @return ArtworkListPtr
+     */
+    ArtworkListPtr GetRecordingArtworkList(uint32_t chanid, time_t recstartts)
+    {
+      return m_wsapi.GetRecordingArtworkList(chanid, recstartts);
+    }
+
+    /**
+     * @brief Refresh artwork available for a recording.
+     * @param program
+     * @return bool Return true if any artwork found
+     */
+    bool RefreshRecordedArtwork(Program& program);
+
+    /**
      * @brief Request a set of cut list marks for a recording
      * @param program
      * @param unit 0 = Frame count, 1 = Position, 2 = Duration ms
