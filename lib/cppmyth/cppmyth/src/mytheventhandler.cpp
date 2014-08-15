@@ -110,8 +110,7 @@ unsigned BasicEventHandler::GetPort() const
 bool BasicEventHandler::Start()
 {
   Stop();
-  PLATFORM::CThread::CreateThread();
-  return true;
+  return PLATFORM::CThread::CreateThread();
 }
 
 void BasicEventHandler::Stop()
