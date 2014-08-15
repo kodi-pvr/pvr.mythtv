@@ -258,6 +258,7 @@ void BasicEventHandler::RetryConnect()
       }
       c = 0;
       DBG(MYTH_DBG_INFO, "%s: could not open event socket (%d)\n", __FUNCTION__, m_event->GetSocketErrNo());
+      AnnounceStatus(EVENTHANDLER_NOTCONNECTED);
     }
   }
 }
