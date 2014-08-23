@@ -178,6 +178,7 @@ bool TcpSocket::Connect(const char *server, unsigned port, int rcvbuf)
     if (!err)
       break;
   }
+  freeaddrinfo(result);
   m_errno = err;
   return (err ? false : true);
 }
