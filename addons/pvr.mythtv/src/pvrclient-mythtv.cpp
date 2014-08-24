@@ -138,25 +138,29 @@ bool PVRClientMythTV::Connect()
 
 const char *PVRClientMythTV::GetBackendName()
 {
-  std::string label;
-  label.append("MythTV (").append(m_control->GetServerHostName()).append(")");
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, label.c_str());
-  return label.c_str();
+  static std::string myName;
+  myName.clear();
+  myName.append("MythTV (").append(m_control->GetServerHostName()).append(")");
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, myName.c_str());
+  return myName.c_str();
 }
 
 const char *PVRClientMythTV::GetBackendVersion()
 {
+  static std::string myVersion;
   Myth::VersionPtr version = m_control->GetVersion();
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, version->version.c_str());
-  return version->version.c_str();
+  myVersion = version->version;
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, myVersion.c_str());
+  return myVersion.c_str();
 }
 
 const char *PVRClientMythTV::GetConnectionString()
 {
-  std::string cs;
-  cs.append("http://").append(g_szMythHostname).append(":").append(Myth::IntToString(g_iWSApiPort));
-  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, cs.c_str());
-  return cs.c_str();
+  static std::string myConnectionString;
+  myConnectionString.clear();
+  myConnectionString.append("http://").append(g_szMythHostname).append(":").append(Myth::IntToString(g_iWSApiPort));
+  XBMC->Log(LOG_DEBUG, "%s: %s", __FUNCTION__, myConnectionString.c_str());
+  return myConnectionString.c_str();
 }
 
 PVR_ERROR PVRClientMythTV::GetDriveSpace(long long *iTotal, long long *iUsed)
