@@ -55,6 +55,7 @@ FileOps::~FileOps()
   StopThread(-1); // Set stopping. don't wait as we need to signal the thread first
   m_queueContent.Signal();
   StopThread(); // Wait for thread to stop
+  SAFE_DELETE(m_wsapi);
 }
 
 std::string FileOps::GetChannelIconPath(const MythChannel& channel)
