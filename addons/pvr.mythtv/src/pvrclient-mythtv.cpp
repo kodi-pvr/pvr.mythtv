@@ -444,8 +444,8 @@ PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
   LoadChannelsAndChannelGroups();
   m_PVRChannelUidById.clear();
 
-  // Create a map<(channum, callsign), chanid> to merge channels with same channum and callsign
-  std::map<std::pair<std::string, std::string>, unsigned int> channelIdentifiers;
+  // Create a map<(sourceid, channum, callsign), chanid> to merge channels with same channum and callsign within same group
+  std::map<std::pair<unsigned int, std::pair<std::string, std::string> >, unsigned int> channelIdentifiers;
 
   // Transfer channels of the requested type (radio / tv)
   for (ChannelIdMap::iterator it = m_channelsById.begin(); it != m_channelsById.end(); ++it)
@@ -453,8 +453,8 @@ PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
     if (it->second.IsRadio() == bRadio && !it->second.IsNull())
     {
       // Skip channels with same channum and callsign
-      std::pair<std::string, std::string> channelIdentifier = std::make_pair(it->second.Number(), it->second.Callsign());
-      std::map<std::pair<std::string, std::string>, unsigned int>::iterator itm = channelIdentifiers.find(channelIdentifier);
+      std::pair<unsigned int, std::pair<std::string, std::string> > channelIdentifier = std::make_pair(it->second.SourceID(), std::make_pair(it->second.Number(), it->second.Callsign()));
+      std::map<std::pair<unsigned int, std::pair<std::string, std::string> >, unsigned int>::iterator itm = channelIdentifiers.find(channelIdentifier);
       if (itm != channelIdentifiers.end())
       {
         XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, it->second.ID());
