@@ -481,14 +481,18 @@ bool Demux::update_pvr_stream(uint16_t pid)
   if (!es)
     return false;
 
+  const char* codec_name = es->GetStreamCodecName();
+  xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
   if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG, LOGTAG"%s: update info PES %.4x %s", __FUNCTION__, es->pid, es->GetStreamCodecName());
+    XBMC->Log(LOG_DEBUG, LOGTAG"%s: update info PES %.4x %s", __FUNCTION__, es->pid, codec_name);
 
   CLockObject Lock(m_mutex);
 
   XbmcPvrStream* stream = m_streams.GetStreamById(es->pid);
   if (stream)
   {
+    stream->iCodecId       = codec.codec_id;
+    stream->iCodecType     = codec.codec_type;
     recode_language(es->stream_info.language, stream->strLanguage);
     stream->iIdentifier    = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
     stream->iFPSScale      = es->stream_info.fps_scale;
