@@ -74,7 +74,7 @@ void ProtoBase::HangException()
 {
   DBG(MYTH_DBG_ERROR, "%s: protocol connection hang with error %d\n", __FUNCTION__, m_socket->GetErrNo());
   m_hang = true;
-  this->Close();
+  ProtoBase::Close();
   // Note: Calling OpenConnection() will reset m_hang
 }
 
