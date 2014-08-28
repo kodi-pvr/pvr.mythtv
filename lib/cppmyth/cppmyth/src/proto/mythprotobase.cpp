@@ -282,7 +282,7 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     tmp_ver = my_version;
 
   if (m_isOpen)
-    this->Close();
+    ProtoBase::Close();
   do
   {
     retry = false;

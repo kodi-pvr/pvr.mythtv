@@ -99,8 +99,7 @@ void LiveTVPlayback::Close()
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
   m_recorder.reset();
-  if (ProtoMonitor::IsOpen())
-    ProtoMonitor::Close();
+  ProtoMonitor::Close();
 }
 
 void LiveTVPlayback::SetTuneDelay(unsigned delay)

@@ -81,8 +81,7 @@ void RecordingPlayback::Close()
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
   CloseTransfer();
-  if (ProtoPlayback::IsOpen())
-    ProtoPlayback::Close();
+  ProtoPlayback::Close();
 }
 
 bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
