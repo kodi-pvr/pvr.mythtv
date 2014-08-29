@@ -97,7 +97,8 @@ BasicEventHandler::~BasicEventHandler()
 
 bool BasicEventHandler::Start()
 {
-  Stop();
+  if (PLATFORM::CThread::IsRunning())
+    return true;
   return PLATFORM::CThread::CreateThread();
 }
 
