@@ -103,8 +103,7 @@ Demux::Demux(Myth::Stream *file)
 
 Demux::~Demux()
 {
-  StopThread(0);
-  Flush();
+  Abort();
 
   // Free AV context
   if (m_AVContext)
@@ -254,11 +253,14 @@ void Demux::Flush(void)
 void Demux::Abort()
 {
   StopThread(0);
+  Flush();
 }
 
 DemuxPacket* Demux::Read()
 {
   DemuxPacket* packet(NULL);
+  if (IsStopped())
+    return packet;
   if (m_demuxPacketBuffer.Pop(packet, 100))
     return packet;
   return PVR->AllocateDemuxPacket(0);
