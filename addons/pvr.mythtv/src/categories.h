@@ -33,10 +33,10 @@ public:
   Categories();
 
   std::string Category(int category) const;
-  int Category(const std::string &category) const;
+  int Category(const std::string& category) const;
 
 private:
-  CategoryByIdMap DefaultEITCategories() const;
+  void LoadEITCategories(const char *filePath);
 
   CategoryByIdMap   m_categoriesById;
   CategoryByNameMap m_categoriesByName;
