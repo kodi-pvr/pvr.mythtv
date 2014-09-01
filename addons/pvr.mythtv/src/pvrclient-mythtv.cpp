@@ -644,7 +644,29 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
   // Load recordings list
   if (m_recordings.empty())
     FillRecordings();
-
+  // Setup series
+  typedef std::map<std::pair<std::string, std::string>, ProgramInfoMap::iterator::pointer> TitlesMap;
+  TitlesMap titles;
+  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  {
+    if (!it->second.IsNull() && it->second.IsVisible())
+    {
+      std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.Title());
+      TitlesMap::iterator found = titles.find(title);
+      if (found != titles.end())
+      {
+        if (found->second)
+        {
+          found->second->second.SetPropsSerie(true);
+          found->second = NULL;
+        }
+        it->second.SetPropsSerie(true);
+      }
+      else
+        titles.insert(std::make_pair(title, &(*it)));
+    }
+  }
+  // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
     if (!it->second.IsNull() && it->second.IsVisible())
@@ -670,8 +692,9 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       tag.iGenreType = genre&0xF0;
 
       // Add recording title to directory to group everything according to its name just like MythTV does
-      std::string strDirectory;
-      strDirectory.append(it->second.RecordingGroup()).append("/").append(it->second.Title());
+      std::string strDirectory(it->second.RecordingGroup());
+      if (it->second.GetPropsSerie())
+        strDirectory.append("/").append(it->second.Title());
       PVR_STRCPY(tag.strDirectory, strDirectory.c_str());
 
       // Images
