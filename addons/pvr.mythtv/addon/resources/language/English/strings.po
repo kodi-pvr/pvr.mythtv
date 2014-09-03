@@ -169,7 +169,7 @@ msgctxt "#30057"
 msgid "Never"
 msgstr ""
 
-#empty strings from id 30054 to 30099
+#empty strings from id 30058 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
