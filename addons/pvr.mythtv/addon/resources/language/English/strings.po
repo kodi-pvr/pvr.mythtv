@@ -153,6 +153,22 @@ msgctxt "#30053"
 msgid "Tuning delay (sec)"
 msgstr ""
 
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr ""
+
+msgctxt "#30055"
+msgid "Always"
+msgstr ""
+
+msgctxt "#30056"
+msgid "Only for series"
+msgstr ""
+
+msgctxt "#30057"
+msgid "Never"
+msgstr ""
+
 #empty strings from id 30054 to 30099
 
 # Systeminformation labels
