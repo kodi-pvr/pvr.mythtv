@@ -51,6 +51,7 @@ bool          g_bRecAutoExpire          = false;
 int           g_iRecTranscoder          = 0;
 bool          g_bDemuxing               = DEFAULT_HANDLE_DEMUXING;
 int           g_iTuneDelay              = DEFAULT_TUNE_DELAY;
+int           g_iGroupRecordings        = GROUP_RECORDINGS_ALWAYS;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -238,6 +239,15 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     g_szMythHostEther = "";
   }
   buffer[0] = 0;
+
+  /* Read settings "group_recordings" from settings.xml */
+  if (!XBMC->GetSetting("group_recordings", &g_iGroupRecordings))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'group_recordings' setting, falling back to '%i' as default", GROUP_RECORDINGS_ALWAYS);
+    g_iGroupRecordings = GROUP_RECORDINGS_ALWAYS;
+  }
+
   free (buffer);
   XBMC->Log(LOG_DEBUG, "Loading settings...done");
 
@@ -502,6 +512,15 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     XBMC->Log(LOG_INFO, "Changed Setting 'tunedelay' from %d to %d", g_iTuneDelay, *(int*)settingValue);
     if (g_iTuneDelay != *(int*)settingValue)
       g_iTuneDelay = *(int*)settingValue;
+  }
+  else if (str == "group_recordings")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'group_recordings' from %u to %u", g_iGroupRecordings, *(int*)settingValue);
+    if (g_iGroupRecordings != *(int*)settingValue)
+    {
+      g_iGroupRecordings = *(int*)settingValue;
+      PVR->TriggerRecordingUpdate();
+    }
   }
   return ADDON_STATUS_OK;
 }

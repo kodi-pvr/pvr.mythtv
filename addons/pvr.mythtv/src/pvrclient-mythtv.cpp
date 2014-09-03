@@ -645,25 +645,28 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
   if (m_recordings.empty())
     FillRecordings();
   // Setup series
-  typedef std::map<std::pair<std::string, std::string>, ProgramInfoMap::iterator::pointer> TitlesMap;
-  TitlesMap titles;
-  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  if (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES)
   {
-    if (!it->second.IsNull() && it->second.IsVisible())
+    typedef std::map<std::pair<std::string, std::string>, ProgramInfoMap::iterator::pointer> TitlesMap;
+    TitlesMap titles;
+    for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
-      std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.Title());
-      TitlesMap::iterator found = titles.find(title);
-      if (found != titles.end())
+      if (!it->second.IsNull() && it->second.IsVisible())
       {
-        if (found->second)
+        std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.Title());
+        TitlesMap::iterator found = titles.find(title);
+        if (found != titles.end())
         {
-          found->second->second.SetPropsSerie(true);
-          found->second = NULL;
+          if (found->second)
+          {
+            found->second->second.SetPropsSerie(true);
+            found->second = NULL;
+          }
+          it->second.SetPropsSerie(true);
         }
-        it->second.SetPropsSerie(true);
+        else
+          titles.insert(std::make_pair(title, &(*it)));
       }
-      else
-        titles.insert(std::make_pair(title, &(*it)));
     }
   }
   // Transfer to PVR
@@ -693,7 +696,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
       // Add recording title to directory to group everything according to its name just like MythTV does
       std::string strDirectory(it->second.RecordingGroup());
-      if (it->second.GetPropsSerie())
+      if (g_iGroupRecordings == GROUP_RECORDINGS_ALWAYS || (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES && it->second.GetPropsSerie()))
         strDirectory.append("/").append(it->second.Title());
       PVR_STRCPY(tag.strDirectory, strDirectory.c_str());
 
