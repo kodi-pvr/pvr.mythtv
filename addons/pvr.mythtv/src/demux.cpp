@@ -383,10 +383,7 @@ void Demux::reset_posmap()
 
 static inline int stream_identifier(int composition_id, int ancillary_id)
 {
-  return ((composition_id & 0xff00) >> 8)
-    | ((composition_id & 0xff) << 8)
-    | ((ancillary_id & 0xff00) << 16)
-    | ((ancillary_id & 0xff) << 24);
+  return (composition_id & 0xffff) | ((ancillary_id & 0xffff) << 16);
 }
 
 static void recode_language(const char* muxLanguage, char* strLanguage)
