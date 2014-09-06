@@ -1038,6 +1038,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   Myth::MarkPtr startPtr;
   for (it = skpList->begin(); it != skpList->end(); ++it)
   {
+    if (index >= PVR_ADDON_EDL_LENGTH)
+      break;
     switch ((*it)->markType)
     {
       case Myth::MARK_COMM_START:
