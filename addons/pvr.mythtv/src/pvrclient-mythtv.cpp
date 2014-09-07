@@ -24,6 +24,7 @@
 #include "client.h"
 #include "tools.h"
 #include "avinfo.h"
+#include "guidialogyesno.h"
 
 #include <time.h>
 #include <set>
@@ -1003,10 +1004,11 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
 
 PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size)
 {
+  *size = 0;
+  if (g_iEnableEDL == ENABLE_EDL_NEVER)
+    return PVR_ERROR_NO_ERROR;
   if (g_bExtraDebug)
-  {
     XBMC->Log(LOG_DEBUG, "%s: Reading edl for: %s", __FUNCTION__, recording.strTitle);
-  }
   // Check recording
   MythProgramInfo prog;
   {
@@ -1023,16 +1025,22 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   float fps = prog.GetPropsFrameRate();
   XBMC->Log(LOG_DEBUG, "%s: AV props: Frame Rate = %.3f", __FUNCTION__, fps);
   if (fps <= 0)
-  {
-    *size = 0;
     return PVR_ERROR_NO_ERROR;
-  }
-  // Processing marks
+  // Search for marks
   Myth::MarkListPtr skpList = m_control->GetCommBreakList(*(prog.GetPtr()));
   XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, skpList->size(), recording.strTitle);
   Myth::MarkListPtr cutList = m_control->GetCutList(*(prog.GetPtr()));
   XBMC->Log(LOG_DEBUG, "%s: Found %d cut list entries for: %s", __FUNCTION__, cutList->size(), recording.strTitle);
   skpList->insert(skpList->end(), cutList->begin(), cutList->end());
+  // Open dialog
+  if (g_iEnableEDL == ENABLE_EDL_DIALOG && !skpList->empty())
+  {
+    GUIDialogYesNo dialog(XBMC->GetLocalizedString(30110), XBMC->GetLocalizedString(30111), 1);
+    dialog.Open();
+    if (dialog.IsNo())
+      return PVR_ERROR_NO_ERROR;
+  }
+  // Processing marks
   int index = 0;
   Myth::MarkList::const_iterator it;
   Myth::MarkPtr startPtr;
