@@ -137,20 +137,20 @@ msgid "Enable demuxing MPEG-TS"
 msgstr "Activer le démultiplexage MPEG-TS"
 
 msgctxt "#30054"
-msgid "Regrouper les enregistrements par titre"
-msgstr ""
+msgid "Group recordings by title"
+msgstr "Regrouper les enregistrements par titre"
 
 msgctxt "#30055"
-msgid "Toujours"
-msgstr ""
+msgid "Always"
+msgstr "Toujours"
 
 msgctxt "#30056"
-msgid "Seulement pour les séries"
-msgstr ""
+msgid "Only for series"
+msgstr "Seulement pour les séries"
 
 msgctxt "#30057"
-msgid "Jamais"
-msgstr ""
+msgid "Never"
+msgstr "Jamais"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
