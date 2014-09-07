@@ -152,9 +152,33 @@ msgctxt "#30057"
 msgid "Never"
 msgstr "Jamais"
 
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Activer la prise en charge des sauts publicitaires (EDL)"
+
+msgctxt "#30059"
+msgid "Always"
+msgstr "Toujours"
+
+msgctxt "#30060"
+msgid "Dialog"
+msgstr "Dialogue"
+
+msgctxt "#30061"
+msgid "Never"
+msgstr "Jamais"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole: %i - Version de la base de données: %i"
+
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr "Activation de EDL"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "Une liste de coupures ou des sauts publicitaires ont été trouvés.\nVoulez-vous activer la fonctionnalité EDL pour cette représentation ?"
 
 msgctxt "#30300"
 msgid "Failed to connect to MythTV backend"

@@ -169,14 +169,41 @@ msgctxt "#30057"
 msgid "Never"
 msgstr ""
 
-#empty strings from id 30058 to 30099
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr ""
+
+msgctxt "#30059"
+msgid "Always"
+msgstr ""
+
+msgctxt "#30060"
+msgid "Dialog"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Never"
+msgstr ""
+
+#empty strings from id 30062 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr ""
 
-#empty strings from id 30101 to 30299
+#empty strings from id 30101 to 30109
+
+# Dialog labels
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr ""
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr ""
+
+#empty strings from id 30112 to 30299
 
 # Notifications
 msgctxt "#30300"
