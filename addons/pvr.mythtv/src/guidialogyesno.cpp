@@ -35,6 +35,7 @@ GUIDialogYesNo::GUIDialogYesNo()
 : GUIDialogBase(GUI_XMLFILENAME, GUI_DEFAULTSKIN)
 , m_heading()
 , m_text()
+, m_focus(0)
 , m_response(0)
 {
 }
