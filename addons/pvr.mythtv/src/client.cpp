@@ -52,6 +52,7 @@ int           g_iRecTranscoder          = 0;
 bool          g_bDemuxing               = DEFAULT_HANDLE_DEMUXING;
 int           g_iTuneDelay              = DEFAULT_TUNE_DELAY;
 int           g_iGroupRecordings        = GROUP_RECORDINGS_ALWAYS;
+int           g_iEnableEDL              = ENABLE_EDL_ALWAYS;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -246,6 +247,14 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     /* If setting is unknown fallback to defaults */
     XBMC->Log(LOG_ERROR, "Couldn't get 'group_recordings' setting, falling back to '%i' as default", GROUP_RECORDINGS_ALWAYS);
     g_iGroupRecordings = GROUP_RECORDINGS_ALWAYS;
+  }
+
+  /* Read setting "enable_edl" from settings.xml */
+  if (!XBMC->GetSetting("enable_edl", &g_iEnableEDL))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'enable_edl' setting, falling back to '%i' as default", ENABLE_EDL_ALWAYS);
+    g_iEnableEDL = ENABLE_EDL_ALWAYS;
   }
 
   free (buffer);
@@ -521,6 +530,12 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
       g_iGroupRecordings = *(int*)settingValue;
       PVR->TriggerRecordingUpdate();
     }
+  }
+  else if (str == "enable_edl")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'enable_edl' from %u to %u", g_iEnableEDL, *(int*)settingValue);
+    if (g_iEnableEDL != *(int*)settingValue)
+      g_iEnableEDL = *(int*)settingValue;
   }
   return ADDON_STATUS_OK;
 }
