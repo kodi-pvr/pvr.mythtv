@@ -210,7 +210,7 @@ msgstr "Chaîne indisponible"
 
 msgctxt "#30306"
 msgid "Recorder unavailable"
-msgstr "Enregistreur non disponible"
+msgstr "Enregistreur indisponible"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
