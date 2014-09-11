@@ -70,7 +70,7 @@ msgid "MythTV Backend Ethernet address (WOL)"
 msgstr ""
 
 msgctxt "#30013"
-msgid "MythTV Backend status Port"
+msgid "MythTV Backend Port for API services"
 msgstr ""
 
 #empty strings from id 30014 to 30018
@@ -130,7 +130,7 @@ msgid "Transcoder"
 msgstr ""
 
 msgctxt "#30034"
-msgid "Allow recordings to expire?"
+msgid "Allow recordings to expire"
 msgstr ""
 
 #empty strings from id 30035 to 30048
