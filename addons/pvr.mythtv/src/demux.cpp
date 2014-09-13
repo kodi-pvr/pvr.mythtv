@@ -272,9 +272,9 @@ bool Demux::SeekTime(int time, bool backwards, double* startpts)
   if (m_PTS == PTS_UNSET)
     return false;
   // time is in MSEC not PTS_TIME_BASE. Rescale time to PTS (90Khz)
-  uint64_t pts = (uint64_t)time * PTS_TIME_BASE / 1000;
+  int64_t pts = (int64_t)time * PTS_TIME_BASE / 1000;
   // Compute offset from current PTS
-  int64_t offset = (int64_t)(pts - m_PTS);
+  int64_t offset = pts - m_PTS;
   // Limit offset to deal with invalid request or PTS discontinuity
   // Backwards  : Limiting offset to +6 secs
   // Forwards   : Limiting offset to -6 secs
@@ -285,26 +285,15 @@ bool Demux::SeekTime(int time, bool backwards, double* startpts)
   // Compute desired time position
   int64_t desired = m_curTime + offset;
 
-  CLockObject lock(m_mutex);
-
-  std::map<int64_t, AV_POSMAP_ITEM>::const_iterator it;
-  if (offset < 0)
-  {
-    it = m_posmap.upper_bound(desired);
-    if (backwards && it != m_posmap.begin())
-      --it;
-  }
-  else
-  {
-    it = m_posmap.upper_bound(desired);
-    // On end shift back if possible
-    if (it == m_posmap.end() && it != m_posmap.begin())
-      return false;
-  }
-
   if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG, LOGTAG"%s: bw:%d tm:%d tm_pts:%"PRIu64" c_pts:%"PRIu64" offset:%+6.3f c_tm:%+6.3f n_tm:%+6.3f", __FUNCTION__,
+    XBMC->Log(LOG_DEBUG, LOGTAG"%s: bw:%d tm:%d tm_pts:%"PRId64" c_pts:%"PRIu64" offset:%+6.3f c_tm:%+6.3f n_tm:%+6.3f", __FUNCTION__,
             backwards, time, pts, m_PTS, (double)offset / PTS_TIME_BASE, (double)m_curTime / PTS_TIME_BASE, (double)desired / PTS_TIME_BASE);
+
+  CLockObject lock(m_mutex);
+  std::map<int64_t, AV_POSMAP_ITEM>::const_iterator it;
+  it = m_posmap.upper_bound(desired);
+  if (backwards && it != m_posmap.begin())
+    --it;
 
   if (it != m_posmap.end())
   {
