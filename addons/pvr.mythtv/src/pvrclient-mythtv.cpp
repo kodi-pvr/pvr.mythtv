@@ -1828,12 +1828,24 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
     // Gather AV info for later use
     AVInfo info(m_recordingStream);
-    ElementaryStream::STREAM_INFO mInfo;
-    if (info.GetMainStream(&mInfo) && mInfo.fps_scale > 0)
+    AVInfo::STREAM_AVINFO mInfo;
+    if (info.GetMainStream(&mInfo))
     {
-      prog.SetPropsFrameRate((float)(mInfo.fps_rate) / (mInfo.fps_scale * (mInfo.interlaced ? 2 : 1)));
-      if (mInfo.aspect > 0)
-        prog.SetPropsAspec(mInfo.aspect);
+      if (mInfo.stream_info.fps_scale > 0)
+      {
+        float fps = 0;
+        switch(mInfo.stream_type)
+        {
+          case STREAM_TYPE_VIDEO_H264:
+            fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
+            break;
+          default:
+            fps = (float)(mInfo.stream_info.fps_rate) / mInfo.stream_info.fps_scale;
+        }
+        prog.SetPropsFrameRate(fps);
+      }
+      if (mInfo.stream_info.aspect > 0)
+        prog.SetPropsAspec(mInfo.stream_info.aspect);
     }
     return true;
   }
