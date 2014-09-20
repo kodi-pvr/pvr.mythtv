@@ -137,24 +137,24 @@ bool MythProgramInfo::HasFanart() const
   return false;
 }
 
-void MythProgramInfo::SetPropsFrameRate(float fps)
+void MythProgramInfo::SetPropsVideoFrameRate(float fps)
 {
-  m_props->m_frameRate = fps;
+  m_props->m_videoFrameRate = fps;
 }
 
-float MythProgramInfo::GetPropsFrameRate() const
+float MythProgramInfo::GetPropsVideoFrameRate() const
 {
-  return m_props->m_frameRate;
+  return m_props->m_videoFrameRate;
 }
 
-void MythProgramInfo::SetPropsAspec(float aspec)
+void MythProgramInfo::SetPropsVideoAspec(float aspec)
 {
-  m_props->m_aspec = aspec;
+  m_props->m_videoAspec = aspec;
 }
 
-float MythProgramInfo::GetPropsAspec() const
+float MythProgramInfo::GetPropsVideoAspec() const
 {
-  return m_props->m_aspec;
+  return m_props->m_videoAspec;
 }
 
 void MythProgramInfo::SetPropsSerie(bool flag)

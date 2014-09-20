@@ -1022,7 +1022,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
     prog = it->second;
   }
   // Check required props else return
-  float fps = prog.GetPropsFrameRate();
+  float fps = prog.GetPropsVideoFrameRate();
   XBMC->Log(LOG_DEBUG, "%s: AV props: Frame Rate = %.3f", __FUNCTION__, fps);
   if (fps <= 0)
     return PVR_ERROR_NO_ERROR;
@@ -1116,6 +1116,31 @@ bool PVRClientMythTV::IsMyLiveRecording(const MythProgramInfo& programInfo)
     }
   }
   return false;
+}
+
+void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream)
+{
+  AVInfo info(stream);
+  AVInfo::STREAM_AVINFO mInfo;
+  if (info.GetMainStream(&mInfo))
+  {
+    // Set video frame rate
+    if (mInfo.stream_info.fps_scale > 0)
+    {
+      float fps = 0;
+      switch(mInfo.stream_type)
+      {
+        case STREAM_TYPE_VIDEO_H264:
+          fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
+          break;
+        default:
+          fps = (float)(mInfo.stream_info.fps_rate) / mInfo.stream_info.fps_scale;
+      }
+      programInfo.SetPropsVideoFrameRate(fps);
+    }
+    // Set video aspec
+    programInfo.SetPropsVideoAspec(mInfo.stream_info.aspect);
+  }
 }
 
 int PVRClientMythTV::GetTimersAmount(void)
@@ -1826,27 +1851,8 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   {
     if (g_bExtraDebug)
       XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
-    // Gather AV info for later use
-    AVInfo info(m_recordingStream);
-    AVInfo::STREAM_AVINFO mInfo;
-    if (info.GetMainStream(&mInfo))
-    {
-      if (mInfo.stream_info.fps_scale > 0)
-      {
-        float fps = 0;
-        switch(mInfo.stream_type)
-        {
-          case STREAM_TYPE_VIDEO_H264:
-            fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
-            break;
-          default:
-            fps = (float)(mInfo.stream_info.fps_rate) / mInfo.stream_info.fps_scale;
-        }
-        prog.SetPropsFrameRate(fps);
-      }
-      if (mInfo.stream_info.aspect > 0)
-        prog.SetPropsAspec(mInfo.stream_info.aspect);
-    }
+    // Fill AV info for later use
+    FillRecordingAVInfo(prog, m_recordingStream);
     return true;
   }
 
