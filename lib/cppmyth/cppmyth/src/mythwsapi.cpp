@@ -23,10 +23,11 @@
 #include "mythdebug.h"
 #include "private/builtin.h"
 #include "private/mythsocket.h"
-#include "private/mythjsonbinder.h"
-#include "private/janssonptr.h"
 #include "private/mythwsrequest.h"
 #include "private/mythwsresponse.h"
+#include "private/janssonptr.h"
+#include "private/mythjsonparser.h"
+#include "private/mythjsonbinder.h"
 #include "private/platform/threads/mutex.h"
 #include "private/platform/util/util.h"
 
@@ -35,30 +36,6 @@
 #define BOOLSTR(a)  ((a) ? "true" : "false")
 
 using namespace Myth;
-
-JanssonPtr ParseResponseJSON(WSResponse& resp)
-{
-  // Read content response
-  JanssonPtr root;
-  size_t r, content_length = resp.GetContentLength();
-  char *content = new char[content_length + 1];
-  if ((r = resp.ReadContent(content, content_length)) == content_length)
-  {
-    json_error_t error;
-    content[content_length] = '\0';
-    DBG(MYTH_DBG_PROTO,"%s: %s\n", __FUNCTION__, content);
-    // Parse JSON content
-    root.reset(json_loads(content, 0, &error));
-    if (!root.isValid())
-      DBG(MYTH_DBG_ERROR, "%s: failed to parse: %d: %s\n", __FUNCTION__, error.line, error.text);
-  }
-  else
-  {
-    DBG(MYTH_DBG_ERROR, "%s: read error\n", __FUNCTION__);
-  }
-  delete[] content;
-  return root;
-}
 
 WSAPI::WSAPI(const std::string& server, unsigned port)
 : m_mutex(new PLATFORM::CMutex)
@@ -91,7 +68,7 @@ bool WSAPI::CheckServerHostName()
     return false;
   }
   // Parse content response
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (root.isValid() && json_is_object(root.get()))
   {
     const json_t *field = json_object_get(root.get(), "String");
@@ -124,7 +101,7 @@ bool WSAPI::CheckVersion()
     return false;
   }
   // Parse content response
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (root.isValid() && json_is_object(root.get()))
   {
     const json_t *con = json_object_get(root.get(), "ConnectionInfo");
@@ -202,7 +179,7 @@ SettingPtr WSAPI::GetSetting(const std::string& key, const std::string hostname)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -258,7 +235,7 @@ SettingMapPtr WSAPI::GetSettings(const std::string hostname)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -320,7 +297,7 @@ bool WSAPI::PutSetting(const std::string& key, const std::string& value, bool my
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -376,7 +353,7 @@ ProgramListPtr WSAPI::GetRecordedList(unsigned n, bool descending)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -459,7 +436,7 @@ ProgramPtr WSAPI::GetRecorded(uint32_t chanid, time_t recstartts)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -511,7 +488,7 @@ bool WSAPI::UpdateRecordedWatchedStatus79(uint32_t chanid, time_t recstartts, bo
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -545,7 +522,7 @@ bool WSAPI::DeleteRecording82(uint32_t chanid, time_t recstartts, bool forceDele
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -577,7 +554,7 @@ bool WSAPI::UnDeleteRecording82(uint32_t chanid, time_t recstartts)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -613,7 +590,7 @@ CaptureCardListPtr WSAPI::GetCaptureCardList()
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -658,7 +635,7 @@ VideoSourceListPtr WSAPI::GetVideoSourceList()
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -718,7 +695,7 @@ ChannelListPtr WSAPI::GetChannelList75(uint32_t sourceid, bool onlyVisible)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -796,7 +773,7 @@ ChannelListPtr WSAPI::GetChannelList82(uint32_t sourceid, bool onlyVisible)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -870,7 +847,7 @@ ProgramMapPtr WSAPI::GetProgramGuide(uint32_t chanid, time_t starttime, time_t e
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -975,7 +952,7 @@ RecordScheduleListPtr WSAPI::GetRecordScheduleList()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1038,7 +1015,7 @@ RecordSchedulePtr WSAPI::GetRecordSchedule(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1129,7 +1106,7 @@ bool WSAPI::AddRecordSchedule75(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1218,7 +1195,7 @@ bool WSAPI::AddRecordSchedule76(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1308,7 +1285,7 @@ bool WSAPI::UpdateRecordSchedule76(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1344,7 +1321,7 @@ bool WSAPI::DisableRecordSchedule(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1380,7 +1357,7 @@ bool WSAPI::EnableRecordSchedule(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1416,7 +1393,7 @@ bool WSAPI::RemoveRecordSchedule(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1481,7 +1458,7 @@ ProgramListPtr WSAPI::GetUpcomingList79()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1562,7 +1539,7 @@ ProgramListPtr WSAPI::GetConflictList()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1643,7 +1620,7 @@ ProgramListPtr WSAPI::GetExpiringList()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    JanssonPtr root = ParseResponseJSON(resp);
+    JanssonPtr root = MythJSON::ParseResponseJSON(resp);
     if (!root.isValid() || !json_is_object(root.get()))
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1837,7 +1814,7 @@ ArtworkListPtr WSAPI::GetRecordingArtworkList(uint32_t chanid, time_t recstartts
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  JanssonPtr root = ParseResponseJSON(resp);
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
   if (!root.isValid() || !json_is_object(root.get()))
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);

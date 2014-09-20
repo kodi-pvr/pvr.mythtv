@@ -9,6 +9,7 @@ libcppmyth_la_SOURCES = \
 	src/private/mythdto/mythdto.cpp \
 	src/private/builtin.c \
 	src/private/mythsocket.cpp \
+	src/private/mythjsonparser.cpp \
 	src/private/mythjsonbinder.cpp \
 	src/private/mythwscontent.cpp \
 	src/private/mythwsrequest.cpp \
