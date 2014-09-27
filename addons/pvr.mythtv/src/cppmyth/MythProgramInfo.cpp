@@ -169,8 +169,11 @@ bool MythProgramInfo::GetPropsSerie() const
 
 std::string MythProgramInfo::UID() const
 {
-  char buf[50] = "";
-  sprintf(buf, "%u %ld", (unsigned)m_proginfo->channel.chanId, (long)m_proginfo->recording.startTs);
+  char buf[48] = "";
+  sprintf(buf, "%u_%ld_%.3x",
+          (unsigned)m_proginfo->channel.chanId,
+          (long)m_proginfo->recording.startTs,
+          (unsigned)m_proginfo->recording.recordedId & 0xfff);
   return std::string(buf);
 }
 
