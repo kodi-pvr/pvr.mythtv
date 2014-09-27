@@ -134,6 +134,7 @@ bool WSAPI::GetServiceVersion(WSServiceId_t id, WSServiceVersion_t& wsv)
   }
   wsv.major = 0;
   wsv.minor = 0;
+  wsv.ranking = 0;
   return false;
 }
 
@@ -1701,6 +1702,10 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
   return ret;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+////
+//// Content service
+////
 WSStreamPtr WSAPI::GetFile1_32(const std::string& filename, const std::string& sgname)
 {
   WSStreamPtr ret;
