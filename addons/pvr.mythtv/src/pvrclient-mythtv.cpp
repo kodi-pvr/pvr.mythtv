@@ -1070,6 +1070,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
           if (g_bExtraDebug)
             XBMC->Log(LOG_DEBUG, "%s: COMBREAK %9.3f - %9.3f", __FUNCTION__, s, e);
         }
+        startPtr.reset();
+        break;
       case Myth::MARK_CUT_END:
         if (startPtr && startPtr->markType == Myth::MARK_CUT_START && (*it)->markValue > startPtr->markValue)
         {
@@ -1084,6 +1086,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
           if (g_bExtraDebug)
             XBMC->Log(LOG_DEBUG, "%s: CUT %9.3f - %9.3f", __FUNCTION__, s, e);
         }
+        startPtr.reset();
+        break;
       default:
         startPtr.reset();
     }
