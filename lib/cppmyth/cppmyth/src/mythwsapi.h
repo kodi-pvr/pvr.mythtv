@@ -65,6 +65,7 @@ namespace Myth
     void InvalidateService();
     std::string GetServerHostName();
     VersionPtr GetVersion();
+    std::string ResolveHostName(const std::string& hostname);
 
     /**
      * @brief GET Myth/GetSetting
@@ -357,6 +358,11 @@ namespace Myth
     Version m_version;
     std::string m_serverHostName;
     WSServiceVersion_t m_serviceVersion[WS_INVALID + 1];
+    std::map<std::string, std::string> m_namedCache;
+
+    // prevent copy
+    WSAPI(const WSAPI&);
+    WSAPI& operator=(const WSAPI&);
 
     bool InitWSAPI();
     bool GetServiceVersion(WSServiceId_t id, WSServiceVersion_t& version);

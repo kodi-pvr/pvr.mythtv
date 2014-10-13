@@ -30,6 +30,7 @@
 #include "private/mythjsonbinder.h"
 #include "private/platform/threads/mutex.h"
 #include "private/platform/util/util.h"
+#include "private/uriparser.h"
 
 #include <jansson.h>
 
@@ -111,7 +112,7 @@ bool WSAPI::GetServiceVersion(WSServiceId_t id, WSServiceVersion_t& wsv)
   req.RequestAccept(CT_JSON);
   req.RequestService(url);
   WSResponse resp(req);
-  if (resp.IsValid())
+  if (resp.IsSuccessful())
   {
     // Parse content response
     JanssonPtr root = MythJSON::ParseResponseJSON(resp);
@@ -146,7 +147,7 @@ bool WSAPI::CheckServerHostName2_0()
   req.RequestAccept(CT_JSON);
   req.RequestService("/Myth/GetHostName");
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -162,6 +163,7 @@ bool WSAPI::CheckServerHostName2_0()
       if (val != NULL)
       {
         m_serverHostName = val;
+        m_namedCache[val] = m_server;
         return true;
       }
     }
@@ -180,7 +182,7 @@ bool WSAPI::CheckVersion2_0()
   req.RequestAccept(CT_JSON);
   req.RequestService("/Myth/GetConnectionInfo");
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -233,6 +235,32 @@ VersionPtr WSAPI::GetVersion()
   return VersionPtr(new Version(m_version));
 }
 
+std::string WSAPI::ResolveHostName(const std::string& hostname)
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  std::map<std::string, std::string>::const_iterator it = m_namedCache.find(hostname);
+  if (it != m_namedCache.end())
+    return it->second;
+  Myth::SettingPtr addr = this->GetSetting("BackendServerIP6", hostname);
+  if (addr && !addr->value.empty() && addr->value != "::1")
+  {
+    std::string& ret = m_namedCache[hostname];
+    ret.assign(addr->value);
+    DBG(MYTH_DBG_DEBUG, "%s: resolving hostname %s as %s\n", __FUNCTION__, hostname.c_str(), ret.c_str());
+    return ret;
+  }
+  addr = this->GetSetting("BackendServerIP", hostname);
+  if (addr && !addr->value.empty())
+  {
+    std::string& ret = m_namedCache[hostname];
+    ret.assign(addr->value);
+    DBG(MYTH_DBG_DEBUG, "%s: resolving hostname %s as %s\n", __FUNCTION__, hostname.c_str(), ret.c_str());
+    return ret;
+  }
+  DBG(MYTH_DBG_ERROR, "%s: unknown host (%s)\n", __FUNCTION__, hostname.c_str());
+  return std::string();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ////
 ////  Service operations
@@ -249,7 +277,7 @@ SettingPtr WSAPI::GetSetting2_0(const std::string& key, const std::string& hostn
   req.SetContentParam("HostName", hostname);
   req.SetContentParam("Key", key);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -301,7 +329,7 @@ SettingMapPtr WSAPI::GetSettings2_0(const std::string& hostname)
   req.RequestService("/Myth/GetSetting");
   req.SetContentParam("HostName", hostname);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -358,7 +386,7 @@ bool WSAPI::PutSetting2_0(const std::string& key, const std::string& value, bool
   req.SetContentParam("Key", key);
   req.SetContentParam("Value", value);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -395,7 +423,7 @@ CaptureCardListPtr WSAPI::GetCaptureCardList1_4()
   req.RequestService("/Capture/GetCaptureCardList");
   req.SetContentParam("HostName", m_serverHostName.c_str());
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -441,7 +469,7 @@ VideoSourceListPtr WSAPI::GetVideoSourceList1_2()
   req.RequestAccept(CT_JSON);
   req.RequestService("/Channel/GetVideoSourceList");
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -498,7 +526,7 @@ ChannelListPtr WSAPI::GetChannelList1_2(uint32_t sourceid, bool onlyVisible)
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -573,7 +601,7 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -648,7 +676,7 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
   req.SetContentParam("Details", "true");
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -736,7 +764,7 @@ ProgramListPtr WSAPI::GetRecordedList1_5(unsigned n, bool descending)
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -816,7 +844,7 @@ ProgramPtr WSAPI::GetRecorded1_5(uint32_t chanid, time_t recstartts)
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -869,7 +897,7 @@ bool WSAPI::DeleteRecording2_1(uint32_t chanid, time_t recstartts, bool forceDel
   req.SetContentParam("ForceDelete", BOOLSTR(forceDelete));
   req.SetContentParam("AllowRerecord", BOOLSTR(allowRerecord));
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -901,7 +929,7 @@ bool WSAPI::UnDeleteRecording2_1(uint32_t chanid, time_t recstartts)
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -934,7 +962,7 @@ bool WSAPI::UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, b
   req.SetContentParam("StartTime", buf);
   req.SetContentParam("Watched", BOOLSTR(watched));
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -988,7 +1016,7 @@ RecordScheduleListPtr WSAPI::GetRecordScheduleList1_5()
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -1048,7 +1076,7 @@ RecordSchedulePtr WSAPI::GetRecordSchedule1_5(uint32_t recordid)
   uint32str(recordid, buf);
   req.SetContentParam("RecordId", buf);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
@@ -1157,7 +1185,7 @@ bool WSAPI::AddRecordSchedule1_5(RecordSchedule& record)
   req.SetContentParam("Transcoder", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1247,7 +1275,7 @@ bool WSAPI::AddRecordSchedule1_7(RecordSchedule& record)
   req.SetContentParam("Transcoder", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1338,7 +1366,7 @@ bool WSAPI::UpdateRecordSchedule1_7(RecordSchedule& record)
   req.SetContentParam("Transcoder", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1370,7 +1398,7 @@ bool WSAPI::DisableRecordSchedule1_5(uint32_t recordid)
   req.SetContentParam("RecordId", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1402,7 +1430,7 @@ bool WSAPI::EnableRecordSchedule1_5(uint32_t recordid)
   req.SetContentParam("RecordId", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1434,7 +1462,7 @@ bool WSAPI::RemoveRecordSchedule1_5(uint32_t recordid)
   req.SetContentParam("RecordId", buf);
 
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
@@ -1496,7 +1524,7 @@ ProgramListPtr WSAPI::GetUpcomingList2_2()
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -1574,7 +1602,7 @@ ProgramListPtr WSAPI::GetConflictList1_5()
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -1652,7 +1680,7 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
 
     DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
-    if (!resp.IsValid())
+    if (!resp.IsSuccessful())
     {
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
@@ -1716,7 +1744,7 @@ WSStreamPtr WSAPI::GetFile1_32(const std::string& filename, const std::string& s
   req.SetContentParam("StorageGroup", sgname);
   req.SetContentParam("FileName", filename);
   WSResponse *resp = new WSResponse(req);
-  if (!resp->IsValid())
+  if (!resp->IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     delete resp;
@@ -1744,7 +1772,7 @@ WSStreamPtr WSAPI::GetChannelIcon1_32(uint32_t chanid, unsigned width, unsigned 
     req.SetContentParam("Height", buf);
   }
   WSResponse *resp = new WSResponse(req);
-  if (!resp->IsValid())
+  if (!resp->IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     delete resp;
@@ -1774,7 +1802,16 @@ WSStreamPtr WSAPI::GetPreviewImage1_32(uint32_t chanid, time_t recstartts, unsig
     req.SetContentParam("Height", buf);
   }
   WSResponse *resp = new WSResponse(req);
-  if (!resp->IsValid())
+  /* try redirection if any */
+  if (resp->GetStatusCode() == 301 && !resp->Redirection().empty())
+  {
+    URIParser uri(resp->Redirection());
+    WSRequest rreq(ResolveHostName(uri.Host()), uri.Port());
+    rreq.RequestService(std::string("/").append(uri.Path()));
+    delete resp;
+    resp = new WSResponse(rreq);
+  }
+  if (!resp->IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     delete resp;
@@ -1804,7 +1841,7 @@ WSStreamPtr WSAPI::GetRecordingArtwork1_32(const std::string& type, const std::s
     req.SetContentParam("Height", buf);
   }
   WSResponse *resp = new WSResponse(req);
-  if (!resp->IsValid())
+  if (!resp->IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     delete resp;
@@ -1831,7 +1868,7 @@ ArtworkListPtr WSAPI::GetRecordingArtworkList1_32(uint32_t chanid, time_t recsta
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
   WSResponse resp(req);
-  if (!resp.IsValid())
+  if (!resp.IsSuccessful())
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
