@@ -73,6 +73,9 @@
     <ClCompile Include="..\..\..\cppmyth\src\private\mythjsonparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\cppmyth\src\private\uriparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\cppmyth\src\proto\mythprotobase.h">
