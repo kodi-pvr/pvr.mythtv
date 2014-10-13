@@ -14,6 +14,7 @@ libcppmyth_la_SOURCES = \
 	src/private/mythwscontent.cpp \
 	src/private/mythwsrequest.cpp \
 	src/private/mythwsresponse.cpp \
+	src/private/uriparser.cpp \
 	src/proto/mythprotobase.cpp \
 	src/proto/mythprotoevent.cpp \
 	src/proto/mythprotomonitor.cpp \
