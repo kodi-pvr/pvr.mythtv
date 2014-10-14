@@ -247,8 +247,7 @@ size_t WSResponse::ReadContent(char* buf, size_t buflen)
 {
   if (!m_socket->IsConnected())
     return 0;
-  size_t s = m_contentLength - m_consumed;
-  s = m_socket->ReadResponse(buf, buflen > s ? s : buflen);
+  size_t s = m_socket->ReadResponse(buf, buflen);
   m_consumed += s;
   return s;
 }
