@@ -471,7 +471,8 @@ PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
       memset(&tag, 0, sizeof(PVR_CHANNEL));
 
       tag.iUniqueId = it->first;
-      tag.iChannelNumber = (unsigned)atoi(it->second.Number().c_str());
+      tag.iChannelNumber = it->second.NumberMajor();
+      tag.iSubChannelNumber = it->second.NumberMinor();
       PVR_STRCPY(tag.strChannelName, it->second.Name().c_str());
       tag.bIsHidden = !it->second.Visible();
       tag.bIsRadio = it->second.IsRadio();
