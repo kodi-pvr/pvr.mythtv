@@ -1004,8 +1004,8 @@ int AVContext::parse_ts_pes()
       }
       break;
     }
-    this->packet->packet_table.Reset();
   }
+  this->packet->packet_table.Reset();
 
   if (this->packet->streaming)
   {
