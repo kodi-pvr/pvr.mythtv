@@ -165,7 +165,6 @@ private:
   int FillRecordings();
   MythChannel FindRecordingChannel(const MythProgramInfo& programInfo);
   bool IsMyLiveRecording(const MythProgramInfo& programInfo);
-  void FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream);
 
   // Timers
   MythRecordingRule PVRtoMythRecordingRule(const PVR_TIMER &timer);
@@ -177,12 +176,18 @@ private:
    * Make formatted title based on original title and subtitle of program.
    * \see class MythProgramInfo , class MythEPGInfo
    */
-  std::string MakeProgramTitle(const std::string& title, const std::string& subtitle) const;
+  static std::string MakeProgramTitle(const std::string& title, const std::string& subtitle);
 
   /**
    *
    * \brief Handle broadcast UID for MythTV program
    */
-  int MakeBroadcastID(unsigned int chanid, time_t starttime) const;
-  void BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *starttime) const;
+  static int MakeBroadcastID(unsigned int chanid, time_t starttime);
+  static void BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *starttime);
+
+  /**
+   *
+   * \brief Parse and fill AV stream infos for a recorded program
+   */
+  static void FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream);
 };

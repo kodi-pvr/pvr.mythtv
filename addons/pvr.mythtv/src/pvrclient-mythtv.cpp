@@ -1123,31 +1123,6 @@ bool PVRClientMythTV::IsMyLiveRecording(const MythProgramInfo& programInfo)
   return false;
 }
 
-void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream)
-{
-  AVInfo info(stream);
-  AVInfo::STREAM_AVINFO mInfo;
-  if (info.GetMainStream(&mInfo))
-  {
-    // Set video frame rate
-    if (mInfo.stream_info.fps_scale > 0)
-    {
-      float fps = 0;
-      switch(mInfo.stream_type)
-      {
-        case STREAM_TYPE_VIDEO_H264:
-          fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
-          break;
-        default:
-          fps = (float)(mInfo.stream_info.fps_rate) / mInfo.stream_info.fps_scale;
-      }
-      programInfo.SetPropsVideoFrameRate(fps);
-    }
-    // Set video aspec
-    programInfo.SetPropsVideoAspec(mInfo.stream_info.aspect);
-  }
-}
-
 int PVRClientMythTV::GetTimersAmount(void)
 {
   if (g_bExtraDebug)
@@ -2062,7 +2037,7 @@ void PVRClientMythTV::SetLiveTVPriority(bool enabled)
   }
 }
 
-std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const std::string& subtitle) const
+std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const std::string& subtitle)
 {
   std::string epgtitle;
   if (subtitle.empty())
@@ -2080,13 +2055,13 @@ std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const st
 // Timecode is the count of minutes since epoch modulo 0xFFFF. Now therefore it
 // is usable for a period of +/- 32767 minutes (+/-22 days) around itself.
 
-int PVRClientMythTV::MakeBroadcastID(unsigned int chanid, time_t starttime) const
+int PVRClientMythTV::MakeBroadcastID(unsigned int chanid, time_t starttime)
 {
   int timecode = (int)(difftime(starttime, 0) / 60) & 0xFFFF;
   return (int)((timecode << 16) | (chanid & 0xFFFF));
 }
 
-void PVRClientMythTV::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *attime) const
+void PVRClientMythTV::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *attime)
 {
   time_t now;
   int ntc, ptc, distance;
@@ -2106,4 +2081,29 @@ void PVRClientMythTV::BreakBroadcastID(int broadcastid, unsigned int *chanid, ti
 
   *attime = mktime(&epgtm);
   *chanid = (unsigned int)broadcastid & 0xFFFF;
+}
+
+void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream)
+{
+  AVInfo info(stream);
+  AVInfo::STREAM_AVINFO mInfo;
+  if (info.GetMainStream(&mInfo))
+  {
+    // Set video frame rate
+    if (mInfo.stream_info.fps_scale > 0)
+    {
+      float fps = 0;
+      switch(mInfo.stream_type)
+      {
+        case STREAM_TYPE_VIDEO_H264:
+          fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
+          break;
+        default:
+          fps = (float)(mInfo.stream_info.fps_rate) / mInfo.stream_info.fps_scale;
+      }
+      programInfo.SetPropsVideoFrameRate(fps);
+    }
+    // Set video aspec
+    programInfo.SetPropsVideoAspec(mInfo.stream_info.aspect);
+  }
 }
