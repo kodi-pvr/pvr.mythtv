@@ -226,6 +226,9 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
           m_hang = false;
           XBMC->QueueNotification(QUEUE_INFO, XBMC->GetLocalizedString(30303)); // Connection to MythTV restored
         }
+        // Refreshing all
+        HandleScheduleChange();
+        HandleRecordingListChange(Myth::EventMessage());
       }
       else if (msg.subject[0] == EVENTHANDLER_NOTCONNECTED)
       {
@@ -291,7 +294,7 @@ void PVRClientMythTV::HandleAskRecording(const Myth::EventMessage& msg)
 void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
 {
   unsigned cs = (unsigned)msg.subject.size();
-  if (cs == 1)
+  if (cs <= 1)
   {
     if (g_bExtraDebug)
       XBMC->Log(LOG_DEBUG, "%s: Reload all recordings", __FUNCTION__);
