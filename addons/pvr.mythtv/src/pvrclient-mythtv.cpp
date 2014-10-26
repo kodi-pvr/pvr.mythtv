@@ -101,7 +101,7 @@ void PVRClientMythTV::SetDebug()
 bool PVRClientMythTV::Connect()
 {
   SetDebug();
-  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort);
+  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_bBlockMythShutdown);
   if (!m_control->IsOpen())
   {
     SAFE_DELETE(m_control);
@@ -2038,6 +2038,18 @@ void PVRClientMythTV::SetLiveTVPriority(bool enabled)
     std::string value = (enabled ? "1" : "0");
     m_control->PutSetting("LiveTVPriority", value, true);
   }
+}
+
+void PVRClientMythTV::BlockBackendShutdown()
+{
+  if (m_control)
+    m_control->BlockShutdown();
+}
+
+void PVRClientMythTV::AllowBackendShutdown()
+{
+  if (m_control)
+    m_control->AllowShutdown();
 }
 
 std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const std::string& subtitle)

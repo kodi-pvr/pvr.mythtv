@@ -125,6 +125,8 @@ public:
   // Backend settings
   bool GetLiveTVPriority();
   void SetLiveTVPriority(bool enabled);
+  void BlockBackendShutdown();
+  void AllowBackendShutdown();
 
 private:
   Myth::EventHandler *m_eventHandler;
