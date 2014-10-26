@@ -60,8 +60,7 @@ bool ProtoTransfer::Open()
 
   if (!ok)
   {
-    // Close without notice
-    m_hang = true;
+    m_hang = true; // set hang to close without notice
     Close();
     return false;
   }
