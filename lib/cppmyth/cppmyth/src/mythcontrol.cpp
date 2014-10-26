@@ -52,7 +52,6 @@ bool Control::Open()
 void Control::Close()
 {
   m_monitor.Close();
-  m_monitor.CleanHanging();
 }
 
 std::string Control::GetBackendServerIP(const std::string& hostName)
