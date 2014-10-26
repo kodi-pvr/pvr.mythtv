@@ -185,6 +185,8 @@ void PVRClientMythTV::OnSleep()
     m_eventHandler->Stop();
   if (m_fileOps)
     m_fileOps->Suspend();
+  if (m_control)
+    m_control->Close();
 }
 
 void PVRClientMythTV::OnWake()
@@ -193,6 +195,8 @@ void PVRClientMythTV::OnWake()
     m_eventHandler->Start();
   if (m_fileOps)
     m_fileOps->Resume();
+  if (m_control)
+    m_control->Open();
 }
 
 void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
@@ -372,6 +376,13 @@ void PVRClientMythTV::RunHouseKeeping()
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
+  // Reconnect handler when backend connection has hanging during last period
+  if (!m_hang && m_control->HasHanging())
+  {
+    XBMC->Log(LOG_NOTICE, "%s: Ask to refresh handler connection since control connection has hanging", __FUNCTION__);
+    m_eventHandler->Reset();
+    m_control->CleanHanging();
+  }
   if (m_recordingChangePinCount)
   {
     PVR->TriggerRecordingUpdate();
