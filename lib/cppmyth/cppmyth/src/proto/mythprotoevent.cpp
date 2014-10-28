@@ -189,7 +189,7 @@ int ProtoEvent::RcvBackendMessage(unsigned timeout, EventMessage& msg)
     }
 
     FlushMessage();
-    return (m_hang ? -(m_socket->GetErrNo()) : 1);
+    return (m_hang ? -(ENOTCONN) : 1);
   }
   else if (r < 0)
     return r;
