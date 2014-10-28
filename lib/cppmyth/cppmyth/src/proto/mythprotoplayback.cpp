@@ -63,6 +63,12 @@ bool ProtoPlayback::Open()
   return false;
 }
 
+void ProtoPlayback::Close()
+{
+  ProtoBase::Close();
+  CleanHanging();
+}
+
 bool ProtoPlayback::IsOpen()
 {
   // Try reconnect

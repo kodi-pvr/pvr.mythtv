@@ -70,6 +70,7 @@ bool ProtoTransfer::Open()
 void ProtoTransfer::Close()
 {
   ProtoBase::Close();
+  CleanHanging();
   filePosition = fileRequest = 0;
   m_fileId = 0;
 }

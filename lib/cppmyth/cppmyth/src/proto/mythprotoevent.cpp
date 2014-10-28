@@ -70,8 +70,14 @@ bool ProtoEvent::Open()
 
   if (ok)
     return true;
-  this->Close();
+  Close();
   return false;
+}
+
+void ProtoEvent::Close()
+{
+  ProtoBase::Close();
+  CleanHanging();
 }
 
 bool ProtoEvent::Announce75()
