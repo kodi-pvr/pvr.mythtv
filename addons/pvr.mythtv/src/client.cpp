@@ -382,6 +382,13 @@ void ADDON_Announce(const char *flag, const char *sender, const char *message, c
       else if (strcmp("OnWake", message) == 0)
         g_client->OnWake();
     }
+    else if (strcmp("GUI", flag) == 0)
+    {
+      if (strcmp("OnScreensaverDeactivated", message) == 0)
+        g_client->OnActivatedGUI();
+      else if (strcmp("OnScreensaverActivated", message) == 0)
+        g_client->OnDeactivatedGUI();
+    }
   }
 }
 
