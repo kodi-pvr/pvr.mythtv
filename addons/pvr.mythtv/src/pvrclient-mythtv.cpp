@@ -222,12 +222,18 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
         m_hang = true;
         if (m_control)
           m_control->Close();
+        if (m_scheduleManager)
+          m_scheduleManager->CloseControl();
         XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // Connection to MythTV backend lost
       }
       else if (msg.subject[0] == EVENTHANDLER_CONNECTED)
       {
-        if (m_hang && m_control && m_control->Open())
+        if (m_hang)
         {
+          if (m_control)
+            m_control->Open();
+          if (m_scheduleManager)
+            m_scheduleManager->OpenControl();
           m_hang = false;
           XBMC->QueueNotification(QUEUE_INFO, XBMC->GetLocalizedString(30303)); // Connection to MythTV restored
         }
