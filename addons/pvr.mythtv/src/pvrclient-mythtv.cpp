@@ -126,7 +126,6 @@ bool PVRClientMythTV::Connect()
   m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_SCHEDULE_CHANGE);
   m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_ASK_RECORDING);
   m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_RECORDING_LIST_CHANGE);
-  m_eventHandler->Start();
 
   // Create schedule manager
   m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort);
@@ -134,6 +133,8 @@ bool PVRClientMythTV::Connect()
   // Create file operation helper (image caching)
   m_fileOps = new FileOps(g_szMythHostname, g_iWSApiPort);
 
+  // Start event handler
+  m_eventHandler->Start();
   return true;
 }
 
