@@ -39,6 +39,7 @@ PVRClientMythTV::PVRClientMythTV()
 , m_recordingStream(NULL)
 , m_eventSubscriberId(0)
 , m_hang(false)
+, m_powerSaving(false)
 , m_fileOps(NULL)
 , m_scheduleManager(NULL)
 , m_categories()
@@ -200,6 +201,20 @@ void PVRClientMythTV::OnWake()
     m_control->Open();
 }
 
+void PVRClientMythTV::OnDeactivatedGUI()
+{
+  if (g_bBlockMythShutdown)
+    AllowBackendShutdown();
+  m_powerSaving = true;
+}
+
+void PVRClientMythTV::OnActivatedGUI()
+{
+  if (g_bBlockMythShutdown)
+    BlockBackendShutdown();
+  m_powerSaving = false;
+}
+
 void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
 {
   switch (msg.event)
@@ -243,8 +258,8 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
       }
       else if (msg.subject[0] == EVENTHANDLER_NOTCONNECTED)
       {
-        // Try wake up
-        if (!g_szMythHostEther.empty())
+        // Try wake up if GUI is activated
+        if (!m_powerSaving && !g_szMythHostEther.empty())
           XBMC->WakeOnLan(g_szMythHostEther.c_str());
       }
       break;

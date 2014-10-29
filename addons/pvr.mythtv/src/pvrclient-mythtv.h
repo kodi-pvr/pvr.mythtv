@@ -54,6 +54,8 @@ public:
   PVR_ERROR GetDriveSpace(long long *iTotal, long long *iUsed);
   void OnSleep();
   void OnWake();
+  void OnDeactivatedGUI();
+  void OnActivatedGUI();
 
   // Implements EventSubscriber
   void HandleBackendMessage(const Myth::EventMessage& msg);
@@ -135,6 +137,7 @@ private:
   Myth::RecordingPlayback *m_recordingStream;
   unsigned m_eventSubscriberId;
   bool m_hang;
+  bool m_powerSaving;
 
   // Backend
   FileOps *m_fileOps;
