@@ -77,7 +77,8 @@ bool ProtoEvent::Open()
 void ProtoEvent::Close()
 {
   ProtoBase::Close();
-  CleanHanging();
+  // Clean hanging and disable retry
+  m_tainted = m_hang = false;
 }
 
 bool ProtoEvent::Announce75()

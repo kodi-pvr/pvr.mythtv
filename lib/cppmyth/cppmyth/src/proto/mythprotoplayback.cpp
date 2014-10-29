@@ -66,7 +66,8 @@ bool ProtoPlayback::Open()
 void ProtoPlayback::Close()
 {
   ProtoBase::Close();
-  CleanHanging();
+  // Clean hanging and disable retry
+  m_tainted = m_hang = false;
 }
 
 bool ProtoPlayback::IsOpen()

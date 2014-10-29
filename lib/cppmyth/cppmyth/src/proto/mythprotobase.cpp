@@ -76,7 +76,7 @@ void ProtoBase::HangException()
   DBG(MYTH_DBG_ERROR, "%s: protocol connection hang with error %d\n", __FUNCTION__, m_socket->GetErrNo());
   m_tainted = m_hang = true;
   ProtoBase::Close();
-  // Note: Calling OpenConnection() will reset m_hang
+  // Note: Opening connection successfully will reset m_hang
 }
 
 bool ProtoBase::SendCommand(const char *cmd, bool feedback)
@@ -287,6 +287,8 @@ bool ProtoBase::OpenConnection(int rcvbuf)
 
   if (m_isOpen)
     ProtoBase::Close();
+  // If socket connection failed then hang will remain up allowing retry
+  m_hang = true;
   do
   {
     retry = false;

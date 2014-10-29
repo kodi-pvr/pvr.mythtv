@@ -70,7 +70,9 @@ bool ProtoTransfer::Open()
 void ProtoTransfer::Close()
 {
   ProtoBase::Close();
-  CleanHanging();
+  // Clean hanging and disable retry
+  m_tainted = m_hang = false;
+  // Reset transfer
   filePosition = fileRequest = 0;
   m_fileId = 0;
 }
