@@ -447,6 +447,11 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_bDemuxing != *(bool*)settingValue)
       return ADDON_STATUS_NEED_RESTART;
   }
+  else if (str == "host_ether")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'host_ether' from %s to %s", g_szMythHostEther.c_str(), (const char*)settingValue);
+    g_szMythHostEther = (const char*)settingValue;
+  }
   else if (str == "extradebug")
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'extra debug' from %u to %u", g_bExtraDebug, *(bool*)settingValue);
