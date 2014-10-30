@@ -616,8 +616,6 @@ bool ProtoMonitor::BlockShutdown75()
   if (!ReadField(field) || !IsMessageOK(field))
     goto out;
   DBG(MYTH_DBG_DEBUG, "%s: succeeded\n", __FUNCTION__);
-  // keep track
-  m_blockShutdown = true;
   return true;
   out:
   DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
@@ -640,8 +638,6 @@ bool ProtoMonitor::AllowShutdown75()
   if (!ReadField(field) || !IsMessageOK(field))
     goto out;
   DBG(MYTH_DBG_DEBUG, "%s: succeeded\n", __FUNCTION__);
-  // keep track
-  m_blockShutdown = false;
   return true;
   out:
   DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);

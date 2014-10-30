@@ -96,10 +96,12 @@ namespace Myth
     }
     bool BlockShutdown()
     {
+      m_blockShutdown = true;
       return BlockShutdown75();
     }
     bool AllowShutdown()
     {
+      m_blockShutdown = false;
       return AllowShutdown75();
     }
 
