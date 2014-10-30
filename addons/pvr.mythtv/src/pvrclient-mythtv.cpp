@@ -183,22 +183,26 @@ PVR_ERROR PVRClientMythTV::GetDriveSpace(long long *iTotal, long long *iUsed)
 
 void PVRClientMythTV::OnSleep()
 {
-  if (m_eventHandler)
-    m_eventHandler->Stop();
   if (m_fileOps)
     m_fileOps->Suspend();
+  if (m_eventHandler)
+    m_eventHandler->Stop();
+  if (m_scheduleManager)
+    m_scheduleManager->CloseControl();
   if (m_control)
     m_control->Close();
 }
 
 void PVRClientMythTV::OnWake()
 {
+  if (m_control)
+    m_control->Open();
+  if (m_scheduleManager)
+    m_scheduleManager->OpenControl();
   if (m_eventHandler)
     m_eventHandler->Start();
   if (m_fileOps)
     m_fileOps->Resume();
-  if (m_control)
-    m_control->Open();
 }
 
 void PVRClientMythTV::OnDeactivatedGUI()
