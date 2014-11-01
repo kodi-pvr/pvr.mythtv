@@ -84,8 +84,10 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   XBMC = new CHelper_libXBMC_addon;
 
   if (!XBMC->RegisterMe(hdl))
+  {
+    SAFE_DELETE(XBMC);
     return ADDON_STATUS_PERMANENT_FAILURE;
-
+  }
   XBMC->Log(LOG_DEBUG, "Creating MythTV PVR-Client");
   XBMC->Log(LOG_DEBUG, "Addon compiled with XBMC_PVR_API_VERSION: %s and XBMC_PVR_MIN_API_VERSION: %s", GetPVRAPIVersion(), GetMininumPVRAPIVersion());
   XBMC->Log(LOG_DEBUG, "Register handle @ libXBMC_addon...done");
@@ -102,6 +104,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   PVR = new CHelper_libXBMC_pvr;
   if (!PVR->RegisterMe(hdl))
   {
+    SAFE_DELETE(PVR);
     SAFE_DELETE(XBMC);
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
@@ -113,6 +116,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   {
     SAFE_DELETE(PVR);
     SAFE_DELETE(XBMC);
+    SAFE_DELETE(GUI);
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
   XBMC->Log(LOG_DEBUG, "Register handle @ libXBMC_gui...done");
@@ -121,6 +125,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   CODEC = new CHelper_libXBMC_codec;
   if (!CODEC->RegisterMe(hdl))
   {
+    SAFE_DELETE(CODEC);
     SAFE_DELETE(PVR);
     SAFE_DELETE(XBMC);
     SAFE_DELETE(GUI);
