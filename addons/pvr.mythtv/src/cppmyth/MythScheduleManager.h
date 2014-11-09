@@ -78,7 +78,7 @@ public:
     MSM_ERROR_SUCCESS = 1
   };
 
-  MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort);
+  MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin);
   ~MythScheduleManager();
 
   // Called by GetTimers

@@ -87,7 +87,7 @@ public:
   static const int c_timeoutProcess              = 10;       // Wake the thread every 10s
   static const int c_maximumAttemptsOnReadError  = 3;        // Retry when reading file failed
 
-  FileOps(const std::string& server, unsigned wsapiport);
+  FileOps(const std::string& server, unsigned wsapiport, const std::string& wsapiSecurityPin);
   virtual ~FileOps();
 
   std::string GetChannelIconPath(const MythChannel& channel);

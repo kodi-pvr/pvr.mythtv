@@ -105,14 +105,14 @@ bool MythRecordingRuleNode::IsInactiveRule() const
 //// MythScheduleManager
 ////
 
-MythScheduleManager::MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort)
+MythScheduleManager::MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin)
 : m_lock()
 , m_control(NULL)
 , m_protoVersion(0)
 , m_versionHelper(NULL)
 , m_showNotRecording(false)
 {
-  m_control = new Myth::Control(server, protoPort, wsapiPort);
+  m_control = new Myth::Control(server, protoPort, wsapiPort, wsapiSecurityPin);
   this->Update();
 }
 

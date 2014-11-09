@@ -102,7 +102,7 @@ void PVRClientMythTV::SetDebug()
 bool PVRClientMythTV::Connect()
 {
   SetDebug();
-  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_bBlockMythShutdown);
+  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
   if (!m_control->IsOpen())
   {
     SAFE_DELETE(m_control);
@@ -115,7 +115,7 @@ bool PVRClientMythTV::Connect()
   if (!m_control->CheckService())
   {
     SAFE_DELETE(m_control);
-    XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iWSApiPort);
+    XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
     return false;
   }
 
@@ -129,10 +129,10 @@ bool PVRClientMythTV::Connect()
   m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_RECORDING_LIST_CHANGE);
 
   // Create schedule manager
-  m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort);
+  m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin);
 
   // Create file operation helper (image caching)
-  m_fileOps = new FileOps(g_szMythHostname, g_iWSApiPort);
+  m_fileOps = new FileOps(g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
 
   // Start event handler
   m_eventHandler->Start();

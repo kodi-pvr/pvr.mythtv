@@ -32,7 +32,7 @@
 using namespace ADDON;
 using namespace PLATFORM;
 
-FileOps::FileOps(const std::string& server, unsigned wsapiport)
+FileOps::FileOps(const std::string& server, unsigned wsapiport, const std::string& wsapiSecurityPin)
 : CThread()
 , m_wsapi(NULL)
 , m_localBasePath(g_szUserPath.c_str())
@@ -45,7 +45,7 @@ FileOps::FileOps(const std::string& server, unsigned wsapiport)
   if (!XBMC->DirectoryExists(m_localBasePath.c_str()) && !XBMC->CreateDirectory(m_localBasePath.c_str()))
     XBMC->Log(LOG_ERROR,"%s - Failed to create cache directory %s", __FUNCTION__, m_localBasePath.c_str());
 
-  m_wsapi = new Myth::WSAPI(server, wsapiport);
+  m_wsapi = new Myth::WSAPI(server, wsapiport, wsapiSecurityPin);
   CreateThread();
 }
 
