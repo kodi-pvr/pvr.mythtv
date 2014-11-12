@@ -97,7 +97,7 @@ bool LiveTVPlayback::Open()
     {
       uint32_t timer = 0, delay = STARTING_DELAY * 1000000;
       m_eventHandler.Start();
-      while (!m_eventHandler.IsConnected() && timer < delay);
+      while (!m_eventHandler.IsConnected() && timer < delay)
       {
         usleep(TICK_USEC);
         timer += TICK_USEC;
