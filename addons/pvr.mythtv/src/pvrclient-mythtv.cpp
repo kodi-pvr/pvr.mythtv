@@ -438,7 +438,8 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       // EPG_TAG expects strings as char* and not as copies (like the other PVR types).
       // Therefore we have to make sure that we don't pass invalid (freed) memory to TransferEpgEntry.
       // In particular we have to use local variables and must not pass returned string values directly.
-      tag.strTitle = it->second->title.c_str();
+      std::string epgTitle = MakeProgramTitle(it->second->title, it->second->subTitle);
+      tag.strTitle = epgTitle.c_str();
       tag.strPlot = it->second->description.c_str();
       tag.strGenreDescription = it->second->category.c_str();
       tag.iUniqueBroadcastId = MakeBroadcastID(it->second->channel.chanId, it->first);
@@ -725,7 +726,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       //@TODO: tag.iLastPlayedPosition
 
       std::string id = it->second.UID();
-      std::string title = this->MakeProgramTitle(it->second.Title(), it->second.Subtitle());
+      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
 
       PVR_STRCPY(tag.strRecordingId, id.c_str());
       PVR_STRCPY(tag.strTitle, title.c_str());
@@ -1268,7 +1269,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     std::string title = it->second->Title();
     if (!rulemarker.empty())
       title.append(" ").append(rulemarker);
-    PVR_STRCPY(tag.strTitle, this->MakeProgramTitle(title, it->second->Subtitle()).c_str());
+    PVR_STRCPY(tag.strTitle, MakeProgramTitle(title, it->second->Subtitle()).c_str());
 
     // Summary
     PVR_STRCPY(tag.strSummary, it->second->Description().c_str());
@@ -1847,7 +1848,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
     else
     {
-      // Query backend server IP 
+      // Query backend server IP
       std::string backend_addr(m_control->GetBackendServerIP6(prog.HostName()));
       if (backend_addr.empty())
         backend_addr = m_control->GetBackendServerIP(prog.HostName());
@@ -2091,6 +2092,7 @@ void PVRClientMythTV::AllowBackendShutdown()
 
 std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const std::string& subtitle)
 {
+  // Must contain the original title at the begining
   std::string epgtitle;
   if (subtitle.empty())
     epgtitle = title;
