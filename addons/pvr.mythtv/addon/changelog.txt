@@ -1,7 +1,9 @@
-v1.9.26
+v1.9.27
 - Adding WS API Security Pin parameter
 - Adding episode info (subtitle) to EPG title
-- Fixed deadlock when activating the addon on some darwin (osx, ios) runtimes
+
+v1.9.26
+- fixed deadlock when activating the addon on some darwin (osx, ios) runtimes
 
 v1.9.25
 - fixed deadlock when activating the addon on some darwin (osx, ios) runtimes
