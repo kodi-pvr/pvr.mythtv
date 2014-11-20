@@ -140,7 +140,7 @@ void MythScheduleManager::Setup()
   }
 }
 
-uint32_t MythScheduleManager::MakeIndex(ScheduledPtr scheduled) const
+uint32_t MythScheduleManager::MakeIndex(ScheduledPtr &scheduled) const
 {
   // Recordings must keep same identifier even after refreshing cache (cf Update).
   // Numeric hash of UID is used to make the constant numeric identifier.

@@ -139,7 +139,7 @@ private:
   VersionHelper *m_versionHelper;
   void Setup();
 
-  uint32_t MakeIndex(ScheduledPtr scheduled) const;
+  uint32_t MakeIndex(ScheduledPtr &scheduled) const;
 
   // The list of rule nodes
   typedef std::list<RecordingRuleNodePtr> NodeList;
