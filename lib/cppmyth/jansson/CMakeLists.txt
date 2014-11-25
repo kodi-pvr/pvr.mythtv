@@ -96,12 +96,12 @@ include (CheckTypeSize)
 if (MSVC)
    # Turn off Microsofts "security" warnings.
    add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo" )
-   
+
    if (JANSSON_STATIC_CRT)
       set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")
       set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd")
    endif()
-   
+
 endif()
 
 if (NOT WIN32 AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX))
@@ -288,7 +288,7 @@ if (HAVE_SNPRINTF)
    set(JSON_SNPRINTF snprintf)
 elseif (HAVE__SNPRINTF)
    set(JSON_SNPRINTF _snprintf)
-endif () 
+endif ()
 
 check_c_source_compiles ("int main() { unsigned long val; __sync_bool_compare_and_swap(&val, 0, 1); return 0; } " HAVE_SYNC_BUILTINS)
 check_c_source_compiles ("int main() { char l; unsigned long v; __atomic_test_and_set(&l, __ATOMIC_RELAXED); __atomic_store_n(&v, 1, __ATOMIC_RELEASE); __atomic_load_n(&v, __ATOMIC_ACQUIRE); return 0; }" HAVE_ATOMIC_BUILTINS)
@@ -336,7 +336,7 @@ set(JANSSON_HDR_PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/src/utf.h
    ${CMAKE_CURRENT_BINARY_DIR}/private_include/jansson_private_config.h)
 
-set(JANSSON_HDR_PUBLIC 
+set(JANSSON_HDR_PUBLIC
    ${CMAKE_CURRENT_BINARY_DIR}/include/jansson_config.h
    ${CMAKE_CURRENT_SOURCE_DIR}/src/jansson.h)
 
@@ -345,35 +345,35 @@ source_group("Library Private Headers" FILES ${JANSSON_HDR_PRIVATE})
 source_group("Library Public Headers" FILES ${JANSSON_HDR_PUBLIC})
 
 if(JANSSON_BUILD_SHARED_LIBS)
-   add_library(jansson SHARED 
-      ${JANSSON_SRC} 
-      ${JANSSON_HDR_PRIVATE} 
-      ${JANSSON_HDR_PUBLIC} 
+   add_library(jansson SHARED
+      ${JANSSON_SRC}
+      ${JANSSON_HDR_PRIVATE}
+      ${JANSSON_HDR_PUBLIC}
       src/jansson.def)
 
    set_target_properties(jansson PROPERTIES
       VERSION ${JANSSON_VERSION}
       SOVERSION ${JANSSON_SOVERSION})
 else()
-   add_library(jansson 
+   add_library(jansson
       ${JANSSON_SRC}
-      ${JANSSON_HDR_PRIVATE} 
+      ${JANSSON_HDR_PRIVATE}
       ${JANSSON_HDR_PUBLIC})
 endif()
 
 
 # For building Documentation (uses Sphinx)
-option(JANSSON_BUILD_DOCS "Build documentation (uses python-sphinx)." ON)
+option(JANSSON_BUILD_DOCS "Build documentation (uses python-sphinx)." OFF)
 if (JANSSON_BUILD_DOCS)
    find_package(Sphinx)
 
    if (NOT SPHINX_FOUND)
-      message(WARNING "Sphinx not found. Cannot generate documentation! 
+      message(WARNING "Sphinx not found. Cannot generate documentation!
       Set -DJANSSON_BUILD_DOCS=OFF to get rid of this message.")
    else()
       if (Sphinx_VERSION_STRING VERSION_LESS 1.0)
-         message(WARNING "Your Sphinx version is too old! 
-               This project requires Sphinx v1.0 or above to produce 
+         message(WARNING "Your Sphinx version is too old!
+               This project requires Sphinx v1.0 or above to produce
                proper documentation (you have v${Sphinx_VERSION_STRING}).
                You will get output but it will have errors.")
       endif()
@@ -426,7 +426,7 @@ if (JANSSON_BUILD_DOCS)
             list(APPEND DOC_TARGETS latex)
          endif()
       endif()
-      
+
       # The doc target will build all documentation targets.
       add_custom_target(doc)
 
@@ -551,7 +551,7 @@ if (NOT JANSSON_WITHOUT_TESTS)
        endforeach ()
    endforeach ()
 
-   add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
+   add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
                      DEPENDS json_process ${api_tests})
 endif ()
 
@@ -586,33 +586,33 @@ export(TARGETS jansson
 export(PACKAGE jansson)
 
 # Generate the config file for the build-tree.
-set(JANSSON__INCLUDE_DIRS 
+set(JANSSON__INCLUDE_DIRS
     "${PROJECT_SOURCE_DIR}/include"
     "${PROJECT_BINARY_DIR}/include")
 set(JANSSON_INCLUDE_DIRS ${JANSSON__INCLUDE_DIRS} CACHE PATH "Jansson include directories")
 configure_file(${PROJECT_SOURCE_DIR}/cmake/JanssonConfig.cmake.in
-                ${PROJECT_BINARY_DIR}/JanssonConfig.cmake 
+                ${PROJECT_BINARY_DIR}/JanssonConfig.cmake
                 @ONLY)
 
 # Generate the config file for the installation tree.
-file(RELATIVE_PATH 
-    REL_INCLUDE_DIR 
+file(RELATIVE_PATH
+    REL_INCLUDE_DIR
     "${JANSSON_INSTALL_CMAKE_DIR}"
     "${JANSSON_INSTALL_INCLUDE_DIR}") # Calculate the relative directory from the Cmake dir.
 
-# Note the EVENT_CMAKE_DIR is defined in JanssonConfig.cmake.in, 
+# Note the EVENT_CMAKE_DIR is defined in JanssonConfig.cmake.in,
 # we escape it here so it's evaluated when it is included instead
-# so that the include dirs are given relative to where the 
+# so that the include dirs are given relative to where the
 # config file is located.
-set(JANSSON__INCLUDE_DIRS 
-    "\${JANSSON_CMAKE_DIR}/${REL_INCLUDE_DIR}") 
+set(JANSSON__INCLUDE_DIRS
+    "\${JANSSON_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 configure_file(${PROJECT_SOURCE_DIR}/cmake/JanssonConfig.cmake.in
-                ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/JanssonConfig.cmake 
+                ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/JanssonConfig.cmake
                 @ONLY)
 
 # Generate version info for both build-tree and install-tree.
 configure_file(${PROJECT_SOURCE_DIR}/cmake/JanssonConfigVersion.cmake.in
-                ${PROJECT_BINARY_DIR}/JanssonConfigVersion.cmake 
+                ${PROJECT_BINARY_DIR}/JanssonConfigVersion.cmake
                 @ONLY)
 
 # Define the public headers.
@@ -640,7 +640,7 @@ install(TARGETS jansson
         PUBLIC_HEADER DESTINATION "${JANSSON_INSTALL_INCLUDE_DIR}" COMPONENT dev)
 
 # Install the pkg-config.
-install (FILES 
+install (FILES
          ${CMAKE_CURRENT_BINARY_DIR}/jansson.pc
          DESTINATION ${JANSSON_INSTALL_LIB_DIR}/pkgconfig COMPONENT dev)
 
@@ -651,7 +651,7 @@ install(FILES
     DESTINATION "${JANSSON_INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 # Install exports for the install-tree.
-install(EXPORT JanssonTargets 
+install(EXPORT JanssonTargets
         DESTINATION "${JANSSON_INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 # For use when simply using add_library from a parent project to build jansson.
