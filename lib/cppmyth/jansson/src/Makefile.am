@@ -2,8 +2,7 @@ EXTRA_DIST = jansson.def
 
 include_HEADERS = jansson.h jansson_config.h
 
-noinst_LTLIBRARIES = libjansson.la
-#lib_LTLIBRARIES = libjansson.la
+lib_LTLIBRARIES = libjansson.la
 libjansson_la_SOURCES = \
 	dump.c \
 	error.c \
@@ -24,4 +23,4 @@ libjansson_la_SOURCES = \
 libjansson_la_LDFLAGS = \
 	-no-undefined \
 	-export-symbols-regex '^json_' \
-	-version-info 10:0:6
+	-version-info 11:0:7
