@@ -45,18 +45,6 @@ using namespace Myth;
 #define WS_ROOT_CONTENT       "/Content"
 #define WS_ROOT_DVR           "/Dvr"
 
-WSAPI::WSAPI(const std::string& server, unsigned port)
-: m_mutex(new PLATFORM::CMutex)
-, m_server(server)
-, m_port(port)
-, m_securityPin()
-, m_checked(false)
-, m_version()
-, m_serverHostName()
-{
-  m_checked = InitWSAPI();
-}
-
 WSAPI::WSAPI(const std::string& server, unsigned port, const std::string& securityPin)
 : m_mutex(new PLATFORM::CMutex)
 , m_server(server)

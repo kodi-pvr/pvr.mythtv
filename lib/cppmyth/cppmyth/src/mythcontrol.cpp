@@ -23,23 +23,9 @@
 
 using namespace Myth;
 
-Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPort)
-: m_monitor(server, protoPort)
-, m_wsapi(server, wsapiPort)
-{
-  Open();
-}
-
 Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin)
 : m_monitor(server, protoPort)
 , m_wsapi(server, wsapiPort, wsapiSecurityPin)
-{
-  Open();
-}
-
-Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, bool blockShutdown)
-: m_monitor(server, protoPort, blockShutdown)
-, m_wsapi(server, wsapiPort)
 {
   Open();
 }

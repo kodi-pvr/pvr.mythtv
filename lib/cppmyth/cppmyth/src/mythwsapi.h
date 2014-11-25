@@ -57,7 +57,6 @@ namespace Myth
   class WSAPI
   {
   public:
-    WSAPI(const std::string& server, unsigned port);
     WSAPI(const std::string& server, unsigned port, const std::string& securityPin);
     ~WSAPI();
 

@@ -32,9 +32,7 @@ namespace Myth
   class Control
   {
   public:
-    Control(const std::string& server, unsigned protoPort, unsigned wsapiPort);
     Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin);
-    Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, bool blockShutdown);
     Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin, bool blockShutdown);
     ~Control();
 
