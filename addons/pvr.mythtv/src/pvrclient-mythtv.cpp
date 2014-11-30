@@ -132,7 +132,7 @@ bool PVRClientMythTV::Connect()
   m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin);
 
   // Create file operation helper (image caching)
-  m_fileOps = new FileOps(g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
+  m_fileOps = new FileOps(this, g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
 
   // Start event handler
   m_eventHandler->Start();
@@ -414,6 +414,11 @@ void PVRClientMythTV::RunHouseKeeping()
     PVR->TriggerRecordingUpdate();
     m_recordingChangePinCount = 0;
   }
+}
+
+void PVRClientMythTV::HandleCleanedCache()
+{
+  PVR->TriggerRecordingUpdate();
 }
 
 PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time_t iStart, time_t iEnd)
