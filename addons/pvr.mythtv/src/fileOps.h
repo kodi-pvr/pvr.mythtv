@@ -111,7 +111,6 @@ protected:
   bool CheckFile(const std::string &localFilename);
   void *OpenFile(const std::string &localFilename);
   bool CacheFile(void *file, Myth::Stream *source);
-  void InitBasePath();
   void CleanCache();
 
   static std::string GetFileName(const std::string& path, char separator = PATH_SEPARATOR_CHAR);
