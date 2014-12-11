@@ -1854,40 +1854,76 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   // Suspend fileOps to avoid connection hang
   m_fileOps->Suspend();
 
-  if (!m_recordingStream)
+  if (m_recordingStream)
   {
-    if (prog.HostName() == m_control->GetServerHostName())
-      // Request the stream from our master using the opened event handler.
-      m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
-    else
+    if (!m_recordingStream->IsOpen())
+      XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
+    else if (m_recordingStream->TransferIsOpen())
     {
-      // Query backend server IP
-      std::string backend_addr(m_control->GetBackendServerIP6(prog.HostName()));
-      if (backend_addr.empty())
-        backend_addr = m_control->GetBackendServerIP(prog.HostName());
-      if (backend_addr.empty())
-        backend_addr = prog.HostName();
-      // Query backend server port
-      unsigned backend_port(m_control->GetBackendServerPort(prog.HostName()));
-      if (!backend_port)
-        backend_port = (unsigned)g_iProtoPort;
-      // Request the stream from slave host. A dedicated event handler will be opened.
-      XBMC->Log(LOG_INFO, "%s: Connect to remote backend %s:%u", __FUNCTION__, backend_addr.c_str(), backend_port);
-      m_recordingStream = new Myth::RecordingPlayback(backend_addr, backend_port);
+      if (g_bExtraDebug)
+        XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+      return true;
+    }
+  }
+  else if (prog.HostName() == m_control->GetServerHostName())
+  {
+    // Request the stream from our master using the opened event handler.
+    m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+    if (!m_recordingStream->IsOpen())
+      XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
+    else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
+    {
+      if (g_bExtraDebug)
+        XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+      // Fill AV info for later use
+      FillRecordingAVInfo(prog, m_recordingStream);
+      return true;
     }
   }
   else
-    m_recordingStream->Open();
-
-  if (!m_recordingStream->IsOpen())
-    XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
-  else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
   {
-    if (g_bExtraDebug)
-      XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
-    // Fill AV info for later use
-    FillRecordingAVInfo(prog, m_recordingStream);
-    return true;
+    // MasterBackendOverride setting will guide us to choose best method
+    // If checked we will try to connect master failover slave
+    Myth::SettingPtr mbo = m_control->GetSetting("MasterBackendOverride", false);
+    if (mbo && mbo->value == "1")
+    {
+      XBMC->Log(LOG_INFO, "%s: Option 'MasterBackendOverride' is enabled", __FUNCTION__);
+      m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+      if (m_recordingStream->IsOpen() && m_recordingStream->OpenTransfer(prog.GetPtr()))
+      {
+        if (g_bExtraDebug)
+          XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+        // Fill AV info for later use
+        FillRecordingAVInfo(prog, m_recordingStream);
+        return true;
+      }
+      SAFE_DELETE(m_recordingStream);
+      XBMC->Log(LOG_NOTICE, "%s: Failed to open recorded stream from master backend", __FUNCTION__);
+      XBMC->Log(LOG_NOTICE, "%s: You should uncheck option 'MasterBackendOverride' from MythTV setup", __FUNCTION__);
+    }
+    // Query backend server IP
+    std::string backend_addr(m_control->GetBackendServerIP6(prog.HostName()));
+    if (backend_addr.empty())
+      backend_addr = m_control->GetBackendServerIP(prog.HostName());
+    if (backend_addr.empty())
+      backend_addr = prog.HostName();
+    // Query backend server port
+    unsigned backend_port(m_control->GetBackendServerPort(prog.HostName()));
+    if (!backend_port)
+      backend_port = (unsigned)g_iProtoPort;
+    // Request the stream from slave host. A dedicated event handler will be opened.
+    XBMC->Log(LOG_INFO, "%s: Connect to remote backend %s:%u", __FUNCTION__, backend_addr.c_str(), backend_port);
+    m_recordingStream = new Myth::RecordingPlayback(backend_addr, backend_port);
+    if (!m_recordingStream->IsOpen())
+      XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
+    else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
+    {
+      if (g_bExtraDebug)
+        XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+      // Fill AV info for later use
+      FillRecordingAVInfo(prog, m_recordingStream);
+      return true;
+    }
   }
 
   SAFE_DELETE(m_recordingStream);
