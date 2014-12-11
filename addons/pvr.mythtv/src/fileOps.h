@@ -110,7 +110,7 @@ protected:
 
   bool CheckFile(const std::string &localFilename);
   void *OpenFile(const std::string &localFilename);
-  bool CacheFile(void *destination, Myth::Stream *source);
+  bool CacheFile(void *file, Myth::Stream *source);
   void InitBasePath();
   void CleanCache();
 
