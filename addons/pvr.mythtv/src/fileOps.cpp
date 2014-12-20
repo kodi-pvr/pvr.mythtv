@@ -30,6 +30,8 @@
 #define FILEOPS_STREAM_BUFFER_SIZE    32000         // Buffer size to download artworks
 #define FILEOPS_STAMP_FILENAME        "stamp"       // Base name for cache stamp file
 #define FILEOPS_NOSTAMP               (time_t)(-1)
+#define FILEOPS_CHANNEL_DUMMY_ICON    "channel.png"
+#define FILEOPS_RECORDING_DUMMY_ICON  "recording.png"
 
 using namespace ADDON;
 using namespace PLATFORM;
@@ -64,6 +66,8 @@ std::string FileOps::GetChannelIconPath(const MythChannel& channel)
 {
   if (channel.IsNull() || channel.Icon().empty())
     return "";
+  if (!g_bChannelIcons)
+    return g_szClientPath + PATH_SEPARATOR_STRING + "resources" + PATH_SEPARATOR_STRING + FILEOPS_CHANNEL_DUMMY_ICON;
 
   std::string uid = Myth::IdToString(channel.ID());
   if (g_bExtraDebug)
@@ -94,6 +98,8 @@ std::string FileOps::GetPreviewIconPath(const MythProgramInfo& recording)
 {
   if (recording.IsNull())
     return "";
+  if (!g_bRecordingIcons)
+    return g_szClientPath + PATH_SEPARATOR_STRING + "resources" + PATH_SEPARATOR_STRING + FILEOPS_RECORDING_DUMMY_ICON;
 
   std::string uid = recording.UID();
   if (g_bExtraDebug)
@@ -124,6 +130,15 @@ std::string FileOps::GetArtworkPath(const MythProgramInfo& recording, FileType t
 {
   if (recording.IsNull())
     return "";
+  if (!g_bRecordingIcons)
+    switch (type)
+    {
+    case FileTypePreview:
+    case FileTypeCoverart:
+      return g_szClientPath + PATH_SEPARATOR_STRING + "resources" + PATH_SEPARATOR_STRING + FILEOPS_RECORDING_DUMMY_ICON;
+    default:
+      return "";
+    }
 
   std::string uid = recording.UID();
   if (g_bExtraDebug)
