@@ -184,6 +184,14 @@ msgctxt "#30062"
 msgid "Block backend shutdown"
 msgstr "Bloquer l'arrêt du serveur"
 
+msgctxt "#30063"
+msgid "Enable channel icons"
+msgstr "Afficher l'icône des chaînes"
+
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Afficher la vignette des enregistrements"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole: %i - Version de la base de données: %i"
