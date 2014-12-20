@@ -1,3 +1,6 @@
+v1.10.1
+- Options to disable channel icons and recordings or fanart images
+
 v1.10.0
 - jansson 2.7: fix compilation on ios8/arm64
 - Cleaned cache by max age
