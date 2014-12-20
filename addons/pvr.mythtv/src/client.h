@@ -42,6 +42,8 @@
 #define DEFAULT_PROTO_PORT                  6543
 #define DEFAULT_WSAPI_PORT                  6544
 #define DEFAULT_WSAPI_SECURITY_PIN          "0000"
+#define DEFAULT_CHANNEL_ICONS               true
+#define DEFAULT_RECORDING_ICONS             true
 #define DEFAULT_RECORD_TEMPLATE             1
 
 #define SUBTITLE_SEPARATOR                  " - "
@@ -90,6 +92,8 @@ extern bool         g_bExtraDebug;              ///< Debug logging
 extern bool         g_bLiveTV;                  ///< LiveTV support (or recordings only)
 extern bool         g_bLiveTVPriority;          ///< MythTV Backend setting to allow live TV to move scheduled shows
 extern int          g_iLiveTVConflictStrategy;  ///< Live TV conflict resolving strategy (0=Has later, 1=Stop TV, 2=Cancel recording)
+extern bool         g_bChannelIcons;            ///< Load Channel Icons
+extern bool         g_bRecordingIcons;          ///< Load Recording Icons (Fanart/Thumbnails)
 extern int          g_iRecTemplateType;         ///< Template type for new record (0=Internal, 1=MythTV)
 ///* Internal Record template */
 extern bool         g_bRecAutoMetadata;

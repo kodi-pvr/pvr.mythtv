@@ -40,6 +40,8 @@ bool          g_bExtraDebug             = DEFAULT_EXTRA_DEBUG;              ///<
 bool          g_bLiveTV                 = DEFAULT_LIVETV;                   ///< LiveTV support (or recordings only)
 bool          g_bLiveTVPriority         = DEFAULT_LIVETV_PRIORITY;          ///< MythTV Backend setting to allow live TV to move scheduled shows
 int           g_iLiveTVConflictStrategy = DEFAULT_LIVETV_CONFLICT_STRATEGY; ///< Conflict resolving strategy (0=
+bool          g_bChannelIcons           = DEFAULT_CHANNEL_ICONS;            ///< Load Channel Icons
+bool          g_bRecordingIcons         = DEFAULT_RECORDING_ICONS;          ///< Load Recording Icons (Fanart/Thumbnails)
 int           g_iRecTemplateType        = DEFAULT_RECORD_TEMPLATE;          ///< Template type for new record (0=Internal, 1=MythTV)
 bool          g_bRecAutoMetadata        = true;
 bool          g_bRecAutoCommFlag        = false;
@@ -283,6 +285,22 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     g_bBlockMythShutdown = DEFAULT_BLOCK_SHUTDOWN;
   }
 
+  /* Read setting "channel_icons" from settings.xml */
+  if (!XBMC->GetSetting("channel_icons", &g_bChannelIcons))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'channel_icons' setting, falling back to '%b' as default", DEFAULT_CHANNEL_ICONS);
+    g_bChannelIcons = DEFAULT_CHANNEL_ICONS;
+  }
+
+  /* Read setting "recording_icons" from settings.xml */
+  if (!XBMC->GetSetting("recording_icons", &g_bRecordingIcons))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'recording_icons' setting, falling back to '%b' as default", DEFAULT_RECORDING_ICONS);
+    g_bRecordingIcons = DEFAULT_RECORDING_ICONS;
+  }
+
   free (buffer);
   XBMC->Log(LOG_DEBUG, "Loading settings...done");
 
@@ -471,6 +489,18 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'demuxing' from %u to %u", g_bDemuxing, *(bool*)settingValue);
     if (g_bDemuxing != *(bool*)settingValue)
+      return ADDON_STATUS_NEED_RESTART;
+  }
+  else if (str == "channel_icons")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'channel_icons' from %u to %u", g_bChannelIcons, *(bool*)settingValue);
+    if (g_bChannelIcons != *(bool*)settingValue)
+      return ADDON_STATUS_NEED_RESTART;
+  }
+  else if (str == "recording_icons")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'recording_icons' from %u to %u", g_bRecordingIcons, *(bool*)settingValue);
+    if (g_bRecordingIcons != *(bool*)settingValue)
       return ADDON_STATUS_NEED_RESTART;
   }
   else if (str == "host_ether")
