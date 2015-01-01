@@ -31,11 +31,6 @@
 
 #include <vector>
 
-namespace PLATFORM
-{
-  class CTimeout;
-}
-
 namespace Myth
 {
 
@@ -77,7 +72,6 @@ namespace Myth
     unsigned m_eventSubscriberId;
 
     unsigned m_tuneDelay;
-    PLATFORM::CTimeout *m_timeout;
     ProtoRecorderPtr m_recorder;
     SignalStatusPtr m_signal;
 

@@ -25,7 +25,6 @@
 #include "private/mythsocket.h"
 #include "private/platform/threads/mutex.h"
 #include "private/platform/util/timeutils.h"
-#include "private/platform/util/util.h"
 
 #include <limits>
 #include <cstdio>
@@ -48,7 +47,6 @@ LiveTVPlayback::LiveTVPlayback(EventHandler& handler)
 , m_eventHandler(handler)
 , m_eventSubscriberId(0)
 , m_tuneDelay(MIN_TUNE_DELAY)
-, m_timeout(new PLATFORM::CTimeout)
 , m_recorder()
 , m_signal()
 , m_chain()
@@ -67,7 +65,6 @@ LiveTVPlayback::LiveTVPlayback(const std::string& server, unsigned port)
 , m_eventHandler(server, port)
 , m_eventSubscriberId(0)
 , m_tuneDelay(MIN_TUNE_DELAY)
-, m_timeout(new PLATFORM::CTimeout)
 , m_recorder()
 , m_signal()
 , m_chain()
@@ -87,7 +84,6 @@ LiveTVPlayback::~LiveTVPlayback()
   if (m_eventSubscriberId)
     m_eventHandler.RevokeSubscription(m_eventSubscriberId);
   Close();
-  SAFE_DELETE(m_timeout);
 }
 
 bool LiveTVPlayback::Open()
@@ -482,21 +478,22 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
       // Reading ahead
       if (m_chain.currentSequence == m_chain.lastSequence)
       {
-        bool timeout = m_timeout->TimeLeft() > 0 ? false : true;
-        if (timeout && (rp = recorder->GetFilePosition()) > fs)
+        PLATFORM::CTimeout timeout(250);
+        for (;;)
         {
-          PLATFORM::CLockObject lock(*m_mutex); // Lock chain
-          m_chain.currentTransfer->fileSize = rp;
-          retry = true;
-        }
-        else
-        {
-          if (timeout)
+          if ((rp = recorder->GetFilePosition()) > fs)
           {
-            m_timeout->Init(100); // Retry after 100ms
-            DBG(MYTH_DBG_WARN, "%s: read position is ahead (%" PRIi64 ")\n", __FUNCTION__, fs);
+            PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+            m_chain.currentTransfer->fileSize = rp;
+            retry = true;
+            break;
           }
-          return 0;
+          if (!timeout.TimeLeft())
+          {
+            DBG(MYTH_DBG_WARN, "%s: read position is ahead (%" PRIi64 ")\n", __FUNCTION__, fs);
+            return 0;
+          }
+          usleep(20000);
         }
       }
       // Switch next file transfer is required to continue
