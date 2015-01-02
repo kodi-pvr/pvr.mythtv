@@ -475,11 +475,11 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
     s = fs - m_chain.currentTransfer->filePosition; // Acceptable block size
     if (s == 0)
     {
-      // Reading ahead
-      if (m_chain.currentSequence == m_chain.lastSequence)
+      PLATFORM::CTimeout timeout(500);
+      for (;;)
       {
-        PLATFORM::CTimeout timeout(250);
-        for (;;)
+        // Reading ahead
+        if (m_chain.currentSequence == m_chain.lastSequence)
         {
           if ((rp = recorder->GetFilePosition()) > fs)
           {
@@ -495,17 +495,18 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
           }
           usleep(20000);
         }
-      }
-      // Switch next file transfer is required to continue
-      else
-      {
-        if (!SwitchChain(m_chain.currentSequence + 1))
-          return -1;
-        if (m_chain.currentTransfer->filePosition != 0)
-          recorder->TransferSeek(*(m_chain.currentTransfer), 0, WHENCE_SET);
-        retry = true;
-        DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u), watching (%u)\n", __FUNCTION__,
-              m_chain.UID.c_str(), m_chain.lastSequence, m_chain.currentSequence);
+        // Switch next file transfer is required to continue
+        else
+        {
+          if (!SwitchChain(m_chain.currentSequence + 1))
+            return -1;
+          if (m_chain.currentTransfer->filePosition != 0)
+            recorder->TransferSeek(*(m_chain.currentTransfer), 0, WHENCE_SET);
+          DBG(MYTH_DBG_DEBUG, "%s: liveTV (%s): chain last (%u), watching (%u)\n", __FUNCTION__,
+                m_chain.UID.c_str(), m_chain.lastSequence, m_chain.currentSequence);
+          retry = true;
+          break;
+        }
       }
     }
     else if (s < 0)
