@@ -2018,6 +2018,13 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       XBMC->QueueNotification(QUEUE_INFO, info.c_str());
       return PVR_ERROR_NO_ERROR;
     }
+    else if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
+    {
+      CLockObject lock(m_channelsLock);
+      m_fileOps->CleanChannelIcons();
+      PVR->TriggerChannelUpdate();
+      return PVR_ERROR_NO_ERROR;
+    }
   }
 
   if (menuhook.category == PVR_MENUHOOK_EPG && item.cat == PVR_MENUHOOK_EPG)
