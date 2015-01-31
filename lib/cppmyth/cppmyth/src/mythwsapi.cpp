@@ -888,6 +888,62 @@ ProgramPtr WSAPI::GetRecorded1_5(uint32_t chanid, time_t recstartts)
   return ret;
 }
 
+ProgramPtr WSAPI::GetRecorded6_0(uint32_t recordedid)
+{
+  ProgramPtr ret;
+  char buf[32];
+  unsigned proto = (unsigned)m_version.protocol;
+
+  // Get bindings for protocol version
+  const bindings_t *bindprog = MythDTO::getProgramBindArray(proto);
+  const bindings_t *bindchan = MythDTO::getChannelBindArray(proto);
+  const bindings_t *bindreco = MythDTO::getRecordingBindArray(proto);
+  const bindings_t *bindartw = MythDTO::getArtworkBindArray(proto);
+
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/GetRecorded");
+  uint32str(recordedid, buf);
+  req.SetContentParam("RecordedId", buf);
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *prog = json_object_get(root.get(), "Program");
+  ProgramPtr program(new Program());  // Using default constructor
+  // Bind the new program
+  MythJSON::BindObject(prog, program.get(), bindprog);
+  // Bind channel of program
+  const json_t *chan = json_object_get(prog, "Channel");
+  MythJSON::BindObject(chan, &(program->channel), bindchan);
+  // Bind recording of program
+  const json_t *reco = json_object_get(prog, "Recording");
+  MythJSON::BindObject(reco, &(program->recording), bindreco);
+  // Bind artwork list of program
+  const json_t *arts = json_object_get(json_object_get(prog, "Artwork"), "ArtworkInfos");
+  for (size_t pa = 0; pa < json_array_size(arts); ++pa)
+  {
+    const json_t *artw = json_array_get(arts, pa);
+    Artwork artwork = Artwork();  // Using default constructor
+    MythJSON::BindObject(artw, &artwork, bindartw);
+    program->artwork.push_back(artwork);
+  }
+  // Return valid program
+  if (program->recording.startTs != INVALID_TIME)
+    ret = program;
+  return ret;
+}
+
 bool WSAPI::DeleteRecording2_1(uint32_t chanid, time_t recstartts, bool forceDelete, bool allowRerecord)
 {
   char buf[32];
@@ -900,6 +956,38 @@ bool WSAPI::DeleteRecording2_1(uint32_t chanid, time_t recstartts, bool forceDel
   req.SetContentParam("ChanId", buf);
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
+  req.SetContentParam("ForceDelete", BOOLSTR(forceDelete));
+  req.SetContentParam("AllowRerecord", BOOLSTR(allowRerecord));
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return false;
+  }
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return false;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *field = json_object_get(root.get(), "bool");
+  if (!field || strcmp(json_string_value(field), "true"))
+    return false;
+  return true;
+}
+
+bool WSAPI::DeleteRecording6_0(uint32_t recordedid, bool forceDelete, bool allowRerecord)
+{
+  char buf[32];
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/DeleteRecording", HRM_POST);
+  uint32str(recordedid, buf);
+  req.SetContentParam("RecordedId", buf);
   req.SetContentParam("ForceDelete", BOOLSTR(forceDelete));
   req.SetContentParam("AllowRerecord", BOOLSTR(allowRerecord));
   WSResponse resp(req);
@@ -954,6 +1042,36 @@ bool WSAPI::UnDeleteRecording2_1(uint32_t chanid, time_t recstartts)
   return true;
 }
 
+bool WSAPI::UnDeleteRecording6_0(uint32_t recordedid)
+{
+  char buf[32];
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/UnDeleteRecording", HRM_POST);
+  uint32str(recordedid, buf);
+  req.SetContentParam("RecordedId", buf);
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return false;
+  }
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return false;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *field = json_object_get(root.get(), "bool");
+  if (!field || strcmp(json_string_value(field), "true"))
+    return false;
+  return true;
+}
+
 bool WSAPI::UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, bool watched)
 {
   char buf[32];
@@ -966,6 +1084,37 @@ bool WSAPI::UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, b
   req.SetContentParam("ChanId", buf);
   time2iso8601utc(recstartts, buf);
   req.SetContentParam("StartTime", buf);
+  req.SetContentParam("Watched", BOOLSTR(watched));
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return false;
+  }
+  JanssonPtr root = MythJSON::ParseResponseJSON(resp);
+  if (!root.isValid() || !json_is_object(root.get()))
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return false;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  const json_t *field = json_object_get(root.get(), "bool");
+  if (!field || strcmp(json_string_value(field), "true"))
+    return false;
+  return true;
+}
+
+bool WSAPI::UpdateRecordedWatchedStatus6_0(uint32_t recordedid, bool watched)
+{
+  char buf[32];
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/UpdateRecordedWatchedStatus", HRM_POST);
+  uint32str(recordedid, buf);
+  req.SetContentParam("RecordedId", buf);
   req.SetContentParam("Watched", BOOLSTR(watched));
   WSResponse resp(req);
   if (!resp.IsSuccessful())
