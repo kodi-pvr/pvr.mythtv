@@ -359,6 +359,26 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     else
       XBMC->Log(LOG_ERROR, "%s: Add recording failed for %u %ld", __FUNCTION__, (unsigned)chanid, (long)startts);
   }
+  else if (cs == 3 && msg.subject[1] == "ADD")
+  {
+    uint32_t recordedid = Myth::StringToId(msg.subject[2]);
+    MythProgramInfo prog(m_control->GetRecorded(recordedid));
+    if (!prog.IsNull())
+    {
+      CLockObject lock(m_recordingsLock);
+      ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
+      if (it == m_recordings.end())
+      {
+        if (g_bExtraDebug)
+          XBMC->Log(LOG_DEBUG, "%s: Add recording: %s", __FUNCTION__, prog.UID().c_str());
+        // Add recording
+        m_recordings.insert(std::pair<std::string, MythProgramInfo>(prog.UID().c_str(), prog));
+        ++m_recordingChangePinCount;
+      }
+    }
+    else
+      XBMC->Log(LOG_ERROR, "%s: Add recording failed for %u", __FUNCTION__, (unsigned)recordedid);
+  }
   else if (cs == 2 && msg.subject[1] == "UPDATE" && msg.program)
   {
     CLockObject lock(m_recordingsLock);
@@ -386,6 +406,26 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     uint32_t chanid = Myth::StringToId(msg.subject[2]);
     time_t startts = Myth::StringToTime(msg.subject[3]);
     MythProgramInfo prog(m_control->GetRecorded(chanid, startts));
+    if (!prog.IsNull())
+    {
+      CLockObject lock(m_recordingsLock);
+      ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
+      if (it != m_recordings.end())
+      {
+        if (g_bExtraDebug)
+          XBMC->Log(LOG_DEBUG, "%s: Delete recording: %s", __FUNCTION__, prog.UID().c_str());
+        // Remove recording
+        m_recordings.erase(it);
+        ++m_recordingChangePinCount;
+      }
+    }
+  }
+  else if (cs == 3 && msg.subject[1] == "DELETE")
+  {
+    // MythTV send two DELETE events. First requests deletion, second confirms deletion.
+    // On first we delete recording. On second program will not be found.
+    uint32_t recordedid = Myth::StringToId(msg.subject[2]);
+    MythProgramInfo prog(m_control->GetRecorded(recordedid));
     if (!prog.IsNull())
     {
       CLockObject lock(m_recordingsLock);
