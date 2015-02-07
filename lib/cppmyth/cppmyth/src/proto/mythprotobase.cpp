@@ -47,6 +47,7 @@ static myth_protomap_t protomap[] = {
   {82, "IdIdO"},
   {83, "BreakingGlass"},
   {84, "CanaryCoalmine"},
+  {85, "BluePool"},
   {0, ""}
 };
 
