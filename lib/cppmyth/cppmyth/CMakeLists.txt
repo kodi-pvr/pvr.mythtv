@@ -119,8 +119,7 @@ file (COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/proto/mythprototransfer.h
            DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/proto/)
 
 include_directories (
-  ${CMAKE_CURRENT_BINARY_DIR}/include/.
-  ${CMAKE_BINARY_DIR}/jansson/include/.)
+  ${CMAKE_CURRENT_BINARY_DIR}/include/.)
 
 ###############################################################################
 # add sources
@@ -146,11 +145,10 @@ set (CPPMYTH_SOURCES
 # add targets
 if (BUILD_SHARED_LIBS)
   add_library (cppmyth SHARED ${CPPMYTH_SOURCES})
-  set (DEPLIBS jansson)
   if (MSVC)
-    list (APPEND DEPLIBS ws2_32)
+    set (DEPLIBS ws2_32)
   else ()
-    list (APPEND DEPLIBS pthread m)
+    set (DEPLIBS pthread m)
     find_library (LIBRT rt)
     if (LIBRT)
       list (APPEND DEPLIBS rt)
