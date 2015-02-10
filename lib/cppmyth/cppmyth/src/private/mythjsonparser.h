@@ -61,6 +61,7 @@ namespace MythJSON
 
   private:
     sajson::value m_value;
+    sajson::type m_type;
   };
 
   class Document
