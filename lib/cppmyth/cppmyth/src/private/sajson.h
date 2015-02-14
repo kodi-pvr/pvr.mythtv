@@ -481,6 +481,7 @@ namespace sajson {
         struct parse_result {
             parse_result(error_result)
                 : success(false)
+                , value_type(TYPE_NULL)
             {}
 
             parse_result(type t)
