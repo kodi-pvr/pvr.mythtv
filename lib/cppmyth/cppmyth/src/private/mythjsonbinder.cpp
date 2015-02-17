@@ -28,7 +28,9 @@
 #include <cstdio>
 #include <errno.h>
 
-void MythJSON::BindObject(const Node& node, void *obj, const bindings_t *bl)
+using namespace Myth;
+
+void JSON::BindObject(const Node& node, void *obj, const bindings_t *bl)
 {
   int i, err;
 

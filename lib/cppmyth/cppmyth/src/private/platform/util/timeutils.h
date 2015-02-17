@@ -43,6 +43,8 @@
 #include <sys/time.h>
 #endif
 
+namespace Myth
+{
 namespace PLATFORM
 {
   inline int64_t GetTimeMs()
@@ -97,4 +99,5 @@ namespace PLATFORM
   private:
     uint64_t m_iTarget;
   };
-};
+}
+}

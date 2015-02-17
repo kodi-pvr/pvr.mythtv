@@ -25,9 +25,12 @@
 #include "mythdto/mythdto.h"
 #include "mythjsonparser.h"
 
-namespace MythJSON
+namespace Myth
+{
+namespace JSON
 {
   void BindObject(const Node& node, void *obj, const bindings_t *bl);
+}
 }
 
 #endif	/* MYTHJSONBINDER_H */

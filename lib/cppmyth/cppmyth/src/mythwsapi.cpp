@@ -114,11 +114,11 @@ bool WSAPI::GetServiceVersion(WSServiceId_t id, WSServiceVersion_t& wsv)
   if (resp.IsSuccessful())
   {
     // Parse content response
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (json.IsValid() && root.IsObject())
     {
-      const MythJSON::Node& field = root.GetObjectValue("String");
+      const JSON::Node& field = root.GetObjectValue("String");
       if (field.IsString())
       {
         const std::string& val = field.GetStringValue();
@@ -150,11 +150,11 @@ bool WSAPI::CheckServerHostName2_0()
     return false;
   }
   // Parse content response
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (json.IsValid() && root.IsObject())
   {
-    const MythJSON::Node& field = root.GetObjectValue("String");
+    const JSON::Node& field = root.GetObjectValue("String");
     if (field.IsString())
     {
       const std::string& val = field.GetStringValue();
@@ -188,15 +188,15 @@ bool WSAPI::CheckVersion2_0()
     return false;
   }
   // Parse content response
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (json.IsValid() && root.IsObject())
   {
-    const MythJSON::Node& con = root.GetObjectValue("ConnectionInfo");
+    const JSON::Node& con = root.GetObjectValue("ConnectionInfo");
     if (con.IsObject())
     {
-      const MythJSON::Node& ver = con.GetObjectValue("Version");
-      MythJSON::BindObject(ver, &m_version, MythDTO::getVersionBindArray(wsv.ranking));
+      const JSON::Node& ver = con.GetObjectValue("Version");
+      JSON::BindObject(ver, &m_version, MythDTO::getVersionBindArray(wsv.ranking));
       if (m_version.protocol)
         return true;
     }
@@ -283,8 +283,8 @@ SettingPtr WSAPI::GetSetting2_0(const std::string& key, const std::string& hostn
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -293,14 +293,14 @@ SettingPtr WSAPI::GetSetting2_0(const std::string& key, const std::string& hostn
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
   // Object: SettingList
-  const MythJSON::Node& slist = root.GetObjectValue("SettingList");
+  const JSON::Node& slist = root.GetObjectValue("SettingList");
   // Object: Settings
-  const MythJSON::Node& sts = slist.GetObjectValue("Settings");
+  const JSON::Node& sts = slist.GetObjectValue("Settings");
   if (sts.IsObject())
   {
     if (sts.Size())
     {
-      const MythJSON::Node& val = sts.GetObjectValue(static_cast<size_t>(0));
+      const JSON::Node& val = sts.GetObjectValue(static_cast<size_t>(0));
       if (val.IsString())
       {
         ret.reset(new Setting());  // Using default constructor
@@ -335,8 +335,8 @@ SettingMapPtr WSAPI::GetSettings2_0(const std::string& hostname)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -345,15 +345,15 @@ SettingMapPtr WSAPI::GetSettings2_0(const std::string& hostname)
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
   // Object: SettingList
-  const MythJSON::Node& slist = root.GetObjectValue("SettingList");
+  const JSON::Node& slist = root.GetObjectValue("SettingList");
   // Object: Settings
-  const MythJSON::Node& sts = slist.GetObjectValue("Settings");
+  const JSON::Node& sts = slist.GetObjectValue("Settings");
   if (sts.IsObject())
   {
     size_t s = sts.Size();
     for (size_t i = 0; i < s; ++i)
     {
-      const MythJSON::Node& val = sts.GetObjectValue(i);
+      const JSON::Node& val = sts.GetObjectValue(i);
       if (val.IsString())
       {
         SettingPtr setting(new Setting());  // Using default constructor
@@ -392,8 +392,8 @@ bool WSAPI::PutSetting2_0(const std::string& key, const std::string& value, bool
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -401,7 +401,7 @@ bool WSAPI::PutSetting2_0(const std::string& key, const std::string& value, bool
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -430,8 +430,8 @@ CaptureCardListPtr WSAPI::GetCaptureCardList1_4()
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -440,17 +440,17 @@ CaptureCardListPtr WSAPI::GetCaptureCardList1_4()
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
   // Object: CaptureCardList
-  const MythJSON::Node& clist = root.GetObjectValue("CaptureCardList");
+  const JSON::Node& clist = root.GetObjectValue("CaptureCardList");
   // Object: CaptureCards[]
-  const MythJSON::Node& cards = clist.GetObjectValue("CaptureCards");
+  const JSON::Node& cards = clist.GetObjectValue("CaptureCards");
   // Iterates over the sequence elements.
   size_t cs = cards.Size();
   for (size_t ci = 0; ci < cs; ++ci)
   {
-    const MythJSON::Node& card = cards.GetArrayElement(ci);
+    const JSON::Node& card = cards.GetArrayElement(ci);
     CaptureCardPtr captureCard(new CaptureCard());  // Using default constructor
     // Bind the new captureCard
-    MythJSON::BindObject(card, captureCard.get(), bindcard);
+    JSON::BindObject(card, captureCard.get(), bindcard);
     ret->push_back(captureCard);
   }
   return ret;
@@ -478,8 +478,8 @@ VideoSourceListPtr WSAPI::GetVideoSourceList1_2()
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -488,17 +488,17 @@ VideoSourceListPtr WSAPI::GetVideoSourceList1_2()
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
   // Object: VideoSourceList
-  const MythJSON::Node& slist = root.GetObjectValue("VideoSourceList");
+  const JSON::Node& slist = root.GetObjectValue("VideoSourceList");
   // Object: VideoSources[]
-  const MythJSON::Node& vsrcs = slist.GetObjectValue("VideoSources");
+  const JSON::Node& vsrcs = slist.GetObjectValue("VideoSources");
   // Iterates over the sequence elements.
   size_t vs = vsrcs.Size();
   for (size_t vi = 0; vi < vs; ++vi)
   {
-    const MythJSON::Node& vsrc = vsrcs.GetArrayElement(vi);
+    const JSON::Node& vsrc = vsrcs.GetArrayElement(vi);
     VideoSourcePtr videoSource(new VideoSource());  // Using default constructor
     // Bind the new videoSource
-    MythJSON::BindObject(vsrc, videoSource.get(), bindvsrc);
+    JSON::BindObject(vsrc, videoSource.get(), bindvsrc);
     ret->push_back(videoSource);
   }
   return ret;
@@ -537,8 +537,8 @@ ChannelListPtr WSAPI::GetChannelList1_2(uint32_t sourceid, bool onlyVisible)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -547,9 +547,9 @@ ChannelListPtr WSAPI::GetChannelList1_2(uint32_t sourceid, bool onlyVisible)
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ChannelInfoList
-    const MythJSON::Node& clist = root.GetObjectValue("ChannelInfoList");
+    const JSON::Node& clist = root.GetObjectValue("ChannelInfoList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(clist, &list, bindlist);
+    JSON::BindObject(clist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -558,16 +558,16 @@ ChannelListPtr WSAPI::GetChannelList1_2(uint32_t sourceid, bool onlyVisible)
     }
     count = 0;
     // Object: ChannelInfos[]
-    const MythJSON::Node& chans = clist.GetObjectValue("ChannelInfos");
+    const JSON::Node& chans = clist.GetObjectValue("ChannelInfos");
     // Iterates over the sequence elements.
     size_t cs = chans.Size();
     for (size_t ci = 0; ci < cs; ++ci)
     {
       ++count;
-      const MythJSON::Node& chan = chans.GetArrayElement(ci);
+      const JSON::Node& chan = chans.GetArrayElement(ci);
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
-      MythJSON::BindObject(chan, channel.get(), bindchan);
+      JSON::BindObject(chan, channel.get(), bindchan);
       if (channel->chanId && (!onlyVisible || channel->visible))
         ret->push_back(channel);
     }
@@ -614,8 +614,8 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -624,9 +624,9 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ChannelInfoList
-    const MythJSON::Node& clist = root.GetObjectValue("ChannelInfoList");
+    const JSON::Node& clist = root.GetObjectValue("ChannelInfoList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(clist, &list, bindlist);
+    JSON::BindObject(clist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -635,16 +635,16 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
     }
     count = 0;
     // Object: ChannelInfos[]
-    const MythJSON::Node& chans = clist.GetObjectValue("ChannelInfos");
+    const JSON::Node& chans = clist.GetObjectValue("ChannelInfos");
     // Iterates over the sequence elements.
     size_t cs = chans.Size();
     for (size_t ci = 0; ci < cs; ++ci)
     {
       ++count;
-      const MythJSON::Node& chan = chans.GetArrayElement(ci);
+      const JSON::Node& chan = chans.GetArrayElement(ci);
       ChannelPtr channel(new Channel());  // Using default constructor
       // Bind the new channel
-      MythJSON::BindObject(chan, channel.get(), bindchan);
+      JSON::BindObject(chan, channel.get(), bindchan);
       if (channel->chanId)
         ret->push_back(channel);
     }
@@ -691,8 +691,8 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -701,9 +701,9 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
   // Object: ProgramGuide
-  const MythJSON::Node& glist = root.GetObjectValue("ProgramGuide");
+  const JSON::Node& glist = root.GetObjectValue("ProgramGuide");
   ItemList list = ItemList(); // Using default constructor
-  MythJSON::BindObject(glist, &list, bindlist);
+  JSON::BindObject(glist, &list, bindlist);
   // List has ProtoVer. Check it or sound alarm
   if (list.protoVer != proto)
   {
@@ -711,25 +711,25 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
     return ret;
   }
   // Object: Channels[]
-  const MythJSON::Node& chans = glist.GetObjectValue("Channels");
+  const JSON::Node& chans = glist.GetObjectValue("Channels");
   // Iterates over the sequence elements.
   size_t cs = chans.Size();
   for (size_t ci = 0; ci < cs; ++ci)
   {
-    const MythJSON::Node& chan = chans.GetArrayElement(ci);
+    const JSON::Node& chan = chans.GetArrayElement(ci);
     Channel channel;
-    MythJSON::BindObject(chan, &channel, bindchan);
+    JSON::BindObject(chan, &channel, bindchan);
     // Object: Programs[]
-    const MythJSON::Node& progs = chan.GetObjectValue("Programs");
+    const JSON::Node& progs = chan.GetObjectValue("Programs");
     // Iterates over the sequence elements.
     size_t ps = progs.Size();
     for (size_t pi = 0; pi < ps; ++pi)
     {
       ++count;
-      const MythJSON::Node& prog = progs.GetArrayElement(pi);
+      const JSON::Node& prog = progs.GetArrayElement(pi);
       ProgramPtr program(new Program());  // Using default constructor
       // Bind the new program
-      MythJSON::BindObject(prog, program.get(), bindprog);
+      JSON::BindObject(prog, program.get(), bindprog);
       program->channel = channel;
       ret->insert(std::make_pair(program->startTime, program));
     }
@@ -782,8 +782,8 @@ ProgramListPtr WSAPI::GetRecordedList1_5(unsigned n, bool descending)
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -792,9 +792,9 @@ ProgramListPtr WSAPI::GetRecordedList1_5(unsigned n, bool descending)
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ProgramList
-    const MythJSON::Node& plist = root.GetObjectValue("ProgramList");
+    const JSON::Node& plist = root.GetObjectValue("ProgramList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(plist, &list, bindlist);
+    JSON::BindObject(plist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -803,30 +803,30 @@ ProgramListPtr WSAPI::GetRecordedList1_5(unsigned n, bool descending)
     }
     count = 0;
     // Object: Programs[]
-    const MythJSON::Node& progs = plist.GetObjectValue("Programs");
+    const JSON::Node& progs = plist.GetObjectValue("Programs");
     // Iterates over the sequence elements.
     size_t ps = progs.Size();
     for (size_t pi = 0; pi < ps; ++pi)
     {
       ++count;
-      const MythJSON::Node& prog = progs.GetArrayElement(pi);
+      const JSON::Node& prog = progs.GetArrayElement(pi);
       ProgramPtr program(new Program());  // Using default constructor
       // Bind the new program
-      MythJSON::BindObject(prog, program.get(), bindprog);
+      JSON::BindObject(prog, program.get(), bindprog);
       // Bind channel of program
-      const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-      MythJSON::BindObject(chan, &(program->channel), bindchan);
+      const JSON::Node& chan = prog.GetObjectValue("Channel");
+      JSON::BindObject(chan, &(program->channel), bindchan);
       // Bind recording of program
-      const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-      MythJSON::BindObject(reco, &(program->recording), bindreco);
+      const JSON::Node& reco = prog.GetObjectValue("Recording");
+      JSON::BindObject(reco, &(program->recording), bindreco);
       // Bind artwork list of program
-      const MythJSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
+      const JSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
       size_t as = arts.Size();
       for (size_t pa = 0; pa < as; ++pa)
       {
-        const MythJSON::Node& artw = arts.GetArrayElement(pa);
+        const JSON::Node& artw = arts.GetArrayElement(pa);
         Artwork artwork = Artwork();  // Using default constructor
-        MythJSON::BindObject(artw, &artwork, bindartw);
+        JSON::BindObject(artw, &artwork, bindartw);
         program->artwork.push_back(artwork);
       }
       ret->push_back(program);
@@ -865,8 +865,8 @@ ProgramPtr WSAPI::GetRecorded1_5(uint32_t chanid, time_t recstartts)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -874,24 +874,24 @@ ProgramPtr WSAPI::GetRecorded1_5(uint32_t chanid, time_t recstartts)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& prog = root.GetObjectValue("Program");
+  const JSON::Node& prog = root.GetObjectValue("Program");
   ProgramPtr program(new Program());  // Using default constructor
   // Bind the new program
-  MythJSON::BindObject(prog, program.get(), bindprog);
+  JSON::BindObject(prog, program.get(), bindprog);
   // Bind channel of program
-  const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-  MythJSON::BindObject(chan, &(program->channel), bindchan);
+  const JSON::Node& chan = prog.GetObjectValue("Channel");
+  JSON::BindObject(chan, &(program->channel), bindchan);
   // Bind recording of program
-  const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-  MythJSON::BindObject(reco, &(program->recording), bindreco);
+  const JSON::Node& reco = prog.GetObjectValue("Recording");
+  JSON::BindObject(reco, &(program->recording), bindreco);
   // Bind artwork list of program
-  const MythJSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
+  const JSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
   size_t as = arts.Size();
   for (size_t pa = 0; pa < as; ++pa)
   {
-    const MythJSON::Node& artw = arts.GetArrayElement(pa);
+    const JSON::Node& artw = arts.GetArrayElement(pa);
     Artwork artwork = Artwork();  // Using default constructor
-    MythJSON::BindObject(artw, &artwork, bindartw);
+    JSON::BindObject(artw, &artwork, bindartw);
     program->artwork.push_back(artwork);
   }
   // Return valid program
@@ -923,8 +923,8 @@ ProgramPtr WSAPI::GetRecorded6_0(uint32_t recordedid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -932,24 +932,24 @@ ProgramPtr WSAPI::GetRecorded6_0(uint32_t recordedid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& prog = root.GetObjectValue("Program");
+  const JSON::Node& prog = root.GetObjectValue("Program");
   ProgramPtr program(new Program());  // Using default constructor
   // Bind the new program
-  MythJSON::BindObject(prog, program.get(), bindprog);
+  JSON::BindObject(prog, program.get(), bindprog);
   // Bind channel of program
-  const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-  MythJSON::BindObject(chan, &(program->channel), bindchan);
+  const JSON::Node& chan = prog.GetObjectValue("Channel");
+  JSON::BindObject(chan, &(program->channel), bindchan);
   // Bind recording of program
-  const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-  MythJSON::BindObject(reco, &(program->recording), bindreco);
+  const JSON::Node& reco = prog.GetObjectValue("Recording");
+  JSON::BindObject(reco, &(program->recording), bindreco);
   // Bind artwork list of program
-  const MythJSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
+  const JSON::Node& arts = prog.GetObjectValue("Artwork").GetObjectValue("ArtworkInfos");
   size_t as = arts.Size();
   for (size_t pa = 0; pa < as; ++pa)
   {
-    const MythJSON::Node& artw = arts.GetArrayElement(pa);
+    const JSON::Node& artw = arts.GetArrayElement(pa);
     Artwork artwork = Artwork();  // Using default constructor
-    MythJSON::BindObject(artw, &artwork, bindartw);
+    JSON::BindObject(artw, &artwork, bindartw);
     program->artwork.push_back(artwork);
   }
   // Return valid program
@@ -978,8 +978,8 @@ bool WSAPI::DeleteRecording2_1(uint32_t chanid, time_t recstartts, bool forceDel
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -987,7 +987,7 @@ bool WSAPI::DeleteRecording2_1(uint32_t chanid, time_t recstartts, bool forceDel
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1011,8 +1011,8 @@ bool WSAPI::DeleteRecording6_0(uint32_t recordedid, bool forceDelete, bool allow
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1020,7 +1020,7 @@ bool WSAPI::DeleteRecording6_0(uint32_t recordedid, bool forceDelete, bool allow
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1044,8 +1044,8 @@ bool WSAPI::UnDeleteRecording2_1(uint32_t chanid, time_t recstartts)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1053,7 +1053,7 @@ bool WSAPI::UnDeleteRecording2_1(uint32_t chanid, time_t recstartts)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1075,8 +1075,8 @@ bool WSAPI::UnDeleteRecording6_0(uint32_t recordedid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1084,7 +1084,7 @@ bool WSAPI::UnDeleteRecording6_0(uint32_t recordedid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1109,8 +1109,8 @@ bool WSAPI::UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, b
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1118,7 +1118,7 @@ bool WSAPI::UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, b
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1141,8 +1141,8 @@ bool WSAPI::UpdateRecordedWatchedStatus6_0(uint32_t recordedid, bool watched)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1150,7 +1150,7 @@ bool WSAPI::UpdateRecordedWatchedStatus6_0(uint32_t recordedid, bool watched)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1196,8 +1196,8 @@ RecordScheduleListPtr WSAPI::GetRecordScheduleList1_5()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1206,9 +1206,9 @@ RecordScheduleListPtr WSAPI::GetRecordScheduleList1_5()
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: RecRuleList
-    const MythJSON::Node& rlist = root.GetObjectValue("RecRuleList");
+    const JSON::Node& rlist = root.GetObjectValue("RecRuleList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(rlist, &list, bindlist);
+    JSON::BindObject(rlist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -1217,16 +1217,16 @@ RecordScheduleListPtr WSAPI::GetRecordScheduleList1_5()
     }
     count = 0;
     // Object: RecRules[]
-    const MythJSON::Node& recs = rlist.GetObjectValue("RecRules");
+    const JSON::Node& recs = rlist.GetObjectValue("RecRules");
     // Iterates over the sequence elements.
     size_t rs = recs.Size();
     for (size_t ri = 0; ri < rs; ++ri)
     {
       ++count;
-      const MythJSON::Node& rec = recs.GetArrayElement(ri);
+      const JSON::Node& rec = recs.GetArrayElement(ri);
       RecordSchedulePtr record(new RecordSchedule()); // Using default constructor
       // Bind the new record
-      MythJSON::BindObject(rec, record.get(), bindrec);
+      JSON::BindObject(rec, record.get(), bindrec);
       ProcessRecordIN(proto, *record);
       ret->push_back(record);
     }
@@ -1258,8 +1258,8 @@ RecordSchedulePtr WSAPI::GetRecordSchedule1_5(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1267,10 +1267,10 @@ RecordSchedulePtr WSAPI::GetRecordSchedule1_5(uint32_t recordid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& rec = root.GetObjectValue("RecRule");
+  const JSON::Node& rec = root.GetObjectValue("RecRule");
   RecordSchedulePtr record(new RecordSchedule()); // Using default constructor
   // Bind the new record
-  MythJSON::BindObject(rec, record.get(), bindrec);
+  JSON::BindObject(rec, record.get(), bindrec);
   // Return valid record
   if (record->recordId > 0)
   {
@@ -1368,8 +1368,8 @@ bool WSAPI::AddRecordSchedule1_5(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1377,7 +1377,7 @@ bool WSAPI::AddRecordSchedule1_5(RecordSchedule& record)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("int");
+  const JSON::Node& field = root.GetObjectValue("int");
   if (!field.IsString() || str2uint32(field.GetStringValue().c_str(), &recordid))
     return false;
   record.recordId = recordid;
@@ -1459,8 +1459,8 @@ bool WSAPI::AddRecordSchedule1_7(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1468,7 +1468,7 @@ bool WSAPI::AddRecordSchedule1_7(RecordSchedule& record)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("uint");
+  const JSON::Node& field = root.GetObjectValue("uint");
   if (!field.IsString() || str2uint32(field.GetStringValue().c_str(), &recordid))
     return false;
   record.recordId = recordid;
@@ -1551,8 +1551,8 @@ bool WSAPI::UpdateRecordSchedule1_7(RecordSchedule& record)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1560,7 +1560,7 @@ bool WSAPI::UpdateRecordSchedule1_7(RecordSchedule& record)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1584,8 +1584,8 @@ bool WSAPI::DisableRecordSchedule1_5(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1593,7 +1593,7 @@ bool WSAPI::DisableRecordSchedule1_5(uint32_t recordid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1617,8 +1617,8 @@ bool WSAPI::EnableRecordSchedule1_5(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1626,7 +1626,7 @@ bool WSAPI::EnableRecordSchedule1_5(uint32_t recordid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1650,8 +1650,8 @@ bool WSAPI::RemoveRecordSchedule1_5(uint32_t recordid)
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return false;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1659,7 +1659,7 @@ bool WSAPI::RemoveRecordSchedule1_5(uint32_t recordid)
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& field = root.GetObjectValue("bool");
+  const JSON::Node& field = root.GetObjectValue("bool");
   if (!field.IsString() || strcmp(field.GetStringValue().c_str(), "true"))
     return false;
   return true;
@@ -1713,8 +1713,8 @@ ProgramListPtr WSAPI::GetUpcomingList2_2()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1723,9 +1723,9 @@ ProgramListPtr WSAPI::GetUpcomingList2_2()
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ProgramList
-    const MythJSON::Node& plist = root.GetObjectValue("ProgramList");
+    const JSON::Node& plist = root.GetObjectValue("ProgramList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(plist, &list, bindlist);
+    JSON::BindObject(plist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -1734,22 +1734,22 @@ ProgramListPtr WSAPI::GetUpcomingList2_2()
     }
     count = 0;
     // Object: Programs[]
-    const MythJSON::Node& progs = plist.GetObjectValue("Programs");
+    const JSON::Node& progs = plist.GetObjectValue("Programs");
     // Iterates over the sequence elements.
     size_t ps = progs.Size();
     for (size_t pi = 0; pi < ps; ++pi)
     {
       ++count;
-      const MythJSON::Node& prog = progs.GetArrayElement(pi);
+      const JSON::Node& prog = progs.GetArrayElement(pi);
       ProgramPtr program(new Program());  // Using default constructor
       // Bind the new program
-      MythJSON::BindObject(prog, program.get(), bindprog);
+      JSON::BindObject(prog, program.get(), bindprog);
       // Bind channel of program
-      const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-      MythJSON::BindObject(chan, &(program->channel), bindchan);
+      const JSON::Node& chan = prog.GetObjectValue("Channel");
+      JSON::BindObject(chan, &(program->channel), bindchan);
       // Bind recording of program
-      const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-      MythJSON::BindObject(reco, &(program->recording), bindreco);
+      const JSON::Node& reco = prog.GetObjectValue("Recording");
+      JSON::BindObject(reco, &(program->recording), bindreco);
       ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -1793,8 +1793,8 @@ ProgramListPtr WSAPI::GetConflictList1_5()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1803,9 +1803,9 @@ ProgramListPtr WSAPI::GetConflictList1_5()
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ProgramList
-    const MythJSON::Node& plist = root.GetObjectValue("ProgramList");
+    const JSON::Node& plist = root.GetObjectValue("ProgramList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(plist, &list, bindlist);
+    JSON::BindObject(plist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -1814,22 +1814,22 @@ ProgramListPtr WSAPI::GetConflictList1_5()
     }
     count = 0;
     // Object: Programs[]
-    const MythJSON::Node& progs = plist.GetObjectValue("Programs");
+    const JSON::Node& progs = plist.GetObjectValue("Programs");
     // Iterates over the sequence elements.
     size_t ps = progs.Size();
     for (size_t pi = 0; pi < ps; ++pi)
     {
       ++count;
-      const MythJSON::Node& prog = progs.GetArrayElement(pi);
+      const JSON::Node& prog = progs.GetArrayElement(pi);
       ProgramPtr program(new Program());  // Using default constructor
       // Bind the new program
-      MythJSON::BindObject(prog, program.get(), bindprog);
+      JSON::BindObject(prog, program.get(), bindprog);
       // Bind channel of program
-      const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-      MythJSON::BindObject(chan, &(program->channel), bindchan);
+      const JSON::Node& chan = prog.GetObjectValue("Channel");
+      JSON::BindObject(chan, &(program->channel), bindchan);
       // Bind recording of program
-      const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-      MythJSON::BindObject(reco, &(program->recording), bindreco);
+      const JSON::Node& reco = prog.GetObjectValue("Recording");
+      JSON::BindObject(reco, &(program->recording), bindreco);
       ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -1873,8 +1873,8 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
       DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
       break;
     }
-    const MythJSON::Document json(resp);
-    const MythJSON::Node& root = json.GetRoot();
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
     if (!json.IsValid() || !root.IsObject())
     {
       DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -1883,9 +1883,9 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
     DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
     // Object: ProgramList
-    const MythJSON::Node& plist = root.GetObjectValue("ProgramList");
+    const JSON::Node& plist = root.GetObjectValue("ProgramList");
     ItemList list = ItemList(); // Using default constructor
-    MythJSON::BindObject(plist, &list, bindlist);
+    JSON::BindObject(plist, &list, bindlist);
     // List has ProtoVer. Check it or sound alarm
     if (list.protoVer != proto)
     {
@@ -1894,22 +1894,22 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
     }
     count = 0;
     // Object: Programs[]
-    const MythJSON::Node& progs = plist.GetObjectValue("Programs");
+    const JSON::Node& progs = plist.GetObjectValue("Programs");
     // Iterates over the sequence elements.
     size_t ps = progs.Size();
     for (size_t pi = 0; pi < ps; ++pi)
     {
       ++count;
-      const MythJSON::Node& prog = progs.GetArrayElement(pi);
+      const JSON::Node& prog = progs.GetArrayElement(pi);
       ProgramPtr program(new Program());  // Using default constructor
       // Bind the new program
-      MythJSON::BindObject(prog, program.get(), bindprog);
+      JSON::BindObject(prog, program.get(), bindprog);
       // Bind channel of program
-      const MythJSON::Node& chan = prog.GetObjectValue("Channel");
-      MythJSON::BindObject(chan, &(program->channel), bindchan);
+      const JSON::Node& chan = prog.GetObjectValue("Channel");
+      JSON::BindObject(chan, &(program->channel), bindchan);
       // Bind recording of program
-      const MythJSON::Node& reco = prog.GetObjectValue("Recording");
-      MythJSON::BindObject(reco, &(program->recording), bindreco);
+      const JSON::Node& reco = prog.GetObjectValue("Recording");
+      JSON::BindObject(reco, &(program->recording), bindreco);
       ret->push_back(program);
     }
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
@@ -2063,8 +2063,8 @@ ArtworkListPtr WSAPI::GetRecordingArtworkList1_32(uint32_t chanid, time_t recsta
     DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
     return ret;
   }
-  const MythJSON::Document json(resp);
-  const MythJSON::Node& root = json.GetRoot();
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
   if (!json.IsValid() || !root.IsObject())
   {
     DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
@@ -2072,15 +2072,15 @@ ArtworkListPtr WSAPI::GetRecordingArtworkList1_32(uint32_t chanid, time_t recsta
   }
   DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
 
-  const MythJSON::Node& list = root.GetObjectValue("ArtworkInfoList");
+  const JSON::Node& list = root.GetObjectValue("ArtworkInfoList");
   // Bind artwork list
-  const MythJSON::Node& arts = list.GetObjectValue("ArtworkInfos");
+  const JSON::Node& arts = list.GetObjectValue("ArtworkInfos");
   size_t as = arts.Size();
   for (size_t pa = 0; pa < as; ++pa)
   {
-    const MythJSON::Node& artw = arts.GetArrayElement(pa);
+    const JSON::Node& artw = arts.GetArrayElement(pa);
     ArtworkPtr artwork(new Artwork());  // Using default constructor
-    MythJSON::BindObject(artw, artwork.get(), bindartw);
+    JSON::BindObject(artw, artwork.get(), bindartw);
     ret->push_back(artwork);
   }
   return ret;

@@ -32,6 +32,8 @@
  *     http://www.pulse-eight.net/
  */
 
+namespace Myth
+{
 namespace PLATFORM
 {
   inline pthread_mutexattr_t *GetRecursiveMutexAttribute(void)
@@ -130,4 +132,5 @@ namespace PLATFORM
 
     pthread_cond_t m_condition;
   };
+}
 }

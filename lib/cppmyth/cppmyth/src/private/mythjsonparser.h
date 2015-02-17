@@ -29,7 +29,13 @@
 
 #include <string>
 
-namespace MythJSON
+/**
+ * @namespace Myth::JSON
+ * @brief This namespace contains all operations to handle JSON content
+ */
+namespace Myth
+{
+namespace JSON
 {
   class Node
   {
@@ -83,6 +89,7 @@ namespace MythJSON
     bool m_isValid;
     sajson::document *m_document;
   };
+}
 }
 
 #endif	/* MYTHJSONPARSER_H */

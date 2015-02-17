@@ -29,57 +29,57 @@ using namespace Myth;
 //// Node
 ////
 
-MythJSON::Node::Node()
+JSON::Node::Node()
 : m_value(sajson::TYPE_NULL, 0, 0)
 {
 }
 
-MythJSON::Node::Node(const sajson::value& value)
+JSON::Node::Node(const sajson::value& value)
 : m_value(value)
 {
 }
 
-bool MythJSON::Node::IsNull() const
+bool JSON::Node::IsNull() const
 {
   return (m_value.get_type() == sajson::TYPE_NULL);
 }
 
-bool MythJSON::Node::IsObject() const
+bool JSON::Node::IsObject() const
 {
   return (m_value.get_type() == sajson::TYPE_OBJECT);
 }
 
-bool MythJSON::Node::IsArray() const
+bool JSON::Node::IsArray() const
 {
   return (m_value.get_type() == sajson::TYPE_ARRAY);
 }
 
-bool MythJSON::Node::IsString() const
+bool JSON::Node::IsString() const
 {
   return (m_value.get_type() == sajson::TYPE_STRING);
 }
 
-bool MythJSON::Node::IsDouble() const
+bool JSON::Node::IsDouble() const
 {
   return (m_value.get_type() == sajson::TYPE_DOUBLE);
 }
 
-bool MythJSON::Node::IsInt() const
+bool JSON::Node::IsInt() const
 {
   return (m_value.get_type() == sajson::TYPE_INTEGER);
 }
 
-bool MythJSON::Node::IsTrue() const
+bool JSON::Node::IsTrue() const
 {
   return (m_value.get_type() == sajson::TYPE_TRUE);
 }
 
-bool MythJSON::Node::IsFalse() const
+bool JSON::Node::IsFalse() const
 {
   return (m_value.get_type() == sajson::TYPE_FALSE);
 }
 
-std::string MythJSON::Node::GetStringValue() const
+std::string JSON::Node::GetStringValue() const
 {
   if (m_value.get_type() == sajson::TYPE_STRING)
     return m_value.as_string();
@@ -87,7 +87,7 @@ std::string MythJSON::Node::GetStringValue() const
   return std::string();
 }
 
-size_t MythJSON::Node::GetStringSize() const
+size_t JSON::Node::GetStringSize() const
 {
   if (m_value.get_type() == sajson::TYPE_STRING)
     return m_value.get_string_length();
@@ -95,7 +95,7 @@ size_t MythJSON::Node::GetStringSize() const
   return 0;
 }
 
-double MythJSON::Node::GetDoubleValue() const
+double JSON::Node::GetDoubleValue() const
 {
   if (m_value.get_type() == sajson::TYPE_DOUBLE)
     return m_value.get_double_value();
@@ -103,7 +103,7 @@ double MythJSON::Node::GetDoubleValue() const
   return 0.0;
 }
 
-int64_t MythJSON::Node::GetBigIntValue() const
+int64_t JSON::Node::GetBigIntValue() const
 {
   if (m_value.get_type() == sajson::TYPE_DOUBLE || m_value.get_type() == sajson::TYPE_INTEGER)
     return (int64_t) m_value.get_number_value();
@@ -111,7 +111,7 @@ int64_t MythJSON::Node::GetBigIntValue() const
   return 0;
 }
 
-int32_t MythJSON::Node::GetIntValue() const
+int32_t JSON::Node::GetIntValue() const
 {
   if (m_value.get_type() == sajson::TYPE_INTEGER)
     return (int32_t) m_value.get_integer_value();
@@ -119,7 +119,7 @@ int32_t MythJSON::Node::GetIntValue() const
   return 0;
 }
 
-size_t MythJSON::Node::Size() const
+size_t JSON::Node::Size() const
 {
   if (m_value.get_type() == sajson::TYPE_ARRAY || m_value.get_type() == sajson::TYPE_OBJECT)
     return m_value.get_length();
@@ -127,7 +127,7 @@ size_t MythJSON::Node::Size() const
   return 0;
 }
 
-MythJSON::Node MythJSON::Node::GetArrayElement(size_t index) const
+JSON::Node JSON::Node::GetArrayElement(size_t index) const
 {
   if (m_value.get_type() == sajson::TYPE_ARRAY)
     return Node(m_value.get_array_element(index));
@@ -135,7 +135,7 @@ MythJSON::Node MythJSON::Node::GetArrayElement(size_t index) const
   return Node();
 }
 
-std::string MythJSON::Node::GetObjectKey(size_t index) const
+std::string JSON::Node::GetObjectKey(size_t index) const
 {
   if (m_value.get_type() == sajson::TYPE_OBJECT)
     return m_value.get_object_key(index).as_string();
@@ -143,7 +143,7 @@ std::string MythJSON::Node::GetObjectKey(size_t index) const
   return std::string();
 }
 
-MythJSON::Node MythJSON::Node::GetObjectValue(size_t index) const
+JSON::Node JSON::Node::GetObjectValue(size_t index) const
 {
   if (m_value.get_type() == sajson::TYPE_OBJECT)
     return Node(m_value.get_object_value(index));
@@ -151,7 +151,7 @@ MythJSON::Node MythJSON::Node::GetObjectValue(size_t index) const
   return Node();
 }
 
-MythJSON::Node MythJSON::Node::GetObjectValue(const char *key) const
+JSON::Node JSON::Node::GetObjectValue(const char *key) const
 {
   if (m_value.get_type() == sajson::TYPE_OBJECT)
   {
@@ -169,7 +169,7 @@ MythJSON::Node MythJSON::Node::GetObjectValue(const char *key) const
 //// Document
 ////
 
-MythJSON::Document::Document(Myth::WSResponse& resp)
+JSON::Document::Document(Myth::WSResponse& resp)
 : m_isValid(false)
 , m_document(NULL)
 {
@@ -196,7 +196,7 @@ MythJSON::Document::Document(Myth::WSResponse& resp)
   delete[] content;
 }
 
-MythJSON::Node MythJSON::Document::GetRoot() const
+JSON::Node JSON::Document::GetRoot() const
 {
   if (m_document)
     return Node(m_document->get_root());
