@@ -145,8 +145,26 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
   /* The value for __val is in '__oldval' */
   __val = __oldval;
 
-#elif (defined __ARM_ARCH && __ARM_ARCH >= 6)
+#elif (defined __ARM_ARCH && __ARM_ARCH >= 7)
   int inc = 1;
+  __asm__ volatile (
+    "dmb     ish\n"           /* Memory barrier */
+    "1:"
+    "ldrex   %0, [%1]\n"
+    "add     %0, %0,  %2\n"
+    "strex   r1, %0, [%1]\n"
+    "cmp     r1, #0\n"
+    "bne     1b\n"
+    "dmb     ish\n"           /* Memory barrier */
+    : "=&r" (__val)
+    : "r"(valp), "r"(inc)
+    : "r1");
+
+#elif (defined __ARM_ARCH && __ARM_ARCH == 6)
+  int inc = 1;
+  __asm__ volatile (
+    "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
+    : : "r"(0) : "memory");
   __asm__ volatile (
     "1:"
     "ldrex   %0, [%1]\n"
@@ -157,12 +175,14 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
     : "=&r" (__val)
     : "r"(valp), "r"(inc)
     : "r1");
+  __asm__ volatile (
+    "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
+    : : "r"(0) : "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH < 6)
   int tmp1, tmp2;
   int inc = 1;
   __asm__ volatile (
-    "\n"
     "0:"
     "ldr     %0, [%3]\n"
     "add     %1, %0, %4\n"
@@ -261,8 +281,26 @@ static CC_INLINE unsigned atomic_decrement(atomic_t *valp)
   /* The value for __val is in '__oldval' */
   __val = __oldval;
 
-#elif (defined __ARM_ARCH && __ARM_ARCH >= 6)
+#elif (defined __ARM_ARCH && __ARM_ARCH >= 7)
   int dec = 1;
+  __asm__ volatile (
+    "1:"
+    "dmb     ish\n"           /* Memory barrier */
+    "ldrex   %0, [%1]\n"
+    "sub     %0, %0,  %2\n"
+    "strex   r1, %0, [%1]\n"
+    "cmp     r1, #0\n"
+    "bne     1b\n"
+    "dmb     ish\n"           /* Memory barrier */
+    : "=&r" (__val)
+    : "r"(valp), "r"(dec)
+    : "r1");
+
+#elif (defined __ARM_ARCH && __ARM_ARCH == 6)
+  int dec = 1;
+  __asm__ volatile (
+    "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
+    : : "r"(0) : "memory");
   __asm__ volatile (
     "1:"
     "ldrex   %0, [%1]\n"
@@ -273,12 +311,14 @@ static CC_INLINE unsigned atomic_decrement(atomic_t *valp)
     : "=&r" (__val)
     : "r"(valp), "r"(dec)
     : "r1");
+  __asm__ volatile (
+    "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
+    : : "r"(0) : "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH < 6)
   int tmp1, tmp2;
   int inc = -1;
   __asm__ volatile (
-    "\n"
     "0:"
     "ldr     %0, [%3]\n"
     "add     %1, %0, %4\n"
