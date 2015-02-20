@@ -312,6 +312,42 @@ SettingPtr WSAPI::GetSetting2_0(const std::string& key, const std::string& hostn
   return ret;
 }
 
+SettingPtr WSAPI::GetSetting5_0(const std::string& key, const std::string& hostname)
+{
+  SettingPtr ret;
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Myth/GetSetting");
+  req.SetContentParam("HostName", hostname);
+  req.SetContentParam("Key", key);
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
+  if (!json.IsValid() || !root.IsObject())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  // Object: String
+  const JSON::Node& val = root.GetObjectValue("String");
+  if (val.IsString())
+  {
+    ret.reset(new Setting());  // Using default constructor
+    ret->key = key;
+    ret->value = val.GetStringValue();
+  }
+  return ret;
+}
+
 SettingPtr WSAPI::GetSetting(const std::string& key, bool myhost)
 {
   std::string hostname;
@@ -328,6 +364,52 @@ SettingMapPtr WSAPI::GetSettings2_0(const std::string& hostname)
   WSRequest req = WSRequest(m_server, m_port);
   req.RequestAccept(CT_JSON);
   req.RequestService("/Myth/GetSetting");
+  req.SetContentParam("HostName", hostname);
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
+  if (!json.IsValid() || !root.IsObject())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  // Object: SettingList
+  const JSON::Node& slist = root.GetObjectValue("SettingList");
+  // Object: Settings
+  const JSON::Node& sts = slist.GetObjectValue("Settings");
+  if (sts.IsObject())
+  {
+    size_t s = sts.Size();
+    for (size_t i = 0; i < s; ++i)
+    {
+      const JSON::Node& val = sts.GetObjectValue(i);
+      if (val.IsString())
+      {
+        SettingPtr setting(new Setting());  // Using default constructor
+        setting->key = sts.GetObjectKey(i);
+        setting->value = val.GetStringValue();
+        ret->insert(SettingMap::value_type(setting->key, setting));
+      }
+    }
+  }
+  return ret;
+}
+
+SettingMapPtr WSAPI::GetSettings5_0(const std::string& hostname)
+{
+  SettingMapPtr ret(new SettingMap);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Myth/GetSettingList");
   req.SetContentParam("HostName", hostname);
   WSResponse resp(req);
   if (!resp.IsSuccessful())

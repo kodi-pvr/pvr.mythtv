@@ -26,7 +26,7 @@
 #include "mythwsstream.h"
 
 #define MYTH_API_VERSION_MIN_RANKING 0x00020000
-#define MYTH_API_VERSION_MAX_RANKING 0x0004FFFF
+#define MYTH_API_VERSION_MAX_RANKING 0x0005FFFF
 
 namespace Myth
 {
@@ -73,6 +73,7 @@ namespace Myth
     SettingPtr GetSetting(const std::string& key, const std::string& hostname)
     {
       WSServiceVersion_t wsv = CheckService(WS_Myth);
+      if (wsv.ranking >= 0x00050000) return GetSetting5_0(key, hostname);
       if (wsv.ranking >= 0x00020000) return GetSetting2_0(key, hostname);
       return SettingPtr();
     }
@@ -88,6 +89,7 @@ namespace Myth
     SettingMapPtr GetSettings(const std::string& hostname)
     {
       WSServiceVersion_t wsv = CheckService(WS_Myth);
+      if (wsv.ranking >= 0x00050000) return GetSettings5_0(hostname);
       if (wsv.ranking >= 0x00020000) return GetSettings2_0(hostname);
       return SettingMapPtr(new SettingMap);
     }
@@ -411,7 +413,9 @@ namespace Myth
     bool CheckVersion2_0();
 
     SettingPtr GetSetting2_0(const std::string& key, const std::string& hostname);
+    SettingPtr GetSetting5_0(const std::string& key, const std::string& hostname);
     SettingMapPtr GetSettings2_0(const std::string& hostname);
+    SettingMapPtr GetSettings5_0(const std::string& hostname);
     bool PutSetting2_0(const std::string& key, const std::string& value, bool myhost);
 
     CaptureCardListPtr GetCaptureCardList1_4();
