@@ -1,5 +1,6 @@
-v2.0.4
+v2.0.5
 - Support service API 0.28-pre:5.0
+- Sync demuxer upstream
 
 v2.0.3
 - Sync cppmyth upstream (1.1.9)
