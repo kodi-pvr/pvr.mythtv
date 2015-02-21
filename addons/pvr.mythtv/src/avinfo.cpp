@@ -23,7 +23,7 @@
 #include <xbmc_codec_types.h>
 
 #include "avinfo.h"
-#include "client.h"
+#include "demuxer/debug.h"
 
 #define LOGTAG                  "[AVINFO] "
 
@@ -77,12 +77,12 @@ AVInfo::AVInfo(Myth::Stream* file)
     m_av_rbe = m_av_buf;
 
     if (g_bExtraDebug)
-      demux_dbg_level(DEMUX_DBG_DEBUG);
+      TSDemux::DBGLevel(DEMUX_DBG_DEBUG);
     else
-      demux_dbg_level(DEMUX_DBG_ERROR);
-    demux_set_dbg_msgcallback(AVInfoLog);
+      TSDemux::DBGLevel(DEMUX_DBG_ERROR);
+    TSDemux::SetDBGMsgCallback(AVInfoLog);
 
-    m_AVContext = new AVContext(this, m_av_pos, m_channel);
+    m_AVContext = new TSDemux::AVContext(this, m_av_pos, m_channel);
 
     Process();
   }
@@ -178,14 +178,14 @@ void AVInfo::Process()
     {
       ret = m_AVContext->TSResync();
     }
-    if (ret != AVCONTEXT_CONTINUE)
+    if (ret != TSDemux::AVCONTEXT_CONTINUE)
       break;
 
     ret = m_AVContext->ProcessTSPacket();
 
     if (m_AVContext->HasPIDStreamData())
     {
-      ElementaryStream::STREAM_PKT pkt;
+      TSDemux::STREAM_PKT pkt;
       while (get_stream_data(&pkt))
       {
         throughput += pkt.size;
@@ -200,7 +200,7 @@ void AVInfo::Process()
     if (m_AVContext->HasPIDPayload())
     {
       ret = m_AVContext->ProcessTSPayload();
-      if (ret == AVCONTEXT_PROGRAM_CHANGE)
+      if (ret == TSDemux::AVCONTEXT_PROGRAM_CHANGE)
       {
         populate_pvr_streams();
       }
@@ -209,7 +209,7 @@ void AVInfo::Process()
     if (ret < 0)
       XBMC->Log(LOG_NOTICE, LOGTAG "%s: error %d", __FUNCTION__, ret);
 
-    if (ret == AVCONTEXT_TS_ERROR)
+    if (ret == TSDemux::AVCONTEXT_TS_ERROR)
       m_AVContext->Shift();
     else
       m_AVContext->GoNext();
@@ -224,7 +224,7 @@ bool AVInfo::GetMainStream(STREAM_AVINFO *info) const
 {
   if (!m_AVContext || m_AVStatus < 0 || !m_nosetup.empty())
     return false;
-  ElementaryStream* found = m_AVContext->GetStream(m_mainStreamPID);
+  TSDemux::ElementaryStream* found = m_AVContext->GetStream(m_mainStreamPID);
   if (found == NULL)
     return false;
   info->pid = found->pid;
@@ -238,8 +238,8 @@ std::vector<AVInfo::STREAM_AVINFO> AVInfo::GetStreams() const
   std::vector<STREAM_AVINFO> ret;
   if (!m_AVContext || m_AVStatus < 0 || !m_nosetup.empty())
     return ret;
-  std::vector<ElementaryStream*> streams = m_AVContext->GetStreams();
-  std::vector<ElementaryStream*>::const_iterator it;
+  std::vector<TSDemux::ElementaryStream*> streams = m_AVContext->GetStreams();
+  std::vector<TSDemux::ElementaryStream*>::const_iterator it;
   ret.reserve(streams.size());
   for (it = streams.begin(); it < streams.end(); ++it)
   {
@@ -252,9 +252,9 @@ std::vector<AVInfo::STREAM_AVINFO> AVInfo::GetStreams() const
   return ret;
 }
 
-bool AVInfo::get_stream_data(ElementaryStream::STREAM_PKT* pkt)
+bool AVInfo::get_stream_data(TSDemux::STREAM_PKT* pkt)
 {
-  ElementaryStream* es = m_AVContext->GetPIDStream();
+  TSDemux::ElementaryStream* es = m_AVContext->GetPIDStream();
   if (!es)
     return false;
 
@@ -278,8 +278,8 @@ void AVInfo::populate_pvr_streams()
 {
   uint16_t mainPid = 0xffff;
   int mainType = XBMC_CODEC_TYPE_UNKNOWN;
-  const std::vector<ElementaryStream*> es_streams = m_AVContext->GetStreams();
-  for (std::vector<ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
+  const std::vector<TSDemux::ElementaryStream*> es_streams = m_AVContext->GetStreams();
+  for (std::vector<TSDemux::ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
   {
     const char* codec_name = (*it)->GetStreamCodecName();
     xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
@@ -314,7 +314,7 @@ void AVInfo::populate_pvr_streams()
 
 bool AVInfo::update_pvr_stream(uint16_t pid)
 {
-  ElementaryStream* es = m_AVContext->GetStream(pid);
+  TSDemux::ElementaryStream* es = m_AVContext->GetStream(pid);
   if (!es)
     return false;
 

@@ -21,18 +21,19 @@
  */
 
 #include <platform/os.h>
-
 #include <libXBMC_pvr.h>
 #include <xbmc_codec_types.h>
 
 #include "demux.h"
-#include "client.h"
+#include "demuxer/debug.h"
+
+#include <climits>
 
 #define LOGTAG                  "[DEMUX] "
 #define POSMAP_PTS_INTERVAL     (PTS_TIME_BASE * 2)       // 2 secs
 
-using namespace PLATFORM;
 using namespace ADDON;
+using namespace PLATFORM;
 
 void DemuxLog(int level, char *msg)
 {
@@ -87,12 +88,12 @@ Demux::Demux(Myth::Stream *file)
     m_av_rbe = m_av_buf;
 
     if (g_bExtraDebug)
-      demux_dbg_level(DEMUX_DBG_DEBUG);
+      TSDemux::DBGLevel(DEMUX_DBG_DEBUG);
     else
-      demux_dbg_level(DEMUX_DBG_ERROR);
-    demux_set_dbg_msgcallback(DemuxLog);
+      TSDemux::DBGLevel(DEMUX_DBG_ERROR);
+    TSDemux::SetDBGMsgCallback(DemuxLog);
 
-    m_AVContext = new AVContext(this, m_av_pos, m_channel);
+    m_AVContext = new TSDemux::AVContext(this, m_av_pos, m_channel);
 
     CreateThread(true);
   }
@@ -189,14 +190,14 @@ void* Demux::Process()
       CLockObject lock(m_mutex);
       ret = m_AVContext->TSResync();
     }
-    if (ret != AVCONTEXT_CONTINUE)
+    if (ret != TSDemux::AVCONTEXT_CONTINUE)
       break;
 
     ret = m_AVContext->ProcessTSPacket();
 
     if (m_AVContext->HasPIDStreamData())
     {
-      ElementaryStream::STREAM_PKT pkt;
+      TSDemux::STREAM_PKT pkt;
       while (get_stream_data(&pkt))
       {
         if (pkt.streamChange)
@@ -213,7 +214,7 @@ void* Demux::Process()
     if (m_AVContext->HasPIDPayload())
     {
       ret = m_AVContext->ProcessTSPayload();
-      if (ret == AVCONTEXT_PROGRAM_CHANGE)
+      if (ret == TSDemux::AVCONTEXT_PROGRAM_CHANGE)
       {
         populate_pvr_streams();
         push_stream_change();
@@ -223,7 +224,7 @@ void* Demux::Process()
     if (ret < 0)
       XBMC->Log(LOG_NOTICE, LOGTAG "%s: error %d", __FUNCTION__, ret);
 
-    if (ret == AVCONTEXT_TS_ERROR)
+    if (ret == TSDemux::AVCONTEXT_TS_ERROR)
       m_AVContext->Shift();
     else
       m_AVContext->GoNext();
@@ -323,9 +324,9 @@ int Demux::GetPlayingTime()
   return (int)time_ms;
 }
 
-bool Demux::get_stream_data(ElementaryStream::STREAM_PKT* pkt)
+bool Demux::get_stream_data(TSDemux::STREAM_PKT* pkt)
 {
-  ElementaryStream* es = m_AVContext->GetPIDStream();
+  TSDemux::ElementaryStream* es = m_AVContext->GetPIDStream();
   if (!es)
     return false;
 
@@ -409,8 +410,8 @@ void Demux::populate_pvr_streams()
   uint16_t mainPid = 0xffff;
   int mainType = XBMC_CODEC_TYPE_UNKNOWN;
   std::vector<XbmcPvrStream> new_streams;
-  const std::vector<ElementaryStream*> es_streams = m_AVContext->GetStreams();
-  for (std::vector<ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
+  const std::vector<TSDemux::ElementaryStream*> es_streams = m_AVContext->GetStreams();
+  for (std::vector<TSDemux::ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
   {
     const char* codec_name = (*it)->GetStreamCodecName();
     xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
@@ -466,7 +467,7 @@ void Demux::populate_pvr_streams()
 
 bool Demux::update_pvr_stream(uint16_t pid)
 {
-  ElementaryStream* es = m_AVContext->GetStream(pid);
+  TSDemux::ElementaryStream* es = m_AVContext->GetStream(pid);
   if (!es)
     return false;
 
@@ -531,7 +532,7 @@ void Demux::push_stream_change()
   }
 }
 
-DemuxPacket* Demux::stream_pvr_data(ElementaryStream::STREAM_PKT* pkt)
+DemuxPacket* Demux::stream_pvr_data(TSDemux::STREAM_PKT* pkt)
 {
   if (!pkt)
     return NULL;

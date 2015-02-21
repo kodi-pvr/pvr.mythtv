@@ -2245,7 +2245,7 @@ void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::St
       float fps = 0;
       switch(mInfo.stream_type)
       {
-        case STREAM_TYPE_VIDEO_H264:
+        case TSDemux::STREAM_TYPE_VIDEO_H264:
           fps = (float)(mInfo.stream_info.fps_rate) / (mInfo.stream_info.fps_scale * (mInfo.stream_info.interlaced ? 2 : 1));
           break;
         default:

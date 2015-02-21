@@ -35,7 +35,7 @@
 
 #define AV_BUFFER_SIZE          131072
 
-class Demux : public TSDemuxer, PLATFORM::CThread
+class Demux : public TSDemux::TSDemuxer, PLATFORM::CThread
 {
 public:
   Demux(Myth::Stream *file);
@@ -60,14 +60,14 @@ private:
   PLATFORM::CMutex m_mutex;
   ADDON::XbmcStreamProperties m_streams;
 
-  bool get_stream_data(ElementaryStream::STREAM_PKT* pkt);
+  bool get_stream_data(TSDemux::STREAM_PKT* pkt);
   void reset_posmap();
 
   // PVR interfaces
   void populate_pvr_streams();
   bool update_pvr_stream(uint16_t pid);
   void push_stream_change();
-  DemuxPacket* stream_pvr_data(ElementaryStream::STREAM_PKT* pkt);
+  DemuxPacket* stream_pvr_data(TSDemux::STREAM_PKT* pkt);
   void push_stream_data(DemuxPacket* dxp);
 
   // AV raw buffer
@@ -78,7 +78,7 @@ private:
   unsigned char* m_av_rbe;      ///< raw data end in buffer
 
   // Playback context
-  AVContext* m_AVContext;
+  TSDemux::AVContext* m_AVContext;
   uint16_t m_mainStreamPID;     ///< PID of main stream
   uint64_t m_DTS;               ///< absolute decode time of main stream
   uint64_t m_PTS;               ///< absolute presentation time of main stream
