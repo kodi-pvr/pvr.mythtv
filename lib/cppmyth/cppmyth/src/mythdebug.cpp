@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <cstdarg>
 #include <cstdio>
-#include <string.h>
+#include <cstring>
 #include <ctype.h>
 
 #ifdef _MSC_VER
@@ -34,13 +34,10 @@
 typedef struct {
 	const char *name;
 	int        cur_level;
-	int        (*selector)(int plevel, int slevel);
 	void       (*msg_callback)(int level, char *msg);
 } debug_ctx_t;
 
-#define DEBUG_CTX_INIT(n,l,s) { n, l, s, NULL }
-
-static debug_ctx_t debug_ctx = DEBUG_CTX_INIT("CPPMyth", MYTH_DBG_NONE, NULL);
+static debug_ctx_t debug_ctx = {"CPPMyth", MYTH_DBG_NONE, NULL};
 
 /**
  * Set the debug level to be used for the subsystem
@@ -69,8 +66,7 @@ static inline void __dbg(debug_ctx_t *ctx, int level, const char *fmt, va_list a
 	if (ctx == NULL) {
 		return;
 	}
-	if ((ctx->selector && ctx->selector(level, ctx->cur_level)) ||
-	    (!ctx->selector && (level <= ctx->cur_level))) {
+	if (level <= ctx->cur_level) {
 		len = snprintf(msg, sizeof(msg), "(%s)", ctx->name);
 		vsnprintf(msg + len, sizeof(msg)-len, fmt, ap);
 		if (ctx->msg_callback) {
