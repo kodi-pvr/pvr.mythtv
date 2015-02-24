@@ -1,0 +1,113 @@
+v2.0.5
+- Support service API 0.28-pre:5.0
+- Sync demuxer upstream
+
+v2.0.3
+- Sync cppmyth upstream (1.1.9)
+- Support protocol 0.28-pre:85
+- Support protocol 0.28-pre:84
+- Handles MasterBackendOverride (kaptain-iglu)
+- Fix compile error wir c++11
+- [pvr] Increase API version to 1.9.4
+- [gui] Increase API version to 5.8.0
+
+v1.11.4
+- Updated language files from Transifex
+- Minor changes to conform with C++11
+
+v1.11.3
+- Updated language files from Transifex
+
+v1.11.2
+- New method to handle read ahead (live playback)
+
+v1.10.2
+- Added getBackendHostname function
+
+v1.10.1
+- Options to disable channel icons and recordings or fanart images
+
+v1.10.0
+- jansson 2.7: fix compilation on ios8/arm64
+- Cleaned cache by max age
+- Improves loading of channels and recordings
+- Adding WS API Security Pin parameter
+- Adding episode info (subtitle) to EPG title
+
+v1.9.29
+- fixed resource leak on file cache failure
+
+v1.9.28
+- Updated language files from Transifex
+
+v1.9.27
+- change library name to Kodi
+
+v1.9.26
+- fixed deadlock when activating the addon on some darwin (osx, ios) runtimes
+
+v1.9.25
+- Handle GUI events to activate/deactivate power saving mode
+- Don't send WOL when power saving mode is activated
+- Don't block shutdown when power saving mode is activated
+- Handle hang: Always retry protocol connection after hang
+- Handle hang: Reconnect event handler after hanging of control connection
+
+v1.9.24
+- Block backend shutdown by default: New setting
+- Fix refreshing recordings and schedules on wake up
+- Updated language files from Transifex
+
+v1.9.23
+- Handles version of services
+- Allow HTTP redirection to get slave previews
+- New format for program UID string
+- demuxer: optimizing, fix PES header
+- Fix category override
+- Transfer sub channel number
+
+v1.9.22
+- Fix identifier for DVB-SUBTITLE
+- Add setting to enable or disable EDL functionnality
+- Add setting to configure grouping for recordings
+- Load EIT categories from customized user file
+- Merge channels with same source ID
+- Fix codec infos after stream parsing (AAC LATM)
+- Fix crash when trying to show recording from unattainable slave backend
+
+v1.9.21
+- Updated to API v1.9.2
+
+v1.9.20
+- Detect audio codec AAC LATM or AAC ADTS by parsing
+- Enable EDL for MPEG-TS stream
+- Fix timeout: 60 sec to hang up
+- Fix refreshing artwork after program update event
+- Send wol packet magic to wake up backend on startup or not connected
+
+v1.9.19
+- Fix seek stream defect introduced in 1.9.16
+- Support protocol 0.28-pre:83
+- Fix XBMC crash on exit announcing disconnection
+
+v1.9.18
+- Use unified interface of CPPMyth (80c84fb)
+- Get setting of slave backend to open its recording
+- Include API updates for protocol 82 (0.28-pre-1917-g62be166)
+
+v1.9.17
+- Fix buffer request limit
+
+v1.9.16
+- Fix timeout on buffer read in rare circumstances
+- Not open dummy file for transfer
+- Recording priority is signed value
+
+v1.9.15
+- Manage late spawn response
+- Upgrade to jansson 2.6 (security fix)
+- Fix parsing of 'airdate' in proto
+
+v1.9.14
+- Fork of pvr.mythtv.cmyth
+- Use C++ library CPPMyth for MythTV backend 0.27 to 0.28-pre
