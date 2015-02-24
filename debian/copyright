@@ -75,7 +75,7 @@ License:
  SOFTWARE.
 
 Files: debian/*
-Copyright: 2015 Arne Morten Kvarving <arne.morten.kvarving@sintef.no>
+Copyright: 2015 Jean-Luc Barriere
            2015 wsnipex <wsnipex@a1.net>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
