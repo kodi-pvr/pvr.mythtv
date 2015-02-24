@@ -729,7 +729,7 @@ int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
   return -1; // PVR dummy channel UID
 }
 
-int PVRClientMythTV::GetRecordingsAmount(void)
+int PVRClientMythTV::GetRecordingsAmount()
 {
   int res = 0;
   if (g_bExtraDebug)
@@ -789,6 +789,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
     {
       PVR_RECORDING tag;
       memset(&tag, 0, sizeof(PVR_RECORDING));
+      tag.bIsDeleted = false;
 
       tag.recordingTime = it->second.RecordingStartTime();
       tag.iDuration = it->second.Duration();
@@ -812,6 +813,100 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       if (g_iGroupRecordings == GROUP_RECORDINGS_ALWAYS || (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES && it->second.GetPropsSerie()))
         strDirectory.append("/").append(it->second.Title());
       PVR_STRCPY(tag.strDirectory, strDirectory.c_str());
+
+      // Images
+      std::string strIconPath;
+      if (it->second.HasCoverart())
+        strIconPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeCoverart);
+      else if (it->second.IsLiveTV())
+      {
+        MythChannel channel = FindRecordingChannel(it->second);
+        if (!channel.IsNull())
+          strIconPath = m_fileOps->GetChannelIconPath(channel);
+      }
+      else
+        strIconPath = m_fileOps->GetPreviewIconPath(it->second);
+
+      std::string strFanartPath;
+      if (it->second.HasFanart())
+        strFanartPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeFanart);
+
+      PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
+      PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
+      PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
+
+      // Unimplemented
+      tag.iLifetime = 0;
+      tag.iPriority = 0;
+      PVR_STRCPY(tag.strPlotOutline, "");
+      PVR_STRCPY(tag.strStreamURL, "");
+
+      PVR->TransferRecordingEntry(handle, &tag);
+    }
+  }
+
+  if (g_bExtraDebug)
+    XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
+
+  return PVR_ERROR_NO_ERROR;
+}
+
+int PVRClientMythTV::GetDeletedRecordingsAmount()
+{
+  int res = 0;
+  if (g_bExtraDebug)
+    XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
+
+  CLockObject lock(m_recordingsLock);
+
+  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  {
+    if (!it->second.IsNull() && it->second.IsDeleted())
+      res++;
+  }
+  if (res == 0)
+    XBMC->Log(LOG_INFO, "%s: No deleted recording", __FUNCTION__);
+  return res;
+}
+
+PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
+{
+  if (g_bExtraDebug)
+    XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
+
+  CLockObject lock(m_recordingsLock);
+
+  // Load recordings list
+  if (m_recordings.empty())
+    FillRecordings();
+  // Transfer to PVR
+  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  {
+    if (!it->second.IsNull() && it->second.IsDeleted())
+    {
+      PVR_RECORDING tag;
+      memset(&tag, 0, sizeof(PVR_RECORDING));
+      tag.bIsDeleted = true;
+
+      tag.recordingTime = it->second.RecordingStartTime();
+      tag.iDuration = it->second.Duration();
+      tag.iPlayCount = it->second.IsWatched() ? 1 : 0;
+      //@TODO: tag.iLastPlayedPosition
+
+      std::string id = it->second.UID();
+      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
+
+      PVR_STRCPY(tag.strRecordingId, id.c_str());
+      PVR_STRCPY(tag.strTitle, title.c_str());
+      PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
+      PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
+
+      int genre = m_categories.Category(it->second.Category());
+      tag.iGenreSubType = genre&0x0F;
+      tag.iGenreType = genre&0xF0;
+
+      // Default to root of deleted view
+      PVR_STRCPY(tag.strDirectory, "");
 
       // Images
       std::string strIconPath;
@@ -1205,6 +1300,59 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
     }
   }
   *size = index;
+  return PVR_ERROR_NO_ERROR;
+}
+
+PVR_ERROR PVRClientMythTV::UndeleteRecording(const PVR_RECORDING &recording)
+{
+  XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
+
+  CLockObject lock(m_recordingsLock);
+
+  ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
+  if (it != m_recordings.end())
+  {
+    bool ret = m_control->UndeleteRecording(*(it->second.GetPtr()));
+    if (ret)
+    {
+      XBMC->Log(LOG_DEBUG, "%s: Undeleted recording %s", __FUNCTION__, recording.strRecordingId);
+      return PVR_ERROR_NO_ERROR;
+    }
+    else
+    {
+      XBMC->Log(LOG_ERROR, "%s: Failed to undelete recording %s", __FUNCTION__, recording.strRecordingId);
+    }
+  }
+  else
+  {
+    XBMC->Log(LOG_ERROR, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
+  }
+  return PVR_ERROR_FAILED;
+}
+
+PVR_ERROR PVRClientMythTV::PurgeDeletedRecordings()
+{
+  bool err = false;
+  if (g_bExtraDebug)
+    XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
+
+  CLockObject lock(m_recordingsLock);
+
+  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  {
+    if (!it->second.IsNull() && it->second.IsDeleted())
+    {
+      if (m_control->DeleteRecording(*(it->second.GetPtr())))
+        XBMC->Log(LOG_DEBUG, "%s: Deleted recording %s", __FUNCTION__, it->first.c_str());
+      else
+      {
+        err = true;
+        XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %s", __FUNCTION__, it->first.c_str());
+      }
+    }
+  }
+  if (err)
+    return PVR_ERROR_REJECTED;
   return PVR_ERROR_NO_ERROR;
 }
 

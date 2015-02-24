@@ -689,7 +689,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
     pCapabilities->bHandlesDemuxing               = g_bDemuxing;
 
     pCapabilities->bSupportsRecordings            = true;
-    pCapabilities->bSupportsRecordingsUndelete    = false;
+    pCapabilities->bSupportsRecordingsUndelete    = true;
     pCapabilities->bSupportsRecordingPlayCount    = true;
     pCapabilities->bSupportsLastPlayedPosition    = false;
     pCapabilities->bSupportsRecordingEdl          = true;
@@ -841,7 +841,8 @@ int GetRecordingsAmount(bool deleted)
 {
   if (g_client == NULL)
     return 0;
-  (void)deleted;
+  if (deleted)
+    return g_client->GetDeletedRecordingsAmount();
   return g_client->GetRecordingsAmount();
 }
 
@@ -849,7 +850,8 @@ PVR_ERROR GetRecordings(ADDON_HANDLE handle, bool deleted)
 {
   if (g_client == NULL)
     return PVR_ERROR_SERVER_ERROR;
-  (void)deleted;
+  if (deleted)
+    return g_client->GetDeletedRecordings(handle);
   return g_client->GetRecordings(handle);
 }
 
@@ -898,6 +900,19 @@ PVR_ERROR GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[
   return g_client->GetRecordingEdl(recording, entries, size);
 }
 
+PVR_ERROR UndeleteRecording(const PVR_RECORDING& recording)
+{
+  if (g_client == NULL)
+    return PVR_ERROR_SERVER_ERROR;
+  return g_client->UndeleteRecording(recording);
+}
+
+PVR_ERROR DeleteAllRecordingsFromTrash()
+{
+  if (g_client == NULL)
+    return PVR_ERROR_SERVER_ERROR;
+  return g_client->PurgeDeletedRecordings();
+}
 
 /*
  * PVR Timer Functions
@@ -1167,7 +1182,5 @@ time_t GetBufferTimeEnd()
 void DemuxReset() {}
 const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
-PVR_ERROR UndeleteRecording(const PVR_RECORDING& recording) { (void)recording; return PVR_ERROR_NOT_IMPLEMENTED; }
-PVR_ERROR DeleteAllRecordingsFromTrash() { return PVR_ERROR_NOT_IMPLEMENTED; }
 
 } //end extern "C"

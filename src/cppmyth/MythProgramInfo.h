@@ -43,6 +43,7 @@ public:
   void CopyProps(const MythProgramInfo &other) { m_props = other.m_props; }
   // Custom flags
   bool IsVisible() const;
+  bool IsDeleted() const;
   bool IsLiveTV() const;
   bool HasCoverart() const;
   bool HasFanart() const;

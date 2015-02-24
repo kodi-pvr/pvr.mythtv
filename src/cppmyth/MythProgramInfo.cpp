@@ -23,12 +23,16 @@
 #include <cstdio> // for sprintf
 #include <time.h> // for difftime
 
-#define FLAGS_INITIALIZED     0x80000000
-#define FLAGS_HAS_COVERART    0x00000001
-#define FLAGS_HAS_FANART      0x00000002
-#define FLAGS_HAS_BANNER      0x00000004
-#define FLAGS_IS_VISIBLE      0x00000008
-#define FLAGS_IS_LIVETV       0x00000010
+enum
+{
+  FLAGS_INITIALIZED   = 0x80000000,
+  FLAGS_HAS_COVERART  = 0x00000001,
+  FLAGS_HAS_FANART    = 0x00000002,
+  FLAGS_HAS_BANNER    = 0x00000004,
+  FLAGS_IS_VISIBLE    = 0x00000008,
+  FLAGS_IS_LIVETV     = 0x00000010,
+  FLAGS_IS_DELETED    = 0x00000020,
+};
 
 MythProgramInfo::MythProgramInfo()
 : m_proginfo()
@@ -99,8 +103,13 @@ bool MythProgramInfo::IsSetup() const
     // When  deleting a recording, it might not be deleted immediately but marked as 'pending delete'.
     // Depending on the protocol version the recording is moved to the group Deleted or
     // the 'delete pending' flag is set
-    if (Duration() >= 5 && RecordingGroup() != "Deleted" && !IsDeletePending())
-      m_flags |= FLAGS_IS_VISIBLE;
+    if (Duration() >= 5)
+    {
+      if (RecordingGroup() == "Deleted" || IsDeletePending())
+        m_flags |= FLAGS_IS_DELETED;
+      else
+        m_flags |= FLAGS_IS_VISIBLE;
+    }
 
     // Is LiveTV ?
     if (RecordingGroup() == "LiveTV")
@@ -112,6 +121,13 @@ bool MythProgramInfo::IsSetup() const
 bool MythProgramInfo::IsVisible() const
 {
   if (IsSetup() && (m_flags & FLAGS_IS_VISIBLE))
+    return true;
+  return false;
+}
+
+bool MythProgramInfo::IsDeleted() const
+{
+  if (IsSetup() && (m_flags & FLAGS_IS_DELETED))
     return true;
   return false;
 }
