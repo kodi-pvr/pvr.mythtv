@@ -112,6 +112,7 @@ namespace Myth
     }
     CardInputListPtr GetFreeInputs(int rnum)
     {
+      if (m_protoVersion >= 81) return GetFreeInputs81(rnum);
       if (m_protoVersion >= 79) return GetFreeInputs79(rnum);
       return GetFreeInputs75(rnum);
     }
@@ -140,6 +141,7 @@ namespace Myth
     std::vector<int> GetFreeCardIdList75();
     CardInputListPtr GetFreeInputs75(int rnum);
     CardInputListPtr GetFreeInputs79(int rnum);
+    CardInputListPtr GetFreeInputs81(int rnum);
 
     // Not implemented
     //int64_t GetBookmark75(Program& program);
