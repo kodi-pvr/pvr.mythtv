@@ -157,7 +157,12 @@ private:
   // Channels
   typedef std::map<unsigned int, MythChannel> ChannelIdMap;
   ChannelIdMap m_channelsById;
-  typedef struct { unsigned int iUniqueId; bool bIsRadio; } PVRChannelItem;
+  struct PVRChannelItem
+  {
+    unsigned int iUniqueId;
+    bool bIsRadio;
+    bool operator <(const PVRChannelItem& other) const { return this->iUniqueId < other.iUniqueId; }
+  };
   typedef std::vector<PVRChannelItem> PVRChannelList;
   typedef std::map<std::string, PVRChannelList> PVRChannelGroupMap;
   PVRChannelList m_PVRChannels;

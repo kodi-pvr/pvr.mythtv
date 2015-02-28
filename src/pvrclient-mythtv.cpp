@@ -664,9 +664,9 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
   m_PVRChannelUidById.clear();
   m_channelsById.clear();
 
-  // Create a channels map to merge channels with same channum and callsign within same group
+  // Create a channels map to merge channels with same channum and callsign within
   typedef std::pair<std::string, std::string> chanuid_t;
-  typedef std::map<chanuid_t, unsigned int> mapuid_t;
+  typedef std::map<chanuid_t, PVRChannelItem> mapuid_t;
   mapuid_t channelIdentifiers;
 
   // For each source create a channels group
@@ -674,37 +674,41 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
   for (Myth::VideoSourceList::iterator its = sources->begin(); its != sources->end(); ++its)
   {
     Myth::ChannelListPtr channels = m_control->GetChannelList((*its)->sourceId);
-    PVRChannelList channelIDs;
-    channelIDs.reserve(channels->size());
-    channelIdentifiers.clear();
+    std::set<PVRChannelItem> channelIDs;
+    //channelIdentifiers.clear();
     for (Myth::ChannelList::iterator itc = channels->begin(); itc != channels->end(); ++itc)
     {
       MythChannel channel((*itc));
+      unsigned int chanid = channel.ID();
       PVRChannelItem item;
-      item.iUniqueId = channel.ID();
+      item.iUniqueId = chanid;
       item.bIsRadio = channel.IsRadio();
+      // Store the new Myth channel in the map
       m_channelsById.insert(std::make_pair(item.iUniqueId, channel));
-      // Skip channels with same channum and callsign within group
+
+      // Looking for PVR channel with same channum and callsign
       chanuid_t channelIdentifier = std::make_pair(channel.Number(), channel.Callsign());
       mapuid_t::iterator itm = channelIdentifiers.find(channelIdentifier);
       if (itm != channelIdentifiers.end())
       {
-        XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, item.iUniqueId);
-        // Map channel with merged channel
-        m_PVRChannelUidById.insert(std::make_pair(item.iUniqueId, itm->second));
+        XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, chanid);
+        // Link channel to PVR item
+        m_PVRChannelUidById.insert(std::make_pair(chanid, itm->second.iUniqueId));
+        // Add found PVR item to the grouping set
+        channelIDs.insert(itm->second);
       }
       else
       {
-        // Add new channel in group
-        channelIDs.push_back(item);
-        channelIdentifiers.insert(std::make_pair(channelIdentifier, item.iUniqueId));
-        // Map channel to itself
-        m_PVRChannelUidById.insert(std::make_pair(item.iUniqueId, item.iUniqueId));
-        m_PVRChannels.push_back(item);
         ++count;
+        m_PVRChannels.push_back(item);
+        channelIdentifiers.insert(std::make_pair(channelIdentifier, item));
+        // Link channel to PVR item
+        m_PVRChannelUidById.insert(std::make_pair(chanid, item.iUniqueId));
+        // Add the new PVR item to the grouping set
+        channelIDs.insert(item);
       }
     }
-    m_PVRChannelGroups.insert(std::make_pair((*its)->sourceName, channelIDs));
+    m_PVRChannelGroups.insert(std::make_pair((*its)->sourceName, PVRChannelList(channelIDs.begin(), channelIDs.end())));
   }
 
   XBMC->Log(LOG_DEBUG, "%s: Loaded %d channel(s) %d group(s)", __FUNCTION__, count, (unsigned)m_PVRChannelGroups.size());
@@ -1515,9 +1519,7 @@ PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
   if (timer.startTime == 0 && m_liveStream && m_liveStream->IsPlaying())
   {
     Myth::ProgramPtr program = m_liveStream->GetPlayedProgram();
-    //MythProgramInfo program = MythProgramInfo(m_liveStream->GetPlayedProgram());
-    if ((unsigned int)timer.iClientChannelUid == program->channel.chanId)
-    //if ((unsigned int)timer.iClientChannelUid == program.ChannelID())
+    if (timer.iClientChannelUid == FindPVRChannelUid(program->channel.chanId))
     {
       XBMC->Log(LOG_DEBUG, "%s: Timer is a quick recording. Toggling Record on", __FUNCTION__);
       if (m_liveStream->IsLiveRecording())
@@ -1779,13 +1781,19 @@ PVR_ERROR PVRClientMythTV::UpdateTimer(const PVR_TIMER &timer)
 bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
 {
   if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG,"%s: chanid: %u, channum: %u", __FUNCTION__, channel.iUniqueId, channel.iChannelNumber);
+    XBMC->Log(LOG_DEBUG,"%s: channel uid: %u, num: %u", __FUNCTION__, channel.iUniqueId, channel.iChannelNumber);
 
   // Begin critical section
   CLockObject lock(m_lock);
-  // First we have to get the selected channel
-  MythChannel chan = FindChannel(channel.iUniqueId);
-  if (chan.IsNull())
+  // First we have to get merged channels for the selected channel
+  Myth::ChannelList chanset;
+  for (PVRChannelMap::const_iterator it = m_PVRChannelUidById.begin(); it != m_PVRChannelUidById.end(); ++it)
+  {
+    if (it->second == channel.iUniqueId)
+      chanset.push_back(FindChannel(it->first).GetPtr());
+  }
+
+  if (chanset.empty())
   {
     XBMC->Log(LOG_ERROR,"%s: Invalid channel", __FUNCTION__);
     return false;
@@ -1800,7 +1808,7 @@ bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
   // Set tuning delay
   m_liveStream->SetTuneDelay(g_iTuneDelay);
   // Try to open
-  if (m_liveStream->SpawnLiveTV(*(chan.GetPtr())))
+  if (m_liveStream->SpawnLiveTV(chanset[0]->chanNum, chanset))
   {
     if(g_bDemuxing)
       m_demux = new Demux(m_liveStream);
