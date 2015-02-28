@@ -45,7 +45,8 @@ namespace Myth
     void Close();
     bool IsOpen() { return ProtoMonitor::IsOpen(); }
     void SetTuneDelay(unsigned delay);
-    bool SpawnLiveTV(const Channel& channel, uint32_t prefcardid = 0);
+    bool SpawnLiveTV(const std::string& chanNum, const ChannelList& channels);
+    bool SpawnLiveTV(const ChannelPtr& thisChannel);
     void StopLiveTV();
 
     // Implement Stream
@@ -88,11 +89,13 @@ namespace Myth
 
     void InitChain();
     void ClearChain();
-    int GetRecorderNum();
     bool IsChained(const Program& program);
     void HandleChainUpdate();
     bool SwitchChain(unsigned sequence);
     bool SwitchChainLast();
+
+    typedef std::multimap<unsigned, std::pair<CardInputPtr, ChannelPtr> > preferredCards_t;
+    preferredCards_t FindTunableCardIds(const std::string& chanNum, const ChannelList& channels);
   };
 
 }

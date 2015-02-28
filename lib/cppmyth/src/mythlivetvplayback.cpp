@@ -28,7 +28,7 @@
 
 #include <limits>
 #include <cstdio>
-#include <stdlib.h>
+#include <cstdlib>
 
 #define MIN_TUNE_DELAY        5
 #define MAX_TUNE_DELAY        60
@@ -131,9 +131,8 @@ void LiveTVPlayback::SetTuneDelay(unsigned delay)
     m_tuneDelay = delay;
 }
 
-bool LiveTVPlayback::SpawnLiveTV(const Channel& channel, uint32_t prefcardid)
+bool LiveTVPlayback::SpawnLiveTV(const std::string& chanNum, const ChannelList& channels)
 {
-  int rnum = 0; // first selected recorder num
   // Begin critical section
   PLATFORM::CLockObject lock(*m_mutex);
   if (!ProtoMonitor::IsOpen() || !m_eventHandler.IsConnected())
@@ -143,54 +142,50 @@ bool LiveTVPlayback::SpawnLiveTV(const Channel& channel, uint32_t prefcardid)
   }
 
   StopLiveTV();
-  // if i have'nt yet recorder then choose one
-  if (!m_recorder)
-  {
-    // Start with my prefered card else get next free recorder
-    if (!prefcardid || !(m_recorder = GetRecorderFromNum((int)prefcardid)))
-      m_recorder = GetNextFreeRecorder(-1);
-  }
-  if (m_recorder)
+  preferredCards_t preferredCards = FindTunableCardIds(chanNum, channels);
+  preferredCards_t::const_iterator card = preferredCards.begin();
+  while (card != preferredCards.end())
   {
     InitChain(); // Setup chain
-    rnum = m_recorder->GetNum(); // keep track of my first recorder
-    do
+    const CardInputPtr& input = card->second.first;
+    const ChannelPtr& channel = card->second.second;
+    DBG(MYTH_DBG_DEBUG, "%s: trying recorder num (%" PRIu32 ") channum (%s)\n", __FUNCTION__, input->cardId, channel->chanNum.c_str());
+    m_recorder = GetRecorderFromNum((int) input->cardId);
+    // Setup the chain
+    m_chain.switchOnCreate = true;
+    m_chain.watch = true;
+    if (m_recorder->SpawnLiveTV(m_chain.UID, channel->chanNum))
     {
-      DBG(MYTH_DBG_DEBUG, "%s: checking recorder num (%d)\n", __FUNCTION__, m_recorder->GetNum());
-      if (m_recorder->IsTunable(channel))
+      // Wait chain update until time limit
+      uint32_t timer = 0, delay = m_tuneDelay * 1000000;
+      do
       {
-        // Setup the chain
-        m_chain.switchOnCreate = true;
-        m_chain.watch = true;
-        if (m_recorder->SpawnLiveTV(m_chain.UID, channel.chanNum))
+        lock.Unlock();  // Release the latch to allow chain update
+        usleep(TICK_USEC);
+        timer += TICK_USEC;
+        lock.Lock();
+        if (!m_chain.switchOnCreate)
         {
-          // Wait chain update until time limit
-          uint32_t timer = 0, delay = m_tuneDelay * 1000000;
-          do
-          {
-            lock.Unlock();  // Release the latch to allow chain update
-            usleep(TICK_USEC);
-            timer += TICK_USEC;
-            lock.Lock();
-            if (!m_chain.switchOnCreate)
-            {
-              DBG(MYTH_DBG_DEBUG, "%s: tune delay (%" PRIu32 "ms)\n", __FUNCTION__, (timer / 1000));
-              return true;
-            }
-          }
-          while (timer < delay);
-          DBG(MYTH_DBG_ERROR, "%s: tune delay exceeded (%" PRIu32 "ms)\n", __FUNCTION__, (timer / 1000));
-          m_recorder->StopLiveTV();
+          DBG(MYTH_DBG_DEBUG, "%s: tune delay (%" PRIu32 "ms)\n", __FUNCTION__, (timer / 1000));
+          return true;
         }
-        // Not retry next recorder
-        // return false;
       }
-      m_recorder = GetNextFreeRecorder(m_recorder->GetNum());
+      while (timer < delay);
+      DBG(MYTH_DBG_ERROR, "%s: tune delay exceeded (%" PRIu32 "ms)\n", __FUNCTION__, (timer / 1000));
+      m_recorder->StopLiveTV();
     }
-    while (m_recorder && m_recorder->GetNum() != rnum);
     ClearChain();
+    // Retry the next preferred card
+    ++card;
   }
   return false;
+}
+
+bool LiveTVPlayback::SpawnLiveTV(const ChannelPtr& thisChannel)
+{
+  ChannelList list;
+  list.push_back(thisChannel);
+  return SpawnLiveTV(thisChannel->chanNum, list);
 }
 
 void LiveTVPlayback::StopLiveTV()
@@ -233,12 +228,6 @@ void LiveTVPlayback::ClearChain()
   m_chain.switchOnCreate = false;
   m_chain.chained.clear();
   m_chain.currentTransfer.reset();
-}
-
-int LiveTVPlayback::GetRecorderNum()
-{
-  ProtoRecorderPtr recorder(m_recorder);
-  return (recorder ? recorder->GetNum() : 0);
 }
 
 bool LiveTVPlayback::IsChained(const Program& program)
@@ -702,4 +691,39 @@ uint32_t LiveTVPlayback::GetCardId() const
 SignalStatusPtr LiveTVPlayback::GetSignal() const
 {
   return (m_recorder ? m_signal : SignalStatusPtr());
+}
+
+LiveTVPlayback::preferredCards_t LiveTVPlayback::FindTunableCardIds(const std::string& chanNum, const ChannelList& channels)
+{
+  // Make the set of channels matching the desired channel number
+  ChannelList chanset;
+  for (ChannelList::const_iterator it = channels.begin(); it != channels.end(); ++it)
+  {
+    if ((*it)->chanNum == chanNum)
+      chanset.push_back(*it);
+  }
+  // Retrieve unlocked encoders and fill the list of preferred cards.
+  // It is ordered by its key liveTVOrder and contains matching between channels
+  // and card inputs using their respective sourceId and mplexId
+  std::vector<int> ids = GetFreeCardIdList();
+  preferredCards_t preferredCards;
+  for (std::vector<int>::const_iterator itc = ids.begin(); itc != ids.end(); ++itc)
+  {
+    CardInputListPtr inputs = GetFreeInputs(*itc);
+    for (CardInputList::const_iterator iti = inputs->begin(); iti != inputs->end(); ++iti)
+    {
+      for (ChannelList::const_iterator itchan = chanset.begin(); itchan != chanset.end(); ++itchan)
+      {
+        if ((*itchan)->sourceId == (*iti)->sourceId && ( (*iti)->mplexId == 0 || (*iti)->mplexId == (*itchan)->mplexId ))
+        {
+          preferredCards.insert(std::make_pair((*iti)->liveTVOrder, std::make_pair(*iti, *itchan)));
+          DBG(MYTH_DBG_DEBUG, "%s: [%u] channel=%s(%" PRIu32 ") card=%" PRIu32 " input=%s(%" PRIu32 ") mplex=%" PRIu32 " source=%" PRIu32 "\n",
+                  __FUNCTION__, (*iti)->liveTVOrder, (*itchan)->callSign.c_str(), (*itchan)->chanId,
+                  (*iti)->cardId, (*iti)->inputName.c_str(), (*iti)->inputId, (*iti)->mplexId, (*iti)->sourceId);
+          break;
+        }
+      }
+    }
+  }
+  return preferredCards;
 }

@@ -25,6 +25,8 @@
 #include "mythprotobase.h"
 #include "mythprotorecorder.h"
 
+#include <vector>
+
 #define PROTO_MONITOR_RCVBUF      64000
 
 namespace Myth
@@ -104,6 +106,15 @@ namespace Myth
       m_blockShutdown = false;
       return AllowShutdown75();
     }
+    std::vector<int> GetFreeCardIdList()
+    {
+      return GetFreeCardIdList75();
+    }
+    CardInputListPtr GetFreeInputs(int rnum)
+    {
+      if (m_protoVersion >= 79) return GetFreeInputs79(rnum);
+      return GetFreeInputs75(rnum);
+    }
 
   private:
     bool m_blockShutdown;
@@ -126,6 +137,9 @@ namespace Myth
     MarkListPtr GetCommBreakList__(const Program& program, int unit);
     bool BlockShutdown75();
     bool AllowShutdown75();
+    std::vector<int> GetFreeCardIdList75();
+    CardInputListPtr GetFreeInputs75(int rnum);
+    CardInputListPtr GetFreeInputs79(int rnum);
 
     // Not implemented
     //int64_t GetBookmark75(Program& program);

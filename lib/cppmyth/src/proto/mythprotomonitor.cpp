@@ -644,3 +644,119 @@ bool ProtoMonitor::AllowShutdown75()
   FlushMessage();
   return false;
 }
+
+std::vector<int> ProtoMonitor::GetFreeCardIdList75()
+{
+  std::string field;
+  std::vector<int> ids;
+  int32_t rnum;
+
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen())
+    return ids;
+  std::string cmd("GET_FREE_RECORDER_LIST");
+
+  if (!SendCommand(cmd.c_str()))
+    return ids;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    if (!ReadField(field) || str2int32(field.c_str(), &rnum))
+    {
+      DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
+      FlushMessage();
+      ids.clear();
+      return ids;
+    }
+    if (rnum > 0)
+      ids.push_back(rnum);
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: succeeded (%u)\n", __FUNCTION__, (unsigned)ids.size());
+  return ids;
+}
+
+CardInputListPtr ProtoMonitor::GetFreeInputs75(int rnum)
+{
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
+  char buf[32];
+  std::string field;
+
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("QUERY_RECORDER ");
+  int32str((int32_t)rnum, buf);
+  cmd.append(buf);
+  cmd.append(PROTO_STR_SEPARATOR);
+  cmd.append("GET_FREE_INPUTS");
+
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    CardInputPtr input(new CardInput());
+    if (!ReadField(input->inputName))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->sourceId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->inputId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->cardId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->mplexId)))
+      break;
+    if (!ReadField(field) || str2uint8(field.c_str(), &(input->liveTVOrder)))
+      break;
+    list->push_back(input);
+  }
+  FlushMessage();
+  return list;
+}
+
+CardInputListPtr ProtoMonitor::GetFreeInputs79(int rnum)
+{
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
+  char buf[32];
+  std::string field;
+
+  PLATFORM::CLockObject lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("QUERY_RECORDER ");
+  int32str((int32_t)rnum, buf);
+  cmd.append(buf);
+  cmd.append(PROTO_STR_SEPARATOR);
+  cmd.append("GET_FREE_INPUTS");
+
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    CardInputPtr input(new CardInput());
+    if (!ReadField(input->inputName))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->sourceId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->inputId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->cardId)))
+      break;
+    if (!ReadField(field) || str2uint32(field.c_str(), &(input->mplexId)))
+      break;
+    if (!ReadField(field)) // displayName
+      break;
+    if (!ReadField(field)) // recPriority
+      break;
+    if (!ReadField(field)) // schedOrder
+      break;
+    if (!ReadField(field) || str2uint8(field.c_str(), &(input->liveTVOrder)))
+      break;
+    if (!ReadField(field)) // quickTune
+      break;
+    list->push_back(input);
+  }
+  FlushMessage();
+  return list;
+}
