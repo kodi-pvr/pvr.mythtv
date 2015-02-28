@@ -1,3 +1,6 @@
+- Merge channels by chanNum/callSign across sources
+- Fix preferred cards for live TV
+
 v2.0.6
 - Enable feature "undelete recordings"
 
