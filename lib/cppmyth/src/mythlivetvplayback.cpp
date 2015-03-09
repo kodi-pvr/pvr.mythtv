@@ -304,12 +304,12 @@ bool LiveTVPlayback::SwitchChainLast()
   return false;
 }
 
-void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
+void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
 {
   ProtoRecorderPtr recorder(m_recorder);
   if (!recorder || !recorder->IsPlaying())
     return;
-  switch (msg.event)
+  switch (msg->event)
   {
     /*
      * Event: LIVETV_CHAIN UPDATE
@@ -320,9 +320,9 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
      * in the live tv instance.
      */
     case EVENT_LIVETV_CHAIN:
-      if (msg.subject.size() >= 3)
+      if (msg->subject.size() >= 3)
       {
-        if (msg.subject[1] == "UPDATE" && msg.subject[2] == m_chain.UID)
+        if (msg->subject[1] == "UPDATE" && msg->subject[2] == m_chain.UID)
           HandleChainUpdate();
       }
       break;
@@ -341,11 +341,11 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
      * current program info. Watch signal will be down during this period.
      */
     case EVENT_LIVETV_WATCH:
-      if (msg.subject.size() >= 3)
+      if (msg->subject.size() >= 3)
       {
         int32_t rnum;
         int8_t flag;
-        if (str2int32(msg.subject[1].c_str(), &rnum) == 0 && str2int8(msg.subject[2].c_str(), &flag) == 0)
+        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && str2int8(msg->subject[2].c_str(), &flag) == 0)
         {
           if (recorder->GetNum() == (int)rnum)
           {
@@ -366,10 +366,10 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
      * queuing the frontend for reading file buffer.
      */
     case EVENT_DONE_RECORDING:
-      if (msg.subject.size() >= 2)
+      if (msg->subject.size() >= 2)
       {
         int32_t rnum;
-        if (str2int32(msg.subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
+        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
         {
           // Recorder is not subscriber. So callback event to it
           recorder->DoneRecordingCallback();
@@ -393,22 +393,22 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
       }
       break;
     case EVENT_UPDATE_FILE_SIZE:
-      if (msg.subject.size() >= 3)
+      if (msg->subject.size() >= 3)
       {
         PLATFORM::CLockObject lock(*m_mutex); // Lock chain
         if (m_chain.lastSequence > 0)
         {
           int64_t newsize;
           // Message contains chanid + starttime as recorded key
-          if (msg.subject.size() >= 4)
+          if (msg->subject.size() >= 4)
           {
             uint32_t chanid;
             time_t startts;
-            if (str2uint32(msg.subject[1].c_str(), &chanid)
-                    || str2time(msg.subject[2].c_str(), &startts)
+            if (str2uint32(msg->subject[1].c_str(), &chanid)
+                    || str2time(msg->subject[2].c_str(), &startts)
                     || m_chain.chained[m_chain.lastSequence -1].second->channel.chanId != chanid
                     || m_chain.chained[m_chain.lastSequence -1].second->recording.startTs != startts
-                    || str2int64(msg.subject[3].c_str(), &newsize)
+                    || str2int64(msg->subject[3].c_str(), &newsize)
                     || m_chain.chained[m_chain.lastSequence - 1].first->fileSize >= newsize)
               break;
           }
@@ -416,9 +416,9 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
           else
           {
             uint32_t recordedid;
-            if (str2uint32(msg.subject[1].c_str(), &recordedid)
+            if (str2uint32(msg->subject[1].c_str(), &recordedid)
                     || m_chain.chained[m_chain.lastSequence -1].second->recording.recordedId != recordedid
-                    || str2int64(msg.subject[2].c_str(), &newsize)
+                    || str2int64(msg->subject[2].c_str(), &newsize)
                     || m_chain.chained[m_chain.lastSequence - 1].first->fileSize >= newsize)
               break;
           }
@@ -433,15 +433,15 @@ void LiveTVPlayback::HandleBackendMessage(const EventMessage& msg)
       }
       break;
     case EVENT_SIGNAL:
-      if (msg.subject.size() >= 2)
+      if (msg->subject.size() >= 2)
       {
         int32_t rnum;
-        if (str2int32(msg.subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
-          m_signal = msg.signal;
+        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
+          m_signal = msg->signal;
       }
       break;
     //case EVENT_HANDLER_STATUS:
-    //  if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
+    //  if (msg->subject[0] == EVENTHANDLER_DISCONNECTED)
     //    closeTransfer();
     //  break;
     default:

@@ -68,7 +68,6 @@ typedef volatile unsigned atomic_t;
 #define __ARM_ARCH 7
 #else
 #warning could not detect ARM architecture
-#define __ARM_ARCH 8
 #endif
 #endif
 #endif
@@ -194,7 +193,7 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
     : "r" (valp), "r"(inc)
     : "cc", "memory");
 
-#elif defined __GNUC__
+#elif defined HAS_BUILTIN_SYNC_ADD_AND_FETCH
   /*
    * Don't know how to atomic increment for a generic architecture
    * so try to use GCC builtin
@@ -330,10 +329,10 @@ static CC_INLINE unsigned atomic_decrement(atomic_t *valp)
     : "r" (valp), "r"(inc)
     : "cc", "memory");
 
-#elif defined __GNUC__
+#elif defined HAS_BUILTIN_SYNC_SUB_AND_FETCH
   /*
    * Don't know how to atomic decrement for a generic architecture
-   * so use GCC builtin
+   * so try to use GCC builtin
    */
   __val = __sync_sub_and_fetch(valp, 1);
 

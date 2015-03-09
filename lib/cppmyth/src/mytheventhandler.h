@@ -39,7 +39,7 @@ namespace Myth
   {
   public:
     virtual ~EventSubscriber() {};
-    virtual void HandleBackendMessage(const EventMessage& msg) = 0;
+    virtual void HandleBackendMessage(EventMessagePtr msg) = 0;
   };
 
   class EventHandler
@@ -58,6 +58,7 @@ namespace Myth
     unsigned CreateSubscription(EventSubscriber *sub) { return m_imp->CreateSubscription(sub); }
     bool SubscribeForEvent(unsigned subid, EVENT_t event) { return m_imp->SubscribeForEvent(subid, event);}
     void RevokeSubscription(unsigned subid) { m_imp->RevokeSubscription(subid); }
+    void RevokeAllSubscriptions(EventSubscriber *sub) { m_imp->RevokeAllSubscriptions(sub); }
 
     class EventHandlerThread
     {
@@ -75,6 +76,8 @@ namespace Myth
       virtual unsigned CreateSubscription(EventSubscriber *sub) = 0;
       virtual bool SubscribeForEvent(unsigned subid, EVENT_t event) = 0;
       virtual void RevokeSubscription(unsigned subid) = 0;
+      virtual void RevokeAllSubscriptions(EventSubscriber *sub) = 0;
+
     protected:
       std::string m_server;
       unsigned m_port;

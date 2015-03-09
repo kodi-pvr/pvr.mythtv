@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <map>
+#include <list>
 
 using namespace Myth;
 
@@ -48,44 +49,145 @@ EventHandler::EventHandlerThread::~EventHandlerThread()
 
 ///////////////////////////////////////////////////////////////////////////////
 ////
+//// SubscriptionHandlerThread
+////
+
+namespace Myth
+{
+  class SubscriptionHandlerThread : private PLATFORM::CThread
+  {
+  public:
+    SubscriptionHandlerThread(EventSubscriber *handle, unsigned subid);
+    virtual ~SubscriptionHandlerThread();
+    EventSubscriber *GetHandle() { return m_handle; }
+    bool IsRunning() { return PLATFORM::CThread::IsRunning(); }
+    void PostMessage(const EventMessage& msg);
+
+  private:
+    EventSubscriber *m_handle;
+    unsigned m_subId;
+    mutable PLATFORM::CMutex m_mutex;
+    PLATFORM::CEvent m_queueContent;
+    std::list<EventMessagePtr> m_msgQueue;
+
+    bool Start();
+    void Stop();
+    void *Process();
+  };
+}
+
+SubscriptionHandlerThread::SubscriptionHandlerThread(EventSubscriber *handle, unsigned subid)
+: PLATFORM::CThread()
+, m_handle(handle)
+, m_subId(subid)
+, m_mutex()
+, m_queueContent()
+, m_msgQueue()
+{
+  if (m_handle && Start())
+    DBG(MYTH_DBG_DEBUG, "%s: subscription is started (%p:%u)\n", __FUNCTION__, m_handle, m_subId);
+  else
+    DBG(MYTH_DBG_ERROR, "%s: subscription failed (%p:%u)\n", __FUNCTION__, m_handle, m_subId);
+}
+
+SubscriptionHandlerThread::~SubscriptionHandlerThread()
+{
+  Stop();
+  m_handle = NULL;
+}
+
+bool SubscriptionHandlerThread::Start()
+{
+  if (PLATFORM::CThread::IsRunning())
+    return true;
+  return PLATFORM::CThread::CreateThread();
+}
+
+void SubscriptionHandlerThread::Stop()
+{
+  if (PLATFORM::CThread::IsRunning())
+  {
+    DBG(MYTH_DBG_DEBUG, "%s: subscription thread (%p:%u)\n", __FUNCTION__, m_handle, m_subId);
+    // Set stopping. don't wait as we need to signal the thread first
+    PLATFORM::CThread::StopThread(-1);
+    m_queueContent.Signal();
+    // Wait for thread to stop
+    PLATFORM::CThread::StopThread(0);
+    DBG(MYTH_DBG_DEBUG, "%s: subscription thread (%p:%u) stopped\n", __FUNCTION__, m_handle, m_subId);
+  }
+}
+
+void SubscriptionHandlerThread::PostMessage(const EventMessage& msg)
+{
+  // Critical section
+  PLATFORM::CLockObject lock(m_mutex);
+  m_msgQueue.push_back(EventMessagePtr(new EventMessage(msg)));
+  m_queueContent.Signal();
+}
+
+void *SubscriptionHandlerThread::Process()
+{
+  while (!IsStopped())
+  {
+    while (!m_msgQueue.empty() && !IsStopped())
+    {
+      // Critical section
+      PLATFORM::CLockObject lock(m_mutex);
+      EventMessagePtr msg = m_msgQueue.front();
+      m_msgQueue.pop_front();
+      lock.Unlock();
+      // Do work
+      m_handle->HandleBackendMessage(msg);
+    }
+    // The tread is woken up by m_queueContent.Signal();
+    m_queueContent.Wait();
+  }
+  return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+////
 //// BasicEventHandler
 ////
 
-class BasicEventHandler : public EventHandler::EventHandlerThread, private PLATFORM::CThread
+namespace Myth
 {
-public:
-  BasicEventHandler(const std::string& server, unsigned port);
-  virtual ~BasicEventHandler();
-  // Implements MythEventHandlerThread
-  virtual bool Start();
-  virtual void Stop();
-  virtual void Reset();
-  virtual bool IsRunning();
-  virtual bool IsConnected();
-  virtual unsigned CreateSubscription(EventSubscriber *sub);
-  virtual bool SubscribeForEvent(unsigned subid, EVENT_t event);
-  virtual void RevokeSubscription(unsigned subid);
+  class BasicEventHandler : public EventHandler::EventHandlerThread, private PLATFORM::CThread
+  {
+  public:
+    BasicEventHandler(const std::string& server, unsigned port);
+    virtual ~BasicEventHandler();
+    // Implements MythEventHandlerThread
+    virtual bool Start();
+    virtual void Stop();
+    virtual void Reset();
+    virtual bool IsRunning();
+    virtual bool IsConnected();
+    virtual unsigned CreateSubscription(EventSubscriber *sub);
+    virtual bool SubscribeForEvent(unsigned subid, EVENT_t event);
+    virtual void RevokeSubscription(unsigned subid);
+    virtual void RevokeAllSubscriptions(EventSubscriber *sub);
 
-private:
-  PLATFORM::CMutex *m_mutex;
-  ProtoEvent *m_event;
-  bool m_reset;
-  // About subscriptions
-  typedef std::map<EVENT_t, std::vector<unsigned> > subscriptionsByEvent_t;
-  subscriptionsByEvent_t m_subscriptionsByEvent;
-  typedef std::map<unsigned, EventSubscriber*> subscriptions_t;
-  subscriptions_t m_subscriptions;
+  private:
+    PLATFORM::CMutex m_mutex;
+    ProtoEvent *m_event;
+    bool m_reset;
+    // About subscriptions
+    typedef std::map<EVENT_t, std::list<unsigned> > subscriptionsByEvent_t;
+    subscriptionsByEvent_t m_subscriptionsByEvent;
+    typedef std::map<unsigned, SubscriptionHandlerThread*> subscriptions_t;
+    subscriptions_t m_subscriptions;
 
-  void DispatchEvent(const EventMessage& msg);
-  virtual void* Process(void);
-  void AnnounceStatus(const char *status);
-  void AnnounceTimer();
-  void RetryConnect();
-};
+    void DispatchEvent(const EventMessage& msg);
+    virtual void* Process(void);
+    void AnnounceStatus(const char *status);
+    void AnnounceTimer();
+    void RetryConnect();
+  };
+}
 
 BasicEventHandler::BasicEventHandler(const std::string& server, unsigned port)
 : EventHandlerThread(server, port), PLATFORM::CThread()
-, m_mutex(new PLATFORM::CMutex)
 , m_event(new ProtoEvent(server,port))
 , m_reset(false)
 {
@@ -94,8 +196,14 @@ BasicEventHandler::BasicEventHandler(const std::string& server, unsigned port)
 BasicEventHandler::~BasicEventHandler()
 {
   Stop();
+  {
+    PLATFORM::CLockObject lock(m_mutex);
+    for (subscriptions_t::iterator it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
+      delete it->second;
+    m_subscriptions.clear();
+    m_subscriptionsByEvent.clear();
+  }
   SAFE_DELETE(m_event);
-  SAFE_DELETE(m_mutex);
 }
 
 bool BasicEventHandler::Start()
@@ -136,27 +244,29 @@ bool BasicEventHandler::IsConnected()
 unsigned BasicEventHandler::CreateSubscription(EventSubscriber* sub)
 {
   unsigned id = 0;
-  PLATFORM::CLockObject lock(*m_mutex);
-  subscriptions_t::const_iterator it = m_subscriptions.begin();
-  while (it != m_subscriptions.end())
-  {
+  PLATFORM::CLockObject lock(m_mutex);
+  subscriptions_t::const_reverse_iterator it = m_subscriptions.rbegin();
+  if (it != m_subscriptions.rend())
     id = it->first;
-    if (sub == it->second)
-      return id;
-    ++it;
+  SubscriptionHandlerThread *handler = new SubscriptionHandlerThread(sub, ++id);
+  if (handler->IsRunning())
+  {
+    m_subscriptions.insert(std::make_pair(id, handler));
+    return id;
   }
-  m_subscriptions.insert(std::make_pair(++id, sub));
-  return id;
+  // Handler didn't start
+  delete handler;
+  return 0;
 }
 
 bool BasicEventHandler::SubscribeForEvent(unsigned subid, EVENT_t event)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  PLATFORM::CLockObject lock(m_mutex);
   // Only for registered subscriber
   subscriptions_t::const_iterator it1 = m_subscriptions.find(subid);
   if (it1 == m_subscriptions.end())
     return false;
-  std::vector<unsigned>::const_iterator it2 = m_subscriptionsByEvent[event].begin();
+  std::list<unsigned>::const_iterator it2 = m_subscriptionsByEvent[event].begin();
   while (it2 != m_subscriptionsByEvent[event].end())
   {
     if (*it2 == subid)
@@ -169,28 +279,47 @@ bool BasicEventHandler::SubscribeForEvent(unsigned subid, EVENT_t event)
 
 void BasicEventHandler::RevokeSubscription(unsigned subid)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  PLATFORM::CLockObject lock(m_mutex);
   subscriptions_t::iterator it;
   it = m_subscriptions.find(subid);
   if (it != m_subscriptions.end())
+  {
+    delete it->second;
     m_subscriptions.erase(it);
+  }
+}
+
+void BasicEventHandler::RevokeAllSubscriptions(EventSubscriber *sub)
+{
+  PLATFORM::CLockObject lock(m_mutex);
+  std::vector<subscriptions_t::iterator> its;
+  for (subscriptions_t::iterator it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
+  {
+    if (sub == it->second->GetHandle())
+      its.push_back(it);
+  }
+  for (std::vector<subscriptions_t::iterator>::const_iterator it = its.begin(); it != its.end(); ++it)
+  {
+    delete (*it)->second;
+    m_subscriptions.erase(*it);
+  }
 }
 
 void BasicEventHandler::DispatchEvent(const EventMessage& msg)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
-  std::vector<std::vector<unsigned>::iterator> revoked;
-  std::vector<unsigned>::iterator it1 = m_subscriptionsByEvent[msg.event].begin();
+  PLATFORM::CLockObject lock(m_mutex);
+  std::vector<std::list<unsigned>::iterator> revoked;
+  std::list<unsigned>::iterator it1 = m_subscriptionsByEvent[msg.event].begin();
   while (it1 != m_subscriptionsByEvent[msg.event].end())
   {
     subscriptions_t::const_iterator it2 = m_subscriptions.find(*it1);
     if (it2 != m_subscriptions.end())
-      it2->second->HandleBackendMessage(msg);
+      it2->second->PostMessage(msg);
     else
       revoked.push_back(it1);
     ++it1;
   }
-  std::vector<std::vector<unsigned>::iterator>::const_iterator itr;
+  std::vector<std::list<unsigned>::iterator>::const_iterator itr;
   for (itr = revoked.begin(); itr != revoked.end(); ++itr)
     m_subscriptionsByEvent[msg.event].erase(*itr);
 }
