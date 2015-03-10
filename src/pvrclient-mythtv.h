@@ -58,7 +58,7 @@ public:
   void OnActivatedGUI();
 
   // Implements EventSubscriber
-  void HandleBackendMessage(const Myth::EventMessage& msg);
+  void HandleBackendMessage(Myth::EventMessagePtr msg);
   void HandleChannelChange();
   void HandleScheduleChange();
   void HandleAskRecording(const Myth::EventMessage& msg);
@@ -142,7 +142,6 @@ private:
   Myth::Control *m_control;
   Myth::LiveTVPlayback *m_liveStream;
   Myth::RecordingPlayback *m_recordingStream;
-  unsigned m_eventSubscriberId;
   bool m_hang;
   bool m_powerSaving;
 

@@ -37,7 +37,6 @@ PVRClientMythTV::PVRClientMythTV()
 , m_control(NULL)
 , m_liveStream(NULL)
 , m_recordingStream(NULL)
-, m_eventSubscriberId(0)
 , m_hang(false)
 , m_powerSaving(false)
 , m_fileOps(NULL)
@@ -117,17 +116,19 @@ bool PVRClientMythTV::Connect()
     return false;
   }
 
-  // Create event handler
+  // Create event handler and subscription as needed
+  unsigned subid = 0;
   m_eventHandler = new Myth::EventHandler(g_szMythHostname, g_iProtoPort);
-  m_eventSubscriberId = m_eventHandler->CreateSubscription(this);
-  m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_HANDLER_STATUS);
-  m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_HANDLER_TIMER);
-  m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_SCHEDULE_CHANGE);
-  m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_ASK_RECORDING);
-  m_eventHandler->SubscribeForEvent(m_eventSubscriberId, Myth::EVENT_RECORDING_LIST_CHANGE);
+  subid = m_eventHandler->CreateSubscription(this);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_STATUS);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_TIMER);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_ASK_RECORDING);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_RECORDING_LIST_CHANGE);
 
-  // Create schedule manager
+  // Create schedule manager and new subscription handled by dedicated thread
   m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin);
+  subid = m_eventHandler->CreateSubscription(this);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_SCHEDULE_CHANGE);
 
   // Create file operation helper (image caching)
   m_fileOps = new FileOps(this, g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
@@ -217,24 +218,24 @@ void PVRClientMythTV::OnActivatedGUI()
   m_powerSaving = false;
 }
 
-void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
+void PVRClientMythTV::HandleBackendMessage(Myth::EventMessagePtr msg)
 {
-  switch (msg.event)
+  switch (msg->event)
   {
     case Myth::EVENT_SCHEDULE_CHANGE:
       HandleScheduleChange();
       break;
     case Myth::EVENT_ASK_RECORDING:
-      HandleAskRecording(msg);
+      HandleAskRecording(*msg);
       break;
     case Myth::EVENT_RECORDING_LIST_CHANGE:
-      HandleRecordingListChange(msg);
+      HandleRecordingListChange(*msg);
       break;
     case Myth::EVENT_HANDLER_TIMER:
       RunHouseKeeping();
       break;
     case Myth::EVENT_HANDLER_STATUS:
-      if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
+      if (msg->subject[0] == EVENTHANDLER_DISCONNECTED)
       {
         m_hang = true;
         if (m_control)
@@ -243,7 +244,7 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
           m_scheduleManager->CloseControl();
         XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // Connection to MythTV backend lost
       }
-      else if (msg.subject[0] == EVENTHANDLER_CONNECTED)
+      else if (msg->subject[0] == EVENTHANDLER_CONNECTED)
       {
         if (m_hang)
         {
@@ -259,7 +260,7 @@ void PVRClientMythTV::HandleBackendMessage(const Myth::EventMessage& msg)
         HandleScheduleChange();
         HandleRecordingListChange(Myth::EventMessage());
       }
-      else if (msg.subject[0] == EVENTHANDLER_NOTCONNECTED)
+      else if (msg->subject[0] == EVENTHANDLER_NOTCONNECTED)
       {
         // Try wake up if GUI is activated
         if (!m_powerSaving && !g_szMythHostEther.empty())
