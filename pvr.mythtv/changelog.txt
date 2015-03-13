@@ -1,3 +1,6 @@
+v2.0.9
+- Process subscription queue in separated thread
+
 v2.0.8
 - Updated to API 1.9.5
 - fix crash parsing invalid frame AAC/LATM
