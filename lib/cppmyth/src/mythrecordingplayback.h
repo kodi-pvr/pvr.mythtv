@@ -51,7 +51,7 @@ namespace Myth
     int64_t GetPosition() const;
 
     // Implement EventSubscriber
-    void HandleBackendMessage(const EventMessage& msg);
+    void HandleBackendMessage(EventMessagePtr msg);
 
   private:
     EventHandler m_eventHandler;

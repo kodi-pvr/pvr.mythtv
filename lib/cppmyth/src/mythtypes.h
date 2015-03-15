@@ -518,6 +518,8 @@ namespace Myth
     {}
   };
 
+  typedef MYTH_SHARED_PTR<EventMessage> EventMessagePtr;
+
   struct StorageGroupFile
   {
     std::string               fileName;

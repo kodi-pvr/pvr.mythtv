@@ -66,7 +66,7 @@ namespace Myth
     SignalStatusPtr GetSignal() const;
 
     // Implement EventSubscriber
-    void HandleBackendMessage(const EventMessage& msg);
+    void HandleBackendMessage(EventMessagePtr msg);
 
   private:
     EventHandler m_eventHandler;

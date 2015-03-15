@@ -48,7 +48,7 @@ set(MYTHTV_SOURCES src/avinfo.cpp
 add_subdirectory(lib/cppmyth)
 
 set(DEPLIBS ${kodiplatform_LIBRARIES} cppmyth)
-if (WIN32)
+if(WIN32)
   list(APPEND DEPLIBS ws2_32)
 else()
   list(APPEND DEPLIBS m)
@@ -70,6 +70,15 @@ endif()
 
 if(__link_flags)
   add_options(ALL_LANGUAGES ALL_BUILDS "${__link_flags}")
+endif()
+
+if(NOT WIN32 AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX))
+  if(HAS_BUILTIN_SYNC_ADD_AND_FETCH)
+    add_options(ALL_LANGUAGES ALL_BUILDS "-DHAS_BUILTIN_SYNC_ADD_AND_FETCH")
+  endif()
+  if(HAS_BUILTIN_SYNC_SUB_AND_FETCH)
+    add_options(ALL_LANGUAGES ALL_BUILDS "-DHAS_BUILTIN_SYNC_SUB_AND_FETCH")
+  endif()
 endif()
 
 set(BUILD_SHARED_LIBS ON)

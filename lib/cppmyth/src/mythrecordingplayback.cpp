@@ -63,9 +63,9 @@ RecordingPlayback::RecordingPlayback(const std::string& server, unsigned port)
 
 RecordingPlayback::~RecordingPlayback()
 {
-  Close();
   if (m_eventSubscriberId)
     m_eventHandler.RevokeSubscription(m_eventSubscriberId);
+  Close();
 }
 
 bool RecordingPlayback::Open()
@@ -183,47 +183,47 @@ int64_t RecordingPlayback::GetPosition() const
   return 0;
 }
 
-void RecordingPlayback::HandleBackendMessage(const EventMessage& msg)
+void RecordingPlayback::HandleBackendMessage(EventMessagePtr msg)
 {
   // First of all i hold shared resources using copies
   ProgramPtr recording(m_recording);
   ProtoTransferPtr transfer(m_transfer);
-  switch (msg.event)
+  switch (msg->event)
   {
     case EVENT_UPDATE_FILE_SIZE:
-      if (msg.subject.size() >= 3 && recording && transfer)
+      if (msg->subject.size() >= 3 && recording && transfer)
       {
         int64_t newsize;
         // Message contains chanid + starttime as recorded key
-        if (msg.subject.size() >= 4)
+        if (msg->subject.size() >= 4)
         {
           uint32_t chanid;
           time_t startts;
-          if (str2uint32(msg.subject[1].c_str(), &chanid)
-                  || str2time(msg.subject[2].c_str(), &startts)
+          if (str2uint32(msg->subject[1].c_str(), &chanid)
+                  || str2time(msg->subject[2].c_str(), &startts)
                   || recording->channel.chanId != chanid
                   || recording->recording.startTs != startts
-                  || str2int64(msg.subject[3].c_str(), &newsize))
+                  || str2int64(msg->subject[3].c_str(), &newsize))
             break;
         }
         // Message contains recordedid as key
         else
         {
           uint32_t recordedid;
-          if (str2uint32(msg.subject[1].c_str(), &recordedid)
+          if (str2uint32(msg->subject[1].c_str(), &recordedid)
                   || recording->recording.recordedId != recordedid
-                  || str2int64(msg.subject[2].c_str(), &newsize))
+                  || str2int64(msg->subject[2].c_str(), &newsize))
             break;
         }
         // The file grows. Allow reading ahead
         m_readAhead = true;
         recording->fileSize = transfer->fileSize = newsize;
         DBG(MYTH_DBG_DEBUG, "%s: (%d) %s %" PRIi64 "\n", __FUNCTION__,
-                msg.event, recording->fileName.c_str(), newsize);
+                msg->event, recording->fileName.c_str(), newsize);
       }
       break;
     //case EVENT_HANDLER_STATUS:
-    //  if (msg.subject[0] == EVENTHANDLER_DISCONNECTED)
+    //  if (msg->subject[0] == EVENTHANDLER_DISCONNECTED)
     //    closeTransfer();
     //  break;
     default:
