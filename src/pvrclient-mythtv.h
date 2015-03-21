@@ -48,6 +48,7 @@ public:
   // Server
   void SetDebug();
   bool Connect();
+  unsigned GetBackendAPIVersion();
   const char *GetBackendName();
   const char *GetBackendVersion();
   const char *GetConnectionString();

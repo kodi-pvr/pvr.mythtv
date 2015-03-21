@@ -138,6 +138,13 @@ bool PVRClientMythTV::Connect()
   return true;
 }
 
+unsigned PVRClientMythTV::GetBackendAPIVersion()
+{
+  if (m_control)
+    return m_control->CheckService();
+  return 0;
+}
+
 const char *PVRClientMythTV::GetBackendName()
 {
   static std::string myName;
