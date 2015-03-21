@@ -26,7 +26,7 @@
 #include <cstdio>
 #include <cstring>
 
-#if defined _MSC_VER
+#ifdef __WINDOWS__
 #include <Ws2tcpip.h>
 #define SHUT_RDWR SD_BOTH
 #define SHUT_WR   SD_SEND
@@ -42,7 +42,7 @@ typedef int socklen_t;
 #include <arpa/inet.h>
 #define closesocket(a) close(a)
 #define LASTERROR errno
-#endif /* _MSC_VER */
+#endif /* __WINDOWS__ */
 
 #include <signal.h>
 
@@ -74,7 +74,7 @@ TcpSocket::~TcpSocket()
 
 static int __connectAddr(struct addrinfo *addr, tcp_socket_t *s, int rcvbuf)
 {
-#ifndef _MSC_VER
+#ifndef __WINDOWS__
   void (*old_sighandler)(int);
   int old_alarm;
 #endif
@@ -103,7 +103,7 @@ static int __connectAddr(struct addrinfo *addr, tcp_socket_t *s, int rcvbuf)
   if (getsockopt(*s, SOL_SOCKET, SO_RCVBUF, (char *)&opt_rcvbuf, &size))
     DBG(MYTH_DBG_WARN, "%s: could not get rcvbuf from socket (%d)\n", __FUNCTION__, LASTERROR);
 
-#ifndef _MSC_VER
+#ifndef __WINDOWS__
   old_sighandler = signal(SIGALRM, __sigHandler);
   old_alarm = alarm(5);
 #endif
@@ -113,14 +113,14 @@ static int __connectAddr(struct addrinfo *addr, tcp_socket_t *s, int rcvbuf)
     err = LASTERROR;
     DBG(MYTH_DBG_ERROR, "%s: failed to connect (%d)\n", __FUNCTION__, err);
     closesocket(*s);
-#ifndef _MSC_VER
+#ifndef __WINDOWS__
     signal(SIGALRM, old_sighandler);
     alarm(old_alarm);
 #endif
     return err;
   }
   my_socket = INVALID_SOCKET_VALUE;
-#ifndef _MSC_VER
+#ifndef __WINDOWS__
   signal(SIGALRM, old_sighandler);
   alarm(old_alarm);
 #endif

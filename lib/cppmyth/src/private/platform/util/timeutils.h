@@ -75,7 +75,7 @@ namespace PLATFORM
   #endif
   }
 
-  template <class T>
+  template <typename T>
   inline T GetTimeSec()
   {
     return (T)GetTimeMs() / (T)1000.0;

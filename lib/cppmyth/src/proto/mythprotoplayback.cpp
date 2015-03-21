@@ -28,12 +28,12 @@
 #include <limits>
 #include <cstdio>
 
-#if defined _MSC_VER
+#ifdef __WINDOWS__
 #include <Ws2tcpip.h>
 #else
 #include <sys/socket.h> // for recv
 #include <sys/select.h> // for select
-#endif /* _MSC_VER */
+#endif /* __WINDOWS__ */
 
 using namespace Myth;
 

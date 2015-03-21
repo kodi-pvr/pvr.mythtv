@@ -110,7 +110,7 @@ file (GLOB SRC_FILES
 file (GLOB HDR_FILES
   src/proto/*.h src/*.h)
 
-if (MSVC)
+if (WIN32)
   file (GLOB PLATFORM_SRC_FILES
     src/private/platform/windows/*.cpp)
 endif ()
@@ -121,7 +121,7 @@ set (CPPMYTH_SOURCES
 ###############################################################################
 # add targets
 set (cppmyth_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
-if (MSVC)
+if (WIN32)
   list (APPEND cppmyth_LIBRARIES ws2_32)
 else ()
   list (APPEND cppmyth_LIBRARIES m)

@@ -53,8 +53,8 @@ namespace PLATFORM
     inline ~PreventCopy(void) {}
 
   private:
-    inline PreventCopy(const PreventCopy &c) { *this = c; }
-    inline PreventCopy &operator=(const PreventCopy &c){ *this = c; return *this; }
+    inline PreventCopy(const PreventCopy &c) { (void)c; }
+    inline PreventCopy &operator=(const PreventCopy &c) { (void)c; return *this; }
   };
 
   template <typename _Predicate>
