@@ -138,6 +138,13 @@ bool PVRClientMythTV::Connect()
   return true;
 }
 
+unsigned PVRClientMythTV::GetBackendAPIVersion()
+{
+  if (m_control)
+    return m_control->CheckService();
+  return 0;
+}
+
 const char *PVRClientMythTV::GetBackendName()
 {
   static std::string myName;
@@ -509,6 +516,12 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       tag.iParentalRating = 0;
       tag.iSeriesNumber = (int)it->second->season;
       tag.iStarRating = atoi(it->second->stars.c_str());
+      tag.strOriginalTitle = "";
+      tag.strCast = "";
+      tag.strDirector = "";
+      tag.strWriter = "";
+      tag.iYear = 0;
+      tag.strIMDBNumber = it->second->inetref.c_str();
 
       PVR->TransferEpgEntry(handle, &tag);
     }
@@ -600,6 +613,7 @@ PVR_ERROR PVRClientMythTV::GetChannelGroups(ADDON_HANDLE handle, bool bRadio)
 
     PVR_STRCPY(tag.strGroupName, itg->first.c_str());
     tag.bIsRadio = bRadio;
+    tag.iPosition = 0;
 
     // Only add the group if we have at least one channel of the correct type
     for (PVRChannelList::const_iterator itc = itg->second.begin(); itc != itg->second.end(); ++itc)

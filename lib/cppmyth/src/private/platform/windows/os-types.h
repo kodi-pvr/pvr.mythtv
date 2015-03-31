@@ -36,35 +36,17 @@
 #define __WINDOWS__
 #endif
 
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_
+/* Enable LEAN_AND_MEAN support */
+#define WIN32_LEAN_AND_MEAN
+
+/* Don't define min() and max() to prevent a clash with std::min() and std::max */
+#ifndef NOMINMAX
+#define NOMINMAX
 #endif
 
-#define WIN32_LEAN_AND_MEAN           // Enable LEAN_AND_MEAN support
-#define NOMINMAX                      // don't define min() and max() to prevent a clash with std::min() and std::max
+#include <winsock2.h>
 #include <windows.h>
 #include <wchar.h>
-
-/* String to 64-bit int */
-#if (_MSC_VER < 1800)
-#define atoll(S) _atoi64(S)
-#endif
-
-/* Platform dependent path separator */
-#ifndef PATH_SEPARATOR_CHAR
-#define PATH_SEPARATOR_CHAR '\\'
-#define PATH_SEPARATOR_STRING "\\"
-#endif
-
-/* Handling of 2-byte Windows wchar strings */
-#define WcsLen wcslen
-#define WcsToMbs wcstombs
-typedef wchar_t Wchar_t; /* sizeof(wchar_t) = 2 bytes on Windows */
-
-#pragma warning(disable:4005) // Disable "warning C4005: '_WINSOCKAPI_' : macro redefinition"
-#include <winsock2.h>
-#pragma warning(default:4005)
-
 #include <time.h>
 #include <sys/timeb.h>
 #include <io.h>
@@ -78,10 +60,24 @@ typedef wchar_t Wchar_t; /* sizeof(wchar_t) = 2 bytes on Windows */
 #endif
 #include "inttypes.h"
 
+/* prevent inclusion of wingdi.h */
+#define NOGDI
+
 typedef SOCKET tcp_socket_t;
 #define INVALID_SOCKET_VALUE        INVALID_SOCKET
 typedef HANDLE serial_socket_t;
 #define INVALID_SERIAL_SOCKET_VALUE INVALID_HANDLE_VALUE
+
+/* Platform dependent path separator */
+#ifndef PATH_SEPARATOR_CHAR
+#define PATH_SEPARATOR_CHAR '\\'
+#define PATH_SEPARATOR_STRING "\\"
+#endif
+
+/* Handling of 2-byte Windows wchar strings */
+#define WcsLen wcslen
+#define WcsToMbs wcstombs
+typedef wchar_t Wchar_t; /* sizeof(wchar_t) = 2 bytes on Windows */
 
 #ifndef _SSIZE_T_DEFINED
 #ifdef  _WIN64
@@ -95,11 +91,25 @@ typedef _W64 int   ssize_t;
 #define usleep(t) Sleep((DWORD)(t)/1000)
 #define sleep(t)  Sleep((DWORD)(t)*1000)
 
+/* Microsoft Visual C++ compilers */
+#if defined(_MSC_VER)
+
 struct timezone
 {
   int	tz_minuteswest;
   int	tz_dsttime;
 };
+
+/* String to 64-bit int */
+#if (_MSC_VER < 1800)
+#define atoll(S) _atoi64(S)
+#endif
+
+/* Prevent deprecation warnings */
+#define snprintf _snprintf
+#define strnicmp _strnicmp
+
+#endif /* _MSC_VER */
 
 #define gettimeofday __gettimeofday
 __inline int gettimeofday(struct timeval *pcur_time, struct timezone *tz)
@@ -120,19 +130,3 @@ __inline int gettimeofday(struct timeval *pcur_time, struct timezone *tz)
   }
   return 0;
 }
-
-/* Prevent deprecation warnings */
-#define snprintf _snprintf
-#define strnicmp _strnicmp
-
-#if defined(_MSC_VER)
-#pragma warning (push)
-#endif
-
-#define NOGDI
-#if defined(_MSC_VER) /* prevent inclusion of wingdi.h */
-#pragma warning (pop)
-#endif
-
-#pragma warning(disable:4189) /* disable 'defined but not used' */
-#pragma warning(disable:4100) /* disable 'unreferenced formal parameter' */

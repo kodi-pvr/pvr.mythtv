@@ -97,7 +97,7 @@ typedef struct
   const char  *sVal;
 } protoref_t;
 
-int __tValFromString(protoref_t *map, unsigned sz, unsigned proto, const std::string& sVal, int unk)
+static int __tValFromString(protoref_t *map, unsigned sz, unsigned proto, const std::string& sVal, int unk)
 {
   for (unsigned i = 0; i < sz; ++i)
   {
@@ -107,7 +107,7 @@ int __tValFromString(protoref_t *map, unsigned sz, unsigned proto, const std::st
   return unk;
 }
 
-int __tValFromNum(protoref_t *map, unsigned sz, unsigned proto, int iVal, int unk)
+static int __tValFromNum(protoref_t *map, unsigned sz, unsigned proto, int iVal, int unk)
 {
   for (unsigned i = 0; i < sz; ++i)
   {
@@ -117,7 +117,7 @@ int __tValFromNum(protoref_t *map, unsigned sz, unsigned proto, int iVal, int un
   return unk;
 }
 
-const char *__tValToString(protoref_t *map, unsigned sz, unsigned proto, int tVal, const char *unk)
+static const char *__tValToString(protoref_t *map, unsigned sz, unsigned proto, int tVal, const char *unk)
 {
   for (unsigned i = 0; i < sz; ++i)
   {
@@ -127,7 +127,7 @@ const char *__tValToString(protoref_t *map, unsigned sz, unsigned proto, int tVa
   return unk;
 }
 
-int __tValToNum(protoref_t *map, unsigned sz, unsigned proto, int tVal, int unk)
+static int __tValToNum(protoref_t *map, unsigned sz, unsigned proto, int tVal, int unk)
 {
   for (unsigned i = 0; i < sz; ++i)
   {

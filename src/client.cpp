@@ -678,6 +678,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
 {
   if (g_client != NULL)
   {
+    unsigned version = g_client->GetBackendAPIVersion();
     pCapabilities->bSupportsTV                    = g_bLiveTV;
     pCapabilities->bSupportsRadio                 = g_bLiveTV;
     pCapabilities->bSupportsChannelGroups         = true;
@@ -690,7 +691,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
 
     pCapabilities->bSupportsRecordings            = true;
     pCapabilities->bSupportsRecordingsUndelete    = true;
-    pCapabilities->bSupportsRecordingPlayCount    = true;
+    pCapabilities->bSupportsRecordingPlayCount    = (version < 80 ? false : true);
     pCapabilities->bSupportsLastPlayedPosition    = false;
     pCapabilities->bSupportsRecordingEdl          = true;
     return PVR_ERROR_NO_ERROR;

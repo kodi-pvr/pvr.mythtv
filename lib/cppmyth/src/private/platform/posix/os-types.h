@@ -32,14 +32,10 @@
  *     http://www.pulse-eight.net/
  */
 
-#define _FILE_OFFSET_BITS 64
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/time.h>
-#if !defined(__APPLE__) && !defined(__FreeBSD__)
-#include <sys/prctl.h>
-#endif
 #include <pthread.h>
 #include <poll.h>
 #include <semaphore.h>
@@ -51,9 +47,6 @@
 #endif
 #include <inttypes.h>
 
-#define LIBTYPE
-#define DECLSPEC
-
 typedef int socket_t;
 typedef socket_t tcp_socket_t;
 #define INVALID_SOCKET_VALUE        (-1)
@@ -64,14 +57,14 @@ typedef long LONG;
 typedef LONG HRESULT;
 
 #define _FILE_OFFSET_BITS 64
-#define FILE_BEGIN              0
-#define FILE_CURRENT            1
-#define FILE_END                2
+#define FILE_BEGIN        SEEK_SET
+#define FILE_CURRENT      SEEK_CUR
+#define FILE_END          SEEK_END
 
 // Success codes
-#define S_OK           0L
-#define S_FALSE        1L
-#define FAILED(Status) ((HRESULT)(Status)<0)
+#define S_OK          0L
+#define S_FALSE       1L
+#define FAILED(hr)    (((HRESULT)(hr)) < 0)
 #define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 
 // Error codes
@@ -100,9 +93,7 @@ typedef LONG HRESULT;
   typedef fpos_t fpos64_t;
   #define __stat64 stat
   #define stat64 stat
-  #if defined(TARGET_DARWIN_IOS)
-    #define statfs64 statfs
-  #endif
+  #define statfs64 statfs
   #define fstat64 fstat
 #elif defined(__FreeBSD__)
   #include <stdio.h> // for fpos_t
