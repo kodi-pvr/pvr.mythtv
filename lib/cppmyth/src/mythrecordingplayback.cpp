@@ -104,7 +104,7 @@ bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
     if (m_transfer->Open())
     {
       m_recording.swap(recording);
-      m_recording->fileSize = m_transfer->fileSize;
+      m_recording->fileSize = m_transfer->GetSize();
       return true;
     }
     m_transfer.reset();
@@ -137,7 +137,7 @@ int64_t RecordingPlayback::GetSize() const
 {
   ProtoTransferPtr transfer(m_transfer);
   if (transfer)
-    return transfer->fileSize;
+    return transfer->GetSize();
   return 0;
 }
 
@@ -148,7 +148,7 @@ int RecordingPlayback::Read(void *buffer, unsigned n)
   {
     if (!m_readAhead)
     {
-      int64_t s = transfer->fileSize - transfer->filePosition; // Acceptable block size
+      int64_t s = transfer->GetRemaining(); // Acceptable block size
       if (s > 0)
       {
         if (s < (int64_t)n)
@@ -179,7 +179,7 @@ int64_t RecordingPlayback::GetPosition() const
 {
   ProtoTransferPtr transfer(m_transfer);
   if (transfer)
-    return transfer->filePosition;
+    return transfer->GetPosition();
   return 0;
 }
 
@@ -217,7 +217,8 @@ void RecordingPlayback::HandleBackendMessage(EventMessagePtr msg)
         }
         // The file grows. Allow reading ahead
         m_readAhead = true;
-        recording->fileSize = transfer->fileSize = newsize;
+        transfer->SetSize(newsize);
+        recording->fileSize = newsize;
         DBG(MYTH_DBG_DEBUG, "%s: (%d) %s %" PRIi64 "\n", __FUNCTION__,
                 msg->event, recording->fileName.c_str(), newsize);
       }

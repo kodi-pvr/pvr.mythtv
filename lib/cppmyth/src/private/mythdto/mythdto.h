@@ -71,7 +71,7 @@ typedef struct
 
 /**
  * @namespace MythDTO
- * @brief DTO Helper
+ * @brief This namespace contains all DTO definitions
  */
 namespace MythDTO
 {
@@ -93,6 +93,8 @@ namespace MythDTO
   const bindings_t *getVideoSourceBindArray(unsigned proto);
   /** @brief Returns bindings for Myth::RecordSchedule */
   const bindings_t *getRecordScheduleBindArray(unsigned proto);
+  /** @brief Returns bindings for Myth::Mark */
+  const bindings_t *getCuttingBindArray(unsigned proto);
 }
 
 #endif	/* MYTHDTO_H */

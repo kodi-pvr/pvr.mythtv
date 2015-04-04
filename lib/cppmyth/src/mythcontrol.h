@@ -465,7 +465,13 @@ namespace Myth
      */
     MarkListPtr GetCutList(const Program& program, int unit = 0)
     {
-      return m_monitor.GetCutList(program, unit);
+      WSServiceVersion_t wsv = m_wsapi.CheckService(WS_Dvr);
+      if (wsv.ranking >= 0x00060001)
+        return m_wsapi.GetRecordedCutList(program.recording.recordedId, unit);
+      if (unit == 0)
+        return m_monitor.GetCutList(program);
+      else
+        return MarkListPtr(new MarkList);
     }
 
     /**
@@ -476,7 +482,13 @@ namespace Myth
      */
     MarkListPtr GetCommBreakList(const Program& program, int unit = 0)
     {
-      return m_monitor.GetCommBreakList(program, unit);
+      WSServiceVersion_t wsv = m_wsapi.CheckService(WS_Dvr);
+      if (wsv.ranking >= 0x00060001)
+        return m_wsapi.GetRecordedCommBreak(program.recording.recordedId, unit);
+      if (unit == 0)
+        return m_monitor.GetCommBreakList(program);
+      else
+        return MarkListPtr(new MarkList);
     }
 
     /**

@@ -146,6 +146,7 @@ namespace Myth
     ProgramMapPtr GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime)
     {
       WSServiceVersion_t wsv = CheckService(WS_Guide);
+      if (wsv.ranking >= 0x00020002) return GetProgramList2_2(chanid, starttime, endtime);
       if (wsv.ranking >= 0x00010000) return GetProgramGuide1_0(chanid, starttime, endtime);
       return ProgramMapPtr(new ProgramMap);
     }
@@ -392,6 +393,32 @@ namespace Myth
       return ArtworkListPtr(new ArtworkList);
     }
 
+    /**
+     * @brief GET Dvr/GetRecordedCommBreak
+     * @param recordedId
+     * @param unit 0 = Frame count, 1 = Position, 2 = Duration ms
+     * @return MarkListPtr
+     */
+    MarkListPtr GetRecordedCommBreak(uint32_t recordedId, int unit)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Dvr);
+      if (wsv.ranking >= 0x00060001) return GetRecordedCommBreak6_1(recordedId, unit);
+      return MarkListPtr(new MarkList);
+    }
+
+    /**
+     * @brief GET Dvr/GetRecordedCutList
+     * @param recordedId
+     * @param unit 0 = Frame count, 1 = Position, 2 = Duration ms
+     * @return MarkListPtr
+     */
+    MarkListPtr GetRecordedCutList(uint32_t recordedId, int unit)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Dvr);
+      if (wsv.ranking >= 0x00060001) return GetRecordedCutList6_1(recordedId, unit);
+      return MarkListPtr(new MarkList);
+    }
+
   private:
     PLATFORM::CMutex *m_mutex;
     std::string m_server;
@@ -425,6 +452,7 @@ namespace Myth
     ChannelListPtr GetChannelList1_5(uint32_t sourceid, bool onlyVisible);
 
     ProgramMapPtr GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_t endtime);
+    ProgramMapPtr GetProgramList2_2(uint32_t chanid, time_t starttime, time_t endtime);
 
     ProgramListPtr GetRecordedList1_5(unsigned n, bool descending);
     ProgramPtr GetRecorded1_5(uint32_t chanid, time_t recstartts);
@@ -435,6 +463,8 @@ namespace Myth
     bool UnDeleteRecording6_0(uint32_t recordedid);
     bool UpdateRecordedWatchedStatus4_5(uint32_t chanid, time_t recstartts, bool watched);
     bool UpdateRecordedWatchedStatus6_0(uint32_t recordedid, bool watched);
+    MarkListPtr GetRecordedCommBreak6_1(uint32_t recordedid, int unit);
+    MarkListPtr GetRecordedCutList6_1(uint32_t recordedid, int unit);
 
     RecordScheduleListPtr GetRecordScheduleList1_5();
     RecordSchedulePtr GetRecordSchedule1_5(uint32_t recordid);
