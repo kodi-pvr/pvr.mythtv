@@ -19,12 +19,14 @@
  *
  */
 
-#include "uriparser.h"
-#include "platform/util/util.h"
+#include "mythuriparser.h"
+#include "../private/cppdef.h"
 
 #include <ctype.h> // for toupper
 #include <cstring> // for strchr
 #include <cstdlib> // for atoi
+
+using namespace Myth;
 
 URIParser::URIParser(const std::string& location)
 {

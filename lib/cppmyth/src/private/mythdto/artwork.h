@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOArtwork
+namespace MythDTO
 {
   void SetArtwork_URL(Myth::Artwork *obj, const char *val) { obj->url = val; }
   void SetArtwork_FileName(Myth::Artwork *obj, const char *val) { obj->fileName = val; }

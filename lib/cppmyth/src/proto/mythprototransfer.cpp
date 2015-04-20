@@ -21,9 +21,9 @@
 
 #include "mythprototransfer.h"
 #include "../mythdebug.h"
-#include "../private/builtin.h"
 #include "../private/mythsocket.h"
-#include "../private/platform/threads/mutex.h"
+#include "../private/os/threads/mutex.h"
+#include "../private/builtin.h"
 
 #include <limits>
 #include <cstdio>
@@ -69,7 +69,7 @@ bool ProtoTransfer::Open()
 
 void ProtoTransfer::Close()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   ProtoBase::Close();
   // Clean hanging and disable retry
   m_tainted = m_hang = false;
@@ -95,7 +95,7 @@ bool ProtoTransfer::TryLock()
 
 void ProtoTransfer::Flush()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   int64_t unread = m_fileRequest - m_filePosition;
   if (unread > 0)
   {
@@ -116,7 +116,7 @@ void ProtoTransfer::Flush()
 
 bool ProtoTransfer::Announce75()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_filePosition = m_fileSize = m_fileRequest = 0;
   std::string cmd("ANN FileTransfer ");
   cmd.append(m_socket->GetMyHostName());
@@ -129,9 +129,9 @@ bool ProtoTransfer::Announce75()
   std::string field;
   if (!ReadField(field) || !IsMessageOK(field))
     goto out;
-  if (!ReadField(field) || 0 != str2uint32(field.c_str(), &m_fileId))
+  if (!ReadField(field) || 0 != string_to_uint32(field.c_str(), &m_fileId))
     goto out;
-  if (!ReadField(field) || 0 != str2int64(field.c_str(), &m_fileSize))
+  if (!ReadField(field) || 0 != string_to_int64(field.c_str(), &m_fileSize))
     goto out;
   return true;
 
@@ -157,42 +157,42 @@ std::string ProtoTransfer::GetStorageGroupName() const
 
 int64_t ProtoTransfer::GetSize() const
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   return m_fileSize;
 }
 
 int64_t ProtoTransfer::GetPosition() const
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   return m_filePosition;
 }
 
 int64_t ProtoTransfer::GetRequested() const
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   return m_fileRequest;
 }
 
 int64_t ProtoTransfer::GetRemaining() const
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   return (m_fileSize - m_filePosition);
 }
 
 void ProtoTransfer::SetSize(int64_t size)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_fileSize = size;
 }
 
 void ProtoTransfer::SetPosition(int64_t position)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_filePosition = position;
 }
 
 void ProtoTransfer::SetRequested(int64_t requested)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_fileRequest = requested;
 }

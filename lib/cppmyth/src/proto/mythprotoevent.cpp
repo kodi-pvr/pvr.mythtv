@@ -21,9 +21,9 @@
 
 #include "mythprotoevent.h"
 #include "../mythdebug.h"
-#include "../private/builtin.h"
 #include "../private/mythsocket.h"
-#include "../private/platform/threads/mutex.h"
+#include "../private/os/threads/mutex.h"
+#include "../private/builtin.h"
 
 #include <limits>
 #include <cstdio>
@@ -83,7 +83,7 @@ void ProtoEvent::Close()
 
 bool ProtoEvent::Announce75()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
 
   std::string cmd("ANN Monitor ");
   cmd.append(m_socket->GetMyHostName()).append(" 1");
@@ -116,13 +116,13 @@ SignalStatusPtr ProtoEvent::RcvSignalStatus()
       if (tokens[0] == "slock")
         signal->lock = (tokens[1] == "1" ? true : false);
       else if (tokens[0] == "signal")
-        signal->signal = (0 == str2int64(tokens[1].c_str(), &tmpi) ? (int)tmpi : 0);
+        signal->signal = (0 == string_to_int64(tokens[1].c_str(), &tmpi) ? (int)tmpi : 0);
       else if (tokens[0] == "snr")
-        signal->snr = (0 == str2int64(tokens[1].c_str(), &tmpi) ? (int)tmpi : 0);
+        signal->snr = (0 == string_to_int64(tokens[1].c_str(), &tmpi) ? (int)tmpi : 0);
       else if (tokens[0] == "ber")
-        signal->ber = (0 == str2int64(tokens[1].c_str(), &tmpi) ? (long)tmpi : 0);
+        signal->ber = (0 == string_to_int64(tokens[1].c_str(), &tmpi) ? (long)tmpi : 0);
       else if (tokens[0] == "ucb")
-        signal->ucb = (0 == str2int64(tokens[1].c_str(), &tmpi) ? (long)tmpi : 0);
+        signal->ucb = (0 == string_to_int64(tokens[1].c_str(), &tmpi) ? (long)tmpi : 0);
     }
   }
   return signal;
@@ -130,7 +130,7 @@ SignalStatusPtr ProtoEvent::RcvSignalStatus()
 
 int ProtoEvent::RcvBackendMessage(unsigned timeout, EventMessage& msg)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   struct timeval tv;
   tv.tv_sec = timeout;
   tv.tv_usec = 0;

@@ -17,8 +17,8 @@ endif ()
 
 ###############################################################################
 # set lib version here
-set (CPPMYTH_LIB_VERSION "1.4.2")
-set (CPPMYTH_LIB_SOVERSION "1.4")
+set (CPPMYTH_LIB_VERSION "1.5.0")
+set (CPPMYTH_LIB_SOVERSION "1.5")
 
 ###############################################################################
 # add definitions
@@ -107,16 +107,16 @@ file (GLOB SRC_FILES
   src/proto/*.cpp
   src/*.cpp)
 
-file (GLOB HDR_FILES
-  src/proto/*.h src/*.h)
+file (GLOB OS_SRC_FILES
+  src/private/os/threads/threadpool.cpp)
 
-if (WIN32)
-  file (GLOB PLATFORM_SRC_FILES
-    src/private/platform/windows/*.cpp)
+if (MSVC)
+  list (APPEND OS_SRC_FILES
+    src/private/os/windows/winpthreads.c)
 endif ()
 
 set (CPPMYTH_SOURCES
-  ${SRC_FILES} ${HDR_FILES} ${PLATFORM_SRC_FILES})
+  ${SRC_FILES} ${OS_SRC_FILES})
 
 ###############################################################################
 # add targets

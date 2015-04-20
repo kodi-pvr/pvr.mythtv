@@ -22,9 +22,10 @@
 #include "mytheventhandler.h"
 #include "mythdebug.h"
 #include "proto/mythprotoevent.h"
+#include "private/os/threads/thread.h"
+#include "private/os/threads/event.h"
+#include "private/cppdef.h"
 #include "private/builtin.h"
-#include "private/platform/threads/threads.h"
-#include "private/platform/util/util.h"
 
 #include <vector>
 #include <map>
@@ -54,20 +55,20 @@ EventHandler::EventHandlerThread::~EventHandlerThread()
 
 namespace Myth
 {
-  class SubscriptionHandlerThread : private PLATFORM::CThread
+  class SubscriptionHandlerThread : private OS::CThread
   {
   public:
     SubscriptionHandlerThread(EventSubscriber *handle, unsigned subid);
     virtual ~SubscriptionHandlerThread();
     EventSubscriber *GetHandle() { return m_handle; }
-    bool IsRunning() { return PLATFORM::CThread::IsRunning(); }
+    bool IsRunning() { return OS::CThread::IsRunning(); }
     void PostMessage(const EventMessage& msg);
 
   private:
     EventSubscriber *m_handle;
     unsigned m_subId;
-    mutable PLATFORM::CMutex m_mutex;
-    PLATFORM::CEvent m_queueContent;
+    mutable OS::CMutex m_mutex;
+    OS::CEvent m_queueContent;
     std::list<EventMessagePtr> m_msgQueue;
 
     bool Start();
@@ -77,7 +78,7 @@ namespace Myth
 }
 
 SubscriptionHandlerThread::SubscriptionHandlerThread(EventSubscriber *handle, unsigned subid)
-: PLATFORM::CThread()
+: OS::CThread()
 , m_handle(handle)
 , m_subId(subid)
 , m_mutex()
@@ -98,21 +99,21 @@ SubscriptionHandlerThread::~SubscriptionHandlerThread()
 
 bool SubscriptionHandlerThread::Start()
 {
-  if (PLATFORM::CThread::IsRunning())
+  if (OS::CThread::IsRunning())
     return true;
-  return PLATFORM::CThread::CreateThread();
+  return OS::CThread::StartThread();
 }
 
 void SubscriptionHandlerThread::Stop()
 {
-  if (PLATFORM::CThread::IsRunning())
+  if (OS::CThread::IsRunning())
   {
     DBG(MYTH_DBG_DEBUG, "%s: subscription thread (%p:%u)\n", __FUNCTION__, m_handle, m_subId);
     // Set stopping. don't wait as we need to signal the thread first
-    PLATFORM::CThread::StopThread(-1);
+    OS::CThread::StopThread(false);
     m_queueContent.Signal();
     // Wait for thread to stop
-    PLATFORM::CThread::StopThread(0);
+    OS::CThread::StopThread(true);
     DBG(MYTH_DBG_DEBUG, "%s: subscription thread (%p:%u) stopped\n", __FUNCTION__, m_handle, m_subId);
   }
 }
@@ -120,7 +121,7 @@ void SubscriptionHandlerThread::Stop()
 void SubscriptionHandlerThread::PostMessage(const EventMessage& msg)
 {
   // Critical section
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   m_msgQueue.push_back(EventMessagePtr(new EventMessage(msg)));
   m_queueContent.Signal();
 }
@@ -132,7 +133,7 @@ void *SubscriptionHandlerThread::Process()
     while (!m_msgQueue.empty() && !IsStopped())
     {
       // Critical section
-      PLATFORM::CLockObject lock(m_mutex);
+      OS::CLockGuard lock(m_mutex);
       EventMessagePtr msg = m_msgQueue.front();
       m_msgQueue.pop_front();
       lock.Unlock();
@@ -152,7 +153,7 @@ void *SubscriptionHandlerThread::Process()
 
 namespace Myth
 {
-  class BasicEventHandler : public EventHandler::EventHandlerThread, private PLATFORM::CThread
+  class BasicEventHandler : public EventHandler::EventHandlerThread, private OS::CThread
   {
   public:
     BasicEventHandler(const std::string& server, unsigned port);
@@ -169,7 +170,7 @@ namespace Myth
     virtual void RevokeAllSubscriptions(EventSubscriber *sub);
 
   private:
-    PLATFORM::CMutex m_mutex;
+    OS::CMutex m_mutex;
     ProtoEvent *m_event;
     bool m_reset;
     // About subscriptions
@@ -187,7 +188,7 @@ namespace Myth
 }
 
 BasicEventHandler::BasicEventHandler(const std::string& server, unsigned port)
-: EventHandlerThread(server, port), PLATFORM::CThread()
+: EventHandlerThread(server, port), OS::CThread()
 , m_event(new ProtoEvent(server,port))
 , m_reset(false)
 {
@@ -197,7 +198,7 @@ BasicEventHandler::~BasicEventHandler()
 {
   Stop();
   {
-    PLATFORM::CLockObject lock(m_mutex);
+    OS::CLockGuard lock(m_mutex);
     for (subscriptions_t::iterator it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
       delete it->second;
     m_subscriptions.clear();
@@ -208,17 +209,17 @@ BasicEventHandler::~BasicEventHandler()
 
 bool BasicEventHandler::Start()
 {
-  if (PLATFORM::CThread::IsRunning())
+  if (OS::CThread::IsRunning())
     return true;
-  return PLATFORM::CThread::CreateThread();
+  return OS::CThread::StartThread();
 }
 
 void BasicEventHandler::Stop()
 {
-  if (PLATFORM::CThread::IsRunning())
+  if (OS::CThread::IsRunning())
   {
     DBG(MYTH_DBG_DEBUG, "%s: event handler thread (%p)\n", __FUNCTION__, this);
-    PLATFORM::CThread::StopThread(0);
+    OS::CThread::StopThread(true);
     DBG(MYTH_DBG_DEBUG, "%s: event handler thread (%p) stopped\n", __FUNCTION__, this);
   }
   if (m_event->IsOpen())
@@ -233,7 +234,7 @@ void BasicEventHandler::Reset()
 
 bool BasicEventHandler::IsRunning()
 {
-  return PLATFORM::CThread::IsRunning();
+  return OS::CThread::IsRunning();
 }
 
 bool BasicEventHandler::IsConnected()
@@ -244,7 +245,7 @@ bool BasicEventHandler::IsConnected()
 unsigned BasicEventHandler::CreateSubscription(EventSubscriber* sub)
 {
   unsigned id = 0;
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   subscriptions_t::const_reverse_iterator it = m_subscriptions.rbegin();
   if (it != m_subscriptions.rend())
     id = it->first;
@@ -261,7 +262,7 @@ unsigned BasicEventHandler::CreateSubscription(EventSubscriber* sub)
 
 bool BasicEventHandler::SubscribeForEvent(unsigned subid, EVENT_t event)
 {
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   // Only for registered subscriber
   subscriptions_t::const_iterator it1 = m_subscriptions.find(subid);
   if (it1 == m_subscriptions.end())
@@ -279,7 +280,7 @@ bool BasicEventHandler::SubscribeForEvent(unsigned subid, EVENT_t event)
 
 void BasicEventHandler::RevokeSubscription(unsigned subid)
 {
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   subscriptions_t::iterator it;
   it = m_subscriptions.find(subid);
   if (it != m_subscriptions.end())
@@ -291,7 +292,7 @@ void BasicEventHandler::RevokeSubscription(unsigned subid)
 
 void BasicEventHandler::RevokeAllSubscriptions(EventSubscriber *sub)
 {
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   std::vector<subscriptions_t::iterator> its;
   for (subscriptions_t::iterator it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
   {
@@ -307,7 +308,7 @@ void BasicEventHandler::RevokeAllSubscriptions(EventSubscriber *sub)
 
 void BasicEventHandler::DispatchEvent(const EventMessage& msg)
 {
-  PLATFORM::CLockObject lock(m_mutex);
+  OS::CLockGuard lock(m_mutex);
   std::vector<std::list<unsigned>::iterator> revoked;
   std::list<unsigned>::iterator it1 = m_subscriptionsByEvent[msg.event].begin();
   while (it1 != m_subscriptionsByEvent[msg.event].end())
@@ -329,7 +330,7 @@ void *BasicEventHandler::Process()
   // Try to connect
   if (m_event->Open())
     AnnounceStatus(EVENTHANDLER_CONNECTED);
-  while (!PLATFORM::CThread::IsStopped())
+  while (!OS::CThread::IsStopped())
   {
     int r;
     EventMessage msg;
@@ -380,7 +381,7 @@ void BasicEventHandler::AnnounceTimer()
 void BasicEventHandler::RetryConnect()
 {
   int c = 0;
-  while (!PLATFORM::CThread::IsStopped())
+  while (!OS::CThread::IsStopped())
   {
     if (--c < 0)
     {

@@ -24,8 +24,8 @@
 
 #include "mythwsresponse.h"
 #include "sajson.h"
-#include "platform/os.h"
-#include "platform/util/util.h"
+#include "../private/os/os.h"
+#include "../private/cppdef.h"
 
 #include <string>
 

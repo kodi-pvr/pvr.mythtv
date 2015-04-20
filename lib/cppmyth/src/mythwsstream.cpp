@@ -21,7 +21,7 @@
 
 #include "mythwsstream.h"
 #include "private/mythwsresponse.h"
-#include "private/platform/util/util.h"
+#include "private/cppdef.h"
 
 using namespace Myth;
 

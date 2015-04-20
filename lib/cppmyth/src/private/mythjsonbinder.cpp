@@ -20,7 +20,7 @@
  */
 
 #include "mythjsonbinder.h"
-#include "builtin.h"
+#include "../private/builtin.h"
 #include "../mythdebug.h"
 
 #include <cstdlib>  // for atof
@@ -54,49 +54,49 @@ void JSON::BindObject(const Node& node, void *obj, const bindings_t *bl)
         case IS_INT8:
         {
           int8_t num = 0;
-          err = str2int8(value.c_str(), &num);
+          err = string_to_int8(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_INT16:
         {
           int16_t num = 0;
-          err = str2int16(value.c_str(), &num);
+          err = string_to_int16(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_INT32:
         {
           int32_t num = 0;
-          err = str2int32(value.c_str(), &num);
+          err = string_to_int32(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_INT64:
         {
           int64_t num = 0;
-          err = str2int64(value.c_str(), &num);
+          err = string_to_int64(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_UINT8:
         {
           uint8_t num = 0;
-          err = str2uint8(value.c_str(), &num);
+          err = string_to_uint8(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_UINT16:
         {
           uint16_t num = 0;
-          err = str2uint16(value.c_str(), &num);
+          err = string_to_uint16(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
         case IS_UINT32:
         {
           uint32_t num = 0;
-          err = str2uint32(value.c_str(), &num);
+          err = string_to_uint32(value.c_str(), &num);
           bl->attr_bind[i].set(obj, &num);
           break;
         }
@@ -115,7 +115,7 @@ void JSON::BindObject(const Node& node, void *obj, const bindings_t *bl)
         case IS_TIME:
         {
           time_t time = 0;
-          err = str2time(value.c_str(), &time);
+          err = string_to_time(value.c_str(), &time);
           bl->attr_bind[i].set(obj, &time);
           break;
         }

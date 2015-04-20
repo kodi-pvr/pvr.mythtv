@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOProgram
+namespace MythDTO
 {
   void SetProgram_StartTime(Myth::Program *obj, time_t *val) { obj->startTime = *val; }
   void SetProgram_EndTime(Myth::Program *obj, time_t *val) { obj->endTime = *val; }

@@ -21,10 +21,10 @@
 
 #include "mythlivetvplayback.h"
 #include "mythdebug.h"
-#include "private/builtin.h"
 #include "private/mythsocket.h"
-#include "private/platform/threads/mutex.h"
-#include "private/platform/util/timeutils.h"
+#include "private/os/threads/mutex.h"
+#include "private/os/threads/timeout.h"
+#include "private/builtin.h"
 
 #include <limits>
 #include <cstdio>
@@ -90,14 +90,14 @@ LiveTVPlayback::~LiveTVPlayback()
 bool LiveTVPlayback::Open()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (ProtoMonitor::IsOpen())
     return true;
   if (ProtoMonitor::Open())
   {
     if (!m_eventHandler.IsRunning())
     {
-      PLATFORM::CTimeout timeout(START_TIMEOUT);
+      OS::CTimeout timeout(START_TIMEOUT);
       m_eventHandler.Start();
       do
       {
@@ -117,7 +117,7 @@ bool LiveTVPlayback::Open()
 void LiveTVPlayback::Close()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_recorder.reset();
   ProtoMonitor::Close();
 }
@@ -135,7 +135,7 @@ void LiveTVPlayback::SetTuneDelay(unsigned delay)
 bool LiveTVPlayback::SpawnLiveTV(const std::string& chanNum, const ChannelList& channels)
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (!ProtoMonitor::IsOpen() || !m_eventHandler.IsConnected())
   {
     DBG(MYTH_DBG_ERROR, "%s: not connected\n", __FUNCTION__);
@@ -159,7 +159,7 @@ bool LiveTVPlayback::SpawnLiveTV(const std::string& chanNum, const ChannelList& 
     {
       // Wait chain update until time limit
       uint32_t delayMs = m_tuneDelay * 1000;
-      PLATFORM::CTimeout timeout(delayMs);
+      OS::CTimeout timeout(delayMs);
       do
       {
         lock.Unlock();  // Release the latch to allow chain update
@@ -192,7 +192,7 @@ bool LiveTVPlayback::SpawnLiveTV(const ChannelPtr& thisChannel)
 void LiveTVPlayback::StopLiveTV()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (m_recorder && m_recorder->IsPlaying())
   {
     m_recorder->StopLiveTV();
@@ -207,8 +207,8 @@ void LiveTVPlayback::InitChain()
 {
   char buf[32];
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
-  time2iso8601(time(NULL), buf);
+  OS::CLockGuard lock(*m_mutex);
+  time_to_iso8601(time(NULL), buf);
   m_chain.UID = m_socket->GetMyHostName();
   m_chain.UID.append("-").append(buf);
   m_chain.currentSequence = 0;
@@ -222,7 +222,7 @@ void LiveTVPlayback::InitChain()
 void LiveTVPlayback::ClearChain()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_chain.currentSequence = 0;
   m_chain.lastSequence = 0;
   m_chain.watch = false;
@@ -243,7 +243,7 @@ bool LiveTVPlayback::IsChained(const Program& program)
 
 void LiveTVPlayback::HandleChainUpdate()
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   ProtoRecorderPtr recorder(m_recorder);
   if (!recorder)
     return;
@@ -279,7 +279,7 @@ void LiveTVPlayback::HandleChainUpdate()
 
 bool LiveTVPlayback::SwitchChain(unsigned sequence)
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   // Check for out of range
   if (sequence < 1 || sequence > m_chain.lastSequence)
     return false;
@@ -346,11 +346,11 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
       {
         int32_t rnum;
         int8_t flag;
-        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && str2int8(msg->subject[2].c_str(), &flag) == 0)
+        if (string_to_int32(msg->subject[1].c_str(), &rnum) == 0 && string_to_int8(msg->subject[2].c_str(), &flag) == 0)
         {
           if (recorder->GetNum() == (int)rnum)
           {
-            PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+            OS::CLockGuard lock(*m_mutex); // Lock chain
             m_chain.watch = true;
           }
         }
@@ -370,7 +370,7 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
       if (msg->subject.size() >= 2)
       {
         int32_t rnum;
-        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
+        if (string_to_int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
         {
           // Recorder is not subscriber. So callback event to it
           recorder->DoneRecordingCallback();
@@ -380,9 +380,9 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
             /*
              * Last recording is now completed but watch signal is ON.
              * Then force live tv chain update for the new current
-             * program. We will retry 3 times before returning.
+             * program. We will retry for 2s before returning.
              */
-            PLATFORM::CTimeout timeout(2000);
+            OS::CTimeout timeout(2000);
             do
             {
               usleep(500000); // wait for 500 ms
@@ -396,7 +396,7 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
     case EVENT_UPDATE_FILE_SIZE:
       if (msg->subject.size() >= 3)
       {
-        PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+        OS::CLockGuard lock(*m_mutex); // Lock chain
         if (m_chain.lastSequence > 0)
         {
           int64_t newsize;
@@ -405,11 +405,11 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
           {
             uint32_t chanid;
             time_t startts;
-            if (str2uint32(msg->subject[1].c_str(), &chanid)
-                    || str2time(msg->subject[2].c_str(), &startts)
+            if (string_to_uint32(msg->subject[1].c_str(), &chanid)
+                    || string_to_time(msg->subject[2].c_str(), &startts)
                     || m_chain.chained[m_chain.lastSequence -1].second->channel.chanId != chanid
                     || m_chain.chained[m_chain.lastSequence -1].second->recording.startTs != startts
-                    || str2int64(msg->subject[3].c_str(), &newsize)
+                    || string_to_int64(msg->subject[3].c_str(), &newsize)
                     || m_chain.chained[m_chain.lastSequence - 1].first->GetSize() >= newsize)
               break;
           }
@@ -417,9 +417,9 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
           else
           {
             uint32_t recordedid;
-            if (str2uint32(msg->subject[1].c_str(), &recordedid)
+            if (string_to_uint32(msg->subject[1].c_str(), &recordedid)
                     || m_chain.chained[m_chain.lastSequence -1].second->recording.recordedId != recordedid
-                    || str2int64(msg->subject[2].c_str(), &newsize)
+                    || string_to_int64(msg->subject[2].c_str(), &newsize)
                     || m_chain.chained[m_chain.lastSequence - 1].first->GetSize() >= newsize)
               break;
           }
@@ -437,7 +437,7 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
       if (msg->subject.size() >= 2)
       {
         int32_t rnum;
-        if (str2int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
+        if (string_to_int32(msg->subject[1].c_str(), &rnum) == 0 && recorder->GetNum() == (int)rnum)
           m_signal = msg->signal;
       }
       break;
@@ -453,7 +453,7 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
 int64_t LiveTVPlayback::GetSize() const
 {
   int64_t size = 0;
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   for (chained_t::const_iterator it = m_chain.chained.begin(); it != m_chain.chained.end(); ++it)
     size += it->first->GetSize();
   return size;
@@ -479,7 +479,7 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
     s = m_chain.currentTransfer->GetRemaining();  // Acceptable block size
     if (s == 0)
     {
-      PLATFORM::CTimeout timeout(AHEAD_TIMEOUT);
+      OS::CTimeout timeout(AHEAD_TIMEOUT);
       for (;;)
       {
         // Reading ahead
@@ -527,7 +527,7 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
 
 int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   if (!m_recorder || !m_chain.currentSequence)
     return -1;
 
@@ -558,7 +558,7 @@ int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
   {
     for (;;)
     {
-      if (position - m_chain.chained[ci].first->GetPosition() + m_chain.chained[ci].first->GetSize() >= p)
+      if (position + m_chain.chained[ci].first->GetRemaining() >= p)
       {
         // Try seek file to desired position. On success switch chain
         if (m_recorder->TransferSeek(*(m_chain.chained[ci].first), p - position, WHENCE_CUR) < 0 ||
@@ -566,7 +566,7 @@ int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
           return -1;
         return p;
       }
-      position += m_chain.chained[ci].first->GetSize() - m_chain.chained[ci].first->GetPosition();
+      position += m_chain.chained[ci].first->GetRemaining();
       ++ci; // switch next
       if (ci < m_chain.lastSequence)
         position += m_chain.chained[ci].first->GetPosition();
@@ -590,7 +590,7 @@ int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
       if (ci > 0)
       {
         --ci; // switch previous
-        position -= m_chain.chained[ci].first->GetSize() - m_chain.chained[ci].first->GetPosition();
+        position -= m_chain.chained[ci].first->GetRemaining();
       }
       else
         return -1;
@@ -603,7 +603,7 @@ int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
 int64_t LiveTVPlayback::GetPosition() const
 {
   int64_t pos = 0;
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   if (m_chain.currentSequence)
   {
     unsigned s = m_chain.currentSequence - 1;
@@ -630,7 +630,7 @@ bool LiveTVPlayback::KeepLiveRecording(bool keep)
 {
   ProtoRecorderPtr recorder(m_recorder);
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (recorder && recorder->IsPlaying())
   {
     ProgramPtr prog = recorder->GetCurrentRecording();
@@ -656,7 +656,7 @@ bool LiveTVPlayback::KeepLiveRecording(bool keep)
 
 ProgramPtr LiveTVPlayback::GetPlayedProgram() const
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   if (m_chain.currentSequence > 0)
     return m_chain.chained[m_chain.currentSequence - 1].second;
   return ProgramPtr();
@@ -664,7 +664,7 @@ ProgramPtr LiveTVPlayback::GetPlayedProgram() const
 
 time_t LiveTVPlayback::GetLiveTimeStart() const
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   if (m_chain.lastSequence)
     return m_chain.chained[0].second->recording.startTs;
   return (time_t)(-1);
@@ -672,13 +672,13 @@ time_t LiveTVPlayback::GetLiveTimeStart() const
 
 unsigned LiveTVPlayback::GetChainedCount() const
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   return m_chain.lastSequence;
 }
 
 ProgramPtr LiveTVPlayback::GetChainedProgram(unsigned sequence) const
 {
-  PLATFORM::CLockObject lock(*m_mutex); // Lock chain
+  OS::CLockGuard lock(*m_mutex); // Lock chain
   if (sequence > 0 && sequence <= m_chain.lastSequence)
     return m_chain.chained[sequence - 1].second;
   return ProgramPtr();

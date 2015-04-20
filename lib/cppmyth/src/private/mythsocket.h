@@ -22,7 +22,7 @@
 #ifndef MYTHSOCKET_H
 #define	MYTHSOCKET_H
 
-#include "platform/os.h"
+#include "../private/os/os.h"
 
 #include <cstddef>  // for size_t
 

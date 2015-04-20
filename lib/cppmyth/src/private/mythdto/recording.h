@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTORecording
+namespace MythDTO
 {
   void SetRecording_RecordId(Myth::Recording *obj, uint32_t *val) { obj->recordId = *val; }
   void SetRecording_Priority(Myth::Recording *obj, int32_t *val) { obj->priority = *val; }

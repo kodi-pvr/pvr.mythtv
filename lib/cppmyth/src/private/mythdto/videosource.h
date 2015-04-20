@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOVideoSource
+namespace MythDTO
 {
   void SetVideoSource_Id(Myth::VideoSource *obj, uint32_t *val) { obj->sourceId = *val; }
   void SetVideoSource_SourceName(Myth::VideoSource *obj, const char *val) { obj->sourceName = val; }

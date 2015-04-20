@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOCutting
+namespace MythDTO
 {
   void SetCutting_MarkType(Myth::Mark *obj, int8_t *val) { obj->markType = static_cast<Myth::MARK_t>(*val); }
   void SetCutting_MarkValue(Myth::Mark *obj, int64_t *val) { obj->markValue = *val; }

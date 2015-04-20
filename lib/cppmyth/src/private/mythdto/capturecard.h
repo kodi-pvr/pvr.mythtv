@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOCaptureCard
+namespace MythDTO
 {
   void SetCaptureCard_CardId(Myth::CaptureCard *obj, uint32_t *val) { obj->cardId = *val; }
   void SetCaptureCard_CardType(Myth::CaptureCard *obj, const char *val) { obj->cardType = val; }

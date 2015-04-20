@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOVersion
+namespace MythDTO
 {
   void SetVersion_Version(Myth::Version *obj, const char *val) { obj->version = val; }
   void SetVersion_Protocol(Myth::Version *obj, uint32_t *val) { obj->protocol = *val; }
