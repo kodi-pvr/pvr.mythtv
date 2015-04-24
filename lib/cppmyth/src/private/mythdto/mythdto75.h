@@ -181,7 +181,7 @@ namespace MythDTO75
     { "AutoUserJob4",     IS_BOOLEAN, (setter_t)MythDTORecordSchedule::SetSchedule_AutoUserJob4 },
     { "Transcoder",       IS_UINT32,  (setter_t)MythDTORecordSchedule::SetSchedule_Transcoder },
   };
-  bindings_t recordscheduleBindArray = { sizeof(recordschedule) / sizeof(attr_bind_t), recordschedule };
+  bindings_t RecordScheduleBindArray = { sizeof(recordschedule) / sizeof(attr_bind_t), recordschedule };
 }
 
 #endif	/* MYTHDTO75_H */

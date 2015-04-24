@@ -31,6 +31,7 @@
 
 #define LOGTAG                  "[DEMUX] "
 #define POSMAP_PTS_INTERVAL     (PTS_TIME_BASE * 2)       // 2 secs
+#define READAV_TIMEOUT          10000                     // 10 secs
 
 using namespace ADDON;
 using namespace PLATFORM;
@@ -156,8 +157,8 @@ const unsigned char* Demux::ReadAV(uint64_t pos, size_t n)
   m_av_pos = pos;
   // fill new data
   unsigned int len = (unsigned int)(m_av_buf_size - dataread);
-  int wait = 5000;
-  while (wait > 0 && !IsStopped() )
+  CTimeout timeout;
+  while (!IsStopped())
   {
     int ret = m_file->Read(m_av_rbe, len);
     if (ret > 0)
@@ -168,7 +169,10 @@ const unsigned char* Demux::ReadAV(uint64_t pos, size_t n)
     }
     if (dataread >= n || ret < 0)
       break;
-    wait -= 1000;
+    if (!(timeout.IsSet()))
+      timeout.Init(READAV_TIMEOUT);
+    else if (!timeout.TimeLeft())
+      break;
     usleep(100000);
   }
   return dataread >= n ? m_av_rbs : NULL;

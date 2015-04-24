@@ -101,7 +101,7 @@ int64_t FilePlayback::GetSize() const
 {
   ProtoTransferPtr transfer(m_transfer);
   if (transfer)
-    return transfer->fileSize;
+    return transfer->GetSize();
   return 0;
 }
 
@@ -111,7 +111,7 @@ int FilePlayback::Read(void *buffer, unsigned n)
   if (transfer)
   {
     int r = 0;
-    int64_t s = transfer->fileSize - transfer->filePosition; // Acceptable block size
+    int64_t s = transfer->GetRemaining(); // Acceptable block size
     if (s > 0)
     {
       if (s < (int64_t)n)
@@ -136,6 +136,6 @@ int64_t FilePlayback::GetPosition() const
 {
   ProtoTransferPtr transfer(m_transfer);
   if (transfer)
-    return transfer->filePosition;
+    return transfer->GetPosition();
   return 0;
 }

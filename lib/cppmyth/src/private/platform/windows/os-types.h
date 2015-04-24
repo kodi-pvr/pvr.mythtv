@@ -44,7 +44,10 @@
 #define NOMINMAX
 #endif
 
+/* Disable warning C4005: '_WINSOCKAPI_' : macro redefinition */
+#pragma warning(disable:4005)
 #include <winsock2.h>
+#pragma warning(default:4005)
 #include <windows.h>
 #include <wchar.h>
 #include <time.h>

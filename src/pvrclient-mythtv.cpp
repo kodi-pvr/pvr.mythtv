@@ -1247,15 +1247,24 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
     }
     prog = it->second;
   }
-  // Check required props else return
-  float fps = prog.GetPropsVideoFrameRate();
-  XBMC->Log(LOG_DEBUG, "%s: AV props: Frame Rate = %.3f", __FUNCTION__, fps);
-  if (fps <= 0)
-    return PVR_ERROR_NO_ERROR;
-  // Search for marks
-  Myth::MarkListPtr skpList = m_control->GetCommBreakList(*(prog.GetPtr()));
+
+  // Checking backend capabilities
+  int unit = 2; // default unit is duration (ms)
+  float rate = 1000.0f;
+  if (m_control->CheckService() < 85)
+  {
+    unit = 0; // marks are based on framecount
+    // Check required props else return
+    rate = prog.GetPropsVideoFrameRate();
+    XBMC->Log(LOG_DEBUG, "%s: AV props: Frame Rate = %.3f", __FUNCTION__, rate);
+    if (rate <= 0)
+      return PVR_ERROR_NO_ERROR;
+  }
+
+  // Search for marks with defined unit
+  Myth::MarkListPtr skpList = m_control->GetCommBreakList(*(prog.GetPtr()), unit);
   XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, skpList->size(), recording.strTitle);
-  Myth::MarkListPtr cutList = m_control->GetCutList(*(prog.GetPtr()));
+  Myth::MarkListPtr cutList = m_control->GetCutList(*(prog.GetPtr()), unit);
   XBMC->Log(LOG_DEBUG, "%s: Found %d cut list entries for: %s", __FUNCTION__, cutList->size(), recording.strTitle);
   skpList->insert(skpList->end(), cutList->begin(), cutList->end());
   // Open dialog
@@ -1266,6 +1275,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
     if (dialog.IsNo())
       return PVR_ERROR_NO_ERROR;
   }
+
   // Processing marks
   int index = 0;
   Myth::MarkList::const_iterator it;
@@ -1286,8 +1296,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
         if (startPtr && startPtr->markType == Myth::MARK_COMM_START && (*it)->markValue > startPtr->markValue)
         {
           PVR_EDL_ENTRY entry;
-          double s = (double)(startPtr->markValue) / fps;
-          double e = (double)((*it)->markValue) / fps;
+          double s = (double)(startPtr->markValue) / rate;
+          double e = (double)((*it)->markValue) / rate;
           entry.start = (int64_t)(s * 1000);
           entry.end = (int64_t)(e * 1000);
           entry.type = PVR_EDL_TYPE_COMBREAK;
@@ -1302,8 +1312,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
         if (startPtr && startPtr->markType == Myth::MARK_CUT_START && (*it)->markValue > startPtr->markValue)
         {
           PVR_EDL_ENTRY entry;
-          double s = (double)(startPtr->markValue) / fps;
-          double e = (double)((*it)->markValue) / fps;
+          double s = (double)(startPtr->markValue) / rate;
+          double e = (double)((*it)->markValue) / rate;
           entry.start = (int64_t)(s * 1000);
           entry.end = (int64_t)(e * 1000);
           entry.type = PVR_EDL_TYPE_CUT;

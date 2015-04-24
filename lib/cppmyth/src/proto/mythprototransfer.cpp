@@ -37,9 +37,9 @@ using namespace Myth;
 
 ProtoTransfer::ProtoTransfer(const std::string& server, unsigned port, const std::string& pathname, const std::string& sgname)
 : ProtoBase(server, port)
-, fileSize(0)
-, filePosition(0)
-, fileRequest(0)
+, m_fileSize(0)
+, m_filePosition(0)
+, m_fileRequest(0)
 , m_fileId(0)
 , m_pathName(pathname)
 , m_storageGroupName(sgname)
@@ -69,11 +69,12 @@ bool ProtoTransfer::Open()
 
 void ProtoTransfer::Close()
 {
+  PLATFORM::CLockObject lock(*m_mutex);
   ProtoBase::Close();
   // Clean hanging and disable retry
   m_tainted = m_hang = false;
   // Reset transfer
-  filePosition = fileRequest = 0;
+  m_filePosition = m_fileRequest = 0;
   m_fileId = 0;
 }
 
@@ -94,7 +95,8 @@ bool ProtoTransfer::TryLock()
 
 void ProtoTransfer::Flush()
 {
-  int64_t unread = fileRequest - filePosition;
+  PLATFORM::CLockObject lock(*m_mutex);
+  int64_t unread = m_fileRequest - m_filePosition;
   if (unread > 0)
   {
     char buf[PROTO_BUFFER_SIZE];
@@ -106,16 +108,16 @@ void ProtoTransfer::Flush()
         break;
       n -= s;
     }
-    DBG(MYTH_DBG_DEBUG, "%s: remaining bytes (%u)\n", __FUNCTION__, (unsigned)n);
+    DBG(MYTH_DBG_DEBUG, "%s: unreaded bytes (%u)\n", __FUNCTION__, (unsigned)n);
     // Reset position regardless bytes read
-    filePosition = fileRequest;
+    m_filePosition = m_fileRequest;
   }
 }
 
 bool ProtoTransfer::Announce75()
 {
   PLATFORM::CLockObject lock(*m_mutex);
-  filePosition = fileSize = fileRequest = 0;
+  m_filePosition = m_fileSize = m_fileRequest = 0;
   std::string cmd("ANN FileTransfer ");
   cmd.append(m_socket->GetMyHostName());
   cmd.append(" 0 0 1000" PROTO_STR_SEPARATOR);
@@ -129,7 +131,7 @@ bool ProtoTransfer::Announce75()
     goto out;
   if (!ReadField(field) || 0 != str2uint32(field.c_str(), &m_fileId))
     goto out;
-  if (!ReadField(field) || 0 != str2int64(field.c_str(), &fileSize))
+  if (!ReadField(field) || 0 != str2int64(field.c_str(), &m_fileSize))
     goto out;
   return true;
 
@@ -151,4 +153,46 @@ std::string ProtoTransfer::GetPathName() const
 std::string ProtoTransfer::GetStorageGroupName() const
 {
   return m_storageGroupName;
+}
+
+int64_t ProtoTransfer::GetSize() const
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  return m_fileSize;
+}
+
+int64_t ProtoTransfer::GetPosition() const
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  return m_filePosition;
+}
+
+int64_t ProtoTransfer::GetRequested() const
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  return m_fileRequest;
+}
+
+int64_t ProtoTransfer::GetRemaining() const
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  return (m_fileSize - m_filePosition);
+}
+
+void ProtoTransfer::SetSize(int64_t size)
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  m_fileSize = size;
+}
+
+void ProtoTransfer::SetPosition(int64_t position)
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  m_filePosition = position;
+}
+
+void ProtoTransfer::SetRequested(int64_t requested)
+{
+  PLATFORM::CLockObject lock(*m_mutex);
+  m_fileRequest = requested;
 }
