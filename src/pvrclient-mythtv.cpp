@@ -55,7 +55,7 @@ PVRClientMythTV::~PVRClientMythTV()
   SAFE_DELETE(m_control);
 }
 
-void Log(int level, char *msg)
+static void Log(int level, char *msg)
 {
   if (msg && level != MYTH_DBG_NONE)
   {
