@@ -25,9 +25,9 @@
 #include "client.h"
 
 #include <mythstream.h>
-#include <kodi/threads/threads.h>
-#include <kodi/threads/mutex.h>
-#include <kodi/util/buffer.h>
+#include <platform/threads/threads.h>
+#include <platform/threads/mutex.h>
+#include <platform/util/buffer.h>
 #include <kodi/xbmc_stream_utils.hpp>
 
 #include <map>
