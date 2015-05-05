@@ -1,3 +1,6 @@
+v2.1.1
+- updated to use new libplatform-dev
+
 v2.1.0
 - reading ahead: wait for 10 sec
 - demux: set read timeout to 10 sec

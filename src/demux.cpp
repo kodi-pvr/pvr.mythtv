@@ -20,7 +20,7 @@
  *
  */
 
-#include <kodi/os.h>
+#include <platform/os.h>
 #include <kodi/libXBMC_pvr.h>
 #include <kodi/xbmc_codec_types.h>
 
