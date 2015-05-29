@@ -82,6 +82,7 @@ public:
   ~MythScheduleManager();
 
   // Called by GetTimers
+  unsigned GetUpcomingCount() const;
   ScheduleList GetUpcomingRecordings();
 
   // Called by AddTimer
@@ -126,7 +127,7 @@ public:
   MythRecordingRule NewWeeklyRecord(MythEPGInfo &epgInfo);
   MythRecordingRule NewChannelRecord(MythEPGInfo &epgInfo);
   MythRecordingRule NewOneRecord(MythEPGInfo &epgInfo);
-  
+
   TemplateRuleList GetTemplateRules() const;
 
   bool ToggleShowNotRecording();
@@ -140,6 +141,8 @@ private:
   void Setup();
 
   uint32_t MakeIndex(const ScheduledPtr &scheduled) const;
+  MythRecordingRule MakeDontRecord(const MythRecordingRule &rule, const ScheduledPtr &recording);
+  MythRecordingRule MakeOverride(const MythRecordingRule &rule, const ScheduledPtr &recording);
 
   // The list of rule nodes
   typedef std::list<RecordingRuleNodePtr> NodeList;
