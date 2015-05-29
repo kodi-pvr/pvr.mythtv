@@ -57,6 +57,7 @@ public:
   // Program fields
   std::string UID() const;
   std::string ProgramID() const;
+  std::string SerieID() const;
   std::string Title() const;
   std::string Subtitle() const;
   std::string HostName() const;
@@ -71,6 +72,7 @@ public:
   bool HasBookmark() const;
   uint32_t ChannelID() const;
   std::string ChannelName() const;
+  std::string Callsign() const;
   RecordStatus Status() const;
   std::string RecordingGroup() const;
   uint32_t RecordID() const;
@@ -80,6 +82,7 @@ public:
   std::string StorageGroup() const;
   std::string Inetref() const;
   uint16_t Season() const;
+  uint16_t Episode() const;
 
 private:
   Myth::ProgramPtr m_proginfo;

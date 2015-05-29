@@ -1411,8 +1411,9 @@ int PVRClientMythTV::GetTimersAmount(void)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  ScheduleList upcomingRecordings = m_scheduleManager->GetUpcomingRecordings();
-  return upcomingRecordings.size();
+  if (m_scheduleManager)
+    return m_scheduleManager->GetUpcomingCount();
+  return 0;
 }
 
 PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
@@ -1425,6 +1426,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
   ScheduleList upcomingRecordings = m_scheduleManager->GetUpcomingRecordings();
   for (ScheduleList::iterator it = upcomingRecordings.begin(); it != upcomingRecordings.end(); ++it)
   {
+
     PVR_TIMER tag;
     memset(&tag, 0, sizeof(PVR_TIMER));
 
@@ -1432,7 +1434,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.startTime = it->second->StartTime();
     tag.endTime = it->second->EndTime();
     tag.iClientChannelUid = FindPVRChannelUid(it->second->ChannelID());
-    tag.iPriority = it->second->Priority();
+    tag.iPriority = ((it->second->Priority() < -49 ? -49 : (it->second->Priority() > 50 ? 50 : it->second->Priority()))) + 50;
     int genre = m_categories.Category(it->second->Category());
     tag.iGenreSubType = genre & 0x0F;
     tag.iGenreType = genre & 0xF0;
@@ -1463,9 +1465,16 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
 
     // Status: Match recording status with PVR_TIMER status
     if (g_bExtraDebug)
-      XBMC->Log(LOG_DEBUG,"%s ## - State: %d - ##", __FUNCTION__, it->second->Status());
+      XBMC->Log(LOG_DEBUG,"%s ## %s:%s on %s - State: %d - ##", __FUNCTION__,
+                it->second->Title().c_str(), it->second->Subtitle().c_str(), it->second->ChannelName().c_str(), it->second->Status());
     switch (it->second->Status())
     {
+    case Myth::RS_EARLIER_RECORDING:  //Another entry in the list will record 'earlier'
+    case Myth::RS_LATER_SHOWING:      //Another entry in the list will record 'later'
+    case Myth::RS_CURRENT_RECORDING:  //Already in the current library
+    case Myth::RS_PREVIOUS_RECORDING: //Recorded before but not in the library anylonger
+      tag.state = PVR_TIMER_STATE_ABORTED;
+      break;
     case Myth::RS_RECORDING:
       tag.state = PVR_TIMER_STATE_RECORDING;
       break;
@@ -1478,7 +1487,6 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     case Myth::RS_RECORDED:
       tag.state = PVR_TIMER_STATE_COMPLETED;
       break;
-    case Myth::RS_EARLIER_RECORDING:
     case Myth::RS_WILL_RECORD:
       tag.state = PVR_TIMER_STATE_SCHEDULED;
       break;
@@ -1511,10 +1519,10 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     std::string title = it->second->Title();
     if (!rulemarker.empty())
       title.append(" ").append(rulemarker);
-    PVR_STRCPY(tag.strTitle, MakeProgramTitle(title, it->second->Subtitle()).c_str());
+    PVR_STRCPY(tag.strTitle, title.c_str());
 
     // Summary
-    PVR_STRCPY(tag.strSummary, it->second->Description().c_str());
+    PVR_STRCPY(tag.strSummary, "");
 
     // Unimplemented
     tag.iEpgUid = 0;
@@ -1522,10 +1530,18 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     PVR_STRCPY(tag.strDirectory, "");
 
     tag.iClientIndex = it->first;
-    PVR->TransferTimerEntry(handle, &tag);
     // Add it to memorandom: cf UpdateTimer()
     MYTH_SHARED_PTR<PVR_TIMER> pTag = MYTH_SHARED_PTR<PVR_TIMER>(new PVR_TIMER(tag));
     m_PVRtimerMemorandum.insert(std::make_pair((unsigned int&)tag.iClientIndex, pTag));
+
+    //If the results of GetUpcomingList are being used (what is actually to be recorded),
+    //rather than the rule that causes them from GetRecordingScheduleList (probably best while Kodi can't
+    //handle full myth-style series recording), then the best approach seems to be showning no repeat
+    //without the optional a day mask as any repeats will be shown as separate timers in the list.
+    //(It also makes the timers screen much easier to read!)
+    tag.bIsRepeating = false;
+    tag.iWeekdays = 0;
+    PVR->TransferTimerEntry(handle, &tag);
   }
 
   if (g_bExtraDebug)
@@ -1710,6 +1726,7 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
     rule.SetStartTime(st);
     rule.SetEndTime(et);
     rule.SetTitle(timer.strTitle);
+    rule.SetDescription(timer.strTitle);
     rule.SetCategory(m_categories.Category(timer.iGenreType));
     rule.SetChannelID(timer.iClientChannelUid);
     rule.SetCallsign(ch.Callsign());
@@ -1721,7 +1738,7 @@ MythRecordingRule PVRClientMythTV::PVRtoMythRecordingRule(const PVR_TIMER &timer
   // Override template with PVR settings
   rule.SetStartOffset(rule.StartOffset() + timer.iMarginStart);
   rule.SetEndOffset(rule.EndOffset() + timer.iMarginEnd);
-  rule.SetPriority(timer.iPriority);
+  rule.SetPriority(timer.iPriority - 50); // range is -49,+50
   rule.SetInactive(timer.state == PVR_TIMER_STATE_ABORTED || timer.state ==  PVR_TIMER_STATE_CANCELLED);
   return rule;
 }
@@ -1744,25 +1761,31 @@ PVR_ERROR PVRClientMythTV::UpdateTimer(const PVR_TIMER &timer)
   std::map<unsigned int, MYTH_SHARED_PTR<PVR_TIMER> >::const_iterator old = m_PVRtimerMemorandum.find(timer.iClientIndex);
   if (old == m_PVRtimerMemorandum.end())
     return PVR_ERROR_INVALID_PARAMETERS;
-  else
+
+  // Since TAG is transfered without repeating info we have to restore them before comparing,
+  PVR_TIMER newTimer = timer;
+  if (old->second->bIsRepeating && !newTimer.bIsRepeating)
   {
-    if (old->second->iClientChannelUid != timer.iClientChannelUid)
-      diffmask |= CTTimer;
-    if (old->second->bIsRepeating != timer.bIsRepeating || old->second->iWeekdays != timer.iWeekdays)
-      diffmask |= CTTimer;
-    if (old->second->startTime != timer.startTime || old->second->endTime != timer.endTime)
-      diffmask |= CTTimer;
-    if (old->second->iPriority != timer.iPriority)
-      diffmask |= CTTimer;
-    if (strcmp(old->second->strTitle, timer.strTitle) != 0)
-      diffmask |= CTTimer;
-    if ((old->second->state == PVR_TIMER_STATE_ABORTED || old->second->state == PVR_TIMER_STATE_CANCELLED)
-            && timer.state != PVR_TIMER_STATE_ABORTED && timer.state != PVR_TIMER_STATE_CANCELLED)
-      diffmask |= CTState | CTEnabled;
-    if (old->second->state != PVR_TIMER_STATE_ABORTED && old->second->state != PVR_TIMER_STATE_CANCELLED
-            && (timer.state == PVR_TIMER_STATE_ABORTED || timer.state == PVR_TIMER_STATE_CANCELLED))
-      diffmask |= CTState;
+    newTimer.bIsRepeating = true;
+    newTimer.iWeekdays = old->second->iWeekdays;
   }
+
+  if (old->second->iClientChannelUid != newTimer.iClientChannelUid)
+    diffmask |= CTTimer;
+  if (old->second->bIsRepeating != newTimer.bIsRepeating || old->second->iWeekdays != newTimer.iWeekdays)
+    diffmask |= CTTimer;
+  if (old->second->startTime != newTimer.startTime || old->second->endTime != newTimer.endTime)
+    diffmask |= CTTimer;
+  if (old->second->iPriority != newTimer.iPriority)
+    diffmask |= CTTimer;
+  if (strcmp(old->second->strTitle, newTimer.strTitle) != 0)
+    diffmask |= CTTimer;
+  if ((old->second->state == PVR_TIMER_STATE_ABORTED || old->second->state == PVR_TIMER_STATE_CANCELLED)
+          && newTimer.state != PVR_TIMER_STATE_ABORTED && newTimer.state != PVR_TIMER_STATE_CANCELLED)
+    diffmask |= CTState | CTEnabled;
+  if (old->second->state != PVR_TIMER_STATE_ABORTED && old->second->state != PVR_TIMER_STATE_CANCELLED
+          && (newTimer.state == PVR_TIMER_STATE_ABORTED || newTimer.state == PVR_TIMER_STATE_CANCELLED))
+    diffmask |= CTState;
 
   if (diffmask == 0)
     return PVR_ERROR_NO_ERROR;
@@ -1773,25 +1796,25 @@ PVR_ERROR PVRClientMythTV::UpdateTimer(const PVR_TIMER &timer)
     // Update would failed if rule is an override. So continue anyway and enable.
     if ((diffmask & CTTimer))
     {
-        MythRecordingRule rule = PVRtoMythRecordingRule(timer);
-        ret = m_scheduleManager->UpdateRecording(timer.iClientIndex, rule);
+        MythRecordingRule rule = PVRtoMythRecordingRule(newTimer);
+        ret = m_scheduleManager->UpdateRecording(newTimer.iClientIndex, rule);
     }
     else
       ret = MythScheduleManager::MSM_ERROR_SUCCESS;
     if (ret != MythScheduleManager::MSM_ERROR_FAILED)
-      ret = m_scheduleManager->EnableRecording(timer.iClientIndex);
+      ret = m_scheduleManager->EnableRecording(newTimer.iClientIndex);
   }
   else if ((diffmask & CTState) && !(diffmask & CTEnabled))
   {
     // Timer was enabled and will be disabled. Disabling could be overriden rule.
     // So don't check timer update, disable only.
-    ret = m_scheduleManager->DisableRecording(timer.iClientIndex);
+    ret = m_scheduleManager->DisableRecording(newTimer.iClientIndex);
   }
   else if (!(diffmask & CTState) && (diffmask & CTTimer))
   {
     // State doesn't change.
-    MythRecordingRule rule = PVRtoMythRecordingRule(timer);
-    ret = m_scheduleManager->UpdateRecording(timer.iClientIndex, rule);
+    MythRecordingRule rule = PVRtoMythRecordingRule(newTimer);
+    ret = m_scheduleManager->UpdateRecording(newTimer.iClientIndex, rule);
   }
 
   if (ret == MythScheduleManager::MSM_ERROR_FAILED)
@@ -2271,7 +2294,9 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     {
       bool flag = m_scheduleManager->ToggleShowNotRecording();
       HandleScheduleChange();
-      std::string info = (flag ? XBMC->GetLocalizedString(30310) : XBMC->GetLocalizedString(30311));
+      std::string info = (flag ? XBMC->GetLocalizedString(30310) : XBMC->GetLocalizedString(30311)); //Enabled / Disabled
+      info += ": ";
+      info += XBMC->GetLocalizedString(30421); //Show/hide rules with status 'Not Recording'
       XBMC->QueueNotification(QUEUE_INFO, info.c_str());
       return PVR_ERROR_NO_ERROR;
     }
