@@ -28,7 +28,7 @@
 #include <platform/threads/threads.h>
 #include <platform/threads/mutex.h>
 #include <platform/util/buffer.h>
-#include <kodi/xbmc_stream_utils.hpp>
+#include <xbmc_stream_utils.hpp>
 
 #include <map>
 #include <set>
