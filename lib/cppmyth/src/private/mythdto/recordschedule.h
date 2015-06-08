@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTORecordSchedule
+namespace MythDTO
 {
   void SetSchedule_Id(Myth::RecordSchedule *obj, uint32_t *val) { obj->recordId = *val; }
   void SetSchedule_Title(Myth::RecordSchedule *obj, const char *val) { obj->title = val; }

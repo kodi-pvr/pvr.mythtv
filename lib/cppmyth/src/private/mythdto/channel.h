@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOChannel
+namespace MythDTO
 {
   void SetChannel_ChanId(Myth::Channel *obj, uint32_t *val) { obj->chanId = *val; }
   void SetChannel_ChanNum(Myth::Channel *obj, const char *val) { obj->chanNum = val; }

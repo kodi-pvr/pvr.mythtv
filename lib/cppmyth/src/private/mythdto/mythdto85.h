@@ -38,8 +38,8 @@ namespace MythDTO85
 {
   attr_bind_t cutting[] =
   {
-    { "Mark",             IS_INT8,    (setter_t)MythDTOCutting::SetCutting_MarkType },
-    { "Offset",           IS_INT64,   (setter_t)MythDTOCutting::SetCutting_MarkValue },
+    { "Mark",             IS_INT8,    (setter_t)MythDTO::SetCutting_MarkType },
+    { "Offset",           IS_INT64,   (setter_t)MythDTO::SetCutting_MarkValue },
   };
   bindings_t CuttingBindArray = { sizeof(cutting) / sizeof(attr_bind_t), cutting };
 }

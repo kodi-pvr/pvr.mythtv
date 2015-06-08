@@ -24,7 +24,7 @@
 
 #include "../../mythtypes.h"
 
-namespace MythDTOList
+namespace MythDTO
 {
   void SetItemList_Count(Myth::ItemList *obj, uint32_t *val) { obj->count = *val; }
   void SetItemList_ProtoVer(Myth::ItemList *obj, uint32_t *val) { obj->protoVer = *val; }

@@ -22,7 +22,7 @@
 #include "mythwsresponse.h"
 #include "mythsocket.h"
 #include "../mythdebug.h"
-#include "../private/platform/util/util.h"
+#include "../private/cppdef.h"
 
 #include <cstdlib>  // for atol
 #include <cstdio>

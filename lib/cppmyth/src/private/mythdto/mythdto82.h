@@ -37,20 +37,20 @@ namespace MythDTO82
 {
   attr_bind_t recording[] =
   {
-    { "RecordId",       IS_UINT32,  (setter_t)MythDTORecording::SetRecording_RecordId },
-    { "Priority",       IS_INT32,   (setter_t)MythDTORecording::SetRecording_Priority },
-    { "Status",         IS_INT8,    (setter_t)MythDTORecording::SetRecording_Status },
-    { "EncoderId",      IS_UINT32,  (setter_t)MythDTORecording::SetRecording_EncoderId },
-    { "RecType",        IS_UINT8,   (setter_t)MythDTORecording::SetRecording_RecType },
-    { "DupInType",      IS_UINT8,   (setter_t)MythDTORecording::SetRecording_DupInType },
-    { "DupMethod",      IS_UINT8,   (setter_t)MythDTORecording::SetRecording_DupMethod },
-    { "StartTs",        IS_TIME,    (setter_t)MythDTORecording::SetRecording_StartTs },
-    { "EndTs",          IS_TIME,    (setter_t)MythDTORecording::SetRecording_EndTs },
-    { "Profile",        IS_STRING,  (setter_t)MythDTORecording::SetRecording_Profile },
-    { "RecGroup",       IS_STRING,  (setter_t)MythDTORecording::SetRecording_RecGroup },
-    { "StorageGroup",   IS_STRING,  (setter_t)MythDTORecording::SetRecording_StorageGroup },
-    { "PlayGroup",      IS_STRING,  (setter_t)MythDTORecording::SetRecording_PlayGroup },
-    { "RecordedId",     IS_UINT32,  (setter_t)MythDTORecording::SetRecording_RecordedId },
+    { "RecordId",       IS_UINT32,  (setter_t)MythDTO::SetRecording_RecordId },
+    { "Priority",       IS_INT32,   (setter_t)MythDTO::SetRecording_Priority },
+    { "Status",         IS_INT8,    (setter_t)MythDTO::SetRecording_Status },
+    { "EncoderId",      IS_UINT32,  (setter_t)MythDTO::SetRecording_EncoderId },
+    { "RecType",        IS_UINT8,   (setter_t)MythDTO::SetRecording_RecType },
+    { "DupInType",      IS_UINT8,   (setter_t)MythDTO::SetRecording_DupInType },
+    { "DupMethod",      IS_UINT8,   (setter_t)MythDTO::SetRecording_DupMethod },
+    { "StartTs",        IS_TIME,    (setter_t)MythDTO::SetRecording_StartTs },
+    { "EndTs",          IS_TIME,    (setter_t)MythDTO::SetRecording_EndTs },
+    { "Profile",        IS_STRING,  (setter_t)MythDTO::SetRecording_Profile },
+    { "RecGroup",       IS_STRING,  (setter_t)MythDTO::SetRecording_RecGroup },
+    { "StorageGroup",   IS_STRING,  (setter_t)MythDTO::SetRecording_StorageGroup },
+    { "PlayGroup",      IS_STRING,  (setter_t)MythDTO::SetRecording_PlayGroup },
+    { "RecordedId",     IS_UINT32,  (setter_t)MythDTO::SetRecording_RecordedId },
   };
   bindings_t RecordingBindArray = { sizeof(recording) / sizeof(attr_bind_t), recording };
 }

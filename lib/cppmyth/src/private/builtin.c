@@ -23,9 +23,10 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 
-int __str2int64(const char *str, int64_t *num)
+int string_to_int64(const char *str, int64_t *num)
 {
   uint64_t val = 0;
   int sign = 1;
@@ -62,7 +63,7 @@ int __str2int64(const char *str, int64_t *num)
   return 0;
 }
 
-int __str2int32(const char *str, int32_t *num)
+int string_to_int32(const char *str, int32_t *num)
 {
   uint64_t val = 0;
   int sign = 1;
@@ -99,12 +100,12 @@ int __str2int32(const char *str, int32_t *num)
   return 0;
 }
 
-int __str2int16(const char *str, int16_t *num)
+int string_to_int16(const char *str, int16_t *num)
 {
   int32_t val;
   int err;
 
-  if ((err = str2int32(str, &val)))
+  if ((err = string_to_int32(str, &val)))
     return err;
   if (val > 32767 || val < -32768)
     return -(ERANGE);
@@ -113,12 +114,12 @@ int __str2int16(const char *str, int16_t *num)
   return 0;
 }
 
-int __str2int8(const char *str, int8_t *num)
+int string_to_int8(const char *str, int8_t *num)
 {
   int32_t val;
   int err;
 
-  if ((err = str2int32(str, &val)))
+  if ((err = string_to_int32(str, &val)))
     return err;
   if (val > 127 || val < -128)
     return -(ERANGE);
@@ -127,7 +128,7 @@ int __str2int8(const char *str, int8_t *num)
   return 0;
 }
 
-int __str2uint32(const char *str, uint32_t *num)
+int string_to_uint32(const char *str, uint32_t *num)
 {
   uint64_t val = 0;
   uint64_t limit = UINT32_MAX;
@@ -158,12 +159,12 @@ int __str2uint32(const char *str, uint32_t *num)
   return 0;
 }
 
-int __str2uint16(const char *str, uint16_t *num)
+int string_to_uint16(const char *str, uint16_t *num)
 {
   uint32_t val;
   int err;
 
-  if ((err = str2uint32(str, &val)))
+  if ((err = string_to_uint32(str, &val)))
     return err;
   if (val > 65535)
     return -(ERANGE);
@@ -172,12 +173,12 @@ int __str2uint16(const char *str, uint16_t *num)
   return 0;
 }
 
-int __str2uint8(const char *str, uint8_t *num)
+int string_to_uint8(const char *str, uint8_t *num)
 {
   uint32_t val;
   int err;
 
-  if ((err = str2uint32(str, &val)))
+  if ((err = string_to_uint32(str, &val)))
     return err;
   if (val > 255)
     return -(ERANGE);
@@ -221,7 +222,7 @@ time_t __timegm(struct tm *utctime_tm)
   return time;
 }
 
-int __str2time(const char *str, time_t *time)
+int string_to_time(const char *str, time_t *time)
 {
   struct tm time_tm;
   int i, len, format, isutc;
@@ -346,7 +347,7 @@ err:
   return -(EINVAL);
 }
 
-void __time2iso8601utc(time_t time, char *str)
+void time_to_iso8601utc(time_t time, char *str)
 {
   struct tm time_tm;
 
@@ -364,7 +365,7 @@ void __time2iso8601utc(time_t time, char *str)
           time_tm.tm_sec);
 }
 
-void __time2iso8601(time_t time, char *str)
+void time_to_iso8601(time_t time, char *str)
 {
   struct tm time_tm;
 
@@ -382,7 +383,7 @@ void __time2iso8601(time_t time, char *str)
           time_tm.tm_sec);
 }
 
-void __time2isodate(time_t time, char *str)
+void time_to_isodate(time_t time, char *str)
 {
   struct tm time_tm;
 

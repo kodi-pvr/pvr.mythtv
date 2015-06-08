@@ -23,9 +23,8 @@ License: GPL-2+
  On Debian systems, the complete text of the GNU General
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
 
-Files: lib/cppmyth/private/platform/*
-Copyright: 2011-2012 Pulse-Eight
-           2014-2015 Jean-Luc Barriere
+Files: lib/platform/*
+Copyright: 2011-2015 Pulse-Eight
 License: dual-licensed
  This program is dual-licensed; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

@@ -34,7 +34,7 @@
 namespace Myth
 {
 
-  namespace PLATFORM
+  namespace OS
   {
     class CMutex;
   }
@@ -59,7 +59,7 @@ namespace Myth
     virtual void CleanHanging();
 
   protected:
-    PLATFORM::CMutex *m_mutex;
+    OS::CMutex *m_mutex;
     TcpSocket *m_socket;
     unsigned m_protoVersion;
     std::string m_server;
@@ -80,6 +80,7 @@ namespace Myth
 
     ProgramPtr RcvProgramInfo()
     {
+      if (m_protoVersion >= 86) return RcvProgramInfo86();
       if (m_protoVersion >= 82) return RcvProgramInfo82();
       if (m_protoVersion >= 79) return RcvProgramInfo79();
       if (m_protoVersion >= 76) return RcvProgramInfo76();
@@ -88,7 +89,8 @@ namespace Myth
 
     void MakeProgramInfo(const Program& program, std::string& msg)
     {
-      if (m_protoVersion >= 82) MakeProgramInfo82(program, msg);
+      if (m_protoVersion >= 86) MakeProgramInfo86(program, msg);
+      else if (m_protoVersion >= 82) MakeProgramInfo82(program, msg);
       else if (m_protoVersion >= 79) MakeProgramInfo79(program, msg);
       else if (m_protoVersion >= 76) MakeProgramInfo76(program, msg);
       else MakeProgramInfo75(program, msg);
@@ -103,10 +105,12 @@ namespace Myth
     ProgramPtr RcvProgramInfo76();
     ProgramPtr RcvProgramInfo79();
     ProgramPtr RcvProgramInfo82();
+    ProgramPtr RcvProgramInfo86();
     void MakeProgramInfo75(const Program& program, std::string& msg);
     void MakeProgramInfo76(const Program& program, std::string& msg);
     void MakeProgramInfo79(const Program& program, std::string& msg);
     void MakeProgramInfo82(const Program& program, std::string& msg);
+    void MakeProgramInfo86(const Program& program, std::string& msg);
 
   };
 

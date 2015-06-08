@@ -21,8 +21,8 @@
 
 #include "mythrecordingplayback.h"
 #include "mythdebug.h"
+#include "private/os/threads/mutex.h"
 #include "private/builtin.h"
-#include "private/platform/threads/mutex.h"
 
 #include <limits>
 #include <cstdio>
@@ -71,7 +71,7 @@ RecordingPlayback::~RecordingPlayback()
 bool RecordingPlayback::Open()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (ProtoPlayback::IsOpen())
     return true;
   if (ProtoPlayback::Open())
@@ -86,7 +86,7 @@ bool RecordingPlayback::Open()
 void RecordingPlayback::Close()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   CloseTransfer();
   ProtoPlayback::Close();
 }
@@ -94,7 +94,7 @@ void RecordingPlayback::Close()
 bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (!ProtoPlayback::IsOpen())
     return false;
   CloseTransfer();
@@ -115,7 +115,7 @@ bool RecordingPlayback::OpenTransfer(ProgramPtr recording)
 void RecordingPlayback::CloseTransfer()
 {
   // Begin critical section
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   m_recording.reset();
   if (m_transfer)
   {
@@ -199,20 +199,20 @@ void RecordingPlayback::HandleBackendMessage(EventMessagePtr msg)
         {
           uint32_t chanid;
           time_t startts;
-          if (str2uint32(msg->subject[1].c_str(), &chanid)
-                  || str2time(msg->subject[2].c_str(), &startts)
+          if (string_to_uint32(msg->subject[1].c_str(), &chanid)
+                  || string_to_time(msg->subject[2].c_str(), &startts)
                   || recording->channel.chanId != chanid
                   || recording->recording.startTs != startts
-                  || str2int64(msg->subject[3].c_str(), &newsize))
+                  || string_to_int64(msg->subject[3].c_str(), &newsize))
             break;
         }
         // Message contains recordedid as key
         else
         {
           uint32_t recordedid;
-          if (str2uint32(msg->subject[1].c_str(), &recordedid)
+          if (string_to_uint32(msg->subject[1].c_str(), &recordedid)
                   || recording->recording.recordedId != recordedid
-                  || str2int64(msg->subject[2].c_str(), &newsize))
+                  || string_to_int64(msg->subject[2].c_str(), &newsize))
             break;
         }
         // The file grows. Allow reading ahead

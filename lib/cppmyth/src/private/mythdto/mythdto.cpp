@@ -94,7 +94,7 @@ const bindings_t *MythDTO::getRecordScheduleBindArray(unsigned proto)
 
 const bindings_t *MythDTO::getCuttingBindArray(unsigned proto)
 {
-  if (proto >= 75)
+  if (proto >= 85)
     return &MythDTO85::CuttingBindArray;
   return NULL;
 }

@@ -21,9 +21,9 @@
 
 #include "mythprotoplayback.h"
 #include "../mythdebug.h"
-#include "../private/builtin.h"
 #include "../private/mythsocket.h"
-#include "../private/platform/threads/mutex.h"
+#include "../private/os/threads/mutex.h"
+#include "../private/builtin.h"
 
 #include <limits>
 #include <cstdio>
@@ -80,7 +80,7 @@ bool ProtoPlayback::IsOpen()
 
 bool ProtoPlayback::Announce75()
 {
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
 
   std::string cmd("ANN Playback ");
   cmd.append(m_socket->GetMyHostName()).append(" 0");
@@ -101,11 +101,11 @@ void ProtoPlayback::TransferDone75(ProtoTransfer& transfer)
 {
   char buf[32];
 
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (!transfer.IsOpen())
     return;
   std::string cmd("QUERY_FILETRANSFER ");
-  uint32str(transfer.GetFileId(), buf);
+  uint32_to_string(transfer.GetFileId(), buf);
   cmd.append(buf).append(PROTO_STR_SEPARATOR).append("DONE");
   if (SendCommand(cmd.c_str()))
   {
@@ -121,18 +121,18 @@ bool ProtoPlayback::TransferIsOpen75(ProtoTransfer& transfer)
   std::string field;
   int8_t status = 0;
 
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (!IsOpen())
     return false;
   std::string cmd("QUERY_FILETRANSFER ");
-  uint32str(transfer.GetFileId(), buf);
+  uint32_to_string(transfer.GetFileId(), buf);
   cmd.append(buf);
   cmd.append(PROTO_STR_SEPARATOR);
   cmd.append("IS_OPEN");
 
   if (!SendCommand(cmd.c_str()))
     return false;
-  if (!ReadField(field) || 0 != str2int8(field.c_str(), &status))
+  if (!ReadField(field) || 0 != string_to_int8(field.c_str(), &status))
   {
       FlushMessage();
       return false;
@@ -273,12 +273,12 @@ bool ProtoPlayback::TransferRequestBlock75(ProtoTransfer& transfer, unsigned n)
   if (!transfer.IsOpen())
     return false;
   std::string cmd("QUERY_FILETRANSFER ");
-  uint32str(transfer.GetFileId(), buf);
+  uint32_to_string(transfer.GetFileId(), buf);
   cmd.append(buf);
   cmd.append(PROTO_STR_SEPARATOR);
   cmd.append("REQUEST_BLOCK");
   cmd.append(PROTO_STR_SEPARATOR);
-  uint32str(n, buf);
+  uint32_to_string(n, buf);
   cmd.append(buf);
 
   // No wait for feedback
@@ -291,7 +291,7 @@ int32_t ProtoPlayback::TransferRequestBlockFeedback75()
 {
   int32_t rlen = 0;
   std::string field;
-  if (!RcvMessageLength() || !ReadField(field) || 0 != str2int32(field.c_str(), &rlen) || rlen < 0)
+  if (!RcvMessageLength() || !ReadField(field) || 0 != string_to_int32(field.c_str(), &rlen) || rlen < 0)
   {
     DBG(MYTH_DBG_ERROR, "%s: invalid response for request block (%s)\n", __FUNCTION__, field.c_str());
     FlushMessage();
@@ -334,27 +334,27 @@ int64_t ProtoPlayback::TransferSeek75(ProtoTransfer& transfer, int64_t offset, W
       return -1;
   }
 
-  PLATFORM::CLockObject lock(*m_mutex);
+  OS::CLockGuard lock(*m_mutex);
   if (!transfer.IsOpen())
     return -1;
   std::string cmd("QUERY_FILETRANSFER ");
-  uint32str(transfer.GetFileId(), buf);
+  uint32_to_string(transfer.GetFileId(), buf);
   cmd.append(buf);
   cmd.append(PROTO_STR_SEPARATOR);
   cmd.append("SEEK");
   cmd.append(PROTO_STR_SEPARATOR);
-  int64str(offset, buf);
+  int64_to_string(offset, buf);
   cmd.append(buf);
   cmd.append(PROTO_STR_SEPARATOR);
-  int8str(whence, buf);
+  int8_to_string(whence, buf);
   cmd.append(buf);
   cmd.append(PROTO_STR_SEPARATOR);
-  int64str(filePosition, buf);
+  int64_to_string(filePosition, buf);
   cmd.append(buf);
 
   if (!SendCommand(cmd.c_str()))
     return -1;
-  if (!ReadField(field) || 0 != str2int64(field.c_str(), &position))
+  if (!ReadField(field) || 0 != string_to_int64(field.c_str(), &position))
   {
       FlushMessage();
       return -1;

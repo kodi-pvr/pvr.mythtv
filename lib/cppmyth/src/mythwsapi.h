@@ -31,7 +31,7 @@
 namespace Myth
 {
 
-  namespace PLATFORM
+  namespace OS
   {
     class CMutex;
   }
@@ -420,7 +420,7 @@ namespace Myth
     }
 
   private:
-    PLATFORM::CMutex *m_mutex;
+    OS::CMutex *m_mutex;
     std::string m_server;
     unsigned m_port;
     std::string m_securityPin;
