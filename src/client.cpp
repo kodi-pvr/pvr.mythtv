@@ -331,59 +331,30 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   }
 
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...");
-  PVR_MENUHOOK menuHookDeleteAndRerecord;
-  menuHookDeleteAndRerecord.category = PVR_MENUHOOK_RECORDING;
-  menuHookDeleteAndRerecord.iHookId = MENUHOOK_REC_DELETE_AND_RERECORD;
-  menuHookDeleteAndRerecord.iLocalizedStringId = 30411;
-  PVR->AddMenuHook(&menuHookDeleteAndRerecord);
+  PVR_MENUHOOK menuHook;
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_RECORDING;
+  menuHook.iHookId = MENUHOOK_REC_DELETE_AND_RERECORD;
+  menuHook.iLocalizedStringId = 30411;
+  PVR->AddMenuHook(&menuHook);
 
-  PVR_MENUHOOK menuHookKeepLiveTVRec;
-  menuHookKeepLiveTVRec.category = PVR_MENUHOOK_RECORDING;
-  menuHookKeepLiveTVRec.iHookId = MENUHOOK_KEEP_LIVETV_RECORDING;
-  menuHookKeepLiveTVRec.iLocalizedStringId = 30412;
-  PVR->AddMenuHook(&menuHookKeepLiveTVRec);
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_RECORDING;
+  menuHook.iHookId = MENUHOOK_KEEP_LIVETV_RECORDING;
+  menuHook.iLocalizedStringId = 30412;
+  PVR->AddMenuHook(&menuHook);
 
-  PVR_MENUHOOK menuhookSettingShowNR;
-  menuhookSettingShowNR.category = PVR_MENUHOOK_SETTING;
-  menuhookSettingShowNR.iHookId = MENUHOOK_SHOW_HIDE_NOT_RECORDING;
-  menuhookSettingShowNR.iLocalizedStringId = 30421;
-  PVR->AddMenuHook(&menuhookSettingShowNR);
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_SETTING;
+  menuHook.iHookId = MENUHOOK_SHOW_HIDE_NOT_RECORDING;
+  menuHook.iLocalizedStringId = 30421;
+  PVR->AddMenuHook(&menuHook);
 
-  PVR_MENUHOOK menuhookEpgRec1;
-  menuhookEpgRec1.category = PVR_MENUHOOK_EPG;
-  menuhookEpgRec1.iHookId = MENUHOOK_EPG_REC_CHAN_ALL_SHOWINGS;
-  menuhookEpgRec1.iLocalizedStringId = 30431;
-  PVR->AddMenuHook(&menuhookEpgRec1);
-
-  PVR_MENUHOOK menuhookEpgRec2;
-  menuhookEpgRec2.category = PVR_MENUHOOK_EPG;
-  menuhookEpgRec2.iHookId = MENUHOOK_EPG_REC_CHAN_WEEKLY;
-  menuhookEpgRec2.iLocalizedStringId = 30432;
-  PVR->AddMenuHook(&menuhookEpgRec2);
-
-  PVR_MENUHOOK menuhookEpgRec3;
-  menuhookEpgRec3.category = PVR_MENUHOOK_EPG;
-  menuhookEpgRec3.iHookId = MENUHOOK_EPG_REC_CHAN_DAILY;
-  menuhookEpgRec3.iLocalizedStringId = 30433;
-  PVR->AddMenuHook(&menuhookEpgRec3);
-
-  PVR_MENUHOOK menuhookEpgRec4;
-  menuhookEpgRec4.category = PVR_MENUHOOK_EPG;
-  menuhookEpgRec4.iHookId = MENUHOOK_EPG_REC_ONE_SHOWING;
-  menuhookEpgRec4.iLocalizedStringId = 30434;
-  PVR->AddMenuHook(&menuhookEpgRec4);
-
-  PVR_MENUHOOK menuhookEpgRec5;
-  menuhookEpgRec5.category = PVR_MENUHOOK_EPG;
-  menuhookEpgRec5.iHookId = MENUHOOK_EPG_REC_NEW_EPISODES;
-  menuhookEpgRec5.iLocalizedStringId = 30435;
-  PVR->AddMenuHook(&menuhookEpgRec5);
-
-  PVR_MENUHOOK menuhookSettingRCI;
-  menuhookSettingRCI.category = PVR_MENUHOOK_SETTING;
-  menuhookSettingRCI.iHookId = MENUHOOK_REFRESH_CHANNEL_ICONS;
-  menuhookSettingRCI.iLocalizedStringId = 30422;
-  PVR->AddMenuHook(&menuhookSettingRCI);
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_SETTING;
+  menuHook.iHookId = MENUHOOK_REFRESH_CHANNEL_ICONS;
+  menuHook.iLocalizedStringId = 30422;
+  PVR->AddMenuHook(&menuHook);
 
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...done");
 
@@ -921,8 +892,9 @@ PVR_ERROR DeleteAllRecordingsFromTrash()
 
 PVR_ERROR GetTimerTypes(PVR_TIMER_TYPE types[], int *size)
 {
-  /* TODO: Implement this to get support for the timer features introduced with PVR API 1.9.7 */
-  return PVR_ERROR_NOT_IMPLEMENTED;
+  if (g_client == NULL)
+    return PVR_ERROR_SERVER_ERROR;
+  return g_client->GetTimerTypes(types, size);
 }
 
 int GetTimersAmount(void)
@@ -950,13 +922,13 @@ PVR_ERROR AddTimer(const PVR_TIMER &timer)
   return g_client->AddTimer(timer);
 }
 
-PVR_ERROR DeleteTimer(const PVR_TIMER &timer, bool bForceDelete, bool /*bDeleteScheduled*/)
+PVR_ERROR DeleteTimer(const PVR_TIMER &timer, bool bForceDelete, bool bDeleteScheduled)
 {
   if (g_client == NULL)
     return PVR_ERROR_SERVER_ERROR;
 
   /* TODO: Change implementation to support bDeleteScheduled (introduced with PVR API 1.9.7 */
-  return g_client->DeleteTimer(timer,bForceDelete);
+  return g_client->DeleteTimer(timer,bDeleteScheduled);
 }
 
 PVR_ERROR UpdateTimer(const PVR_TIMER &timer)
