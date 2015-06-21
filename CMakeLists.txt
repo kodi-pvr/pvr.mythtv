@@ -19,7 +19,7 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
 add_definitions(-DUSE_DEMUX -D__STDC_FORMAT_MACROS)
 
 if(NOT WIN32)
-  add_options(ALL_LANGUAGES ALL_BUILDS "-fPIC")
+  add_options(ALL_LANGUAGES ALL_BUILDS "-fPIC -Wall")
 endif()
 
 set(MYTHTV_SOURCES src/avinfo.cpp
