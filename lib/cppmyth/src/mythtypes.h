@@ -205,6 +205,9 @@ namespace Myth
     {}
   };
 
+  typedef std::vector<std::string> StringList;
+  typedef MYTH_SHARED_PTR<StringList> StringListPtr;
+
   struct Version
   {
     std::string         version;
@@ -453,6 +456,10 @@ namespace Myth
     bool                autoUserJob3;
     bool                autoUserJob4;
     uint32_t            transcoder;
+    time_t              nextRecording;
+    time_t              lastRecorded;
+    time_t              lastDeleted;
+    uint32_t            averageDelay;
 
     RecordSchedule()
     : recordId(0)
@@ -484,6 +491,10 @@ namespace Myth
     , autoUserJob3(false)
     , autoUserJob4(false)
     , transcoder(0)
+    , nextRecording(0)
+    , lastRecorded(0)
+    , lastDeleted(0)
+    , averageDelay(0)
     {}
   };
 

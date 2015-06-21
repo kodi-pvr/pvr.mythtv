@@ -79,6 +79,10 @@ namespace MythDTO76
     { "AutoUserJob3",     IS_BOOLEAN, (setter_t)MythDTO::SetSchedule_AutoUserJob3 },
     { "AutoUserJob4",     IS_BOOLEAN, (setter_t)MythDTO::SetSchedule_AutoUserJob4 },
     { "Transcoder",       IS_UINT32,  (setter_t)MythDTO::SetSchedule_Transcoder },
+    { "NextRecording",    IS_TIME,    (setter_t)MythDTO::SetSchedule_NextRecording },
+    { "LastRecorded",     IS_TIME,    (setter_t)MythDTO::SetSchedule_LastRecorded },
+    { "LastDeleted",      IS_TIME,    (setter_t)MythDTO::SetSchedule_LastDeleted },
+    { "AverageDelay",     IS_UINT32,  (setter_t)MythDTO::SetSchedule_AverageDelay },
   };
   bindings_t RecordScheduleBindArray = { sizeof(recordschedule) / sizeof(attr_bind_t), recordschedule };
 }

@@ -32,7 +32,9 @@ namespace OS
   class CThread
   {
   public:
-    CThread() : m_handle(new Handle()) { }
+    CThread()
+    : m_finalizeOnStop(false)
+    , m_handle(new Handle()) { }
 
     virtual ~CThread()
     {
@@ -119,6 +121,7 @@ namespace OS
   protected:
     virtual void* Process(void) = 0;
     virtual void Finalize(void) { };
+    bool m_finalizeOnStop;
 
   private:
     struct Handle
@@ -150,6 +153,7 @@ namespace OS
 
       if (thread)
       {
+        bool finalize = thread->m_finalizeOnStop;
         {
           CLockGuard lock(thread->m_handle->mutex);
           thread->m_handle->started = true;
@@ -163,7 +167,9 @@ namespace OS
           thread->m_handle->stopped = true;
           thread->m_handle->condition.Broadcast();
         }
-        thread->Finalize();
+        // Thread without finalizer could be freed here
+        if (finalize)
+          thread->Finalize();
       }
 
       return ret;
