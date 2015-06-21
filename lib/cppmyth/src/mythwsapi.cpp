@@ -665,7 +665,7 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
 {
   ChannelListPtr ret(new ChannelList);
   char buf[32];
-  int32_t req_index = 0, req_count = FETCHSIZE, count = 0;
+  int32_t req_index = 0, /*req_count = FETCHSIZE,*/ count = 0;
   unsigned proto = (unsigned)m_version.protocol;
 
   // Get bindings for protocol version
@@ -684,12 +684,13 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
     req.SetContentParam("OnlyVisible", BOOLSTR(onlyVisible));
     uint32_to_string(sourceid, buf);
     req.SetContentParam("SourceID", buf);
-    int32_to_string(req_index, buf);
-    req.SetContentParam("StartIndex", buf);
-    int32_to_string(req_count, buf);
-    req.SetContentParam("Count", buf);
+    // W.A. for bug tracked by ticket 12461
+    //int32_to_string(req_index, buf);
+    //req.SetContentParam("StartIndex", buf);
+    //int32_to_string(req_count, buf);
+    //req.SetContentParam("Count", buf);
 
-    DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
+    //DBG(MYTH_DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
     WSResponse resp(req);
     if (!resp.IsSuccessful())
     {
@@ -733,8 +734,50 @@ ChannelListPtr WSAPI::GetChannelList1_5(uint32_t sourceid, bool onlyVisible)
     DBG(MYTH_DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
     req_index += count; // Set next requested index
   }
-  while (count == req_count);
+  //while (count == req_count);
+  while (false); // W.A. for bug tracked by ticket 12461
 
+  return ret;
+}
+
+ChannelPtr WSAPI::GetChannel1_2(uint32_t chanid)
+{
+  ChannelPtr ret;
+  char buf[32];
+  unsigned proto = (unsigned)m_version.protocol;
+
+  // Get bindings for protocol version
+  const bindings_t *bindchan = MythDTO::getChannelBindArray(proto);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Channel/GetChannelInfo");
+  uint32_to_string(chanid, buf);
+  req.SetContentParam("ChanID", buf);
+
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
+  if (!json.IsValid() || !root.IsObject())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  // Object: ChannelInfo
+  const JSON::Node& chan = root.GetObjectValue("ChannelInfo");
+  ChannelPtr channel(new Channel());  // Using default constructor
+  // Bind the new channel
+  JSON::BindObject(chan, channel.get(), bindchan);
+  if (channel->chanId == chanid)
+    ret = channel;
   return ret;
 }
 
@@ -1557,7 +1600,7 @@ static void ProcessRecordOUT(unsigned proto, RecordSchedule& record)
   // Set find time & day
   sprintf(buf, "%.2d:%.2d:%.2d", stm.tm_hour, stm.tm_min, stm.tm_sec);
   record.findTime = buf;
-  record.findDay = stm.tm_wday;
+  record.findDay = (stm.tm_wday + 1) % 7;
   // Converting internal types to API codes
   record.type = RuleTypeToString(proto, record.type_t);
   record.searchType = SearchTypeToString(proto, record.searchType_t);
@@ -2185,6 +2228,46 @@ ProgramListPtr WSAPI::GetExpiringList1_5()
   }
   while (count == req_count);
 
+  return ret;
+}
+
+StringListPtr WSAPI::GetRecGroupList1_5()
+{
+  StringListPtr ret(new StringList);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Dvr/GetRecGroupList");
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
+  if (!json.IsValid() || !root.IsObject())
+  {
+    DBG(MYTH_DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(MYTH_DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  // Object: Strings
+  const JSON::Node& list = root.GetObjectValue("StringList");
+  if (list.IsArray())
+  {
+    size_t s = list.Size();
+    for (size_t i = 0; i < s; ++i)
+    {
+      const JSON::Node& val = list.GetArrayElement(i);
+      if (val.IsString())
+      {
+        ret->push_back(val.GetStringValue());
+      }
+    }
+  }
   return ret;
 }
 
