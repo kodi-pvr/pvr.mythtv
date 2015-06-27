@@ -284,6 +284,16 @@ namespace Myth
     }
 
     /**
+     * @brief Retrieve a single channel, by channel id
+     * @param chanid
+     * @return ChannelPtr
+     */
+    ChannelPtr GetChannel(uint32_t chanid)
+    {
+      return m_wsapi.GetChannel(chanid);
+    }
+
+    /**
      * @brief Query the guide information for a particular time period and a channel
      * @param chanid
      * @param starttime
@@ -389,6 +399,15 @@ namespace Myth
     ProgramListPtr GetExpiringList()
     {
       return m_wsapi.GetExpiringList();
+    }
+
+    /**
+     * @brief Get list of recording group
+     * @return StringListPtr
+     */
+    StringListPtr GetRecGroupList()
+    {
+      return m_wsapi.GetRecGroupList();
     }
 
     /**

@@ -68,6 +68,10 @@ namespace MythDTO
   void SetSchedule_AutoUserJob3(Myth::RecordSchedule *obj, bool *val) { obj->autoUserJob3 = *val; }
   void SetSchedule_AutoUserJob4(Myth::RecordSchedule *obj, bool *val) { obj->autoUserJob4 = *val; }
   void SetSchedule_Transcoder(Myth::RecordSchedule *obj, uint32_t *val) { obj->transcoder = *val; }
+  void SetSchedule_NextRecording(Myth::RecordSchedule *obj, time_t *val) { obj->nextRecording = *val; }
+  void SetSchedule_LastRecorded(Myth::RecordSchedule *obj, time_t *val) { obj->lastRecorded = *val; }
+  void SetSchedule_LastDeleted(Myth::RecordSchedule *obj, time_t *val) { obj->lastDeleted = *val; }
+  void SetSchedule_AverageDelay(Myth::RecordSchedule *obj, uint32_t *val) { obj->averageDelay = *val; }
 }
 
 #endif	/* MYTHDTO_RECORDSCHEDULE_H */

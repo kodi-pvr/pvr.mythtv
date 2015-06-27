@@ -70,7 +70,10 @@ namespace Myth
     bool IsLiveRecording();
     bool SetLiveRecording(bool keep)
     {
-      return SetLiveRecording75(keep);
+      bool ret = SetLiveRecording75(keep);
+      if (keep && ret)
+          m_liveRecording = keep; // Hold status for this showing
+      return ret;
     }
     bool FinishRecording()
     {

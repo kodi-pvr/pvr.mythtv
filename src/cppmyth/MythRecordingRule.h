@@ -131,6 +131,15 @@ public:
   std::string RecordingProfile() const;
   void SetRecordingProfile(const std::string& profile);
 
+  std::string InetRef() const;
+  void SetInerRef(const std::string& inetref);
+
+  uint16_t Season() const;
+  void SetSeason(uint16_t season);
+
+  uint16_t Episode() const;
+  void SetEpisode(uint16_t episode);
+
 private:
   Myth::RecordSchedulePtr m_recordSchedule;
 };

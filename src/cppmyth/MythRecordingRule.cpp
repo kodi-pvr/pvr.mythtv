@@ -402,3 +402,33 @@ void MythRecordingRule::SetRecordingProfile(const std::string& profile)
 {
   m_recordSchedule->recProfile = profile;
 }
+
+std::string MythRecordingRule::InetRef() const
+{
+  return m_recordSchedule->inetref;
+}
+
+void MythRecordingRule::SetInerRef(const std::string& inetref)
+{
+  m_recordSchedule->inetref = inetref;
+}
+
+uint16_t MythRecordingRule::Season() const
+{
+  return m_recordSchedule->season;
+}
+
+void MythRecordingRule::SetSeason(uint16_t season)
+{
+  m_recordSchedule->season = season;
+}
+
+uint16_t MythRecordingRule::Episode() const
+{
+  return m_recordSchedule->episode;
+}
+
+void MythRecordingRule::SetEpisode(uint16_t episode)
+{
+  m_recordSchedule->episode = episode;
+}

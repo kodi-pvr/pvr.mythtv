@@ -28,6 +28,9 @@
 #include <string>
 #include <vector>
 
+#define REQUEST_PROTOCOL      "HTTP/1.1"
+#define REQUEST_USER_AGENT    "libcppmyth/1.0"
+#define REQUEST_CONNECTION    "close" // "keep-alive"
 #define REQUEST_STD_CHARSET   "utf-8"
 
 namespace Myth
@@ -37,7 +40,7 @@ namespace Myth
   {
     HRM_GET,
     HRM_POST,
-    HRM_HEAD,        
+    HRM_HEAD,
   } HRM_t;
 
   class WSRequest
