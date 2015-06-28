@@ -1,3 +1,6 @@
+v2.3.1
+- Updated language files from Transifex
+
 v2.3.0
 - Fix crash on thread stop
 - Set of fixes for timers
