@@ -1084,10 +1084,11 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
     if (overTimeCategory && (overTimeCategory->value == epgInfo.Category() || overTimeCategory->value == epgInfo.CategoryType()))
     {
       Myth::SettingPtr categoryOverTime = m_control->GetSetting("CategoryOverTime", false);
-      if (categoryOverTime)
+      if (categoryOverTime && !categoryOverTime->value.empty())
       {
-        XBMC->Log(LOG_DEBUG, "Overriding end offset for category %s: +%s", overTimeCategory->value.c_str(), categoryOverTime->value.c_str());
-        rule.SetEndOffset(atoi(categoryOverTime->value.c_str()));
+        int offset = atoi(categoryOverTime->value.c_str());
+        XBMC->Log(LOG_DEBUG, "Overriding end offset for category %s: +%d", __FUNCTION__, overTimeCategory->value.c_str(), offset);
+        rule.SetEndOffset(offset);
       }
     }
   }
