@@ -399,7 +399,6 @@ bool ProtoRecorder::SetLiveRecording75(bool keep)
 
   if (!ReadField(field) || !IsMessageOK(field))
     goto out;
-  m_liveRecording = keep; // Keep track of status
   DBG(MYTH_DBG_DEBUG, "%s: succeeded (%d)\n", __FUNCTION__, keep);
   return true;
 out:

@@ -141,6 +141,16 @@ namespace Myth
     };
 
     /**
+     * @brief GET Channel/GetChannelInfo
+     */
+    ChannelPtr GetChannel(uint32_t chanid)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Channel);
+      if (wsv.ranking >= 0x00010002) return GetChannel1_2(chanid);
+      return ChannelPtr();
+    };
+
+    /**
      * @brief GET Guide/GetProgramGuide
      */
     ProgramMapPtr GetProgramGuide(uint32_t chanid, time_t starttime, time_t endtime)
@@ -344,6 +354,16 @@ namespace Myth
     }
 
     /**
+     * @brief GET Dvr/GetRecGroupList
+     */
+    StringListPtr GetRecGroupList()
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Dvr);
+      if (wsv.ranking >= 0x00010005) return GetRecGroupList1_5();
+      return StringListPtr(new StringList);
+    }
+
+    /**
      * @brief GET Content/GetFile
      */
     WSStreamPtr GetFile(const std::string& filename, const std::string& sgname)
@@ -450,6 +470,7 @@ namespace Myth
     VideoSourceListPtr GetVideoSourceList1_2();
     ChannelListPtr GetChannelList1_2(uint32_t sourceid, bool onlyVisible);
     ChannelListPtr GetChannelList1_5(uint32_t sourceid, bool onlyVisible);
+    ChannelPtr GetChannel1_2(uint32_t chanid);
 
     ProgramMapPtr GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_t endtime);
     ProgramMapPtr GetProgramList2_2(uint32_t chanid, time_t starttime, time_t endtime);
@@ -478,6 +499,7 @@ namespace Myth
     ProgramListPtr GetUpcomingList2_2();
     ProgramListPtr GetConflictList1_5();
     ProgramListPtr GetExpiringList1_5();
+    StringListPtr GetRecGroupList1_5();
 
     WSStreamPtr GetFile1_32(const std::string& filename, const std::string& sgname);
     WSStreamPtr GetChannelIcon1_32(uint32_t chanid, unsigned width, unsigned height);

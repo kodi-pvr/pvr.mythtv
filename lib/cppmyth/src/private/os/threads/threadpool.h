@@ -104,7 +104,7 @@ namespace OS
   public:
     CWorkerThread(CThreadPool& pool)
     : CThread()
-    , m_threadPool(pool) { }
+    , m_threadPool(pool) { m_finalizeOnStop = true; }
 
     void* Process(void)
     {
