@@ -2107,7 +2107,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   if (prog.HostName() == m_control->GetServerHostName())
   {
     // Request the stream from our master using the opened event handler.
-    m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+    m_recordingStream = MYTH_SHARED_PTR<Myth::RecordingPlayback>(new Myth::RecordingPlayback(*m_eventHandler));
     if (!m_recordingStream->IsOpen())
       XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
     else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
@@ -2115,7 +2115,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
       // Fill AV info for later use
-      FillRecordingAVInfo(prog, m_recordingStream);
+      FillRecordingAVInfo(prog, m_recordingStream.get());
       return true;
     }
   }
@@ -2127,16 +2127,16 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
     if (mbo && mbo->value == "1")
     {
       XBMC->Log(LOG_INFO, "%s: Option 'MasterBackendOverride' is enabled", __FUNCTION__);
-      m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
+      m_recordingStream = MYTH_SHARED_PTR<Myth::RecordingPlayback>(new Myth::RecordingPlayback(*m_eventHandler));
       if (m_recordingStream->IsOpen() && m_recordingStream->OpenTransfer(prog.GetPtr()))
       {
         if (g_bExtraDebug)
           XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
         // Fill AV info for later use
-        FillRecordingAVInfo(prog, m_recordingStream);
+        FillRecordingAVInfo(prog, m_recordingStream.get());
         return true;
       }
-      SAFE_DELETE(m_recordingStream);
+      m_recordingStream.reset();
       XBMC->Log(LOG_NOTICE, "%s: Failed to open recorded stream from master backend", __FUNCTION__);
       XBMC->Log(LOG_NOTICE, "%s: You should uncheck option 'MasterBackendOverride' from MythTV setup", __FUNCTION__);
     }
@@ -2152,7 +2152,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       backend_port = (unsigned)g_iProtoPort;
     // Request the stream from slave host. A dedicated event handler will be opened.
     XBMC->Log(LOG_INFO, "%s: Connect to remote backend %s:%u", __FUNCTION__, backend_addr.c_str(), backend_port);
-    m_recordingStream = new Myth::RecordingPlayback(backend_addr, backend_port);
+    m_recordingStream = MYTH_SHARED_PTR<Myth::RecordingPlayback>(new Myth::RecordingPlayback(backend_addr, backend_port));
     if (!m_recordingStream->IsOpen())
       XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
     else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
@@ -2160,12 +2160,12 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
       // Fill AV info for later use
-      FillRecordingAVInfo(prog, m_recordingStream);
+      FillRecordingAVInfo(prog, m_recordingStream.get());
       return true;
     }
   }
 
-  SAFE_DELETE(m_recordingStream);
+  m_recordingStream.reset();
   // Resume fileOps
   m_fileOps->Resume();
   XBMC->Log(LOG_ERROR,"%s: Failed to open recorded stream", __FUNCTION__);
@@ -2179,8 +2179,8 @@ void PVRClientMythTV::CloseRecordedStream()
 
   // Begin critical section
   CLockObject lock(m_lock);
-  // Destroy my stream
-  SAFE_DELETE(m_recordingStream);
+  // Forget my stream
+  m_recordingStream.reset();
   // Resume fileOps
   m_fileOps->Resume();
 
@@ -2191,7 +2191,8 @@ void PVRClientMythTV::CloseRecordedStream()
 int PVRClientMythTV::ReadRecordedStream(unsigned char *pBuffer, unsigned int iBufferSize)
 {
   // Keep unlocked
-  return (m_recordingStream ? m_recordingStream->Read(pBuffer, iBufferSize) : -1);
+  MYTH_SHARED_PTR<Myth::RecordingPlayback> stream(m_recordingStream);
+  return (stream ? stream->Read(pBuffer, iBufferSize) : -1);
 }
 
 long long PVRClientMythTV::SeekRecordedStream(long long iPosition, int iWhence)
@@ -2199,7 +2200,8 @@ long long PVRClientMythTV::SeekRecordedStream(long long iPosition, int iWhence)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: pos: %lld, whence: %d", __FUNCTION__, iPosition, iWhence);
 
-  if (!m_recordingStream)
+  MYTH_SHARED_PTR<Myth::RecordingPlayback> stream(m_recordingStream);
+  if (!stream)
     return -1;
 
   Myth::WHENCE_t whence;
@@ -2218,7 +2220,7 @@ long long PVRClientMythTV::SeekRecordedStream(long long iPosition, int iWhence)
     return -1;
   }
 
-  long long retval = (long long) m_recordingStream->Seek((int64_t)iPosition, whence);
+  long long retval = (long long) stream->Seek((int64_t)iPosition, whence);
 
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Done - position: %lld", __FUNCTION__, retval);
@@ -2231,10 +2233,11 @@ long long PVRClientMythTV::LengthRecordedStream()
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  if (!m_recordingStream)
+  MYTH_SHARED_PTR<Myth::RecordingPlayback> stream(m_recordingStream);
+  if (!stream)
     return -1;
 
-  long long retval = (long long) m_recordingStream->GetSize();
+  long long retval = (long long) stream->GetSize();
 
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Done - duration: %lld", __FUNCTION__, retval);
