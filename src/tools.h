@@ -24,6 +24,7 @@
 #include <platform/os.h>
 
 #ifdef __WINDOWS__
+#include <time.h>
 static inline struct tm *localtime_r(const time_t  *clock, struct tm *result)
 {
   struct tm *data;
