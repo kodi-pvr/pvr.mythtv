@@ -2081,6 +2081,14 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: title: %s, ID: %s, duration: %d", __FUNCTION__, recording.strTitle, recording.strRecordingId, recording.iDuration);
 
+  // Begin critical section
+  CLockObject lock(m_lock);
+  if (m_recordingStream)
+  {
+    XBMC->Log(LOG_NOTICE, "%s: Recorded stream is busy", __FUNCTION__);
+    return false;
+  }
+
   MythProgramInfo prog;
   {
     CLockObject lock(m_recordingsLock);
@@ -2093,23 +2101,10 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
     prog = it->second;
   }
 
-  // Begin critical section
-  CLockObject lock(m_lock);
   // Suspend fileOps to avoid connection hang
   m_fileOps->Suspend();
 
-  if (m_recordingStream)
-  {
-    if (!m_recordingStream->IsOpen())
-      XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
-    else if (m_recordingStream->TransferIsOpen())
-    {
-      if (g_bExtraDebug)
-        XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
-      return true;
-    }
-  }
-  else if (prog.HostName() == m_control->GetServerHostName())
+  if (prog.HostName() == m_control->GetServerHostName())
   {
     // Request the stream from our master using the opened event handler.
     m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
