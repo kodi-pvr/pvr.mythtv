@@ -45,7 +45,11 @@ namespace Myth
     shared_ptr(const shared_ptr& s) : p(s.p), c(s.c)
     {
       if (c != NULL)
-        atomic_increment(c);
+        if (atomic_increment(c) < 2)
+        {
+          c = NULL;
+          p = NULL;
+        }
     }
 
     shared_ptr& operator=(const shared_ptr& s)
@@ -56,7 +60,11 @@ namespace Myth
         p = s.p;
         c = s.c;
         if (c != NULL)
-          atomic_increment(c);
+          if (atomic_increment(c) < 2)
+          {
+            c = NULL;
+            p = NULL;
+          }
       }
       return *this;
     }
@@ -69,12 +77,11 @@ namespace Myth
     void reset()
     {
       if (c != NULL)
-      {
-        if (*c == 1)
-          delete p;
-        if (!atomic_decrement(c))
-          delete c;
-      }
+        if (atomic_decrement(c) == 0)
+        {
+            delete p;
+            delete c;
+        }
       c = NULL;
       p = NULL;
     }
