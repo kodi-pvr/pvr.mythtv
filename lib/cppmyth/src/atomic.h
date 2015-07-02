@@ -42,7 +42,7 @@ extern "C" {
 #include <libkern/OSAtomic.h>
 typedef volatile int32_t atomic_t;
 #else
-typedef volatile unsigned atomic_t;
+typedef volatile int atomic_t;
 #endif
 
 #if defined __arm__ && (!defined __thumb__ || defined __thumb2__)
@@ -77,7 +77,7 @@ typedef volatile unsigned atomic_t;
  * \param valp address of atomic variable
  * \return incremented reference count
  */
-static CC_INLINE unsigned atomic_increment(atomic_t *valp)
+static CC_INLINE int atomic_increment(atomic_t *valp)
 {
   atomic_t __val;
 
@@ -213,7 +213,7 @@ static CC_INLINE unsigned atomic_increment(atomic_t *valp)
  * \param valp address of atomic variable
  * \return decremented reference count
  */
-static CC_INLINE unsigned atomic_decrement(atomic_t *valp)
+static CC_INLINE int atomic_decrement(atomic_t *valp)
 {
   atomic_t __val;
 
