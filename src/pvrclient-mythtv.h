@@ -142,7 +142,7 @@ private:
   Myth::EventHandler *m_eventHandler;
   Myth::Control *m_control;
   Myth::LiveTVPlayback *m_liveStream;
-  MYTH_SHARED_PTR<Myth::RecordingPlayback> m_recordingStream;
+  Myth::RecordingPlayback *m_recordingStream;
   bool m_hang;
   bool m_powerSaving;
 
