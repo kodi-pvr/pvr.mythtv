@@ -27,8 +27,6 @@ extern "C" {
 #endif
 
 #if defined _MSC_VER
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #if !defined CC_INLINE
 #define CC_INLINE __inline
 #endif
@@ -38,7 +36,11 @@ extern "C" {
 #endif
 #endif
 
-#if defined __APPLE__
+#if defined _MSC_VER
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+typedef volatile long atomic_t;
+#elif defined __APPLE__
 #include <libkern/OSAtomic.h>
 typedef volatile int32_t atomic_t;
 #else
@@ -77,7 +79,7 @@ typedef volatile int atomic_t;
  * \param valp address of atomic variable
  * \return incremented reference count
  */
-static CC_INLINE int atomic_increment(atomic_t *valp)
+static CC_INLINE long atomic_increment(atomic_t *valp)
 {
   atomic_t __val;
 
@@ -213,7 +215,7 @@ static CC_INLINE int atomic_increment(atomic_t *valp)
  * \param valp address of atomic variable
  * \return decremented reference count
  */
-static CC_INLINE int atomic_decrement(atomic_t *valp)
+static CC_INLINE long atomic_decrement(atomic_t *valp)
 {
   atomic_t __val;
 
