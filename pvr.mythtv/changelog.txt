@@ -1,3 +1,6 @@
+v3.0.1
+- Updated to API 2.0.0
+
 v3.0.0
 - Updated to API 1.9.7
 
