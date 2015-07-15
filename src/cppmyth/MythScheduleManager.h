@@ -110,11 +110,15 @@ public:
   MythRecordingRuleList GetOverrideRules() const;
 
   bool IsInactiveRule() const;
+  bool HasConflict() const;
+  bool IsRecording() const;
 
 private:
   MythRecordingRule m_rule;
   MythRecordingRule m_mainRule;
   MythRecordingRuleList m_overrideRules;
+  bool m_hasConflict;                       //!< @brief Has upcoming recording in conflict status
+  bool m_isRecording;                       //!< @brief Is currently recording
 };
 
 class MythScheduleManager

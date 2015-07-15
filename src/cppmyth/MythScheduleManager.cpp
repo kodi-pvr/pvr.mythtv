@@ -70,6 +70,8 @@ MythRecordingRuleNode::MythRecordingRuleNode(const MythRecordingRule &rule)
 : m_rule(rule)
 , m_mainRule()
 , m_overrideRules()
+, m_hasConflict(false)
+, m_isRecording(false)
 {
 }
 
@@ -105,6 +107,15 @@ bool MythRecordingRuleNode::IsInactiveRule() const
   return m_rule.Inactive();
 }
 
+bool MythRecordingRuleNode::HasConflict() const
+{
+  return m_hasConflict;
+}
+
+bool MythRecordingRuleNode::IsRecording() const
+{
+  return m_isRecording;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////
@@ -853,6 +864,27 @@ void MythScheduleManager::Update()
     uint32_t index = MakeIndex(*scheduled);
     m_recordings.insert(RecordingList::value_type(index, scheduled));
     m_recordingIndexByRuleId.insert(RecordingIndexByRuleId::value_type(scheduled->RecordID(), index));
+    // Update summary status of related rule
+    switch (scheduled->Status())
+    {
+      case Myth::RS_RECORDING:
+      case Myth::RS_TUNING:
+      {
+        NodeById::const_iterator rit = m_rulesById.find(scheduled->RecordID());
+        if (rit != m_rulesById.end())
+          rit->second->m_isRecording = true;
+        break;
+      }
+      case Myth::RS_CONFLICT:
+      {
+        NodeById::const_iterator rit = m_rulesById.find(scheduled->RecordID());
+        if (rit != m_rulesById.end())
+          rit->second->m_hasConflict = true;
+        break;
+      }
+      default:
+        break;
+    }
   }
 
   if (g_bExtraDebug)

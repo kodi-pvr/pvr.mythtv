@@ -170,7 +170,6 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
       break;
   }
 
-  // For all repeating fix timeslot as needed
   switch (entry.timerType)
   {
     case TIMER_TYPE_RECORD_ONE:
@@ -181,6 +180,7 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
     case TIMER_TYPE_SEARCH_KEYWORD:
     case TIMER_TYPE_SEARCH_PEOPLE:
     case TIMER_TYPE_UNHANDLED:
+      // For all repeating fix timeslot as needed
       if (difftime(rule.NextRecording(), 0) > 0)
       {
         // fill timeslot starting at next recording
@@ -198,6 +198,12 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
         entry.startTime = rule.StartTime();
         entry.endTime = rule.EndTime();
       }
+      // For all repeating set summary status
+      if (node.HasConflict())
+        entry.recordingStatus = Myth::RS_CONFLICT;
+      else if (node.IsRecording())
+        entry.recordingStatus = Myth::RS_RECORDING;
+      //
       break;
     default:
       entry.startTime = rule.StartTime();
