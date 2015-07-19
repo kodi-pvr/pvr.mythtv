@@ -1087,7 +1087,7 @@ MythRecordingRule MythScheduleHelper75::NewFromTemplate(MythEPGInfo &epgInfo)
       if (categoryOverTime && !categoryOverTime->value.empty())
       {
         int offset = atoi(categoryOverTime->value.c_str());
-        XBMC->Log(LOG_DEBUG, "Overriding end offset for category %s: +%d", __FUNCTION__, overTimeCategory->value.c_str(), offset);
+        XBMC->Log(LOG_DEBUG, "Overriding end offset for category %s: +%d", overTimeCategory->value.c_str(), offset);
         rule.SetEndOffset(offset);
       }
     }

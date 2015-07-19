@@ -1,5 +1,8 @@
+v2.4.3
+- Stop to iterate recordings map until next change
+- Fix debug log when overriding end offset
+
 v2.4.2
-- Debian packaging: fix library install path
 - Miscellaneous backend fixes
 
 v2.4.1
