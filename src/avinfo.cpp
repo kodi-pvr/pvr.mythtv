@@ -143,8 +143,8 @@ const unsigned char* AVInfo::ReadAV(uint64_t pos, size_t n)
   m_av_pos = pos;
   // fill new data
   unsigned int len = (unsigned int)(m_av_buf_size - dataread);
-  int wait = 5000;
-  while (wait > 0)
+  int retry = 5;
+  while (retry > 0)
   {
     int ret = m_file->Read(m_av_rbe, len);
     if (ret > 0)
@@ -155,7 +155,7 @@ const unsigned char* AVInfo::ReadAV(uint64_t pos, size_t n)
     }
     if (dataread >= n || ret < 0)
       break;
-    wait -= 1000;
+    --retry;
     usleep(100000);
   }
   return dataread >= n ? m_av_rbs : NULL;
@@ -170,8 +170,8 @@ void AVInfo::Process()
   }
 
   int ret = 0;
-  bool analyzed = false; ///< become true once all channel streams are parsed
-  size_t throughput = 0; ///< to limit size of analyzed data
+  bool analyzed = false; // become true once all channel streams are parsed
+  size_t throughput = 0; // to limit size of analyzed data
 
   while (!analyzed && throughput < ES_MAX_BUFFER_SIZE)
   {
