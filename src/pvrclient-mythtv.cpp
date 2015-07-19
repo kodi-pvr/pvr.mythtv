@@ -1030,9 +1030,9 @@ void PVRClientMythTV::ForceUpdateRecording(ProgramInfoMap::iterator it)
 
 int PVRClientMythTV::FillRecordings()
 {
-  if (!m_control || !m_eventHandler)
-    return 0;
   int count = 0;
+  if (!m_control || !m_eventHandler)
+    return count;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   // Check event connection
@@ -1041,16 +1041,18 @@ int PVRClientMythTV::FillRecordings()
 
   // Load recordings map
   m_recordings.clear();
+  m_recordingsAmount = 0;
+  m_deletedRecAmount = 0;
   Myth::ProgramListPtr programs = m_control->GetRecordedList();
   for (Myth::ProgramList::iterator it = programs->begin(); it != programs->end(); ++it)
   {
     MythProgramInfo prog = MythProgramInfo(*it);
     m_recordings.insert(std::make_pair(prog.UID(), prog));
-    // Count visible recordings
-    if (prog.IsVisible() && !prog.IsLiveTV())
-      ++count;
+    ++count;
   }
-  XBMC->Log(LOG_DEBUG, "%s: Loaded %d visible recording(s)", __FUNCTION__, count);
+  if (count > 0)
+    m_recordingsAmountChange = m_deletedRecAmountChange = true; // Need count amounts
+  XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, count);
   return count;
 }
 
