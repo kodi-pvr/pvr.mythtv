@@ -906,7 +906,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
       res++;
   }
   if (res == 0)
-    XBMC->Log(LOG_INFO, "%s: No deleted recording", __FUNCTION__);
+    XBMC->Log(LOG_DEBUG, "%s: No deleted recording", __FUNCTION__);
   return res;
 }
 
