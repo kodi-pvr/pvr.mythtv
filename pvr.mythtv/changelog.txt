@@ -1,5 +1,11 @@
-v3.0.2
-- Debian packaging: fix library install path
+v3.1.0
+- Support for PVR Addon API 2.0.0
+
+v3.0.3
+- Don't apply category overtime nil (0)
+- AVINFO: exit on parse error
+- Fix race condition on opening recorded
+- Sync cppmyth upsgtream (1.5.1.3+fixes)
 - Miscellaneous backend fixes
 
 v3.0.1
