@@ -182,6 +182,10 @@ private:
   ProgramInfoMap m_recordings;
   mutable PLATFORM::CMutex m_recordingsLock;
   unsigned m_recordingChangePinCount;
+  bool m_recordingsAmountChange;
+  int m_recordingsAmount;
+  bool m_deletedRecAmountChange;
+  int m_deletedRecAmount;
   void ForceUpdateRecording(ProgramInfoMap::iterator it);
   int FillRecordings();
   MythChannel FindRecordingChannel(const MythProgramInfo& programInfo) const;

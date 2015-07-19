@@ -44,6 +44,10 @@ PVRClientMythTV::PVRClientMythTV()
 , m_scheduleManager(NULL)
 , m_demux(NULL)
 , m_recordingChangePinCount(0)
+, m_recordingsAmountChange(false)
+, m_recordingsAmount(0)
+, m_deletedRecAmountChange(false)
+, m_deletedRecAmount(0)
 {
 }
 
@@ -479,7 +483,12 @@ void PVRClientMythTV::RunHouseKeeping()
   }
   if (m_recordingChangePinCount)
   {
+    CLockObject lock(m_recordingsLock);
+    m_recordingsAmountChange = true; // Need count recording amount
+    m_deletedRecAmountChange = true; // Need count of deleted amount
+    lock.Unlock();
     PVR->TriggerRecordingUpdate();
+    lock.Lock();
     m_recordingChangePinCount = 0;
   }
 }
@@ -770,20 +779,23 @@ int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
 
 int PVRClientMythTV::GetRecordingsAmount()
 {
-  int res = 0;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
-
-  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  if (m_recordingsAmountChange)
   {
-    if (!it->second.IsNull() && it->second.IsVisible())
-      res++;
+    int res = 0;
+    CLockObject lock(m_recordingsLock);
+    for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+    {
+      if (!it->second.IsNull() && it->second.IsVisible())
+        res++;
+    }
+    m_recordingsAmount = res;
+    m_recordingsAmountChange = false;
+    XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, res);
   }
-  if (res == 0)
-    XBMC->Log(LOG_INFO, "%s: No recording", __FUNCTION__);
-  return res;
+  return m_recordingsAmount;
 }
 
 PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
@@ -894,20 +906,23 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
 int PVRClientMythTV::GetDeletedRecordingsAmount()
 {
-  int res = 0;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
-
-  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  if (m_deletedRecAmountChange)
   {
-    if (!it->second.IsNull() && it->second.IsDeleted())
-      res++;
+    int res = 0;  
+    CLockObject lock(m_recordingsLock);
+    for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+    {
+      if (!it->second.IsNull() && it->second.IsDeleted())
+        res++;
+    }
+    m_deletedRecAmount = res;
+    m_deletedRecAmountChange = false;
+    XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, res);
   }
-  if (res == 0)
-    XBMC->Log(LOG_DEBUG, "%s: No deleted recording", __FUNCTION__);
-  return res;
+  return m_deletedRecAmount;
 }
 
 PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
