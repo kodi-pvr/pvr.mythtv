@@ -1163,5 +1163,6 @@ time_t GetBufferTimeEnd()
 void DemuxReset() {}
 const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
+bool IsTimeshifting(void) { return true; }
 
 } //end extern "C"
