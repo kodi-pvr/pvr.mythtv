@@ -1878,10 +1878,10 @@ PVR_ERROR PVRClientMythTV::GetTimerTypes(PVR_TIMER_TYPE types[], int *size)
   if (m_scheduleManager)
   {
     CLockObject lock(m_lock);
-    const std::vector<MythScheduleManager::TimerType>& typeList = m_scheduleManager->GetTimerTypes();
+    MythTimerTypeList typeList = m_scheduleManager->GetTimerTypes();
     assert(typeList.size() <= static_cast<unsigned>(*size));
-    for (std::vector<MythScheduleManager::TimerType>::const_iterator it = typeList.begin(); it != typeList.end(); ++it)
-      it->Fill(&types[index++]);
+    for (MythTimerTypeList::const_iterator it = typeList.begin(); it != typeList.end(); ++it)
+      (*it)->Fill(&types[index++]);
   }
   else
   {

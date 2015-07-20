@@ -95,6 +95,10 @@ typedef std::vector<std::pair<uint32_t, MythScheduledPtr> > MythScheduleList;
 typedef MYTH_SHARED_PTR<MythTimerEntry> MythTimerEntryPtr;
 typedef std::vector<MythTimerEntryPtr> MythTimerEntryList;
 
+class MythTimerType;
+typedef MYTH_SHARED_PTR<MythTimerType> MythTimerTypePtr;
+typedef std::vector<MythTimerTypePtr> MythTimerTypeList;
+
 class MythRecordingRuleNode
 {
 public:
@@ -130,19 +134,6 @@ public:
     MSM_ERROR_SUCCESS = 1
   };
 
-  struct RuleExpiration
-  {
-    bool  autoExpire;
-    int   maxEpisodes;
-    bool  maxNewest;
-    RuleExpiration(bool autoexpire, int maxepisodes, bool newest)
-    : autoExpire(autoexpire), maxEpisodes(maxepisodes), maxNewest(newest) { }
-  };
-  typedef std::vector<std::pair<int, std::string> > RulePriorityList;
-  typedef std::vector<std::pair<int, std::string> > RuleDupMethodList;
-  typedef std::vector<std::pair<int, std::pair<RuleExpiration, std::string> > > RuleExpirationList;
-  typedef std::vector<std::pair<int, std::string> > RuleRecordingGroupList;
-
   MythScheduleManager(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin);
   ~MythScheduleManager();
 
@@ -174,42 +165,9 @@ public:
   void CloseControl();
   void Update();
 
-  class TimerType
-  {
-  public:
-    TimerType(TimerTypeId id, unsigned attributes, const std::string& description,
-            const RulePriorityList* priorityList, int priorityDefault,
-            const RuleDupMethodList* dupMethodList, int dupMethodDefault,
-            const RuleExpirationList* expirationList, int expirationDefault,
-            const RuleRecordingGroupList* recGroupList, int recGroupDefault);
-    virtual ~TimerType() {}
-    void Fill(PVR_TIMER_TYPE* type) const;
-  private:
-    TimerTypeId m_id;
-    unsigned m_attributes;
-    std::string m_description;
-    const RulePriorityList* m_priorityList;
-    int m_priorityDefault;
-    const RuleDupMethodList* m_dupMethodList;
-    int m_dupMethodDefault;
-    const RuleExpirationList* m_expirationList;
-    int m_expirationDefault;
-    const RuleRecordingGroupList* m_recGroupList;
-    int m_recGroupDefault;
-  };
-
-  const std::vector<TimerType>& GetTimerTypes();
-  const RulePriorityList& GetRulePriorityList();
-  int GetRulePriorityDefaultId();
-  const RuleDupMethodList& GetRuleDupMethodList();
-  int GetRuleDupMethodDefaultId();
-  const RuleExpirationList& GetRuleExpirationList();
-  int GetRuleExpirationDefaultId();
-  const RuleRecordingGroupList& GetRuleRecordingGroupList();
-  int GetRuleRecordingGroupDefaultId();
-
-  bool FillTimerEntry(MythTimerEntry& entry, const MythRecordingRuleNode& node) const;
-  bool FillTimerEntry(MythTimerEntry& entry, const MythProgramInfo& recording) const;
+  MythTimerTypeList GetTimerTypes();
+  bool FillTimerEntryWithRule(MythTimerEntry& entry, const MythRecordingRuleNode& node) const;
+  bool FillTimerEntryWithUpcoming(MythTimerEntry& entry, const MythProgramInfo& recording) const;
   MythRecordingRule NewFromTimer(const MythTimerEntry& entry, bool withTemplate);
 
   MythRecordingRuleList GetTemplateRules() const;
@@ -222,18 +180,9 @@ public:
     friend class MythScheduleManager;
 
     VersionHelper() { }
-    virtual ~VersionHelper();
+    virtual ~VersionHelper() { }
 
-    virtual const std::vector<TimerType>& GetTimerTypes() const = 0;
-    virtual const RulePriorityList& GetRulePriorityList() const = 0;
-    virtual int GetRulePriorityDefaultId() const = 0;
-    virtual const RuleDupMethodList& GetRuleDupMethodList() const = 0;
-    virtual int GetRuleDupMethodDefaultId() const = 0;
-    virtual const RuleExpirationList& GetRuleExpirationList() const = 0;
-    virtual int GetRuleExpirationDefaultId() const = 0;
-    virtual const RuleRecordingGroupList& GetRuleRecordingGroupList() const = 0;
-    virtual int GetRuleRecordingGroupDefaultId() const = 0;
-
+    virtual MythTimerTypeList GetTimerTypes() const = 0;
     virtual bool SameTimeslot(const MythRecordingRule& first, const MythRecordingRule& second) const = 0;
     virtual bool FillTimerEntryWithRule(MythTimerEntry& entry, const MythRecordingRuleNode& node) const = 0;
     virtual bool FillTimerEntryWithUpcoming(MythTimerEntry& entry, const MythProgramInfo& recording) const = 0;
@@ -265,20 +214,44 @@ private:
   // To find all indexes of schedule by rule Id : pair < Rule Id , index of schedule >
   typedef std::multimap<uint32_t, uint32_t> RecordingIndexByRuleId;
 
-  NodeList m_rules;
-  NodeById m_rulesById;
-  NodeByIndex m_rulesByIndex;
-  RecordingList m_recordings;
-  RecordingIndexByRuleId m_recordingIndexByRuleId;
-  MythRecordingRuleList m_templates;
+  NodeList* m_rules;
+  NodeById* m_rulesById;
+  NodeByIndex* m_rulesByIndex;
+  RecordingList* m_recordings;
+  RecordingIndexByRuleId* m_recordingIndexByRuleId;
+  MythRecordingRuleList* m_templates;
 
   bool m_showNotRecording;
 };
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ////
-//// VersionHelper
+//// MythTimerType
 ////
 
-inline MythScheduleManager::VersionHelper::~VersionHelper() { }
+class MythTimerType
+{
+public:
+  typedef std::vector<std::pair<int, std::string> > AttributeList;
+
+  MythTimerType(TimerTypeId id, unsigned attributes, const std::string& description,
+          const AttributeList& priorityList, int priorityDefault,
+          const AttributeList& dupMethodList, int dupMethodDefault,
+          const AttributeList& expirationList, int expirationDefault,
+          const AttributeList& recGroupList, int recGroupDefault);
+  virtual ~MythTimerType() {}
+  void Fill(PVR_TIMER_TYPE* type) const;
+
+private:
+  TimerTypeId m_id;
+  unsigned m_attributes;
+  std::string m_description;
+  AttributeList m_priorityList;
+  int m_priorityDefault;
+  AttributeList m_dupMethodList;
+  int m_dupMethodDefault;
+  AttributeList m_expirationList;
+  int m_expirationDefault;
+  AttributeList m_recGroupList;
+  int m_recGroupDefault;
+};
