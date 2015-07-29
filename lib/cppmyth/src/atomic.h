@@ -93,107 +93,117 @@ static CC_INLINE long atomic_increment(atomic_t *valp)
   __val = __sync_add_and_fetch(valp, 1);
 
 #elif defined __mips__
-  int temp, inc = 1;
+  int temp, amount = 1;
   __asm__ volatile (
+    "    .set   arch=r4000\n"
     "1:  ll     %0, %1\n"       /* load old value */
     "    addu   %2, %0, %3\n"   /* calculate new value */
     "    sc     %2, %1\n"       /* attempt to store */
-    "    beqz   %2, 1b\n"       /* spin if failed */
+    "    beqzl  %2, 1b\n"       /* spin if failed */
+    "    .set   mips0\n"
     : "=&r" (__val), "=m" (*valp), "=&r" (temp)
-    : "r" (inc), "m" (*valp));
+    : "r" (amount), "m" (*valp));
+  /* __val is the old value, so normalize it. */
+  __val += amount;
+
+#elif defined __i386__ || defined __i486__ || defined __i586__ || defined __i686__ || defined __x86_64__
+  __asm__ volatile (
+    "lock xaddl %0, (%1);"
+    : "=r" (__val)
+    : "r" (valp), "0" (1)
+    : "cc", "memory"
+    );
   /* __val is the old value, so normalize it. */
   ++__val;
 
-#elif defined __i486__ || defined __i586__ || defined __i686__
+#elif defined __powerpc__ || defined __ppc__ || defined __ppc64__
+  int amount = 1;
   __asm__ volatile (
-    "lock xaddl %0, (%1);"
-    "     inc   %0;"
-    : "=r" (__val)
-    : "r" (valp), "0" (0x1)
-    : "cc", "memory"
-    );
-
-#elif defined __i386__ || defined __x86_64__
-  __asm__ volatile (
-    ".byte 0xf0, 0x0f, 0xc1, 0x02" /*lock; xaddl %eax, (%edx) */
-    : "=a" (__val)
-    : "0" (1), "m" (*valp), "d" (valp)
-    : "memory");
-  /* __val is the pre-increment value, so normalize it. */
-  ++__val;
-
-#elif defined __powerpc__ || defined __ppc__
-  __asm__ volatile (
-    "1:	lwarx   %0,0,%1\n"
-    "	addic.   %0,%0,1\n"
-    "	dcbt    %0,%1\n"
-    "	stwcx.  %0,0,%1\n"
-    "	bne-    1b\n"
-    "	isync\n"
+    "1:  lwarx   %0,0,%1\n"
+    "    add     %0,%2,%0\n"
+    "    dcbt    %0,%1\n"
+    "    stwcx.  %0,0,%1\n"
+    "    bne-    1b\n"
+    "    isync\n"
     : "=&r" (__val)
-    : "r" (valp)
+    : "r" (valp), "r" (amount)
     : "cc", "memory");
 
-#elif defined __sparcv9__
-  atomic_t __newval, __oldval = (*valp);
-  do {
-    __newval = __oldval + 1;
-    __asm__ (
-      "cas	[%4], %2, %0"
-      : "=r" (__oldval), "=m" (*valp)
-      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
-  } while (__newval != __oldval);
-  /* The value for __val is in '__oldval' */
-  __val = __oldval;
+#elif defined __sparc__ || defined __sparc64__
+  atomic_t __old, __new = *valp;
+  do
+  {
+    __old = __new;
+    __new = __old + 1;
+    /* compare and swap: if (*a == b) swap(*a, c) else c = *a */
+    __asm__ volatile (
+      "cas [%2], %3, %0"
+      : "=&r" (__new)
+      : "" (__new), "r" (valp), "r" (__old)
+      : "memory");
+  }
+  while (__new != __old);
+  __val = __old + 1;
 
 #elif (defined __ARM_ARCH && __ARM_ARCH == 7)
-  int inc = 1;
+  int amount = 1;
   __asm__ volatile (
-    "dmb     ish\n"           /* Memory barrier */
-    "1:"
-    "ldrex   %0, [%1]\n"
-    "add     %0, %0,  %2\n"
-    "strex   r1, %0, [%1]\n"
-    "cmp     r1, #0\n"
-    "bne     1b\n"
-    "dmb     ish\n"           /* Memory barrier */
+    "    dmb     ish\n"           /* Memory barrier */
+    "1:  ldrex   %0, [%1]\n"
+    "    add     %0, %0, %2\n"
+    "    strex   r1, %0, [%1]\n"
+    "    cmp     r1, #0\n"
+    "    bne     1b\n"
+    "    dmb     ish\n"           /* Memory barrier */
     : "=&r" (__val)
-    : "r"(valp), "r"(inc)
-    : "r1");
+    : "r" (valp), "r" (amount)
+    : "r1", "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH == 6)
-  int inc = 1;
+  int amount = 1;
   __asm__ volatile (
     "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
-    : : "r"(0) : "memory");
+    : : "r" (0) : "memory");
   __asm__ volatile (
-    "1:"
-    "ldrex   %0, [%1]\n"
-    "add     %0, %0,  %2\n"
-    "strex   r1, %0, [%1]\n"
-    "cmp     r1, #0\n"
-    "bne     1b\n"
+    "1:  ldrex   %0, [%1]\n"
+    "    add     %0, %0, %2\n"
+    "    strex   r1, %0, [%1]\n"
+    "    cmp     r1, #0\n"
+    "    bne     1b\n"
     : "=&r" (__val)
-    : "r"(valp), "r"(inc)
+    : "r" (valp), "r" (amount)
     : "r1");
   __asm__ volatile (
     "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
-    : : "r"(0) : "memory");
+    : : "r" (0) : "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH < 6)
   int tmp1, tmp2;
-  int inc = 1;
+  int amount = 1;
   __asm__ volatile (
-    "0:"
-    "ldr     %0, [%3]\n"
-    "add     %1, %0, %4\n"
-    "swp     %2, %1, [%3]\n"
-    "cmp     %0, %2\n"
-    "swpne   %0, %2, [%3]\n"
-    "bne     0b\n"
-    : "=&r"(tmp1), "=&r"(__val), "=&r"(tmp2)
-    : "r" (valp), "r"(inc)
+    "0:  ldr     %0, [%3]\n"
+    "    add     %1, %0, %4\n"
+    "    swp     %2, %1, [%3]\n"
+    "    cmp     %0, %2\n"
+    "    swpne   %0, %2, [%3]\n"
+    "    bne     0b\n"
+    : "=&r" (tmp1), "=&r" (__val), "=&r" (tmp2)
+    : "r" (valp), "r" (amount)
     : "cc", "memory");
+
+#elif defined __aarch64__
+  unsigned long tmp;
+  int amount = 1;
+  __asm__ volatile (
+    "    dmb     ish\n"           /* Memory barrier */
+    "1:  ldxr    %w0, %2\n"
+    "    add     %w0, %w0, %w3\n"
+    "    stlxr   %w1, %w0, %2\n"
+    "    cbnz    %w1, 1b\n"
+    "    dmb     ish\n"           /* Memory barrier */
+    : "=&r" (__val), "=&r" (tmp), "+Q" (*valp)
+    : "Ir" (amount)
+    : "memory");
 
 #elif defined HAS_BUILTIN_SYNC_ADD_AND_FETCH
   /*
@@ -229,107 +239,117 @@ static CC_INLINE long atomic_decrement(atomic_t *valp)
   __val = __sync_sub_and_fetch(valp, 1);
 
 #elif defined __mips__
-  int temp, sub = 1;
+  int temp, amount = 1;
   __asm__ volatile (
+    "    .set   arch=r4000\n"
     "1:  ll     %0, %1\n"       /* load old value */
     "    subu   %2, %0, %3\n"   /* calculate new value */
     "    sc     %2, %1\n"       /* attempt to store */
-    "    beqz   %2, 1b\n"       /* spin if failed */
+    "    beqzl  %2, 1b\n"       /* spin if failed */
+    "    .set   mips0\n"
     : "=&r" (__val), "=m" (*valp), "=&r" (temp)
-    : "r" (sub), "m" (*valp));
+    : "r" (amount), "m" (*valp));
   /* __val is the old value, so normalize it */
-  --__val;
+  __val -= sub;
 
-#elif defined __i486__ || defined __i586__ || defined __i686__
+#elif defined __i386__ || defined __i486__ || defined __i586__ || defined __i686__ || defined __x86_64__
   __asm__ volatile (
     "lock xaddl %0, (%1);"
-    "     dec   %0;"
     : "=r" (__val)
-    : "r" (valp), "0" (-0x1)
+    : "r" (valp), "0" (-1)
     : "cc", "memory"
     );
-
-#elif defined __i386__ || defined __x86_64__
-  __asm__ volatile (
-    ".byte 0xf0, 0x0f, 0xc1, 0x02" /*lock; xaddl %eax, (%edx) */
-    : "=a" (__val)
-    : "0" (-1), "m" (*valp), "d" (valp)
-    : "memory");
   /* __val is the pre-decrement value, so normalize it */
   --__val;
 
-#elif defined __powerpc__ || defined __ppc__
+#elif defined __powerpc__ || defined __ppc__ || defined __ppc64__
+  int amount = 1;
   __asm__ volatile (
-    "1:	lwarx   %0,0,%1\n"
-    "	addic.   %0,%0,-1\n"
-    "	dcbt    %0,%1\n"
-    "	stwcx.  %0,0,%1\n"
-    "	bne-    1b\n"
-    "	isync\n"
+    "1:  lwarx   %0,0,%1\n"
+    "    subf    %0,%2,%0\n"
+    "    dcbt    %0,%1\n"
+    "    stwcx.  %0,0,%1\n"
+    "    bne-    1b\n"
+    "    isync\n"
     : "=&r" (__val)
-    : "r" (valp)
+    : "r" (valp), "r" (amount)
     : "cc", "memory");
 
-#elif defined __sparcv9__
-  atomic_t __newval, __oldval = (*valp);
-  do {
-    __newval = __oldval - 1;
-    __asm__ (
-      "cas	[%4], %2, %0"
-      : "=r" (__oldval), "=m" (*valp)
-      : "r" (__oldval), "m" (*valp), "r"((valp)), "0" (__newval));
-  } while (__newval != __oldval);
-  /* The value for __val is in '__oldval' */
-  __val = __oldval;
+#elif defined __sparc__ || defined __sparc64__
+  atomic_t __old, __new = *valp;
+  do
+  {
+    __old = __new;
+    __new = __old - 1;
+    /* compare and swap: if (*a == b) swap(*a, c) else c = *a */
+    __asm__ volatile (
+      "cas [%2], %3, %0"
+      : "=&r" (__new)
+      : "" (__new), "r" (valp), "r" (__old)
+      : "memory");
+  }
+  while (__new != __old);
+  __val = __old - 1;
 
 #elif (defined __ARM_ARCH && __ARM_ARCH == 7)
-  int dec = 1;
+  int amount = 1;
   __asm__ volatile (
-    "1:"
-    "dmb     ish\n"           /* Memory barrier */
-    "ldrex   %0, [%1]\n"
-    "sub     %0, %0,  %2\n"
-    "strex   r1, %0, [%1]\n"
-    "cmp     r1, #0\n"
-    "bne     1b\n"
-    "dmb     ish\n"           /* Memory barrier */
+    "    dmb     ish\n"           /* Memory barrier */
+    "1:  ldrex   %0, [%1]\n"
+    "    sub     %0, %0, %2\n"
+    "    strex   r1, %0, [%1]\n"
+    "    cmp     r1, #0\n"
+    "    bne     1b\n"
+    "    dmb     ish\n"           /* Memory barrier */
     : "=&r" (__val)
-    : "r"(valp), "r"(dec)
-    : "r1");
+    : "r" (valp), "r" (amount)
+    : "r1", "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH == 6)
-  int dec = 1;
+  int amount = 1;
   __asm__ volatile (
     "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
-    : : "r"(0) : "memory");
+    : : "r" (0) : "memory");
   __asm__ volatile (
-    "1:"
-    "ldrex   %0, [%1]\n"
-    "sub     %0, %0,  %2\n"
-    "strex   r1, %0, [%1]\n"
-    "cmp     r1, #0\n"
-    "bne     1b\n"
+    "1:  ldrex   %0, [%1]\n"
+    "    sub     %0, %0, %2\n"
+    "    strex   r1, %0, [%1]\n"
+    "    cmp     r1, #0\n"
+    "    bne     1b\n"
     : "=&r" (__val)
-    : "r"(valp), "r"(dec)
+    : "r" (valp), "r" (amount)
     : "r1");
   __asm__ volatile (
     "mcr p15, 0, %0, c7, c10, 5"  /* Memory barrier */
-    : : "r"(0) : "memory");
+    : : "r" (0) : "memory");
 
 #elif (defined __ARM_ARCH && __ARM_ARCH < 6)
   int tmp1, tmp2;
-  int inc = -1;
+  int amount = -1;
   __asm__ volatile (
-    "0:"
-    "ldr     %0, [%3]\n"
-    "add     %1, %0, %4\n"
-    "swp     %2, %1, [%3]\n"
-    "cmp     %0, %2\n"
-    "swpne   %0, %2, [%3]\n"
-    "bne     0b\n"
-    : "=&r"(tmp1), "=&r"(__val), "=&r"(tmp2)
-    : "r" (valp), "r"(inc)
+    "0:  ldr     %0, [%3]\n"
+    "    add     %1, %0, %4\n"
+    "    swp     %2, %1, [%3]\n"
+    "    cmp     %0, %2\n"
+    "    swpne   %0, %2, [%3]\n"
+    "    bne     0b\n"
+    : "=&r" (tmp1), "=&r" (__val), "=&r" (tmp2)
+    : "r" (valp), "r" (amount)
     : "cc", "memory");
+
+#elif defined __aarch64__
+  unsigned long tmp;
+  int amount = 1;
+  __asm__ volatile (
+    "    dmb     ish\n"           /* Memory barrier */
+    "1:  ldxr    %w0, %2\n"
+    "    sub     %w0, %w0, %w3\n"
+    "    stlxr   %w1, %w0, %2\n"
+    "    cbnz    %w1, 1b\n"
+    "    dmb     ish\n"           /* Memory barrier */
+    : "=&r" (__val), "=&r" (tmp), "+Q" (*valp)
+    : "Ir" (amount)
+    : "memory");
 
 #elif defined HAS_BUILTIN_SYNC_SUB_AND_FETCH
   /*
