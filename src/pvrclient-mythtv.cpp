@@ -1554,7 +1554,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.iPriority = (*it)->priority;
     tag.iLifetime = (*it)->expiration;
     tag.iRecordingGroup = (*it)->recordingGroup;
-    tag.firstDay = 0; // using startTime
+    tag.firstDay = (*it)->startTime; // using startTime
     tag.iWeekdays = PVR_WEEKDAY_NONE; // not implemented
     tag.iPreventDuplicateEpisodes = static_cast<unsigned>((*it)->dupMethod);
     if ((*it)->epgCheck)
@@ -1702,6 +1702,7 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   bool hasEpgSearch = false;
   time_t st = timer.startTime;
   time_t et = timer.endTime;
+  time_t fd = timer.firstDay;
   time_t now = time(NULL);
 
   if (checkEPG && (timer.iEpgUid > 0 || timer.iEpgUid < -1))
@@ -1727,11 +1728,34 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   else
   {
     hasTimeslot = true;
+    struct tm oldtm;
+    struct tm newtm;
+    if (difftime(fd, st) > 0)
+    {
+      localtime_r(&fd, &newtm);
+      localtime_r(&st, &oldtm);
+      newtm.tm_hour = oldtm.tm_hour;
+      newtm.tm_min = oldtm.tm_min;
+      newtm.tm_sec = 0;
+      st = mktime(&newtm);
+      localtime_r(&et, &oldtm);
+      newtm.tm_hour = oldtm.tm_hour;
+      newtm.tm_min = oldtm.tm_min;
+      newtm.tm_sec = 0;
+      et = mktime(&newtm);
+    }
+    else
+    {
+      localtime_r(&st, &oldtm);
+      oldtm.tm_sec = 0;
+      st = mktime(&oldtm);
+      localtime_r(&et, &oldtm);
+      oldtm.tm_sec = 0;
+      et = mktime(&oldtm);
+    }
     // Adjust end time as needed
     if (et < st)
     {
-      struct tm oldtm;
-      struct tm newtm;
       localtime_r(&et, &oldtm);
       localtime_r(&st, &newtm);
       newtm.tm_hour = oldtm.tm_hour;
