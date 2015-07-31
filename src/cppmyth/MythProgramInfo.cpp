@@ -328,3 +328,8 @@ uint16_t MythProgramInfo::Episode() const
 {
   return (m_proginfo ? m_proginfo->episode : 0);
 }
+
+time_t MythProgramInfo::Airdate() const
+{
+  return (m_proginfo ? m_proginfo->airdate : 0);
+}

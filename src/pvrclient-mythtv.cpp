@@ -847,10 +847,19 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       //@TODO: tag.iLastPlayedPosition
 
       std::string id = it->second.UID();
-      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
 
       PVR_STRCPY(tag.strRecordingId, id.c_str());
-      PVR_STRCPY(tag.strTitle, title.c_str());
+      PVR_STRCPY(tag.strTitle, it->second.Title().c_str());
+      PVR_STRCPY(tag.strEpisodeName, it->second.Subtitle().c_str());
+      tag.iSeriesNumber = it->second.Season();
+      tag.iEpisodeNumber = it->second.Episode();
+      time_t airTime(it->second.Airdate());
+      if (difftime(airTime, 0) > 0)
+      {
+        struct tm airTimeDate;
+        localtime_r(&airTime, &airTimeDate);
+        tag.iYear = airTimeDate.tm_year + 1900;
+      }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
 
@@ -949,10 +958,19 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
       //@TODO: tag.iLastPlayedPosition
 
       std::string id = it->second.UID();
-      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
 
       PVR_STRCPY(tag.strRecordingId, id.c_str());
-      PVR_STRCPY(tag.strTitle, title.c_str());
+      PVR_STRCPY(tag.strTitle, it->second.Title().c_str());
+      PVR_STRCPY(tag.strEpisodeName, it->second.Subtitle().c_str());
+      tag.iSeriesNumber = it->second.Season();
+      tag.iEpisodeNumber = it->second.Episode();
+      time_t airTime(it->second.Airdate());
+      if (difftime(airTime, 0) > 0)
+      {
+        struct tm airTimeDate;
+        localtime_r(&airTime, &airTimeDate);
+        tag.iYear = airTimeDate.tm_year + 1900;
+      }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
 

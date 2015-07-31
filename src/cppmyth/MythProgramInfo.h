@@ -82,6 +82,7 @@ public:
   std::string Inetref() const;
   uint16_t Season() const;
   uint16_t Episode() const;
+  time_t Airdate() const;
 
 private:
   Myth::ProgramPtr m_proginfo;
