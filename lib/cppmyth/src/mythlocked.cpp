@@ -1,5 +1,5 @@
 /*
- *      Copyright (C) 2014-2015 Jean-Luc Barriere
+ *      Copyright (C) 2015 Jean-Luc Barriere
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,25 +19,51 @@
  *
  */
 
-#ifndef MYTHDEBUG_H
-#define	MYTHDEBUG_H
+#include "mythlocked.h"
+#include "private/os/threads/mutex.h"
 
-#define MYTH_DBG_NONE  -1
-#define MYTH_DBG_ERROR  0
-#define MYTH_DBG_WARN   1
-#define MYTH_DBG_INFO   2
-#define MYTH_DBG_DEBUG  3
-#define MYTH_DBG_PROTO  4
-#define MYTH_DBG_ALL    6
+using namespace Myth;
 
 namespace Myth
 {
-  void DBGLevel(int l);
-  void DBGAll(void);
-  void DBGNone(void);
-  void DBG(int level, const char* fmt, ...);
-  void SetDBGMsgCallback(void (*msgcb)(int level, char*));
+  struct LockGuard::Lockable
+  {
+    OS::CMutex mutex;
+  };
 }
 
-#endif	/* MYTHDEBUG_H */
+LockGuard::LockGuard(Lockable* lock)
+: m_lock(lock)
+{
+  m_lock->mutex.Lock();
+}
 
+LockGuard::~LockGuard()
+{
+  m_lock->mutex.Unlock();
+}
+
+LockGuard::Lockable* LockGuard::CreateLock()
+{
+  return new Lockable();
+}
+
+void LockGuard::DestroyLock(Lockable* lock)
+{
+  delete lock;
+}
+
+void LockGuard::Lock(Lockable* lock)
+{
+  lock->mutex.Lock();
+}
+
+void LockGuard::Unlock(Lockable* lock)
+{
+  lock->mutex.Unlock();
+}
+
+void LockGuard::ClearLock(Lockable* lock)
+{
+  lock->mutex.Clear();
+}

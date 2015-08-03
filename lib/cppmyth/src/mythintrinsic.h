@@ -1,5 +1,5 @@
 /*
- *      Copyright (C) 2014-2015 Jean-Luc Barriere
+ *      Copyright (C) 2015 Jean-Luc Barriere
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,25 +19,33 @@
  *
  */
 
-#ifndef MYTHDEBUG_H
-#define	MYTHDEBUG_H
-
-#define MYTH_DBG_NONE  -1
-#define MYTH_DBG_ERROR  0
-#define MYTH_DBG_WARN   1
-#define MYTH_DBG_INFO   2
-#define MYTH_DBG_DEBUG  3
-#define MYTH_DBG_PROTO  4
-#define MYTH_DBG_ALL    6
+#ifndef MYTHINTRINSIC_H
+#define	MYTHINTRINSIC_H
 
 namespace Myth
 {
-  void DBGLevel(int l);
-  void DBGAll(void);
-  void DBGNone(void);
-  void DBG(int level, const char* fmt, ...);
-  void SetDBGMsgCallback(void (*msgcb)(int level, char*));
+  class IntrinsicCounter
+  {
+  public:
+    IntrinsicCounter(int val);
+
+    ~IntrinsicCounter();
+
+    int GetValue();
+
+    int Increment();
+
+    int Decrement();
+
+  private:
+    struct Counter;
+    Counter* m_ptr;
+
+    // Prevent copy
+    IntrinsicCounter(const IntrinsicCounter& other);
+    IntrinsicCounter& operator=(const IntrinsicCounter& other);
+  };
+
 }
 
-#endif	/* MYTHDEBUG_H */
-
+#endif	/* MYTHINTRINSIC_H */
