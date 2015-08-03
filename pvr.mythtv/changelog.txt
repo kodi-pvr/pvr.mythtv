@@ -1,3 +1,6 @@
+v2.5.0
+- Sync cppmyth upstream (2.1.0)
+
 v2.4.3
 - Stop to iterate recordings map until next change
 - Fix debug log when overriding end offset
