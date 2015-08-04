@@ -44,6 +44,10 @@ PVRClientMythTV::PVRClientMythTV()
 , m_scheduleManager(NULL)
 , m_demux(NULL)
 , m_recordingChangePinCount(0)
+, m_recordingsAmountChange(false)
+, m_recordingsAmount(0)
+, m_deletedRecAmountChange(false)
+, m_deletedRecAmount(0)
 {
 }
 
@@ -479,7 +483,12 @@ void PVRClientMythTV::RunHouseKeeping()
   }
   if (m_recordingChangePinCount)
   {
+    CLockObject lock(m_recordingsLock);
+    m_recordingsAmountChange = true; // Need count recording amount
+    m_deletedRecAmountChange = true; // Need count of deleted amount
+    lock.Unlock();
     PVR->TriggerRecordingUpdate();
+    lock.Lock();
     m_recordingChangePinCount = 0;
   }
 }
@@ -770,20 +779,23 @@ int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
 
 int PVRClientMythTV::GetRecordingsAmount()
 {
-  int res = 0;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
-
-  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  if (m_recordingsAmountChange)
   {
-    if (!it->second.IsNull() && it->second.IsVisible())
-      res++;
+    int res = 0;
+    CLockObject lock(m_recordingsLock);
+    for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+    {
+      if (!it->second.IsNull() && it->second.IsVisible())
+        res++;
+    }
+    m_recordingsAmount = res;
+    m_recordingsAmountChange = false;
+    XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, res);
   }
-  if (res == 0)
-    XBMC->Log(LOG_INFO, "%s: No recording", __FUNCTION__);
-  return res;
+  return m_recordingsAmount;
 }
 
 PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
@@ -894,20 +906,23 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
 int PVRClientMythTV::GetDeletedRecordingsAmount()
 {
-  int res = 0;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
-
-  for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  if (m_deletedRecAmountChange)
   {
-    if (!it->second.IsNull() && it->second.IsDeleted())
-      res++;
+    int res = 0;  
+    CLockObject lock(m_recordingsLock);
+    for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+    {
+      if (!it->second.IsNull() && it->second.IsDeleted())
+        res++;
+    }
+    m_deletedRecAmount = res;
+    m_deletedRecAmountChange = false;
+    XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, res);
   }
-  if (res == 0)
-    XBMC->Log(LOG_INFO, "%s: No deleted recording", __FUNCTION__);
-  return res;
+  return m_deletedRecAmount;
 }
 
 PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
@@ -1015,9 +1030,9 @@ void PVRClientMythTV::ForceUpdateRecording(ProgramInfoMap::iterator it)
 
 int PVRClientMythTV::FillRecordings()
 {
-  if (!m_control || !m_eventHandler)
-    return 0;
   int count = 0;
+  if (!m_control || !m_eventHandler)
+    return count;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   // Check event connection
@@ -1026,16 +1041,18 @@ int PVRClientMythTV::FillRecordings()
 
   // Load recordings map
   m_recordings.clear();
+  m_recordingsAmount = 0;
+  m_deletedRecAmount = 0;
   Myth::ProgramListPtr programs = m_control->GetRecordedList();
   for (Myth::ProgramList::iterator it = programs->begin(); it != programs->end(); ++it)
   {
     MythProgramInfo prog = MythProgramInfo(*it);
     m_recordings.insert(std::make_pair(prog.UID(), prog));
-    // Count visible recordings
-    if (prog.IsVisible() && !prog.IsLiveTV())
-      ++count;
+    ++count;
   }
-  XBMC->Log(LOG_DEBUG, "%s: Loaded %d visible recording(s)", __FUNCTION__, count);
+  if (count > 0)
+    m_recordingsAmountChange = m_deletedRecAmountChange = true; // Need count amounts
+  XBMC->Log(LOG_DEBUG, "%s: count %d", __FUNCTION__, count);
   return count;
 }
 
@@ -1537,7 +1554,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.iPriority = (*it)->priority;
     tag.iLifetime = (*it)->expiration;
     tag.iRecordingGroup = (*it)->recordingGroup;
-    tag.firstDay = 0; // using startTime
+    tag.firstDay = (*it)->startTime; // using startTime
     tag.iWeekdays = PVR_WEEKDAY_NONE; // not implemented
     tag.iPreventDuplicateEpisodes = static_cast<unsigned>((*it)->dupMethod);
     if ((*it)->epgCheck)
@@ -1685,6 +1702,7 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   bool hasEpgSearch = false;
   time_t st = timer.startTime;
   time_t et = timer.endTime;
+  time_t fd = timer.firstDay;
   time_t now = time(NULL);
 
   if (checkEPG && (timer.iEpgUid > 0 || timer.iEpgUid < -1))
@@ -1710,11 +1728,34 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   else
   {
     hasTimeslot = true;
+    struct tm oldtm;
+    struct tm newtm;
+    if (difftime(fd, st) > 0)
+    {
+      localtime_r(&fd, &newtm);
+      localtime_r(&st, &oldtm);
+      newtm.tm_hour = oldtm.tm_hour;
+      newtm.tm_min = oldtm.tm_min;
+      newtm.tm_sec = 0;
+      st = mktime(&newtm);
+      localtime_r(&et, &oldtm);
+      newtm.tm_hour = oldtm.tm_hour;
+      newtm.tm_min = oldtm.tm_min;
+      newtm.tm_sec = 0;
+      et = mktime(&newtm);
+    }
+    else
+    {
+      localtime_r(&st, &oldtm);
+      oldtm.tm_sec = 0;
+      st = mktime(&oldtm);
+      localtime_r(&et, &oldtm);
+      oldtm.tm_sec = 0;
+      et = mktime(&oldtm);
+    }
     // Adjust end time as needed
     if (et < st)
     {
-      struct tm oldtm;
-      struct tm newtm;
       localtime_r(&et, &oldtm);
       localtime_r(&st, &newtm);
       newtm.tm_hour = oldtm.tm_hour;
@@ -1861,10 +1902,10 @@ PVR_ERROR PVRClientMythTV::GetTimerTypes(PVR_TIMER_TYPE types[], int *size)
   if (m_scheduleManager)
   {
     CLockObject lock(m_lock);
-    const std::vector<MythScheduleManager::TimerType>& typeList = m_scheduleManager->GetTimerTypes();
+    MythTimerTypeList typeList = m_scheduleManager->GetTimerTypes();
     assert(typeList.size() <= static_cast<unsigned>(*size));
-    for (std::vector<MythScheduleManager::TimerType>::const_iterator it = typeList.begin(); it != typeList.end(); ++it)
-      it->Fill(&types[index++]);
+    for (MythTimerTypeList::const_iterator it = typeList.begin(); it != typeList.end(); ++it)
+      (*it)->Fill(&types[index++]);
   }
   else
   {

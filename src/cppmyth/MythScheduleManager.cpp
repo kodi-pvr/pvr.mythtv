@@ -25,6 +25,7 @@
 #include "MythScheduleHelper85.h"
 #include "../client.h"
 #include "../tools.h"
+#include "private/cppdef.h"
 
 #include <cstdio>
 #include <cassert>
@@ -127,6 +128,12 @@ MythScheduleManager::MythScheduleManager(const std::string& server, unsigned pro
 , m_control(NULL)
 , m_protoVersion(0)
 , m_versionHelper(NULL)
+, m_rules(NULL)
+, m_rulesById(NULL)
+, m_rulesByIndex(NULL)
+, m_recordings(NULL)
+, m_recordingIndexByRuleId(NULL)
+, m_templates(NULL)
 , m_showNotRecording(false)
 {
   m_control = new Myth::Control(server, protoPort, wsapiPort, wsapiSecurityPin);
@@ -135,12 +142,20 @@ MythScheduleManager::MythScheduleManager(const std::string& server, unsigned pro
 
 MythScheduleManager::~MythScheduleManager()
 {
+  CLockObject lock(m_lock);
+  SAFE_DELETE(m_recordingIndexByRuleId);
+  SAFE_DELETE(m_recordings);
+  SAFE_DELETE(m_templates);
+  SAFE_DELETE(m_rulesByIndex);
+  SAFE_DELETE(m_rulesById);
+  SAFE_DELETE(m_rules);
   SAFE_DELETE(m_versionHelper);
   SAFE_DELETE(m_control);
 }
 
 void MythScheduleManager::Setup()
 {
+  CLockObject lock(m_lock);
   int old = m_protoVersion;
   m_protoVersion = m_control->CheckService();
 
@@ -190,7 +205,7 @@ uint32_t MythScheduleManager::MakeIndex(const MythRecordingRule& rule)
 unsigned MythScheduleManager::GetUpcomingCount() const
 {
   CLockObject lock(m_lock);
-  return (unsigned)m_recordings.size();
+  return (unsigned)m_recordings->size();
 }
 
 MythTimerEntryList MythScheduleManager::GetTimerEntries()
@@ -198,7 +213,7 @@ MythTimerEntryList MythScheduleManager::GetTimerEntries()
   CLockObject lock(m_lock);
   MythTimerEntryList entries;
 
-  for (NodeList::iterator it = m_rules.begin(); it != m_rules.end(); ++it)
+  for (NodeList::iterator it = m_rules->begin(); it != m_rules->end(); ++it)
   {
     if ((*it)->IsOverrideRule())
       continue;
@@ -207,7 +222,7 @@ MythTimerEntryList MythScheduleManager::GetTimerEntries()
       entries.push_back(entry);
   }
 
-  for (RecordingList::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+  for (RecordingList::iterator it = m_recordings->begin(); it != m_recordings->end(); ++it)
   {
     MythTimerEntryPtr entry = MythTimerEntryPtr(new MythTimerEntry());
     if (m_versionHelper->FillTimerEntryWithUpcoming(*entry, *(it->second)))
@@ -218,6 +233,7 @@ MythTimerEntryList MythScheduleManager::GetTimerEntries()
 
 MythScheduleManager::MSM_ERROR MythScheduleManager::SubmitTimer(const MythTimerEntry& entry)
 {
+  CLockObject lock(m_lock);
   switch (entry.timerType)
   {
     case TIMER_TYPE_MANUAL_SEARCH:
@@ -240,6 +256,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::SubmitTimer(const MythTimerE
 
 MythScheduleManager::MSM_ERROR MythScheduleManager::UpdateTimer(const MythTimerEntry& entry)
 {
+  CLockObject lock(m_lock);
   switch (entry.timerType)
   {
     case TIMER_TYPE_UPCOMING:
@@ -745,8 +762,8 @@ MythRecordingRuleNodePtr MythScheduleManager::FindRuleById(uint32_t recordid) co
 {
   CLockObject lock(m_lock);
 
-  NodeById::const_iterator it = m_rulesById.find(recordid);
-  if (it != m_rulesById.end())
+  NodeById::const_iterator it = m_rulesById->find(recordid);
+  if (it != m_rulesById->end())
     return it->second;
   return MythRecordingRuleNodePtr();
 }
@@ -755,8 +772,8 @@ MythRecordingRuleNodePtr MythScheduleManager::FindRuleByIndex(uint32_t index) co
 {
   CLockObject lock(m_lock);
 
-  NodeByIndex::const_iterator it = m_rulesByIndex.find(index);
-  if (it != m_rulesByIndex.end())
+  NodeByIndex::const_iterator it = m_rulesByIndex->find(index);
+  if (it != m_rulesByIndex->end())
     return it->second;
   return MythRecordingRuleNodePtr();
 }
@@ -766,13 +783,13 @@ MythScheduleList MythScheduleManager::FindUpComingByRuleId(uint32_t recordid) co
   CLockObject lock(m_lock);
 
   MythScheduleList found;
-  std::pair<RecordingIndexByRuleId::const_iterator, RecordingIndexByRuleId::const_iterator> range = m_recordingIndexByRuleId.equal_range(recordid);
-  if (range.first != m_recordingIndexByRuleId.end())
+  std::pair<RecordingIndexByRuleId::const_iterator, RecordingIndexByRuleId::const_iterator> range = m_recordingIndexByRuleId->equal_range(recordid);
+  if (range.first != m_recordingIndexByRuleId->end())
   {
     for (RecordingIndexByRuleId::const_iterator it = range.first; it != range.second; ++it)
     {
-      RecordingList::const_iterator recordingIt = m_recordings.find(it->second);
-      if (recordingIt != m_recordings.end())
+      RecordingList::const_iterator recordingIt = m_recordings->find(it->second);
+      if (recordingIt != m_recordings->end())
         found.push_back(std::make_pair(it->second, recordingIt->second));
     }
   }
@@ -783,8 +800,8 @@ MythScheduledPtr MythScheduleManager::FindUpComingByIndex(uint32_t index) const
 {
   CLockObject lock(m_lock);
 
-  RecordingList::const_iterator it = m_recordings.find(index);
-  if (it != m_recordings.end())
+  RecordingList::const_iterator it = m_recordings->find(index);
+  if (it != m_recordings->end())
     return it->second;
   return MythScheduledPtr();
 }
@@ -804,46 +821,48 @@ void MythScheduleManager::CloseControl()
 
 void MythScheduleManager::Update()
 {
-  CLockObject lock(m_lock);
-
   // Setup VersionHelper for the new set
   this->Setup();
+  // Allocate containers
+  NodeList* new_rules = new NodeList;
+  NodeById* new_rulesById = new NodeById;
+  NodeByIndex* new_rulesByIndex = new NodeByIndex;
+  MythRecordingRuleList* new_templates = new MythRecordingRuleList;
+  RecordingList* new_recordings = new RecordingList;
+  RecordingIndexByRuleId* new_recordingIndexByRuleId = new RecordingIndexByRuleId;
+
   Myth::RecordScheduleListPtr records = m_control->GetRecordScheduleList();
-  m_rules.clear();
-  m_rulesById.clear();
-  m_rulesByIndex.clear();
-  m_templates.clear();
   for (Myth::RecordScheduleList::iterator it = records->begin(); it != records->end(); ++it)
   {
     MythRecordingRule rule(*it);
     if (rule.Type() == Myth::RT_TemplateRecord)
     {
-      m_templates.push_back(rule);
+      new_templates->push_back(rule);
     }
     else
     {
       MythRecordingRuleNodePtr node = MythRecordingRuleNodePtr(new MythRecordingRuleNode(rule));
-      m_rules.push_back(node);
-      m_rulesById.insert(NodeById::value_type(rule.RecordID(), node));
-      m_rulesByIndex.insert(NodeByIndex::value_type(MakeIndex(rule), node));
+      new_rules->push_back(node);
+      new_rulesById->insert(NodeById::value_type(rule.RecordID(), node));
+      new_rulesByIndex->insert(NodeByIndex::value_type(MakeIndex(rule), node));
     }
   }
 
-  for (NodeList::iterator it = m_rules.begin(); it != m_rules.end(); ++it)
+  for (NodeList::iterator it = new_rules->begin(); it != new_rules->end(); ++it)
   {
     // Is override rule ? Then find main rule and link to it
     if ((*it)->IsOverrideRule())
     {
       // First check parentid. Then fallback searching the same timeslot
-      NodeById::iterator itp = m_rulesById.find((*it)->m_rule.ParentID());
-      if (itp != m_rulesById.end())
+      NodeById::iterator itp = new_rulesById->find((*it)->m_rule.ParentID());
+      if (itp != new_rulesById->end())
       {
         itp->second->m_overrideRules.push_back((*it)->m_rule);
         (*it)->m_mainRule = itp->second->m_rule;
       }
       else
       {
-        for (NodeList::iterator itm = m_rules.begin(); itm != m_rules.end(); ++itm)
+        for (NodeList::iterator itm = new_rules->begin(); itm != new_rules->end(); ++itm)
           if (!(*itm)->IsOverrideRule() && m_versionHelper->SameTimeslot((*it)->m_rule, (*itm)->m_rule))
           {
             (*itm)->m_overrideRules.push_back((*it)->m_rule);
@@ -854,31 +873,29 @@ void MythScheduleManager::Update()
     }
   }
 
-  m_recordings.clear();
-  m_recordingIndexByRuleId.clear();
   // Add upcoming recordings
   Myth::ProgramListPtr recordings = m_control->GetUpcomingList();
   for (Myth::ProgramList::iterator it = recordings->begin(); it != recordings->end(); ++it)
   {
     MythScheduledPtr scheduled = MythScheduledPtr(new MythProgramInfo(*it));
     uint32_t index = MakeIndex(*scheduled);
-    m_recordings.insert(RecordingList::value_type(index, scheduled));
-    m_recordingIndexByRuleId.insert(RecordingIndexByRuleId::value_type(scheduled->RecordID(), index));
+    new_recordings->insert(RecordingList::value_type(index, scheduled));
+    new_recordingIndexByRuleId->insert(RecordingIndexByRuleId::value_type(scheduled->RecordID(), index));
     // Update summary status of related rule
     switch (scheduled->Status())
     {
       case Myth::RS_RECORDING:
       case Myth::RS_TUNING:
       {
-        NodeById::const_iterator rit = m_rulesById.find(scheduled->RecordID());
-        if (rit != m_rulesById.end())
+        NodeById::const_iterator rit = new_rulesById->find(scheduled->RecordID());
+        if (rit != new_rulesById->end())
           rit->second->m_isRecording = true;
         break;
       }
       case Myth::RS_CONFLICT:
       {
-        NodeById::const_iterator rit = m_rulesById.find(scheduled->RecordID());
-        if (rit != m_rulesById.end())
+        NodeById::const_iterator rit = new_rulesById->find(scheduled->RecordID());
+        if (rit != new_rulesById->end())
           rit->second->m_hasConflict = true;
         break;
       }
@@ -889,21 +906,78 @@ void MythScheduleManager::Update()
 
   if (g_bExtraDebug)
   {
-    for (NodeList::iterator it = m_rules.begin(); it != m_rules.end(); ++it)
+    for (NodeList::iterator it = new_rules->begin(); it != new_rules->end(); ++it)
       XBMC->Log(LOG_DEBUG, "%s: Rule node - recordid: %u, parentid: %u, type: %d, overriden: %s", __FUNCTION__,
               (unsigned)(*it)->m_rule.RecordID(), (unsigned)(*it)->m_rule.ParentID(),
               (int)(*it)->m_rule.Type(), ((*it)->HasOverrideRules() ? "Yes" : "No"));
-    for (RecordingList::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
+    for (RecordingList::iterator it = new_recordings->begin(); it != new_recordings->end(); ++it)
       XBMC->Log(LOG_DEBUG, "%s: Recording - recordid: %u, index: %u, status: %d, title: %s", __FUNCTION__,
               (unsigned)it->second->RecordID(), (unsigned)it->first, it->second->Status(), it->second->Title().c_str());
   }
+  
+  {
+    CLockObject lock(m_lock);
+    SAFE_DELETE(m_recordingIndexByRuleId);
+    SAFE_DELETE(m_recordings);
+    SAFE_DELETE(m_templates);
+    SAFE_DELETE(m_rulesByIndex);
+    SAFE_DELETE(m_rulesById);
+    SAFE_DELETE(m_rules);
+    m_rules = new_rules;
+    m_rulesById = new_rulesById;
+    m_rulesByIndex = new_rulesByIndex;
+    m_templates = new_templates;
+    m_recordings = new_recordings;
+    m_recordingIndexByRuleId = new_recordingIndexByRuleId;
+  }
 }
 
-MythScheduleManager::TimerType::TimerType(TimerTypeId id, unsigned attributes, const std::string& description,
-            const RulePriorityList* priorityList, int priorityDefault,
-            const RuleDupMethodList* dupMethodList, int dupMethodDefault,
-            const RuleExpirationList* expirationList, int expirationDefault,
-            const RuleRecordingGroupList* recGroupList, int recGroupDefault)
+MythTimerTypeList MythScheduleManager::GetTimerTypes()
+{
+  CLockObject lock(m_lock);
+  return m_versionHelper->GetTimerTypes();
+}
+
+bool MythScheduleManager::FillTimerEntryWithRule(MythTimerEntry& entry, const MythRecordingRuleNode& node) const
+{
+  CLockObject lock(m_lock);
+  return m_versionHelper->FillTimerEntryWithRule(entry, node);
+}
+
+bool MythScheduleManager::FillTimerEntryWithUpcoming(MythTimerEntry& entry, const MythProgramInfo& recording) const
+{
+  CLockObject lock(m_lock);
+  return m_versionHelper->FillTimerEntryWithUpcoming(entry, recording);
+}
+
+MythRecordingRule MythScheduleManager::NewFromTimer(const MythTimerEntry& entry, bool withTemplate)
+{
+  CLockObject lock(m_lock);
+  return m_versionHelper->NewFromTimer(entry, withTemplate);
+}
+
+MythRecordingRuleList MythScheduleManager::GetTemplateRules() const
+{
+  CLockObject lock(m_lock);
+  return *m_templates;
+}
+
+bool MythScheduleManager::ToggleShowNotRecording()
+{
+  m_showNotRecording ^= true;
+  return m_showNotRecording;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+////
+//// MythTimerType
+////
+
+MythTimerType::MythTimerType(TimerTypeId id, unsigned attributes, const std::string& description,
+            const AttributeList& priorityList, int priorityDefault,
+            const AttributeList& dupMethodList, int dupMethodDefault,
+            const AttributeList& expirationList, int expirationDefault,
+            const AttributeList& recGroupList, int recGroupDefault)
 : m_id(id)
 , m_attributes(attributes)
 , m_description(description)
@@ -917,7 +991,7 @@ MythScheduleManager::TimerType::TimerType(TimerTypeId id, unsigned attributes, c
 , m_recGroupDefault(recGroupDefault)
 { }
 
-void MythScheduleManager::TimerType::Fill(PVR_TIMER_TYPE* type) const
+void MythTimerType::Fill(PVR_TIMER_TYPE* type) const
 {
   memset(type, 0, sizeof(PVR_TIMER_TYPE));
   type->iId = m_id;
@@ -925,130 +999,46 @@ void MythScheduleManager::TimerType::Fill(PVR_TIMER_TYPE* type) const
   PVR_STRCPY(type->strDescription, m_description.c_str());
 
   // Fill priorities
-  if (m_priorityList)
+  type->iPrioritiesSize = m_priorityList.size();
+  assert(type->iPrioritiesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
+  unsigned index = 0;
+  for (AttributeList::const_iterator it = m_priorityList.begin(); it != m_priorityList.end(); ++it, ++index)
   {
-    type->iPrioritiesSize = m_priorityList->size();
-    assert(type->iPrioritiesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
-    unsigned index = 0;
-    for (MythScheduleManager::RulePriorityList::const_iterator it = m_priorityList->begin(); it != m_priorityList->end(); ++it, ++index)
-    {
-      type->priorities[index].iValue = it->first;
-      PVR_STRCPY(type->priorities[index].strDescription, it->second.c_str());
-    }
-    type->iPrioritiesDefault = m_priorityDefault;
+    type->priorities[index].iValue = it->first;
+    PVR_STRCPY(type->priorities[index].strDescription, it->second.c_str());
   }
+  type->iPrioritiesDefault = m_priorityDefault;
 
   // Fill duplicate methodes
-  if (m_dupMethodList)
+  type->iPreventDuplicateEpisodesSize = m_dupMethodList.size();
+  assert(type->iPreventDuplicateEpisodesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
+  index = 0;
+  for (AttributeList::const_iterator it = m_dupMethodList.begin(); it != m_dupMethodList.end(); ++it, ++index)
   {
-    type->iPreventDuplicateEpisodesSize = m_dupMethodList->size();
-    assert(type->iPreventDuplicateEpisodesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
-    unsigned index = 0;
-    for (MythScheduleManager::RuleDupMethodList::const_iterator it = m_dupMethodList->begin(); it != m_dupMethodList->end(); ++it, ++index)
-    {
-      type->preventDuplicateEpisodes[index].iValue = it->first;
-      PVR_STRCPY(type->preventDuplicateEpisodes[index].strDescription, it->second.c_str());
-    }
-    type->iPreventDuplicateEpisodesDefault = m_dupMethodDefault;
+    type->preventDuplicateEpisodes[index].iValue = it->first;
+    PVR_STRCPY(type->preventDuplicateEpisodes[index].strDescription, it->second.c_str());
   }
+  type->iPreventDuplicateEpisodesDefault = m_dupMethodDefault;
 
   // Fill expirations
-  if (m_expirationList)
+  type->iLifetimesSize = m_expirationList.size();
+  assert(type->iLifetimesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
+  index = 0;
+  for (AttributeList::const_iterator it = m_expirationList.begin(); it != m_expirationList.end(); ++it, ++index)
   {
-    type->iLifetimesSize = m_expirationList->size();
-    assert(type->iLifetimesSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
-    unsigned index = 0;
-    for (MythScheduleManager::RuleExpirationList::const_iterator it = m_expirationList->begin(); it != m_expirationList->end(); ++it, ++index)
-    {
-      type->lifetimes[index].iValue = it->first;
-      PVR_STRCPY(type->lifetimes[index].strDescription, it->second.second.c_str());
-    }
-    type->iLifetimesDefault = m_expirationDefault;
+    type->lifetimes[index].iValue = it->first;
+    PVR_STRCPY(type->lifetimes[index].strDescription, it->second.c_str());
   }
+  type->iLifetimesDefault = m_expirationDefault;
 
   // Fill recording groups
-  if (m_recGroupList)
+  type->iRecordingGroupSize = m_recGroupList.size();
+  assert(type->iRecordingGroupSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
+  index = 0;
+  for (AttributeList::const_iterator it = m_recGroupList.begin(); it != m_recGroupList.end(); ++it, ++index)
   {
-    type->iRecordingGroupSize = m_recGroupList->size();
-    assert(type->iRecordingGroupSize <= PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE);
-    unsigned index = 0;
-    for (MythScheduleManager::RuleRecordingGroupList::const_iterator it = m_recGroupList->begin(); it != m_recGroupList->end(); ++it, ++index)
-    {
-      type->recordingGroup[index].iValue = it->first;
-      PVR_STRCPY(type->recordingGroup[index].strDescription, it->second.c_str());
-    }
-    type->iRecordingGroupDefault = m_recGroupDefault;
+    type->recordingGroup[index].iValue = it->first;
+    PVR_STRCPY(type->recordingGroup[index].strDescription, it->second.c_str());
   }
+  type->iRecordingGroupDefault = m_recGroupDefault;
 }
-
-const std::vector<MythScheduleManager::TimerType>& MythScheduleManager::GetTimerTypes()
-{
-  return m_versionHelper->GetTimerTypes();
-}
-
-const MythScheduleManager::RulePriorityList& MythScheduleManager::GetRulePriorityList()
-{
-  return m_versionHelper->GetRulePriorityList();
-}
-
-int MythScheduleManager::GetRulePriorityDefaultId()
-{
-  return m_versionHelper->GetRulePriorityDefaultId();
-}
-
-const MythScheduleManager::RuleDupMethodList& MythScheduleManager::GetRuleDupMethodList()
-{
-  return m_versionHelper->GetRuleDupMethodList();
-}
-
-int MythScheduleManager::GetRuleDupMethodDefaultId()
-{
-  return m_versionHelper->GetRuleDupMethodDefaultId();
-}
-
-const MythScheduleManager::RuleExpirationList& MythScheduleManager::GetRuleExpirationList()
-{
-  return m_versionHelper->GetRuleExpirationList();
-}
-
-int MythScheduleManager::GetRuleExpirationDefaultId()
-{
-  return m_versionHelper->GetRuleExpirationDefaultId();
-}
-
-const MythScheduleManager::RuleRecordingGroupList& MythScheduleManager::GetRuleRecordingGroupList()
-{
-  return m_versionHelper->GetRuleRecordingGroupList();
-}
-
-int MythScheduleManager::GetRuleRecordingGroupDefaultId()
-{
-  return m_versionHelper->GetRuleRecordingGroupDefaultId();
-}
-
-bool MythScheduleManager::FillTimerEntry(MythTimerEntry& entry, const MythRecordingRuleNode& node) const
-{
-  return m_versionHelper->FillTimerEntryWithRule(entry, node);
-}
-
-bool MythScheduleManager::FillTimerEntry(MythTimerEntry& entry, const MythProgramInfo& recording) const
-{
-  return m_versionHelper->FillTimerEntryWithUpcoming(entry, recording);
-}
-
-MythRecordingRule MythScheduleManager::NewFromTimer(const MythTimerEntry& entry, bool withTemplate)
-{
-  return m_versionHelper->NewFromTimer(entry, withTemplate);
-}
-
-MythRecordingRuleList MythScheduleManager::GetTemplateRules() const
-{
-  return m_templates;
-}
-
-bool MythScheduleManager::ToggleShowNotRecording()
-{
-  m_showNotRecording ^= true;
-  return m_showNotRecording;
-}
-

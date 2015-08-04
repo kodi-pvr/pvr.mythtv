@@ -217,7 +217,7 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   entry.endOffset = rule.EndOffset();
   entry.dupMethod = rule.DuplicateControlMethod();
   entry.priority = rule.Priority();
-  entry.expiration = GetRuleExpirationId(MythScheduleManager::RuleExpiration(rule.AutoExpire(), rule.MaxEpisodes(), rule.NewExpiresOldRecord()));
+  entry.expiration = GetRuleExpirationId(RuleExpiration(rule.AutoExpire(), rule.MaxEpisodes(), rule.NewExpiresOldRecord()));
   entry.isInactive = rule.Inactive();
   entry.firstShowing = (rule.Filter() & Myth::FM_FirstShowing ? true : false);
   entry.recordingGroup = GetRuleRecordingGroupId(rule.RecordingGroup());
@@ -252,7 +252,7 @@ MythRecordingRule MythScheduleHelper76::NewFromTimer(const MythTimerEntry& entry
       rule.SetPriority(entry.priority);
     if (entry.expiration != GetRuleExpirationDefaultId())
     {
-      const MythScheduleManager::RuleExpiration& exr = GetRuleExpiration(entry.expiration);
+      RuleExpiration exr = GetRuleExpiration(entry.expiration);
       rule.SetAutoExpire(exr.autoExpire);
       rule.SetMaxEpisodes(exr.maxEpisodes);
       rule.SetNewExpiresOldRecord(exr.maxNewest);
@@ -267,7 +267,7 @@ MythRecordingRule MythScheduleHelper76::NewFromTimer(const MythTimerEntry& entry
     rule.SetEndOffset(entry.endOffset);
     rule.SetDuplicateControlMethod(entry.dupMethod);
     rule.SetPriority(entry.priority);
-    const MythScheduleManager::RuleExpiration& exr = GetRuleExpiration(entry.expiration);
+    RuleExpiration exr = GetRuleExpiration(entry.expiration);
     rule.SetAutoExpire(exr.autoExpire);
     rule.SetMaxEpisodes(exr.maxEpisodes);
     rule.SetNewExpiresOldRecord(exr.maxNewest);

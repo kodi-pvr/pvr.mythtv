@@ -32,25 +32,22 @@
 
 using namespace ADDON;
 
-const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTimerTypes() const
+MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 {
-  static bool _init = false;
-  static std::vector<MythScheduleManager::TimerType> typeList;
-  static MythScheduleManager::RuleExpirationList autoExpireList;
-
-  if (!_init)
+  PLATFORM::CLockObject lock(m_lock);
+  if (!m_timerTypeListInit)
   {
-    _init = true;
+    m_timerTypeListInit = true;
+    // Empty list
+    MythTimerType::AttributeList emptyList;
+    // Simple expiration list for no repeating rule
+    MythTimerType::AttributeList autoExpireList;
+    int autoExpire0 = GetRuleExpirationId(RuleExpiration(false, 0, false));
+    int autoExpire1 = GetRuleExpirationId(RuleExpiration(true, 0, false));
+    autoExpireList.push_back(std::make_pair(autoExpire0, XBMC->GetLocalizedString(30506))); // Recordings never expire
+    autoExpireList.push_back(std::make_pair(autoExpire1, XBMC->GetLocalizedString(30507))); // Allow recordings to expire
 
-    // Prepare simple expiration list for no repeating rule
-    MythScheduleManager::RuleExpiration ruleAutoExpire0(false, 0, false);
-    int autoExpire0 = GetRuleExpirationId(ruleAutoExpire0);
-    autoExpireList.push_back(std::make_pair(autoExpire0, std::make_pair(ruleAutoExpire0, XBMC->GetLocalizedString(30506)))); // Recordings never expire
-    MythScheduleManager::RuleExpiration ruleAutoExpire1(true, 0, false);
-    int autoExpire1 = GetRuleExpirationId(ruleAutoExpire1);
-    autoExpireList.push_back(std::make_pair(autoExpire1, std::make_pair(ruleAutoExpire1, XBMC->GetLocalizedString(30507)))); // Allow recordings to expire
-
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_MANUAL_SEARCH,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_MANUAL_SEARCH,
             PVR_TIMER_TYPE_IS_MANUAL |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_CHANNELS |
@@ -60,16 +57,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30460), // Manual
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0,
-            &autoExpireList,
+            emptyList,
+            Myth::DM_CheckNone,
+            autoExpireList,
             autoExpire1,
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_THIS_SHOWING,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_THIS_SHOWING,
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_CHANNELS |
             PVR_TIMER_TYPE_SUPPORTS_START_END_TIME |
@@ -78,16 +75,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30465), // Record this
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0,
-            &autoExpireList,
+            emptyList,
+            Myth::DM_CheckNone,
+            autoExpireList,
             autoExpire1,
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_RECORD_ONE,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_ONE,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -98,16 +95,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30461), // Record one
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &autoExpireList,
+            autoExpireList,
             autoExpire1,
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_RECORD_WEEKLY,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_WEEKLY,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -119,16 +116,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30462), // Record weekly
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0,
-            &GetRuleExpirationList(),
+            emptyList,
+            Myth::DM_CheckNone,
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_RECORD_DAILY,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_DAILY,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -141,16 +138,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30463), // Record daily
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &GetRuleExpirationList(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_RECORD_ALL,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_ALL,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -161,16 +158,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30464), // Record all
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &GetRuleExpirationList(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_RECORD_SERIES,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_SERIES,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_RECORD_ONLY_NEW_EPISODES |
@@ -179,16 +176,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30466), // Record series from guide
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &GetRuleExpirationList(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_SEARCH_KEYWORD,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_SEARCH_KEYWORD,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -199,16 +196,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30467), // Search keyword
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &GetRuleExpirationList(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_SEARCH_PEOPLE,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_SEARCH_PEOPLE,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_TITLE_EPG_MATCH |
@@ -219,35 +216,35 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30468), // Search people
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            &GetRuleDupMethodList(),
+            GetRuleDupMethodList(),
             GetRuleDupMethodDefaultId(),
-            &GetRuleExpirationList(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
     ///////////////////////////////////////////////////////////////////////////
     //// KEEP LAST
     ///////////////////////////////////////////////////////////////////////////
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_UNHANDLED,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_UNHANDLED,
             PVR_TIMER_TYPE_IS_REPEATING |
             PVR_TIMER_TYPE_FORBIDS_NEW_INSTANCES |
             PVR_TIMER_TYPE_SUPPORTS_PRIORITY |
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30451), // Unhandled
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0, // Check none
-            &GetRuleExpirationList(),
+            GetRuleDupMethodList(),
+            GetRuleDupMethodDefaultId(),
+            GetRuleExpirationNameList(),
             GetRuleExpirationDefaultId(),
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_UPCOMING,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_UPCOMING,
             PVR_TIMER_TYPE_FORBIDS_NEW_INSTANCES |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_START_END_MARGIN |
@@ -255,16 +252,16 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30452), // Upcoming
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0, // Check none
-            &autoExpireList,
+            emptyList,
+            0, // n&v
+            autoExpireList,
             autoExpire1,
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_OVERRIDE,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_OVERRIDE,
             PVR_TIMER_TYPE_FORBIDS_NEW_INSTANCES |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_START_END_MARGIN |
@@ -272,165 +269,56 @@ const std::vector<MythScheduleManager::TimerType>& MythScheduleHelper75::GetTime
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
             XBMC->GetLocalizedString(30453), // Overriden
-            &GetRulePriorityList(),
+            GetRulePriorityList(),
             GetRulePriorityDefaultId(),
-            NULL,
-            0, // Check none
-            &autoExpireList,
+            emptyList,
+            0, // n&v
+            autoExpireList,
             autoExpire1,
-            &GetRuleRecordingGroupList(),
-            GetRuleRecordingGroupDefaultId()));
+            GetRuleRecordingGroupList(),
+            GetRuleRecordingGroupDefaultId())));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_DONT_RECORD,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_DONT_RECORD,
             PVR_TIMER_TYPE_FORBIDS_NEW_INSTANCES |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_CHANNELS |
             PVR_TIMER_TYPE_SUPPORTS_START_END_TIME,
             XBMC->GetLocalizedString(30454), // Don't record
-            &GetRulePriorityList(),
-            GetRulePriorityDefaultId(),
-            NULL,
-            0,
-            NULL,
-            0,
-            NULL,
-            RECGROUP_DFLT_ID));
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            RECGROUP_DFLT_ID)));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_UPCOMING_MANUAL,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_UPCOMING_MANUAL,
             PVR_TIMER_TYPE_IS_READONLY,
             XBMC->GetLocalizedString(30455), // Upcoming manual
-            NULL,
-            0,
-            NULL,
-            0,
-            NULL,
-            0,
-            NULL,
-            RECGROUP_DFLT_ID));
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            RECGROUP_DFLT_ID)));
 
-    typeList.push_back(MythScheduleManager::TimerType(TIMER_TYPE_ZOMBIE,
+    m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_ZOMBIE,
             PVR_TIMER_TYPE_IS_READONLY,
             XBMC->GetLocalizedString(30456), // Zombie
-            NULL,
-            0,
-            NULL,
-            0,
-            NULL,
-            0,
-            NULL,
-            RECGROUP_DFLT_ID));
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            0, // n&v
+            emptyList,
+            RECGROUP_DFLT_ID)));
 
   }
-  return typeList;
-}
-
-const MythScheduleManager::RulePriorityList& MythScheduleHelper75::GetRulePriorityList() const
-{
-  static bool _init = false;
-  static MythScheduleManager::RulePriorityList _list;
-  if (!_init)
-  {
-    char buf[4];
-    _init = true;
-    _list.reserve(200);
-    memset(buf, 0, sizeof(buf));
-    for (int i = -99; i <= 99; ++i)
-    {
-      if (i)
-      {
-        snprintf(buf, sizeof(buf), "%+2d", i);
-        _list.push_back(std::make_pair(i, buf));
-      }
-      else
-        _list.push_back(std::make_pair(0, "0"));
-    }
-  }
-  return _list;
-}
-
-const MythScheduleManager::RuleDupMethodList& MythScheduleHelper75::GetRuleDupMethodList() const
-{
-  static bool _init = false;
-  static MythScheduleManager::RuleDupMethodList _list;
-  if (!_init)
-  {
-    _init = true;
-    _list.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckNone), XBMC->GetLocalizedString(30501)));
-    _list.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitle), XBMC->GetLocalizedString(30502)));
-    _list.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckDescription), XBMC->GetLocalizedString(30503)));
-    _list.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitleAndDescription), XBMC->GetLocalizedString(30504)));
-    _list.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitleThenDescription), XBMC->GetLocalizedString(30505)));
-  }
-  return _list;
-}
-
-const MythScheduleManager::RuleExpirationList& MythScheduleHelper75::GetRuleExpirationList() const
-{
-  static bool _init = false;
-  static MythScheduleManager::RuleExpirationList _list;
-  if (!_init)
-  {
-    _init = true;
-    char buf[256];
-    memset(buf, 0, sizeof(buf));
-
-    // Insert cases 'keep newest'
-    int index = (EXPIRATION_NEVER_EXPIRE_ID < EXPIRATION_ALLOW_EXPIRE_ID ? EXPIRATION_NEVER_EXPIRE_ID : EXPIRATION_ALLOW_EXPIRE_ID) - 100;
-    for (int i = 100; i >= 1; --i)
-    {
-      snprintf(buf, sizeof(buf), XBMC->GetLocalizedString(30509), i); // Keep %d newest and expire old
-      _list.push_back(std::make_pair(index++, std::make_pair(MythScheduleManager::RuleExpiration(false,i,true), buf)));
-    }
-
-    // Insert cases 'auto expire'
-    _list.push_back(std::make_pair(EXPIRATION_NEVER_EXPIRE_ID, std::make_pair(MythScheduleManager::RuleExpiration(false, 0, false), XBMC->GetLocalizedString(30506)))); // Recordings never expire
-    _list.push_back(std::make_pair(EXPIRATION_ALLOW_EXPIRE_ID, std::make_pair(MythScheduleManager::RuleExpiration(true, 0, false), XBMC->GetLocalizedString(30507)))); // Allow recordings to expire
-
-    // Insert cases 'keep up'
-    index = (EXPIRATION_ALLOW_EXPIRE_ID > EXPIRATION_NEVER_EXPIRE_ID ? EXPIRATION_ALLOW_EXPIRE_ID : EXPIRATION_NEVER_EXPIRE_ID) + 1;
-    for (int i = 2; i <= 100; ++i)
-    {
-      snprintf(buf, sizeof(buf), XBMC->GetLocalizedString(30508), i); // Keep up to %d recordings
-      _list.push_back(std::make_pair(index++, std::make_pair(MythScheduleManager::RuleExpiration(false,i,false), buf)));
-    }
-  }
-  return _list;
-}
-
-const MythScheduleManager::RuleRecordingGroupList& MythScheduleHelper75::GetRuleRecordingGroupList() const
-{
-  static bool _init = false;
-  static MythScheduleManager::RuleRecordingGroupList _list;
-  if (!_init && m_control)
-  {
-    int count = 0, index = RECGROUP_DFLT_ID;
-    _init = true;
-    Myth::StringListPtr strl = m_control->GetRecGroupList();
-    // First add default group
-    for (Myth::StringList::const_iterator it = strl->begin(); it != strl->end(); ++it)
-    {
-      if (*it == RECGROUP_DFLT_NAME)
-      {
-        _list.push_back(std::make_pair(index++, RECGROUP_DFLT_NAME));
-        ++count;
-      }
-    }
-    // Then others
-    for (Myth::StringList::const_iterator it = strl->begin(); it != strl->end(); ++it)
-    {
-      if (*it != RECGROUP_DFLT_NAME)
-      {
-        if (count == PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE)
-        {
-          XBMC->Log(LOG_NOTICE, "75::%s: List overflow (%d): %u remaining value(s) are not loaded", __FUNCTION__, count, (unsigned)(strl->size() - count));
-          break;
-        }
-        _list.push_back(std::make_pair(index++, *it));
-        ++count;
-      }
-    }
-  }
-  return _list;
+  return m_timerTypeList;
 }
 
 bool MythScheduleHelper75::SameTimeslot(const MythRecordingRule& first, const MythRecordingRule& second) const
@@ -663,7 +551,7 @@ bool MythScheduleHelper75::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   entry.endOffset = rule.EndOffset();
   entry.dupMethod = rule.DuplicateControlMethod();
   entry.priority = rule.Priority();
-  entry.expiration = GetRuleExpirationId(MythScheduleManager::RuleExpiration(rule.AutoExpire(), rule.MaxEpisodes(), rule.NewExpiresOldRecord()));
+  entry.expiration = GetRuleExpirationId(RuleExpiration(rule.AutoExpire(), rule.MaxEpisodes(), rule.NewExpiresOldRecord()));
   entry.isInactive = rule.Inactive();
   entry.firstShowing = (rule.Filter() & Myth::FM_FirstShowing ? true : false);
   entry.recordingGroup = GetRuleRecordingGroupId(rule.RecordingGroup());
@@ -734,7 +622,7 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
     entry.startOffset = rule.StartOffset();
     entry.endOffset = rule.EndOffset();
     entry.priority = rule.Priority();
-    entry.expiration = GetRuleExpirationId(MythScheduleManager::RuleExpiration(rule.AutoExpire(), 0, false));
+    entry.expiration = GetRuleExpirationId(RuleExpiration(rule.AutoExpire(), 0, false));
   }
   else
     entry.timerType = TIMER_TYPE_ZOMBIE;
@@ -879,7 +767,7 @@ MythRecordingRule MythScheduleHelper75::NewFromTimer(const MythTimerEntry& entry
       rule.SetPriority(entry.priority);
     if (entry.expiration != GetRuleExpirationDefaultId())
     {
-      const MythScheduleManager::RuleExpiration& exr = GetRuleExpiration(entry.expiration);
+      RuleExpiration exr = GetRuleExpiration(entry.expiration);
       rule.SetAutoExpire(exr.autoExpire);
       rule.SetMaxEpisodes(exr.maxEpisodes);
       rule.SetNewExpiresOldRecord(exr.maxNewest);
@@ -894,7 +782,7 @@ MythRecordingRule MythScheduleHelper75::NewFromTimer(const MythTimerEntry& entry
     rule.SetEndOffset(entry.endOffset);
     rule.SetDuplicateControlMethod(entry.dupMethod);
     rule.SetPriority(entry.priority);
-    const MythScheduleManager::RuleExpiration& exr = GetRuleExpiration(entry.expiration);
+    RuleExpiration exr = GetRuleExpiration(entry.expiration);
     rule.SetAutoExpire(exr.autoExpire);
     rule.SetMaxEpisodes(exr.maxEpisodes);
     rule.SetNewExpiresOldRecord(exr.maxNewest);
@@ -1290,4 +1178,105 @@ MythRecordingRule MythScheduleHelper75::MakeOverride(const MythRecordingRule& ru
     modifier.SetEpisode(recording.Episode());
   }
   return modifier;
+}
+
+const MythTimerType::AttributeList& MythScheduleHelper75::GetRulePriorityList() const
+{
+  if (!m_priorityListInit)
+  {
+    char buf[4];
+    m_priorityListInit = true;
+    m_priorityList.reserve(200);
+    memset(buf, 0, sizeof(buf));
+    for (int i = -99; i <= 99; ++i)
+    {
+      if (i)
+      {
+        snprintf(buf, sizeof(buf), "%+2d", i);
+        m_priorityList.push_back(std::make_pair(i, buf));
+      }
+      else
+        m_priorityList.push_back(std::make_pair(0, "0"));
+    }
+  }
+  return m_priorityList;
+}
+
+const MythTimerType::AttributeList& MythScheduleHelper75::GetRuleDupMethodList() const
+{
+  if (!m_dupMethodListInit)
+  {
+    m_dupMethodListInit = true;
+    m_dupMethodList.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckNone), XBMC->GetLocalizedString(30501)));
+    m_dupMethodList.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitle), XBMC->GetLocalizedString(30502)));
+    m_dupMethodList.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckDescription), XBMC->GetLocalizedString(30503)));
+    m_dupMethodList.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitleAndDescription), XBMC->GetLocalizedString(30504)));
+    m_dupMethodList.push_back(std::make_pair(static_cast<int>(Myth::DM_CheckSubtitleThenDescription), XBMC->GetLocalizedString(30505)));
+  }
+  return m_dupMethodList;
+}
+
+const MythScheduleHelperNoHelper::RuleExpirationMap& MythScheduleHelper75::GetRuleExpirationMap() const
+{
+  if (!m_expirationMapInit)
+  {
+    m_expirationMapInit = true;
+    char buf[256];
+    memset(buf, 0, sizeof(buf));
+
+    // Insert cases 'keep newest'
+    int index = (EXPIRATION_NEVER_EXPIRE_ID < EXPIRATION_ALLOW_EXPIRE_ID ? EXPIRATION_NEVER_EXPIRE_ID : EXPIRATION_ALLOW_EXPIRE_ID) - 100;
+    for (int i = 100; i >= 1; --i)
+    {
+      snprintf(buf, sizeof(buf), XBMC->GetLocalizedString(30509), i); // Keep %d newest and expire old
+      m_expirationMap.insert(std::make_pair(index++, std::make_pair(RuleExpiration(false,i,true), buf)));
+    }
+
+    // Insert cases 'auto expire'
+    m_expirationMap.insert(std::make_pair(EXPIRATION_NEVER_EXPIRE_ID, std::make_pair(RuleExpiration(false, 0, false), XBMC->GetLocalizedString(30506)))); // Recordings never expire
+    m_expirationMap.insert(std::make_pair(EXPIRATION_ALLOW_EXPIRE_ID, std::make_pair(RuleExpiration(true, 0, false), XBMC->GetLocalizedString(30507)))); // Allow recordings to expire
+
+    // Insert cases 'keep up'
+    index = (EXPIRATION_ALLOW_EXPIRE_ID > EXPIRATION_NEVER_EXPIRE_ID ? EXPIRATION_ALLOW_EXPIRE_ID : EXPIRATION_NEVER_EXPIRE_ID) + 1;
+    for (int i = 2; i <= 100; ++i)
+    {
+      snprintf(buf, sizeof(buf), XBMC->GetLocalizedString(30508), i); // Keep up to %d recordings
+      m_expirationMap.insert(std::make_pair(index++, std::make_pair(RuleExpiration(false,i,false), buf)));
+    }
+  }
+  return m_expirationMap;
+}
+
+const MythTimerType::AttributeList& MythScheduleHelper75::GetRuleRecordingGroupList() const
+{
+  if (!m_recGroupListInit && m_control)
+  {
+    int count = 0, index = RECGROUP_DFLT_ID;
+    m_recGroupListInit = true;
+    Myth::StringListPtr strl = m_control->GetRecGroupList();
+    // First add default group
+    for (Myth::StringList::const_iterator it = strl->begin(); it != strl->end(); ++it)
+    {
+      if (*it == RECGROUP_DFLT_NAME)
+      {
+        m_recGroupList.push_back(std::make_pair(index++, RECGROUP_DFLT_NAME));
+        ++count;
+      }
+    }
+    // Then others
+    for (Myth::StringList::const_iterator it = strl->begin(); it != strl->end(); ++it)
+    {
+      if (*it != RECGROUP_DFLT_NAME)
+      {
+        if (count == PVR_ADDON_TIMERTYPE_VALUES_ARRAY_SIZE)
+        {
+          XBMC->Log(LOG_NOTICE, "75::%s: List overflow (%d): %u remaining value(s) are not loaded", __FUNCTION__, count, (unsigned)(strl->size() - count));
+          break;
+        }
+        m_recGroupList.push_back(std::make_pair(index++, *it));
+        ++count;
+      }
+    }
+  }
+  return m_recGroupList;
 }

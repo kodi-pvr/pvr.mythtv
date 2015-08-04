@@ -83,7 +83,7 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
     entry.startOffset = rule.StartOffset();
     entry.endOffset = rule.EndOffset();
     entry.priority = rule.Priority();
-    entry.expiration = GetRuleExpirationId(MythScheduleManager::RuleExpiration(rule.AutoExpire(), 0, false));
+    entry.expiration = GetRuleExpirationId(RuleExpiration(rule.AutoExpire(), 0, false));
   }
   else
     entry.timerType = TIMER_TYPE_ZOMBIE;
