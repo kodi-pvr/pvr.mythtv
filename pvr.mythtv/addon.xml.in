@@ -12,11 +12,7 @@
   </requires>
   <extension
     point="xbmc.pvrclient"
-    library_linux="pvr.mythtv.so"
-    library_osx="pvr.mythtv.dylib"
-    library_freebsd="pvr.mythtv.so"
-    library_windx="pvr.mythtv.dll"
-    library_android="libpvr.mythtv.so"/>
+    library_@PLATFORM@="@LIBRARY_FILENAME@"/>
   <extension point="xbmc.addon.metadata">
     <summary lang="af_ZA">Kodi voorprogram vir MythTV</summary>
     <summary lang="be_BY">Kodi frontend for MythTV</summary>
@@ -147,6 +143,6 @@
     <disclaimer lang="vi_VN">Đây là phần mềm không ổn định! Các tác giả sẽ không chịu trách nhiệm nào với các bản ghi thất bại, bị đặt giờ sai, giờ lãng phí, hoặc các tác dụng không mong muốn khác..</disclaimer>
     <disclaimer lang="zh_CN">这是不稳定版的软件！作者不对录制失败、错误定时造成时间浪费或其它不良影响负责。</disclaimer>
     <disclaimer lang="zh_TW">這是測試中的軟體！原創作者無法針對以下情況負責：包括錄影失敗，不正確的定時器，多餘的時數，或任何不可預期的不良影響。</disclaimer>
-    <platform>all</platform>
+    <platform>@PLATFORM@</platform>
   </extension>
 </addon>
