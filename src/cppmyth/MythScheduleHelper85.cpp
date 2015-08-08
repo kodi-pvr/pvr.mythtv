@@ -64,12 +64,12 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       case Myth::RT_SingleRecord:
         return false; // Discard upcoming. We show only main rule.
       case Myth::RT_DontRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
+        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status (isInactive)
         entry.timerType = TIMER_TYPE_DONT_RECORD;
         entry.isInactive = rule.Inactive();
         break;
       case Myth::RT_OverrideRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
+        entry.recordingStatus = recording.Status();
         entry.timerType = TIMER_TYPE_OVERRIDE;
         entry.isInactive = rule.Inactive();
         break;

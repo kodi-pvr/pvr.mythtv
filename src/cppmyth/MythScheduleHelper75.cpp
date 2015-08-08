@@ -605,15 +605,16 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       // So I use the recording status to choose the right type
       case Myth::RT_DontRecord:
       case Myth::RT_OverrideRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
         switch (recording.Status())
         {
           case Myth::RS_DONT_RECORD:
           case Myth::RS_NEVER_RECORD:
+            entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status (isInactive)
             entry.timerType = TIMER_TYPE_DONT_RECORD;
             entry.isInactive = rule.Inactive();
             break;
           default:
+            entry.recordingStatus = recording.Status();
             entry.timerType = TIMER_TYPE_OVERRIDE;
             entry.isInactive = rule.Inactive();
         }
