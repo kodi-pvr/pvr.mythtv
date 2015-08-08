@@ -861,7 +861,7 @@ void MythScheduleManager::Update()
     {
       // First check parentid. Then fallback searching the same timeslot
       NodeById::iterator itp = new_rulesById->find((*it)->m_rule.ParentID());
-      if (itp != new_rulesById->end())
+      if (itp != new_rulesById->end() && (*it)->m_rule.ParentID() != (*it)->m_rule.RecordID())
       {
         itp->second->m_overrideRules.push_back((*it)->m_rule);
         (*it)->m_mainRule = itp->second->m_rule;
