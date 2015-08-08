@@ -325,17 +325,14 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteModifier(uint32_t inde
   MythScheduledPtr recording = FindUpComingByIndex(index);
   if (!recording)
     return MSM_ERROR_FAILED;
-  if (recording->Status() == Myth::RS_RECORDED)
-    return MSM_ERROR_FAILED;
+
   MythRecordingRuleNodePtr node = FindRuleById(recording->RecordID());
   if (node && node->IsOverrideRule())
   {
     XBMC->Log(LOG_DEBUG, "%s: Deleting modifier rule %u relates recording %u", __FUNCTION__, node->m_rule.RecordID(), index);
-    if (!m_control->RemoveRecordSchedule(node->m_rule.RecordID()))
-      XBMC->Log(LOG_ERROR, "%s: Deleting recording rule failed", __FUNCTION__);
+    return DeleteRecordingRule(node->m_rule.RecordID());
   }
-  // Another client could delete the rule at the same time. Therefore always SUCCESS even if database delete fails.
-  return MSM_ERROR_SUCCESS;
+  return MSM_ERROR_FAILED;
 }
 
 MythScheduleManager::MSM_ERROR MythScheduleManager::DisableRecording(uint32_t index)
@@ -415,9 +412,18 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DisableRecording(uint32_t in
                   , __FUNCTION__, index, (unsigned)handle.ParentID(), handle.Title().c_str(),
                   handle.Subtitle().c_str(), handle.ChannelID(), handle.Callsign().c_str());
 
-        if (!m_control->AddRecordSchedule(*(handle.GetPtr())))
-          return MSM_ERROR_FAILED;
-        node->m_overrideRules.push_back(handle); // sync node
+        // If currently recording then stop it without overriding
+        if (recording->Status() == Myth::RS_RECORDING || recording->Status() == Myth::RS_TUNING)
+        {
+          XBMC->Log(LOG_DEBUG, "%s: Stop recording %s", __FUNCTION__, recording->UID().c_str());
+          m_control->StopRecording(*(recording->GetPtr()));
+        }
+        else
+        {
+          if (!m_control->AddRecordSchedule(*(handle.GetPtr())))
+            return MSM_ERROR_FAILED;
+          node->m_overrideRules.push_back(handle); // sync node
+        }
         return MSM_ERROR_SUCCESS;
 
       case METHOD_DELETE:
@@ -879,7 +885,7 @@ void MythScheduleManager::Update()
   {
     MythScheduledPtr scheduled = MythScheduledPtr(new MythProgramInfo(*it));
     uint32_t index = MakeIndex(*scheduled);
-    new_recordings->insert(RecordingList::value_type(index, scheduled));
+    (*new_recordings)[index] = scheduled; // Fix 0.27: Override by last upcoming with this index
     new_recordingIndexByRuleId->insert(RecordingIndexByRuleId::value_type(scheduled->RecordID(), index));
     // Update summary status of related rule
     switch (scheduled->Status())
