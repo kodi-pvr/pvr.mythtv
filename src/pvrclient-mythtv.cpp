@@ -2391,15 +2391,13 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
   {
     if (menuhook.iHookId == MENUHOOK_TIMER_BACKEND_INFO && m_scheduleManager && item.cat == PVR_MENUHOOK_TIMER)
     {
-      MythScheduledPtr prog;
-      if (item.data.timer.iParentClientIndex == PVR_TIMER_NO_PARENT)
+      MythScheduledPtr prog = m_scheduleManager->FindUpComingByIndex(item.data.timer.iClientIndex);
+      if (!prog)
       {
         MythScheduleList progs = m_scheduleManager->FindUpComingByRuleId(item.data.timer.iClientIndex);
         if (progs.end() != progs.begin())
           prog = progs.begin()->second;
       }
-      else
-        prog = m_scheduleManager->FindUpComingByIndex(item.data.timer.iClientIndex);
       if (prog)
       {
         const unsigned sz = 4;
