@@ -2406,6 +2406,11 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       PVR->TriggerChannelUpdate();
       return PVR_ERROR_NO_ERROR;
     }
+    else if (menuhook.iHookId == MENUHOOK_TRIGGER_CHANNEL_UPDATE)
+    {
+      PVR->TriggerChannelUpdate();
+      return PVR_ERROR_NO_ERROR;
+    }
   }
 
   if (menuhook.category == PVR_MENUHOOK_EPG && item.cat == PVR_MENUHOOK_EPG)

@@ -295,7 +295,11 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr ""
 
-#empty strings from id 30423 to 30450
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr ""
+
+#empty strings from id 30424 to 30450
 
 msgctxt "#30451"
 msgid "Unhandled"

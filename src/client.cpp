@@ -356,6 +356,12 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   menuHook.iLocalizedStringId = 30422;
   PVR->AddMenuHook(&menuHook);
 
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_SETTING;
+  menuHook.iHookId = MENUHOOK_TRIGGER_CHANNEL_UPDATE;
+  menuHook.iLocalizedStringId = 30423;
+  PVR->AddMenuHook(&menuHook);
+
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...done");
 
   XBMC->Log(LOG_DEBUG, "Addon created successfully");
