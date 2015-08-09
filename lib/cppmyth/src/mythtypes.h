@@ -195,6 +195,11 @@ namespace Myth
     RS_OTHER_SHOWING          = 13,
   } RS_t;
 
+  RS_t RecStatusFromString(unsigned proto, const std::string& type);
+  RS_t RecStatusFromNum(unsigned proto, int type);
+  const char *RecStatusToString(unsigned proto, RS_t type);
+  int RecStatusToNum(unsigned proto, RS_t type);
+
   struct ItemList
   {
     uint32_t            count;
