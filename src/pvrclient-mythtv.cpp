@@ -2387,9 +2387,35 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     return PVR_ERROR_FAILED;
   }
 
-  if (menuhook.category == PVR_MENUHOOK_SETTING)
+  if (menuhook.category == PVR_MENUHOOK_TIMER)
   {
-    if (menuhook.iHookId == MENUHOOK_SHOW_HIDE_NOT_RECORDING && m_scheduleManager)
+    if (menuhook.iHookId == MENUHOOK_TIMER_BACKEND_INFO && m_scheduleManager && item.cat == PVR_MENUHOOK_TIMER)
+    {
+      MythScheduledPtr prog;
+      if (item.data.timer.iParentClientIndex == PVR_TIMER_NO_PARENT)
+      {
+        MythScheduleList progs = m_scheduleManager->FindUpComingByRuleId(item.data.timer.iClientIndex);
+        if (progs.end() != progs.begin())
+          prog = progs.begin()->second;
+      }
+      else
+        prog = m_scheduleManager->FindUpComingByIndex(item.data.timer.iClientIndex);
+      if (prog)
+      {
+        const unsigned sz = 4;
+        std::string items[sz];
+        const char* entries[sz];
+        items[0] = Myth::RecStatusToString(m_control->CheckService(), prog->Status());
+        items[1] = "ID " + Myth::IdToString(prog->RecordID());
+        items[2] = Myth::TimeToString(prog->RecordingStartTime());
+        items[3] = Myth::TimeToString(prog->RecordingEndTime());
+        for (unsigned i = 0; i < sz; ++i)
+          entries[i] = items[i].c_str();
+        GUI->Dialog_Select(item.data.timer.strTitle, entries, sz);
+      }
+      return PVR_ERROR_NO_ERROR;
+    }
+    else if (menuhook.iHookId == MENUHOOK_SHOW_HIDE_NOT_RECORDING && m_scheduleManager)
     {
       bool flag = m_scheduleManager->ToggleShowNotRecording();
       HandleScheduleChange();
@@ -2399,7 +2425,11 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       XBMC->QueueNotification(QUEUE_INFO, info.c_str());
       return PVR_ERROR_NO_ERROR;
     }
-    else if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
+  }
+
+  if (menuhook.category == PVR_MENUHOOK_SETTING)
+  {
+    if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
     {
       CLockObject lock(m_channelsLock);
       m_fileOps->CleanChannelIcons();

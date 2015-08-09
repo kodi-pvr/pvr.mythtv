@@ -299,7 +299,11 @@ msgctxt "#30423"
 msgid "Trigger channels update"
 msgstr ""
 
-#empty strings from id 30424 to 30450
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr ""
+
+#empty strings from id 30425 to 30450
 
 msgctxt "#30451"
 msgid "Unhandled"
