@@ -173,6 +173,7 @@ public:
   MythRecordingRuleList GetTemplateRules() const;
 
   bool ToggleShowNotRecording();
+  bool ShowNotRecording() const { return m_showNotRecording; }
 
   class VersionHelper
   {
