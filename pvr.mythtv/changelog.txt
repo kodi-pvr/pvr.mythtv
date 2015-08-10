@@ -2,6 +2,7 @@ v3.2.1
 - Stop to iterate recordings map until next change
 - ScheduleManager becomes thread safe
 - Sync cppmyth upstream (2.1.0)
+- Automatically fill in platform and library name
 
 v3.1.1
 - Updated to PVR API v2.1.0
