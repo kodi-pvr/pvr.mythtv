@@ -180,27 +180,27 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
     case TIMER_TYPE_SEARCH_KEYWORD:
     case TIMER_TYPE_SEARCH_PEOPLE:
     case TIMER_TYPE_UNHANDLED:
+      entry.startTime = rule.StartTime();
+      entry.endTime = rule.EndTime();
       // For all repeating fix timeslot as needed
-      if (difftime(rule.NextRecording(), 0) > 0)
+      if (!entry.HasTimeSlot())
       {
-        // fill timeslot starting at next recording
-        time_t next = rule.NextRecording(); // it includes offset correction
-        timeadd(&next, 60 * rule.StartOffset()); // remove start offset
-        entry.startTime = entry.endTime = next;
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else if (difftime(rule.LastRecorded(), 0) > 0)
-      {
-        // fill timeslot starting at last recorded
-        time_t last = rule.LastRecorded(); // it includes offset correction
-        timeadd(&last, 60 * rule.StartOffset()); // remove start offset
-        entry.startTime = entry.endTime = last;
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else
-      {
-        entry.startTime = rule.StartTime();
-        entry.endTime = rule.EndTime();
+        if (difftime(rule.NextRecording(), 0) > 0)
+        {
+          // fill timeslot starting at next recording
+          entry.startTime = rule.NextRecording(); // it includes offset correction
+          // WARNING: if next recording has been overriden then offset could be different
+          timeadd(&entry.startTime, 60 * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
+        else if (difftime(rule.LastRecorded(), 0) > 0)
+        {
+          // fill timeslot starting at last recorded
+          entry.startTime = rule.LastRecorded(); // it includes offset correction
+          // WARNING: if last recorded has been overriden then offset could be different
+          timeadd(&entry.startTime, 60 * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
       }
       // For all repeating set summary status
       if (node.HasConflict())
