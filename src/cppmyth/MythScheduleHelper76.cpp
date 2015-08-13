@@ -184,13 +184,17 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
       if (difftime(rule.NextRecording(), 0) > 0)
       {
         // fill timeslot starting at next recording
-        entry.startTime = entry.endTime = rule.NextRecording();
+        time_t next = rule.NextRecording(); // it includes offset correction
+        timeadd(&next, 60 * rule.StartOffset()); // remove start offset
+        entry.startTime = entry.endTime = next;
         timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
       }
       else if (difftime(rule.LastRecorded(), 0) > 0)
       {
         // fill timeslot starting at last recorded
-        entry.startTime = entry.endTime = rule.LastRecorded();
+        time_t last = rule.LastRecorded(); // it includes offset correction
+        timeadd(&last, 60 * rule.StartOffset()); // remove start offset
+        entry.startTime = entry.endTime = last;
         timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
       }
       else
