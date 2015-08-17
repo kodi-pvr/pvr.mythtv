@@ -910,7 +910,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
 
   if (m_deletedRecAmountChange)
   {
-    int res = 0;  
+    int res = 0;
     CLockObject lock(m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
