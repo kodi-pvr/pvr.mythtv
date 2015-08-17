@@ -522,8 +522,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       // EPG_TAG expects strings as char* and not as copies (like the other PVR types).
       // Therefore we have to make sure that we don't pass invalid (freed) memory to TransferEpgEntry.
       // In particular we have to use local variables and must not pass returned string values directly.
-      std::string epgTitle = MakeProgramTitle(it->second->title, it->second->subTitle);
-      tag.strTitle = epgTitle.c_str();
+      tag.strTitle = it->second->title.c_str();
       tag.strPlot = it->second->description.c_str();
       tag.strGenreDescription = it->second->category.c_str();
       tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
@@ -531,7 +530,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       int genre = m_categories.Category(it->second->category);
       tag.iGenreSubType = genre & 0x0F;
       tag.iGenreType = genre & 0xF0;
-      tag.strEpisodeName = "";
+      tag.strEpisodeName = it->second->subTitle.c_str();
       tag.strIconPath = "";
       tag.strPlotOutline = "";
       tag.bNotify = false;
@@ -2521,7 +2520,7 @@ std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const st
   if (subtitle.empty())
     epgtitle = title;
   else
-    epgtitle = title + SUBTITLE_SEPARATOR + subtitle;
+    epgtitle = title + " (" + subtitle + ")";
   return epgtitle;
 }
 

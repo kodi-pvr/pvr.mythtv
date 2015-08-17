@@ -106,7 +106,7 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
   entry.endTime = recording.EndTime();
   entry.title.assign(recording.Title());
   if (!recording.Subtitle().empty())
-    entry.title.append(" - ").append(recording.Subtitle());
+    entry.title.append(" (").append(recording.Subtitle()).append(")");
   if (recording.Season() || recording.Episode())
     entry.title.append(" - ").append(Myth::IntToString(recording.Season())).append(".").append(Myth::IntToString(recording.Episode()));
   entry.recordingGroup = GetRuleRecordingGroupId(recording.RecordingGroup());

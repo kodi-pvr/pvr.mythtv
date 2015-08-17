@@ -46,8 +46,6 @@
 #define DEFAULT_RECORDING_ICONS             true
 #define DEFAULT_RECORD_TEMPLATE             1
 
-#define SUBTITLE_SEPARATOR                  " - "
-
 #define MENUHOOK_REC_DELETE_AND_RERECORD    1
 #define MENUHOOK_KEEP_LIVETV_RECORDING      2
 #define MENUHOOK_TIMER_BACKEND_INFO         3
