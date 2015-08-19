@@ -67,6 +67,7 @@
 #define ENABLE_EDL_DIALOG                   1
 #define ENABLE_EDL_NEVER                    2
 #define DEFAULT_BLOCK_SHUTDOWN              true
+#define DEFAULT_LIMIT_TUNE_ATTEMPTS         true
 
 /*!
  * @brief PVR macros for string exchange
@@ -111,6 +112,7 @@ extern int          g_iTuneDelay;
 extern int          g_iGroupRecordings;
 extern int          g_iEnableEDL;
 extern bool         g_bBlockMythShutdown;
+extern bool         g_bLimitTuneAttempts;       ///< Limit channel tuning attempts to first card
 
 extern ADDON::CHelper_libXBMC_addon *XBMC;
 extern CHelper_libXBMC_pvr          *PVR;

@@ -1921,8 +1921,9 @@ bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
   // Suspend fileOps to avoid connection hang
   if (m_fileOps)
     m_fileOps->Suspend();
-  // Set tuning delay
+  // Configure tuning of channel
   m_liveStream->SetTuneDelay(g_iTuneDelay);
+  m_liveStream->SetLimitTuneAttempts(g_bLimitTuneAttempts);
   // Try to open
   if (m_liveStream->SpawnLiveTV(chanset[0]->chanNum, chanset))
   {
