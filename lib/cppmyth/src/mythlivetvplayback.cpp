@@ -48,6 +48,7 @@ LiveTVPlayback::LiveTVPlayback(EventHandler& handler)
 , m_eventHandler(handler)
 , m_eventSubscriberId(0)
 , m_tuneDelay(MIN_TUNE_DELAY)
+, m_limitTuneAttempts(true)
 , m_recorder()
 , m_signal()
 , m_chain()
@@ -132,6 +133,13 @@ void LiveTVPlayback::SetTuneDelay(unsigned delay)
     m_tuneDelay = delay;
 }
 
+void LiveTVPlayback::SetLimitTuneAttempts(bool limit)
+{
+  // true : Try first tunable card in prefered order
+  // false: Try all tunable cards in prefered order
+  m_limitTuneAttempts = limit;
+}
+
 bool LiveTVPlayback::SpawnLiveTV(const std::string& chanNum, const ChannelList& channels)
 {
   // Begin critical section
@@ -176,6 +184,12 @@ bool LiveTVPlayback::SpawnLiveTV(const std::string& chanNum, const ChannelList& 
       m_recorder->StopLiveTV();
     }
     ClearChain();
+    // Check if we need to stop after first attempt at tuning
+    if (m_limitTuneAttempts)
+    {
+      DBG(MYTH_DBG_DEBUG, "%s: limiting tune attempts to first tunable card\n", __FUNCTION__);
+      break;
+    }
     // Retry the next preferred card
     ++card;
   }
