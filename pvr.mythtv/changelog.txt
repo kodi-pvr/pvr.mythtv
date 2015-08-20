@@ -1,3 +1,6 @@
+v3.2.2
+- Minimal Support PVR API 3.0.0
+
 v3.2.1
 - Stop to iterate recordings map until next change
 - ScheduleManager becomes thread safe
