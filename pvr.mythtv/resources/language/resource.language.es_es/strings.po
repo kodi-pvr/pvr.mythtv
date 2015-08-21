@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Habilitar guardado de fanart/miniaturas"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limitar los intentos sintonizado"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Versión de protocolo: %i - Versión de base de datos: %i"
