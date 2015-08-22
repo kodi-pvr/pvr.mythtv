@@ -34,7 +34,7 @@ using namespace Myth;
 typedef struct
 {
   unsigned version;
-  char token[30]; // up to 29 chars used in v86 + the terminating NULL character
+  char token[44]; // up to 43 chars used in v87 + the terminating NULL character
 } myth_protomap_t;
 
 static myth_protomap_t protomap[] = {
@@ -49,6 +49,7 @@ static myth_protomap_t protomap[] = {
   {84, "CanaryCoalmine"},
   {85, "BluePool"},
   {86, "(ノಠ益ಠ)ノ彡┻━┻"},
+  {87, "(ノಠ益ಠ)ノ彡┻━┻_No_entiendo!)"},
   {0, ""}
 };
 

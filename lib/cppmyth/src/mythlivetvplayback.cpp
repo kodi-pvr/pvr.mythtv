@@ -709,7 +709,7 @@ SignalStatusPtr LiveTVPlayback::GetSignal() const
   return (m_recorder ? m_signal : SignalStatusPtr());
 }
 
-LiveTVPlayback::preferredCards_t LiveTVPlayback::FindTunableCardIds(const std::string& chanNum, const ChannelList& channels)
+LiveTVPlayback::preferredCards_t LiveTVPlayback::FindTunableCardIds75(const std::string& chanNum, const ChannelList& channels)
 {
   // Make the set of channels matching the desired channel number
   ChannelList chanset;
@@ -738,6 +738,37 @@ LiveTVPlayback::preferredCards_t LiveTVPlayback::FindTunableCardIds(const std::s
                   (*iti)->cardId, (*iti)->inputName.c_str(), (*iti)->inputId, (*iti)->mplexId, (*iti)->sourceId);
           break;
         }
+      }
+    }
+  }
+  return preferredCards;
+}
+
+LiveTVPlayback::preferredCards_t LiveTVPlayback::FindTunableCardIds87(const std::string& chanNum, const ChannelList& channels)
+{
+  // Make the set of channels matching the desired channel number
+  ChannelList chanset;
+  for (ChannelList::const_iterator it = channels.begin(); it != channels.end(); ++it)
+  {
+    if ((*it)->chanNum == chanNum)
+      chanset.push_back(*it);
+  }
+  // Retrieve unlocked encoders and fill the list of preferred cards.
+  // It is ordered by its key liveTVOrder and contains matching between channels
+  // and card inputs using their respective sourceId and mplexId
+  preferredCards_t preferredCards;
+  CardInputListPtr inputs = GetFreeInputs(0);
+  for (CardInputList::const_iterator iti = inputs->begin(); iti != inputs->end(); ++iti)
+  {
+    for (ChannelList::const_iterator itchan = chanset.begin(); itchan != chanset.end(); ++itchan)
+    {
+      if ((*itchan)->sourceId == (*iti)->sourceId && ( (*iti)->mplexId == 0 || (*iti)->mplexId == (*itchan)->mplexId ))
+      {
+        preferredCards.insert(std::make_pair((*iti)->liveTVOrder, std::make_pair(*iti, *itchan)));
+        DBG(MYTH_DBG_DEBUG, "%s: [%u] channel=%s(%" PRIu32 ") card=%" PRIu32 " input=%s(%" PRIu32 ") mplex=%" PRIu32 " source=%" PRIu32 "\n",
+                __FUNCTION__, (*iti)->liveTVOrder, (*itchan)->callSign.c_str(), (*itchan)->chanId,
+                (*iti)->cardId, (*iti)->inputName.c_str(), (*iti)->inputId, (*iti)->mplexId, (*iti)->sourceId);
+        break;
       }
     }
   }
