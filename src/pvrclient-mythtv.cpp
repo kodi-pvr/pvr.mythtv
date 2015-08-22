@@ -910,7 +910,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
 
   if (m_deletedRecAmountChange)
   {
-    int res = 0;  
+    int res = 0;
     CLockObject lock(m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
@@ -1921,8 +1921,9 @@ bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
   // Suspend fileOps to avoid connection hang
   if (m_fileOps)
     m_fileOps->Suspend();
-  // Set tuning delay
+  // Configure tuning of channel
   m_liveStream->SetTuneDelay(g_iTuneDelay);
+  m_liveStream->SetLimitTuneAttempts(g_bLimitTuneAttempts);
   // Try to open
   if (m_liveStream->SpawnLiveTV(chanset[0]->chanNum, chanset))
   {

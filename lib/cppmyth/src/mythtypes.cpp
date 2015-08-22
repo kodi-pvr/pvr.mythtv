@@ -338,3 +338,60 @@ int Myth::CategoryTypeToNum(unsigned proto, CATT_t type)
   static unsigned sz = sizeof(categoryType) / sizeof(protoref_t);
   return __tValToNum(categoryType, sz, proto, (int)type, 0);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+////
+//// recStatus mapper
+////
+
+static protoref_t recStatus[] =
+{
+  { 75, RS_TUNING,              -10,  "Tuning" },
+  { 75, RS_FAILED,              -9,   "Failed" },
+  { 75, RS_TUNER_BUSY,          -8,   "Tuner busy" },
+  { 75, RS_LOW_DISKSPACE,       -7,   "Low disk space" },
+  { 75, RS_CANCELLED,           -6,   "Cancelled" },
+  { 75, RS_MISSED,              -5,   "Missed" },
+  { 75, RS_ABORTED,             -4,   "Aborted" },
+  { 75, RS_RECORDED,            -3,   "Recorded" },
+  { 75, RS_RECORDING,           -2,   "Recording" },
+  { 75, RS_WILL_RECORD,         -1,   "Will record" },
+  { 75, RS_UNKNOWN,             0,    "Unknown" },
+  { 75, RS_DONT_RECORD,         1,    "Don't record" },
+  { 75, RS_PREVIOUS_RECORDING,  2,    "Previous recording" },
+  { 75, RS_CURRENT_RECORDING,   3,    "Current recording" },
+  { 75, RS_EARLIER_RECORDING,   4,    "Earlier recording" },
+  { 75, RS_TOO_MANY_RECORDINGS, 5,    "Too many recordings" },
+  { 75, RS_NOT_LISTED,          6,    "Not listed" },
+  { 75, RS_CONFLICT,            7,    "Conflict" },
+  { 75, RS_LATER_SHOWING,       8,    "Later showing" },
+  { 75, RS_REPEAT,              9,    "Repeat" },
+  { 75, RS_INACTIVE,            10,   "Inactive" },
+  { 75, RS_NEVER_RECORD,        11,   "Never record" },
+  { 75, RS_OFFLINE,             12,   "Offline" },
+  { 75, RS_OTHER_SHOWING,       13,   "Other showing" },
+};
+
+RS_t Myth::RecStatusFromString(unsigned proto, const std::string& type)
+{
+  static unsigned sz = sizeof(recStatus) / sizeof(protoref_t);
+  return (RS_t)__tValFromString(recStatus, sz, proto, type, (int)RT_UNKNOWN);
+}
+
+RS_t Myth::RecStatusFromNum(unsigned proto, int type)
+{
+  static unsigned sz = sizeof(recStatus) / sizeof(protoref_t);
+  return (RS_t)__tValFromNum(recStatus, sz, proto, type, (int)RT_UNKNOWN);
+}
+
+const char *Myth::RecStatusToString(unsigned proto, RS_t type)
+{
+  static unsigned sz = sizeof(recStatus) / sizeof(protoref_t);
+  return __tValToString(recStatus, sz, proto, (int)type, "");
+}
+
+int Myth::RecStatusToNum(unsigned proto, RS_t type)
+{
+  static unsigned sz = sizeof(recStatus) / sizeof(protoref_t);
+  return __tValToNum(recStatus, sz, proto, (int)type, 0);
+}

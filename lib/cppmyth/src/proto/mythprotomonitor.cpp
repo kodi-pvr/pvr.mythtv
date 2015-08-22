@@ -105,42 +105,6 @@ out:
   return false;
 }
 
-ProtoRecorderPtr ProtoMonitor::GetNextFreeRecorder75(int rnum)
-{
-  char buf[32];
-  std::string field;
-  ProtoRecorderPtr recorder;
-  int nextnum = -1;
-  std::string hostname;
-  uint16_t port;
-
-  OS::CLockGuard lock(*m_mutex);
-  if (!IsOpen())
-    return recorder;
-  std::string cmd("GET_NEXT_FREE_RECORDER");
-  cmd.append(PROTO_STR_SEPARATOR);
-  int32_to_string((int32_t)rnum, buf);
-  cmd.append(buf);
-
-  if (!SendCommand(cmd.c_str()))
-    return recorder;
-
-  if (!ReadField(field) || string_to_int32(field.c_str(), &nextnum) || nextnum < 1)
-    goto out;
-  if (!ReadField(hostname) || hostname == "nohost")
-    goto out;
-  if (!ReadField(field) || string_to_uint16(field.c_str(), &port))
-    goto out;
-  FlushMessage();
-  DBG(MYTH_DBG_DEBUG, "%s: open recorder %d (%s:%u)\n", __FUNCTION__, (int)nextnum, hostname.c_str(), (unsigned)port);
-  recorder.reset(new ProtoRecorder(nextnum, hostname, port));
-  return recorder;
-out:
-  DBG(MYTH_DBG_ERROR, "%s: failed\n", __FUNCTION__);
-  FlushMessage();
-  return recorder;
-}
-
 ProtoRecorderPtr ProtoMonitor::GetRecorderFromNum75(int rnum)
 {
   char buf[32];
@@ -581,6 +545,20 @@ std::vector<int> ProtoMonitor::GetFreeCardIdList75()
   return ids;
 }
 
+std::vector<int> ProtoMonitor::GetFreeCardIdList87()
+{
+  std::vector<int> ids;
+  CardInputListPtr inputs = GetFreeInputs(0);
+  if (inputs)
+  {
+    for (CardInputList::const_iterator it = inputs->begin(); it != inputs->end(); ++it)
+      if (*it)
+        ids.push_back((*it)->cardId); // same as inputId
+  }
+  return ids;
+}
+
+
 CardInputListPtr ProtoMonitor::GetFreeInputs75(int rnum)
 {
   CardInputListPtr list = CardInputListPtr(new CardInputList());
@@ -695,6 +673,53 @@ CardInputListPtr ProtoMonitor::GetFreeInputs81(int rnum)
     if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->inputId)))
       break;
     if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->cardId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->mplexId)))
+      break;
+    if (!ReadField(field) || string_to_uint8(field.c_str(), &(input->liveTVOrder)))
+      break;
+    if (!ReadField(field)) // displayName
+      break;
+    if (!ReadField(field)) // recPriority
+      break;
+    if (!ReadField(field)) // schedOrder
+      break;
+    if (!ReadField(field)) // quickTune
+      break;
+    if (!ReadField(field)) // chanid
+      break;
+    list->push_back(input);
+  }
+  FlushMessage();
+  return list;
+}
+
+CardInputListPtr ProtoMonitor::GetFreeInputs87(int rnum)
+{
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
+  char buf[32];
+  std::string field;
+
+  OS::CLockGuard lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("GET_FREE_INPUT_INFO ");
+  int32_to_string((int32_t)rnum, buf);
+  cmd.append(buf);
+
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    CardInputPtr input(new CardInput());
+    if (!ReadField(input->inputName))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->sourceId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->inputId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->cardId))) // obsolete: same as inputId
       break;
     if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->mplexId)))
       break;
