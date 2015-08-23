@@ -142,7 +142,7 @@ namespace MythDTO75
     { "ParentId",         IS_UINT32,  (setter_t)MythDTO::SetSchedule_ParentId },
     { "Inactive",         IS_BOOLEAN, (setter_t)MythDTO::SetSchedule_Inactive },
     { "Title",            IS_STRING,  (setter_t)MythDTO::SetSchedule_Title },
-    { "Subtitle",         IS_STRING,  (setter_t)MythDTO::SetSchedule_Subtitle },
+    { "SubTitle",         IS_STRING,  (setter_t)MythDTO::SetSchedule_Subtitle },
     { "Description",      IS_STRING,  (setter_t)MythDTO::SetSchedule_Description },
     { "Season",           IS_UINT16,  (setter_t)MythDTO::SetSchedule_Season },
     { "Episode",          IS_UINT16,  (setter_t)MythDTO::SetSchedule_Episode },
