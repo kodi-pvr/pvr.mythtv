@@ -358,7 +358,7 @@ msgid "Record this"
 msgstr ""
 
 msgctxt "#30466"
-msgid "Record series from guide"
+msgid "Record series"
 msgstr ""
 
 msgctxt "#30467"
