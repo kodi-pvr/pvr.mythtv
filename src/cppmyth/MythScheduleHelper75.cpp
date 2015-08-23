@@ -174,13 +174,14 @@ MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 
     m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_SERIES,
             PVR_TIMER_TYPE_IS_REPEATING |
+            PVR_TIMER_TYPE_REQUIRES_EPG_TAG_ON_CREATE |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_RECORD_ONLY_NEW_EPISODES |
             PVR_TIMER_TYPE_SUPPORTS_START_END_MARGIN |
             PVR_TIMER_TYPE_SUPPORTS_PRIORITY |
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
-            XBMC->GetLocalizedString(30466), // Record series from guide
+            XBMC->GetLocalizedString(30466), // Record series
             GetRulePriorityList(),
             GetRulePriorityDefaultId(),
             GetRuleDupMethodList(),
