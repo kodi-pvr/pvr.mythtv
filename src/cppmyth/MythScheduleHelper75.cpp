@@ -658,8 +658,10 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
   entry.title.assign(recording.Title());
   if (!recording.Subtitle().empty())
     entry.title.append(" (").append(recording.Subtitle()).append(")");
-  if (recording.Season() || recording.Episode())
+  if (recording.Season() && recording.Episode())
     entry.title.append(" - ").append(Myth::IntToString(recording.Season())).append(".").append(Myth::IntToString(recording.Episode()));
+  else if (recording.Episode())
+    entry.title.append(" - S").append(Myth::IntToString(recording.Episode()));
   entry.recordingGroup = GetRuleRecordingGroupId(recording.RecordingGroup());
   entry.entryIndex = MythScheduleManager::MakeIndex(recording); // upcoming index
   return true;
