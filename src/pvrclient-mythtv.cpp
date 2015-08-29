@@ -1860,7 +1860,10 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   entry.expiration = timer.iLifetime;
   entry.firstShowing = false;
   entry.recordingGroup = timer.iRecordingGroup;
-  entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? true : false);
+  if (timer.iTimerType == TIMER_TYPE_DONT_RECORD)
+    entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? false : true);
+  else
+    entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? true : false);
   entry.entryIndex = timer.iClientIndex;
   entry.parentIndex = timer.iParentClientIndex;
   return entry;

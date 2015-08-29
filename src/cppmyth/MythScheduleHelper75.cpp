@@ -614,7 +614,7 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
         {
           case Myth::RS_DONT_RECORD:
           case Myth::RS_NEVER_RECORD:
-            entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status (isInactive)
+            entry.recordingStatus = recording.Status();
             entry.timerType = TIMER_TYPE_DONT_RECORD;
             entry.isInactive = rule.Inactive();
             break;
