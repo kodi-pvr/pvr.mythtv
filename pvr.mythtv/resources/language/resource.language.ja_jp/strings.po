@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "テレビ放送の録画をつづける"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "「録画しない」状態の表示・非表示切り替え"
-
 msgctxt "#30431"
 msgid "Record all showings (this channel)"
 msgstr "すべてを録画する (このチャンネル)"

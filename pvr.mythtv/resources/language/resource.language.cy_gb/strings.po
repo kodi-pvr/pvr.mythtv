@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Cadw recordiad LiveTV"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Dangos/cuddio rheolau gyda'r statws 'Nid yn Recordio'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ail-lwytho'r gelc ar gyfer eiconau sianeli"

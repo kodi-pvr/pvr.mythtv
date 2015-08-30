@@ -232,10 +232,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Залишати запис Live TV"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Показати/приховати правила, які мають статус \"Не записувати\""
-
 msgctxt "#30431"
 msgid "Record all showings (this channel)"
 msgstr "Записувати всі серіали (на цьому каналі)"

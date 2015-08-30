@@ -269,8 +269,8 @@ msgid "Keep LiveTV recording"
 msgstr "Garder l'enregistrement de la télé en direct"
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Montrer/cacher les règles ayant un état « N'enregistre pas »"
+msgid "Show/hide inactive upcomings"
+msgstr "Montrer/cacher les programmations inactives"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"

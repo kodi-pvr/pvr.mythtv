@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Να συνεχίζεται η εγγραφή LiveTV"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Εμφάνιση/Απόκρυψη κανόνων με ένδειξη 'Δε Γίνεται Εγγραφή'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ανανεώστε τη μνήμη cache για εικ. καναλιών"

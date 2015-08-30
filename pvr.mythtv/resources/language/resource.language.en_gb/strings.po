@@ -292,7 +292,7 @@ msgstr ""
 #empty strings from id 30413 to 30420
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
+msgid "Show/hide inactive upcomings"
 msgstr ""
 
 msgctxt "#30422"

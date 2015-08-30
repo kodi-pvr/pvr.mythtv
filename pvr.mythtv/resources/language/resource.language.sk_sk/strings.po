@@ -220,10 +220,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Ponechať nahrávky LiveTV"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Zobraziť/skryť pravidlá so stavom 'Nenahráva sa'"
-
 msgctxt "#30431"
 msgid "Record all showings (this channel)"
 msgstr "Nahrať všetky predstavenia (na tomto kanáli)"

@@ -265,8 +265,8 @@ msgid "Keep LiveTV recording"
 msgstr "Keep LiveTV recording"
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Show/hide rules with status 'Not Recording'"
+msgid "Show/hide inactive upcomings"
+msgstr "Show/hide inactive upcomings"
 
 msgctxt "#30431"
 msgid "Record all showings (this channel)"

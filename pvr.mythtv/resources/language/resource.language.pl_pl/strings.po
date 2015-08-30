@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Zachowaj nagranie telewizyjne"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Widoczność reguł stanu \"Nagrywanie nieaktywne\""
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Odśwież bufor ikon kanałów"

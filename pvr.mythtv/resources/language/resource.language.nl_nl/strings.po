@@ -268,10 +268,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Behoud LiveTV opname"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Toon/verber regels met status 'niet aan het opnemen'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ververs geheugen voor de kanaaliconen"
