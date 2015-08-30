@@ -1521,19 +1521,10 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     // Status: Match recording status with PVR_TIMER status
     switch ((*it)->recordingStatus)
     {
-    case Myth::RS_EARLIER_RECORDING:  //Another entry in the list will record 'earlier'
-    case Myth::RS_LATER_SHOWING:      //Another entry in the list will record 'later'
-    case Myth::RS_CURRENT_RECORDING:  //Already in the current library
-    case Myth::RS_PREVIOUS_RECORDING: //Recorded before but not in the library anylonger
     case Myth::RS_ABORTED:
     case Myth::RS_MISSED:
-    case Myth::RS_TOO_MANY_RECORDINGS:
     case Myth::RS_NOT_LISTED:
     case Myth::RS_OFFLINE:
-    case Myth::RS_OTHER_SHOWING:
-    case Myth::RS_DONT_RECORD:
-    case Myth::RS_NEVER_RECORD:
-    case Myth::RS_REPEAT:
       tag.state = PVR_TIMER_STATE_ABORTED;
       break;
     case Myth::RS_RECORDING:
@@ -1555,6 +1546,15 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
       tag.state = PVR_TIMER_STATE_ERROR;
       break;
     case Myth::RS_INACTIVE:
+    case Myth::RS_EARLIER_RECORDING:  //Another entry in the list will record 'earlier'
+    case Myth::RS_LATER_SHOWING:      //Another entry in the list will record 'later'
+    case Myth::RS_CURRENT_RECORDING:  //Already in the current library
+    case Myth::RS_PREVIOUS_RECORDING: //Recorded before but not in the library anylonger
+    case Myth::RS_TOO_MANY_RECORDINGS:
+    case Myth::RS_OTHER_SHOWING:
+    case Myth::RS_REPEAT:
+    case Myth::RS_DONT_RECORD:
+    case Myth::RS_NEVER_RECORD:
       tag.state = PVR_TIMER_STATE_DISABLED;
       break;
     case Myth::RS_CANCELLED:
