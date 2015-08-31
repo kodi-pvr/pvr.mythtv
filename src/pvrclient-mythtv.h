@@ -204,13 +204,6 @@ private:
 
   /**
    *
-   * \brief Handle broadcast UID for MythTV program
-   */
-  static int MakeBroadcastID(unsigned int chanid, time_t starttime);
-  static void BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *starttime);
-
-  /**
-   *
    * \brief Parse and fill AV stream infos for a recorded program
    */
   static void FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream);

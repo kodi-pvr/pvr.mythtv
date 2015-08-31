@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.6 FATAL_ERROR)
 cmake_policy (VERSION 2.6)
+set(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
 
 project (cppmyth)
 
@@ -41,7 +42,9 @@ if (MSVC)
 endif ()
 
 if (NOT WIN32 AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX))
-  add_definitions ("-fPIC")
+  if (NOT CYGWIN)
+    add_definitions ("-fPIC")
+  endif ()
   include (CheckLibraryExists)
   include (CheckAtomic)
   if (HAS_BUILTIN_SYNC_ADD_AND_FETCH)
