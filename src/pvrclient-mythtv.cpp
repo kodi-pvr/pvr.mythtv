@@ -414,7 +414,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
       if (m_control->RefreshRecordedArtwork(*(msg.program)) && g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: artwork found for %s", __FUNCTION__, prog.UID().c_str());
       // Reset to recalculate flags
-      prog.Reset();
+      prog.ResetProps();
       // Keep props
       prog.CopyProps(it->second);
       // Update recording
@@ -525,7 +525,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       tag.strTitle = epgTitle.c_str();
       tag.strPlot = it->second->description.c_str();
       tag.strGenreDescription = it->second->category.c_str();
-      tag.iUniqueBroadcastId = MakeBroadcastID(it->second->channel.chanId, it->first);
+      tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
       tag.iChannelNumber = atoi(it->second->channel.chanNum.c_str());
       int genre = m_categories.Category(it->second->category);
       tag.iGenreSubType = genre & 0x0F;
@@ -832,6 +832,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
     }
   }
+  time_t now = time(NULL);
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -886,6 +887,10 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
       PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
+
+      // EPG Entry (Enables "Play recording" option and icon)
+      if (difftime(now, it->second.EndTime()) < INTERVAL_DAY) // Up to 1 day in the past
+        tag.iEpgEventId = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid(it->second.ChannelID()), it->second.StartTime());
 
       // Unimplemented
       tag.iLifetime = 0;
@@ -2387,7 +2392,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
   {
     time_t attime;
     unsigned int chanid;
-    BreakBroadcastID(item.data.iEpgUid, &chanid, &attime);
+    MythEPGInfo::BreakBroadcastID(item.data.iEpgUid, &chanid, &attime);
     MythEPGInfo epgInfo;
     Myth::ProgramMapPtr epg = m_control->GetProgramGuide(chanid, attime, attime);
     Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
@@ -2475,42 +2480,6 @@ std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const st
   else
     epgtitle = title + SUBTITLE_SEPARATOR + subtitle;
   return epgtitle;
-}
-
-// Broacast ID is 32 bits integer and allows to identify a EPG item.
-// MythTV backend doesn't provide one. So we make it encoding time and channel
-// as below:
-// 31. . . . . . . . . . . . . . . 15. . . . . . . . . . . . . . 0
-// [   timecode (self-relative)   ][         channel Id          ]
-// Timecode is the count of minutes since epoch modulo 0xFFFF. Now therefore it
-// is usable for a period of +/- 32767 minutes (+/-22 days) around itself.
-
-int PVRClientMythTV::MakeBroadcastID(unsigned int chanid, time_t starttime)
-{
-  int timecode = (int)(difftime(starttime, 0) / 60) & 0xFFFF;
-  return (int)((timecode << 16) | (chanid & 0xFFFF));
-}
-
-void PVRClientMythTV::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *attime)
-{
-  time_t now;
-  int ntc, ptc, distance;
-  struct tm epgtm;
-
-  now = time(NULL);
-  ntc = (int)(difftime(now, 0) / 60) & 0xFFFF;
-  ptc = (broadcastid >> 16) & 0xFFFF; // removes arithmetic bits
-  if (ptc > ntc)
-    distance = (ptc - ntc) < 0x8000 ? ptc - ntc : ptc - ntc - 0xFFFF;
-  else
-    distance = (ntc - ptc) < 0x8000 ? ptc - ntc : ptc - ntc + 0xFFFF;
-  localtime_r(&now, &epgtm);
-  epgtm.tm_min += distance;
-  // Time precision is minute, so we are looking for program started before next minute.
-  epgtm.tm_sec = 59;
-
-  *attime = mktime(&epgtm);
-  *chanid = (unsigned int)broadcastid & 0xFFFF;
 }
 
 void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream)
