@@ -37,7 +37,7 @@ public:
   bool operator !=(const MythProgramInfo &other);
 
   /// Reset custom flags and properties
-  void Reset() {  m_flags = 0; m_props.reset(new Props()); }
+  void ResetProps() {  m_flags = 0; m_props.reset(new Props()); }
   /// Copy reference of properties from other
   void CopyProps(const MythProgramInfo &other) { m_props = other.m_props; }
   // Custom flags

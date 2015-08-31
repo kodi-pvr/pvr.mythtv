@@ -415,7 +415,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
       if (m_control->RefreshRecordedArtwork(*(msg.program)) && g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: artwork found for %s", __FUNCTION__, prog.UID().c_str());
       // Reset to recalculate flags
-      prog.Reset();
+      prog.ResetProps();
       // Keep props
       prog.CopyProps(it->second);
       // Update recording
