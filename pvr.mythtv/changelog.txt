@@ -1,3 +1,7 @@
+v2.6.2
+- Security fix for JSON parser
+- Add EPG Entry associated with recent Recording
+
 v2.6.1
 - Support protocol 0.28-pre:87
 - Sync cppmyth upstream (2.2.0)
