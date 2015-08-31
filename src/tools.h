@@ -41,11 +41,15 @@ static inline struct tm *localtime_r(const time_t  *clock, struct tm *result)
 #include <time.h>
 #endif
 
+#define INTERVAL_MINUTE    60       ///< number of seconds in minute
+#define INTERVAL_HOUR      3600     ///< number of seconds in hour
+#define INTERVAL_DAY       86400    ///< number of seconds in day
+
 static inline int daytime(time_t *time)
 {
   struct tm dtm;
   localtime_r(time, &dtm);
-  int retval = dtm.tm_sec + dtm.tm_min * 60 + dtm.tm_hour * 3600;
+  int retval = dtm.tm_sec + dtm.tm_min * INTERVAL_MINUTE + dtm.tm_hour * INTERVAL_HOUR;
   return retval;
 }
 
@@ -59,10 +63,10 @@ static inline int weekday(time_t *time)
 
 static inline void timeadd(time_t *time, double diffsec)
 {
-  double dh = trunc(diffsec / 3600);
+  double dh = trunc(diffsec / INTERVAL_HOUR);
   struct tm newtm;
   localtime_r(time, &newtm);
   newtm.tm_hour += (int)dh;
-  newtm.tm_sec += (int)(diffsec - dh * 3600);
+  newtm.tm_sec += (int)(diffsec - dh * INTERVAL_HOUR);
   *time = mktime(&newtm);
 }

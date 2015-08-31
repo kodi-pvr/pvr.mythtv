@@ -898,7 +898,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
 
       // EPG Entry (Enables "Play recording" option and icon)
-      if (difftime(now, it->second.EndTime()) < 60 * 60 * 24 ) // Up to 1 day in the past
+      if (difftime(now, it->second.EndTime()) < INTERVAL_DAY) // Up to 1 day in the past
         tag.iEpgEventId = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid(it->second.ChannelID()), it->second.StartTime());
 
       // Unimplemented
@@ -1737,12 +1737,12 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
     hasChannel = true;
   }
   // Fix timeslot as needed
-  if (st == 0 && difftime(et, 0) > 86400)
+  if (st == 0 && difftime(et, 0) > INTERVAL_DAY)
   {
     st = now;
   }
   // near 0 or invalid unix time seems to be ANY TIME
-  if (difftime(st, 0) < 86400)
+  if (difftime(st, 0) < INTERVAL_DAY)
   {
     st = et = 0;
     hasTimeslot = false;

@@ -190,7 +190,7 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
           // fill timeslot starting at next recording
           entry.startTime = rule.NextRecording(); // it includes offset correction
           // WARNING: if next recording has been overriden then offset could be different
-          timeadd(&entry.startTime, 60 * rule.StartOffset()); // remove start offset
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
           entry.endTime = 0; // any time
         }
         else if (difftime(rule.LastRecorded(), 0) > 0)
@@ -198,7 +198,7 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
           // fill timeslot starting at last recorded
           entry.startTime = rule.LastRecorded(); // it includes offset correction
           // WARNING: if last recorded has been overriden then offset could be different
-          timeadd(&entry.startTime, 60 * rule.StartOffset()); // remove start offset
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
           entry.endTime = 0; // any time
         }
       }
