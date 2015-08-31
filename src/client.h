@@ -92,7 +92,8 @@ extern int          g_iLiveTVConflictStrategy;  ///< Live TV conflict resolving 
 extern bool         g_bChannelIcons;            ///< Load Channel Icons
 extern bool         g_bRecordingIcons;          ///< Load Recording Icons (Fanart/Thumbnails)
 extern int          g_iRecTemplateType;         ///< Template type for new record (0=Internal, 1=MythTV)
-///* Internal Record template */
+///@{
+/// Internal Record template
 extern bool         g_bRecAutoMetadata;
 extern bool         g_bRecAutoCommFlag;
 extern bool         g_bRecAutoTranscode;
@@ -102,6 +103,7 @@ extern bool         g_bRecAutoRunJob3;
 extern bool         g_bRecAutoRunJob4;
 extern bool         g_bRecAutoExpire;
 extern int          g_iRecTranscoder;
+///@}
 extern bool         g_bDemuxing;
 extern int          g_iTuneDelay;
 extern int          g_iGroupRecordings;
