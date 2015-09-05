@@ -204,14 +204,6 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Rastas iškarpymų sąrašas ar reklamų praleidimai.\nAr norite aktyvuoti EDL funkcionalumą šiai laidai?"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Nepavyko prisijungti prie MythTV posistemės"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Nepavyko prisijungti prie MythTV duomenų bazės"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Atsijungta nuo MythTV posistemės"
