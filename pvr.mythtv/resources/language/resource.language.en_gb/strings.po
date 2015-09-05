@@ -223,15 +223,23 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr ""
 
-#empty strings from id 30112 to 30299
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr ""
+
+#empty strings from id 30114 to 30299
 
 # Notifications
 msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
+msgid "Failed to connect the MythTV backend with the known protocol versions."
 msgstr ""
 
 msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup."
 msgstr ""
 
 msgctxt "#30302"
