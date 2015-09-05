@@ -34,7 +34,8 @@ using namespace ADDON;
 using namespace PLATFORM;
 
 PVRClientMythTV::PVRClientMythTV()
-: m_eventHandler(NULL)
+: m_connectionError(CONN_ERROR_NO_ERROR)
+, m_eventHandler(NULL)
 , m_control(NULL)
 , m_liveStream(NULL)
 , m_recordingStream(NULL)
@@ -107,6 +108,14 @@ bool PVRClientMythTV::Connect()
   m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
   if (!m_control->IsOpen())
   {
+    switch(m_control->GetProtoError())
+    {
+      case Myth::ProtoBase::ERROR_UNKNOWN_VERSION:
+        m_connectionError = CONN_ERROR_UNKNOWN_VERSION;
+        break;
+      default:
+        m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
+    }
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
     // Try wake up for the next attempt
@@ -116,10 +125,12 @@ bool PVRClientMythTV::Connect()
   }
   if (!m_control->CheckService())
   {
+    m_connectionError = CONN_ERROR_API_UNAVAILABLE;
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
     return false;
   }
+  m_connectionError = CONN_ERROR_NO_ERROR;
 
   // Create event handler and subscription as needed
   unsigned subid = 0;
@@ -141,6 +152,11 @@ bool PVRClientMythTV::Connect()
   // Start event handler
   m_eventHandler->Start();
   return true;
+}
+
+PVRClientMythTV::CONN_ERROR PVRClientMythTV::GetConnectionError() const
+{
+  return m_connectionError;
 }
 
 unsigned PVRClientMythTV::GetBackendAPIVersion()
