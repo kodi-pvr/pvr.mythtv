@@ -22,6 +22,7 @@
 
 #include "client.h"
 #include "pvrclient-mythtv.h"
+#include "guidialogyesno.h"
 
 #include <kodi/xbmc_pvr_dll.h>
 
@@ -31,6 +32,7 @@ using namespace ADDON;
  * Default values are defined inside client.h
  * and exported to the other source files.
  */
+bool          g_bNotifyAddonFailure     = true;                             ///< Notify user after failure of create function
 std::string   g_szMythHostname          = DEFAULT_HOST;                     ///< The Host name or IP of the mythtv server
 std::string   g_szMythHostEther         = "";                               ///< The Host MAC address of the mythtv server
 int           g_iProtoPort              = DEFAULT_PROTO_PORT;               ///< The mythtv protocol port (default is 6543)
@@ -318,13 +320,51 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   g_client = new PVRClientMythTV();
   if (!g_client->Connect())
   {
-    XBMC->Log(LOG_ERROR, "");
+    switch(g_client->GetConnectionError())
+    {
+      case PVRClientMythTV::CONN_ERROR_UNKNOWN_VERSION:
+      {
+        // HEADING: Connection failed
+        // Failed to connect the MythTV backend with the known protocol versions.
+        // Do you want to retry ?
+        std::string msg = XBMC->GetLocalizedString(30300);
+        msg.append("\n").append(XBMC->GetLocalizedString(30113));
+        GUIDialogYesNo dialog(XBMC->GetLocalizedString(30112), msg.c_str(), 1);
+        dialog.Open();
+        if (dialog.IsNo())
+          m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
+        else
+          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
+        break;
+      }
+      case PVRClientMythTV::CONN_ERROR_API_UNAVAILABLE:
+      {
+        // HEADING: Connection failed
+        // Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup.
+        // Do you want to retry ?
+        std::string msg = XBMC->GetLocalizedString(30301);
+        msg.append("\n").append(XBMC->GetLocalizedString(30113));
+        GUIDialogYesNo dialog(XBMC->GetLocalizedString(30112), msg.c_str(), 1);
+        dialog.Open();
+        if (dialog.IsNo())
+          m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
+        else
+          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
+        break;
+      }
+      default:
+        if (g_bNotifyAddonFailure)
+        {
+          XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30304)); // No response from MythTV backend
+          g_bNotifyAddonFailure = false; // No more notification
+        }
+        m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
+    }
     SAFE_DELETE(g_client);
     SAFE_DELETE(CODEC);
     SAFE_DELETE(GUI);
     SAFE_DELETE(PVR);
     SAFE_DELETE(XBMC);
-    m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
     return m_CurStatus;
   }
   XBMC->Log(LOG_DEBUG, "Creating MythTV client...done");
@@ -444,9 +484,10 @@ unsigned int ADDON_GetSettings(ADDON_StructSetting ***sSet)
 
 ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
 {
-  std::string str = settingName;
   if (!g_bCreated)
     return ADDON_STATUS_OK;
+
+  std::string str = settingName;
 
   if (str == "host")
   {
@@ -455,7 +496,10 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     tmp_sHostname = g_szMythHostname;
     g_szMythHostname = (const char*)settingValue;
     if (tmp_sHostname != g_szMythHostname)
+    {
+      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
+    }
   }
   else if (str == "port")
   {
@@ -463,6 +507,7 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_iProtoPort != *(int*)settingValue)
     {
       g_iProtoPort = *(int*)settingValue;
+      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
     }
   }
@@ -472,6 +517,7 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_iWSApiPort != *(int*)settingValue)
     {
       g_iWSApiPort = *(int*)settingValue;
+      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
     }
   }

@@ -80,6 +80,7 @@ extern std::string  g_szUserPath;               ///< The Path to the user direct
 extern std::string  g_szClientPath;             ///< The Path where this driver is located
 
 /* Client Settings */
+extern bool         g_bNotifyAddonFailure;      ///< Notify user after failure of Create function
 extern std::string  g_szMythHostname;           ///< The Host name or IP of the mythtv server
 extern std::string  g_szMythHostEther;          ///< The Host MAC address of the mythtv server
 extern int          g_iProtoPort;               ///< The mythtv protocol port (default is 6543)
