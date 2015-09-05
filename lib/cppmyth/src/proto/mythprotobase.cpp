@@ -64,6 +64,7 @@ ProtoBase::ProtoBase(const std::string& server, unsigned port)
 , m_msgLength(0)
 , m_msgConsumed(0)
 , m_isOpen(false)
+, m_protoError(ERROR_NO_ERROR)
 {
   m_socket->SetReadAttempt(6); // 60 sec to hang up
 }
@@ -293,11 +294,16 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     ProtoBase::Close();
   // If socket connection failed then hang will remain up allowing retry
   m_hang = true;
+  // Reset error status
+  m_protoError = ERROR_NO_ERROR;
   do
   {
     retry = false;
     if (!(ok = m_socket->Connect(m_server.c_str(), m_port, rcvbuf)))
+    {
+      m_protoError = ERROR_SERVER_UNREACHABLE;
       continue;
+    }
     // Now socket is connected: Reset hang
     m_hang = false;
 
@@ -307,6 +313,7 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     ok = false;
     if (map->version == 0)
     {
+      m_protoError = ERROR_UNKNOWN_VERSION;
       DBG(MYTH_DBG_ERROR, "%s: failed to connect with any version\n", __FUNCTION__);
       continue;
     }
@@ -338,6 +345,9 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     m_socket->Disconnect();
     m_isOpen = false;
     m_protoVersion = 0;
+    // An unknown error occurred: We should check error from socket
+    if (m_protoError == ERROR_NO_ERROR)
+      m_protoError = ERROR_SOCKET_ERROR;
     return false;
   }
   DBG(MYTH_DBG_DEBUG, "%s: agreed on Version %u protocol\n", __FUNCTION__, tmp_ver);
@@ -405,6 +415,11 @@ bool ProtoBase::HasHanging() const
 void ProtoBase::CleanHanging()
 {
   m_tainted = false;
+}
+
+ProtoBase::ERROR_t ProtoBase::GetProtoError() const
+{
+  return m_protoError;
 }
 
 ProgramPtr ProtoBase::RcvProgramInfo75()

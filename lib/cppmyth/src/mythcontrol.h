@@ -41,6 +41,7 @@ namespace Myth
     bool IsOpen() { return m_monitor.IsOpen(); }
     bool HasHanging() const { return m_monitor.HasHanging(); }
     void CleanHanging() { m_monitor.CleanHanging(); }
+    ProtoBase::ERROR_t GetProtoError() const { return m_monitor.GetProtoError(); }
 
     /**
      * @brief Check availability of API services
