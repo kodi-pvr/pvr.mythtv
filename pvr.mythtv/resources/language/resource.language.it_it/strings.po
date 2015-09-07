@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Abilita fanart/thumbnails per le registrazioni"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limite i tentativi di regolazione"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Versione Protocollo: %i - Versione Database: %i"
@@ -265,8 +269,8 @@ msgid "Keep LiveTV recording"
 msgstr "Mantieni le registrazioni della LiveTV"
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Mostra/nascondi le regole con stato 'Non registrare'"
+msgid "Show/hide inactive upcomings"
+msgstr "Mostra/Nascondi programmazione inattivo"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"

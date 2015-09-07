@@ -180,23 +180,27 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
     case TIMER_TYPE_SEARCH_KEYWORD:
     case TIMER_TYPE_SEARCH_PEOPLE:
     case TIMER_TYPE_UNHANDLED:
+      entry.startTime = rule.StartTime();
+      entry.endTime = rule.EndTime();
       // For all repeating fix timeslot as needed
-      if (difftime(rule.NextRecording(), 0) > 0)
+      if (!entry.HasTimeSlot())
       {
-        // fill timeslot starting at next recording
-        entry.startTime = entry.endTime = rule.NextRecording();
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else if (difftime(rule.LastRecorded(), 0) > 0)
-      {
-        // fill timeslot starting at last recorded
-        entry.startTime = entry.endTime = rule.LastRecorded();
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else
-      {
-        entry.startTime = rule.StartTime();
-        entry.endTime = rule.EndTime();
+        if (difftime(rule.NextRecording(), 0) > 0)
+        {
+          // fill timeslot starting at next recording
+          entry.startTime = rule.NextRecording(); // it includes offset correction
+          // WARNING: if next recording has been overriden then offset could be different
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
+        else if (difftime(rule.LastRecorded(), 0) > 0)
+        {
+          // fill timeslot starting at last recorded
+          entry.startTime = rule.LastRecorded(); // it includes offset correction
+          // WARNING: if last recorded has been overriden then offset could be different
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
       }
       // For all repeating set summary status
       if (node.HasConflict())
@@ -574,12 +578,29 @@ MythRecordingRule MythScheduleHelper76::NewFromTimer(const MythTimerEntry& entry
     }
 
     case TIMER_TYPE_DONT_RECORD:
+      rule.SetType(Myth::RT_DontRecord);
+      rule.SetChannelID(entry.chanid);
+      rule.SetCallsign(entry.callsign);
+      rule.SetStartTime(entry.startTime);
+      rule.SetEndTime(entry.endTime);
+      rule.SetTitle(entry.title);
+      rule.SetDescription(entry.description);
+      rule.SetInactive(entry.isInactive);
+      return rule;
     case TIMER_TYPE_OVERRIDE:
+      rule.SetType(Myth::RT_OverrideRecord);
+      rule.SetChannelID(entry.chanid);
+      rule.SetCallsign(entry.callsign);
+      rule.SetStartTime(entry.startTime);
+      rule.SetEndTime(entry.endTime);
+      rule.SetTitle(entry.title);
+      rule.SetDescription(entry.description);
+      rule.SetInactive(entry.isInactive);
+      return rule;
     case TIMER_TYPE_UPCOMING:
     case TIMER_TYPE_UPCOMING_MANUAL:
     case TIMER_TYPE_ZOMBIE:
-      // any type
-      rule.SetType(Myth::RT_NotRecording);
+      rule.SetType(Myth::RT_SingleRecord);
       rule.SetChannelID(entry.chanid);
       rule.SetCallsign(entry.callsign);
       rule.SetStartTime(entry.startTime);

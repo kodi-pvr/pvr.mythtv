@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Paturēt tiešraides TV ierakstu"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Rādīt/slēpt kārtulas ar statusu 'neieraksta'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Atsvaidzināt kešatmiņu kanālu ikonām"

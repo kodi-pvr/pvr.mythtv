@@ -236,10 +236,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Pastreaza inregistrarea TV"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Afișează/Ascunde regulile cu status  'Nu se înregistreză'"
-
 msgctxt "#30431"
 msgid "Record all showings (this channel)"
 msgstr "Înregistra toate emisiunile (acest canal)"

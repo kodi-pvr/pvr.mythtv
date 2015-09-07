@@ -34,7 +34,8 @@ using namespace ADDON;
 using namespace PLATFORM;
 
 PVRClientMythTV::PVRClientMythTV()
-: m_eventHandler(NULL)
+: m_connectionError(CONN_ERROR_NO_ERROR)
+, m_eventHandler(NULL)
 , m_control(NULL)
 , m_liveStream(NULL)
 , m_recordingStream(NULL)
@@ -107,6 +108,14 @@ bool PVRClientMythTV::Connect()
   m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
   if (!m_control->IsOpen())
   {
+    switch(m_control->GetProtoError())
+    {
+      case Myth::ProtoBase::ERROR_UNKNOWN_VERSION:
+        m_connectionError = CONN_ERROR_UNKNOWN_VERSION;
+        break;
+      default:
+        m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
+    }
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
     // Try wake up for the next attempt
@@ -116,10 +125,12 @@ bool PVRClientMythTV::Connect()
   }
   if (!m_control->CheckService())
   {
+    m_connectionError = CONN_ERROR_API_UNAVAILABLE;
     SAFE_DELETE(m_control);
     XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
     return false;
   }
+  m_connectionError = CONN_ERROR_NO_ERROR;
 
   // Create event handler and subscription as needed
   unsigned subid = 0;
@@ -141,6 +152,11 @@ bool PVRClientMythTV::Connect()
   // Start event handler
   m_eventHandler->Start();
   return true;
+}
+
+PVRClientMythTV::CONN_ERROR PVRClientMythTV::GetConnectionError() const
+{
+  return m_connectionError;
 }
 
 unsigned PVRClientMythTV::GetBackendAPIVersion()
@@ -415,7 +431,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
       if (m_control->RefreshRecordedArtwork(*(msg.program)) && g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: artwork found for %s", __FUNCTION__, prog.UID().c_str());
       // Reset to recalculate flags
-      prog.Reset();
+      prog.ResetProps();
       // Keep props
       prog.CopyProps(it->second);
       // Update recording
@@ -522,8 +538,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       // EPG_TAG expects strings as char* and not as copies (like the other PVR types).
       // Therefore we have to make sure that we don't pass invalid (freed) memory to TransferEpgEntry.
       // In particular we have to use local variables and must not pass returned string values directly.
-      std::string epgTitle = MakeProgramTitle(it->second->title, it->second->subTitle);
-      tag.strTitle = epgTitle.c_str();
+      tag.strTitle = it->second->title.c_str();
       tag.strPlot = it->second->description.c_str();
       tag.strGenreDescription = it->second->category.c_str();
       tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
@@ -531,7 +546,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       int genre = m_categories.Category(it->second->category);
       tag.iGenreSubType = genre & 0x0F;
       tag.iGenreType = genre & 0xF0;
-      tag.strEpisodeName = "";
+      tag.strEpisodeName = it->second->subTitle.c_str();
       tag.strIconPath = "";
       tag.strPlotOutline = "";
       tag.bNotify = false;
@@ -833,6 +848,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
     }
   }
+  time_t now = time(NULL);
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -848,10 +864,19 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       //@TODO: tag.iLastPlayedPosition
 
       std::string id = it->second.UID();
-      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
 
       PVR_STRCPY(tag.strRecordingId, id.c_str());
-      PVR_STRCPY(tag.strTitle, title.c_str());
+      PVR_STRCPY(tag.strTitle, it->second.Title().c_str());
+      PVR_STRCPY(tag.strEpisodeName, it->second.Subtitle().c_str());
+      tag.iSeriesNumber = it->second.Season();
+      tag.iEpisodeNumber = it->second.Episode();
+      time_t airTime(it->second.Airdate());
+      if (difftime(airTime, 0) > 0)
+      {
+        struct tm airTimeDate;
+        localtime_r(&airTime, &airTimeDate);
+        tag.iYear = airTimeDate.tm_year + 1900;
+      }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
 
@@ -888,6 +913,10 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
 
+      // EPG Entry (Enables "Play recording" option and icon)
+      if (difftime(now, it->second.EndTime()) < INTERVAL_DAY) // Up to 1 day in the past
+        tag.iEpgEventId = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid(it->second.ChannelID()), it->second.StartTime());
+
       // Unimplemented
       tag.iLifetime = 0;
       tag.iPriority = 0;
@@ -911,7 +940,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
 
   if (m_deletedRecAmountChange)
   {
-    int res = 0;  
+    int res = 0;
     CLockObject lock(m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
@@ -950,10 +979,19 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
       //@TODO: tag.iLastPlayedPosition
 
       std::string id = it->second.UID();
-      std::string title = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
 
       PVR_STRCPY(tag.strRecordingId, id.c_str());
-      PVR_STRCPY(tag.strTitle, title.c_str());
+      PVR_STRCPY(tag.strTitle, it->second.Title().c_str());
+      PVR_STRCPY(tag.strEpisodeName, it->second.Subtitle().c_str());
+      tag.iSeriesNumber = it->second.Season();
+      tag.iEpisodeNumber = it->second.Episode();
+      time_t airTime(it->second.Airdate());
+      if (difftime(airTime, 0) > 0)
+      {
+        struct tm airTimeDate;
+        localtime_r(&airTime, &airTimeDate);
+        tag.iYear = airTimeDate.tm_year + 1900;
+      }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
 
@@ -1499,19 +1537,10 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     // Status: Match recording status with PVR_TIMER status
     switch ((*it)->recordingStatus)
     {
-    case Myth::RS_EARLIER_RECORDING:  //Another entry in the list will record 'earlier'
-    case Myth::RS_LATER_SHOWING:      //Another entry in the list will record 'later'
-    case Myth::RS_CURRENT_RECORDING:  //Already in the current library
-    case Myth::RS_PREVIOUS_RECORDING: //Recorded before but not in the library anylonger
     case Myth::RS_ABORTED:
     case Myth::RS_MISSED:
-    case Myth::RS_TOO_MANY_RECORDINGS:
     case Myth::RS_NOT_LISTED:
     case Myth::RS_OFFLINE:
-    case Myth::RS_OTHER_SHOWING:
-    case Myth::RS_DONT_RECORD:
-    case Myth::RS_NEVER_RECORD:
-    case Myth::RS_REPEAT:
       tag.state = PVR_TIMER_STATE_ABORTED;
       break;
     case Myth::RS_RECORDING:
@@ -1533,6 +1562,15 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
       tag.state = PVR_TIMER_STATE_ERROR;
       break;
     case Myth::RS_INACTIVE:
+    case Myth::RS_EARLIER_RECORDING:  //Another entry in the list will record 'earlier'
+    case Myth::RS_LATER_SHOWING:      //Another entry in the list will record 'later'
+    case Myth::RS_CURRENT_RECORDING:  //Already in the current library
+    case Myth::RS_PREVIOUS_RECORDING: //Recorded before but not in the library anylonger
+    case Myth::RS_TOO_MANY_RECORDINGS:
+    case Myth::RS_OTHER_SHOWING:
+    case Myth::RS_REPEAT:
+    case Myth::RS_DONT_RECORD:
+    case Myth::RS_NEVER_RECORD:
       tag.state = PVR_TIMER_STATE_DISABLED;
       break;
     case Myth::RS_CANCELLED:
@@ -1715,12 +1753,12 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
     hasChannel = true;
   }
   // Fix timeslot as needed
-  if (st == 0 && difftime(et, 0) > 86400)
+  if (st == 0 && difftime(et, 0) > INTERVAL_DAY)
   {
     st = now;
   }
   // near 0 or invalid unix time seems to be ANY TIME
-  if (difftime(st, 0) < 86400)
+  if (difftime(st, 0) < INTERVAL_DAY)
   {
     st = et = 0;
     hasTimeslot = false;
@@ -1838,7 +1876,10 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   entry.expiration = timer.iLifetime;
   entry.firstShowing = false;
   entry.recordingGroup = timer.iRecordingGroup;
-  entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? true : false);
+  if (timer.iTimerType == TIMER_TYPE_DONT_RECORD)
+    entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? false : true);
+  else
+    entry.isInactive = (timer.state == PVR_TIMER_STATE_DISABLED ? true : false);
   entry.entryIndex = timer.iClientIndex;
   entry.parentIndex = timer.iParentClientIndex;
   return entry;
@@ -1947,8 +1988,9 @@ bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
   // Suspend fileOps to avoid connection hang
   if (m_fileOps)
     m_fileOps->Suspend();
-  // Set tuning delay
+  // Configure tuning of channel
   m_liveStream->SetTuneDelay(g_iTuneDelay);
+  m_liveStream->SetLimitTuneAttempts(g_bLimitTuneAttempts);
   // Try to open
   if (m_liveStream->SpawnLiveTV(chanset[0]->chanNum, chanset))
   {
@@ -2387,9 +2429,33 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     return PVR_ERROR_FAILED;
   }
 
-  if (menuhook.category == PVR_MENUHOOK_SETTING)
+  if (menuhook.category == PVR_MENUHOOK_TIMER)
   {
-    if (menuhook.iHookId == MENUHOOK_SHOW_HIDE_NOT_RECORDING && m_scheduleManager)
+    if (menuhook.iHookId == MENUHOOK_TIMER_BACKEND_INFO && m_scheduleManager && item.cat == PVR_MENUHOOK_TIMER)
+    {
+      MythScheduledPtr prog = m_scheduleManager->FindUpComingByIndex(item.data.timer.iClientIndex);
+      if (!prog)
+      {
+        MythScheduleList progs = m_scheduleManager->FindUpComingByRuleId(item.data.timer.iClientIndex);
+        if (progs.end() != progs.begin())
+          prog = progs.begin()->second;
+      }
+      if (prog)
+      {
+        const unsigned sz = 4;
+        std::string items[sz];
+        const char* entries[sz];
+        items[0] = Myth::RecStatusToString(m_control->CheckService(), prog->Status());
+        items[1] = "ID " + Myth::IdToString(prog->RecordID());
+        items[2] = Myth::TimeToString(prog->RecordingStartTime());
+        items[3] = Myth::TimeToString(prog->RecordingEndTime());
+        for (unsigned i = 0; i < sz; ++i)
+          entries[i] = items[i].c_str();
+        GUI->Dialog_Select(item.data.timer.strTitle, entries, sz);
+      }
+      return PVR_ERROR_NO_ERROR;
+    }
+    else if (menuhook.iHookId == MENUHOOK_SHOW_HIDE_NOT_RECORDING && m_scheduleManager)
     {
       bool flag = m_scheduleManager->ToggleShowNotRecording();
       HandleScheduleChange();
@@ -2399,10 +2465,19 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       XBMC->QueueNotification(QUEUE_INFO, info.c_str());
       return PVR_ERROR_NO_ERROR;
     }
-    else if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
+  }
+
+  if (menuhook.category == PVR_MENUHOOK_SETTING)
+  {
+    if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
     {
       CLockObject lock(m_channelsLock);
       m_fileOps->CleanChannelIcons();
+      PVR->TriggerChannelUpdate();
+      return PVR_ERROR_NO_ERROR;
+    }
+    else if (menuhook.iHookId == MENUHOOK_TRIGGER_CHANNEL_UPDATE)
+    {
       PVR->TriggerChannelUpdate();
       return PVR_ERROR_NO_ERROR;
     }
@@ -2488,7 +2563,7 @@ std::string PVRClientMythTV::MakeProgramTitle(const std::string& title, const st
   if (subtitle.empty())
     epgtitle = title;
   else
-    epgtitle = title + SUBTITLE_SEPARATOR + subtitle;
+    epgtitle = title + " (" + subtitle + ")";
   return epgtitle;
 }
 

@@ -46,12 +46,12 @@
 #define DEFAULT_RECORDING_ICONS             true
 #define DEFAULT_RECORD_TEMPLATE             1
 
-#define SUBTITLE_SEPARATOR                  " - "
-
 #define MENUHOOK_REC_DELETE_AND_RERECORD    1
 #define MENUHOOK_KEEP_LIVETV_RECORDING      2
-#define MENUHOOK_SHOW_HIDE_NOT_RECORDING    3
-#define MENUHOOK_REFRESH_CHANNEL_ICONS      4
+#define MENUHOOK_TIMER_BACKEND_INFO         3
+#define MENUHOOK_SHOW_HIDE_NOT_RECORDING    4
+#define MENUHOOK_REFRESH_CHANNEL_ICONS      5
+#define MENUHOOK_TRIGGER_CHANNEL_UPDATE     6
 
 #define DEFAULT_HANDLE_DEMUXING             false
 #define DEFAULT_TUNE_DELAY                  5
@@ -62,6 +62,7 @@
 #define ENABLE_EDL_DIALOG                   1
 #define ENABLE_EDL_NEVER                    2
 #define DEFAULT_BLOCK_SHUTDOWN              true
+#define DEFAULT_LIMIT_TUNE_ATTEMPTS         true
 
 /*!
  * @brief PVR macros for string exchange
@@ -79,6 +80,7 @@ extern std::string  g_szUserPath;               ///< The Path to the user direct
 extern std::string  g_szClientPath;             ///< The Path where this driver is located
 
 /* Client Settings */
+extern bool         g_bNotifyAddonFailure;      ///< Notify user after failure of Create function
 extern std::string  g_szMythHostname;           ///< The Host name or IP of the mythtv server
 extern std::string  g_szMythHostEther;          ///< The Host MAC address of the mythtv server
 extern int          g_iProtoPort;               ///< The mythtv protocol port (default is 6543)
@@ -91,7 +93,8 @@ extern int          g_iLiveTVConflictStrategy;  ///< Live TV conflict resolving 
 extern bool         g_bChannelIcons;            ///< Load Channel Icons
 extern bool         g_bRecordingIcons;          ///< Load Recording Icons (Fanart/Thumbnails)
 extern int          g_iRecTemplateType;         ///< Template type for new record (0=Internal, 1=MythTV)
-///* Internal Record template */
+///@{
+/// Internal Record template
 extern bool         g_bRecAutoMetadata;
 extern bool         g_bRecAutoCommFlag;
 extern bool         g_bRecAutoTranscode;
@@ -101,11 +104,13 @@ extern bool         g_bRecAutoRunJob3;
 extern bool         g_bRecAutoRunJob4;
 extern bool         g_bRecAutoExpire;
 extern int          g_iRecTranscoder;
+///@}
 extern bool         g_bDemuxing;
 extern int          g_iTuneDelay;
 extern int          g_iGroupRecordings;
 extern int          g_iEnableEDL;
 extern bool         g_bBlockMythShutdown;
+extern bool         g_bLimitTuneAttempts;       ///< Limit channel tuning attempts to first card
 
 extern ADDON::CHelper_libXBMC_addon *XBMC;
 extern CHelper_libXBMC_pvr          *PVR;

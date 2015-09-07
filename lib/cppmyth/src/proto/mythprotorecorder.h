@@ -63,6 +63,7 @@ namespace Myth
     }
     CardInputListPtr GetFreeInputs()
     {
+      if (m_protoVersion >= 87) return GetFreeInputs87();
       if (m_protoVersion >= 81) return GetFreeInputs81();
       if (m_protoVersion >= 79) return GetFreeInputs79();
       return GetFreeInputs75();
@@ -93,6 +94,7 @@ namespace Myth
     CardInputListPtr GetFreeInputs75();
     CardInputListPtr GetFreeInputs79();
     CardInputListPtr GetFreeInputs81();
+    CardInputListPtr GetFreeInputs87();
     bool SetLiveRecording75(bool keep);
     bool FinishRecording75();
   };

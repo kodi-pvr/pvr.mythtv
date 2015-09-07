@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Manter gravação de TV ao Vivo"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Mostrar/ocultar regras com estatus \"Sem gravação\""
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Atualização de cache para logos de canais"

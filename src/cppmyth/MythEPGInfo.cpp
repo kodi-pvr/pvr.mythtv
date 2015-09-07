@@ -124,7 +124,7 @@ std::string MythEPGInfo::ChannelNumber() const
 
 int MythEPGInfo::MakeBroadcastID(unsigned int chanid, time_t starttime)
 {
-  int timecode = (int)(difftime(starttime, 0) / 60) & 0xFFFF;
+  int timecode = (int)(difftime(starttime, 0) / INTERVAL_MINUTE) & 0xFFFF;
   return (int)((timecode << 16) | (chanid & 0xFFFF));
 }
 
@@ -135,7 +135,7 @@ void MythEPGInfo::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t
   struct tm epgtm;
 
   now = time(NULL);
-  ntc = (int)(difftime(now, 0) / 60) & 0xFFFF;
+  ntc = (int)(difftime(now, 0) / INTERVAL_MINUTE) & 0xFFFF;
   ptc = (broadcastid >> 16) & 0xFFFF; // removes arithmetic bits
   if (ptc > ntc)
     distance = (ptc - ntc) < 0x8000 ? ptc - ntc : ptc - ntc - 0xFFFF;
@@ -144,7 +144,7 @@ void MythEPGInfo::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t
   localtime_r(&now, &epgtm);
   epgtm.tm_min += distance;
   // Time precision is minute, so we are looking for program started before next minute.
-  epgtm.tm_sec = 59;
+  epgtm.tm_sec = INTERVAL_MINUTE - 1;
 
   *attime = mktime(&epgtm);
   *chanid = (unsigned int)broadcastid & 0xFFFF;

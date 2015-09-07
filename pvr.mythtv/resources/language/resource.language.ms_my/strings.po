@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Kekalkan rakaman TV Langsung"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Tunjuk/sembunyi peraturan dengan status \"Tidak Dirakam'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Segar semula cache untuk ikon saluran"

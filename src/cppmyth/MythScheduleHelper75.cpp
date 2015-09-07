@@ -174,13 +174,14 @@ MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 
     m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_SERIES,
             PVR_TIMER_TYPE_IS_REPEATING |
+            PVR_TIMER_TYPE_REQUIRES_EPG_TAG_ON_CREATE |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_RECORD_ONLY_NEW_EPISODES |
             PVR_TIMER_TYPE_SUPPORTS_START_END_MARGIN |
             PVR_TIMER_TYPE_SUPPORTS_PRIORITY |
             PVR_TIMER_TYPE_SUPPORTS_LIFETIME |
             PVR_TIMER_TYPE_SUPPORTS_RECORDING_GROUP,
-            XBMC->GetLocalizedString(30466), // Record series from guide
+            XBMC->GetLocalizedString(30466), // Record series
             GetRulePriorityList(),
             GetRulePriorityDefaultId(),
             GetRuleDupMethodList(),
@@ -520,23 +521,27 @@ bool MythScheduleHelper75::FillTimerEntryWithRule(MythTimerEntry& entry, const M
     case TIMER_TYPE_SEARCH_KEYWORD:
     case TIMER_TYPE_SEARCH_PEOPLE:
     case TIMER_TYPE_UNHANDLED:
+      entry.startTime = rule.StartTime();
+      entry.endTime = rule.EndTime();
       // For all repeating fix timeslot as needed
-      if (difftime(rule.NextRecording(), 0) > 0)
+      if (!entry.HasTimeSlot())
       {
-        // fill timeslot starting at next recording
-        entry.startTime = entry.endTime = rule.NextRecording();
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else if (difftime(rule.LastRecorded(), 0) > 0)
-      {
-        // fill timeslot starting at last recorded
-        entry.startTime = entry.endTime = rule.LastRecorded();
-        timeadd(&entry.endTime, difftime(rule.EndTime(), rule.StartTime()));
-      }
-      else
-      {
-        entry.startTime = rule.StartTime();
-        entry.endTime = rule.EndTime();
+        if (difftime(rule.NextRecording(), 0) > 0)
+        {
+          // fill timeslot starting at next recording
+          entry.startTime = rule.NextRecording(); // it includes offset correction
+          // WARNING: if next recording has been overriden then offset could be different
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
+        else if (difftime(rule.LastRecorded(), 0) > 0)
+        {
+          // fill timeslot starting at last recorded
+          entry.startTime = rule.LastRecorded(); // it includes offset correction
+          // WARNING: if last recorded has been overriden then offset could be different
+          timeadd(&entry.startTime, INTERVAL_MINUTE * rule.StartOffset()); // remove start offset
+          entry.endTime = 0; // any time
+        }
       }
       // For all repeating set summary status
       if (node.HasConflict())
@@ -579,7 +584,7 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
     case Myth::RS_LATER_SHOWING:      //will record later
     case Myth::RS_CURRENT_RECORDING:  //Already in the current library
     case Myth::RS_PREVIOUS_RECORDING: //Previoulsy recorded but no longer in the library
-      if (true /*!m_showNotRecording*/)
+      if (!m_manager->ShowNotRecording())
       {
         XBMC->Log(LOG_DEBUG, "75::%s: Skipping %s:%s on %s because status %d", __FUNCTION__,
                   recording.Title().c_str(), recording.Subtitle().c_str(), recording.ChannelName().c_str(),
@@ -605,15 +610,16 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       // So I use the recording status to choose the right type
       case Myth::RT_DontRecord:
       case Myth::RT_OverrideRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
         switch (recording.Status())
         {
           case Myth::RS_DONT_RECORD:
           case Myth::RS_NEVER_RECORD:
+            entry.recordingStatus = recording.Status();
             entry.timerType = TIMER_TYPE_DONT_RECORD;
             entry.isInactive = rule.Inactive();
             break;
           default:
+            entry.recordingStatus = recording.Status();
             entry.timerType = TIMER_TYPE_OVERRIDE;
             entry.isInactive = rule.Inactive();
         }
@@ -651,9 +657,11 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
   entry.endTime = recording.EndTime();
   entry.title.assign(recording.Title());
   if (!recording.Subtitle().empty())
-    entry.title.append(" - ").append(recording.Subtitle());
-  if (recording.Season() || recording.Episode())
+    entry.title.append(" (").append(recording.Subtitle()).append(")");
+  if (recording.Season() && recording.Episode())
     entry.title.append(" - ").append(Myth::IntToString(recording.Season())).append(".").append(Myth::IntToString(recording.Episode()));
+  else if (recording.Episode())
+    entry.title.append(" - S").append(Myth::IntToString(recording.Episode()));
   entry.recordingGroup = GetRuleRecordingGroupId(recording.RecordingGroup());
   entry.entryIndex = MythScheduleManager::MakeIndex(recording); // upcoming index
   return true;
@@ -1098,12 +1106,29 @@ MythRecordingRule MythScheduleHelper75::NewFromTimer(const MythTimerEntry& entry
     }
 
     case TIMER_TYPE_DONT_RECORD:
+      rule.SetType(Myth::RT_DontRecord);
+      rule.SetChannelID(entry.chanid);
+      rule.SetCallsign(entry.callsign);
+      rule.SetStartTime(entry.startTime);
+      rule.SetEndTime(entry.endTime);
+      rule.SetTitle(entry.title);
+      rule.SetDescription(entry.description);
+      rule.SetInactive(entry.isInactive);
+      return rule;
     case TIMER_TYPE_OVERRIDE:
+      rule.SetType(Myth::RT_OverrideRecord);
+      rule.SetChannelID(entry.chanid);
+      rule.SetCallsign(entry.callsign);
+      rule.SetStartTime(entry.startTime);
+      rule.SetEndTime(entry.endTime);
+      rule.SetTitle(entry.title);
+      rule.SetDescription(entry.description);
+      rule.SetInactive(entry.isInactive);
+      return rule;
     case TIMER_TYPE_UPCOMING:
     case TIMER_TYPE_UPCOMING_MANUAL:
     case TIMER_TYPE_ZOMBIE:
-      // any type
-      rule.SetType(Myth::RT_NotRecording);
+      rule.SetType(Myth::RT_SingleRecord);
       rule.SetChannelID(entry.chanid);
       rule.SetCallsign(entry.callsign);
       rule.SetStartTime(entry.startTime);

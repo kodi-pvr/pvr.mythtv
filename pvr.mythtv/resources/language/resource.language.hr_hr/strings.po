@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Nastavi snimanje TV programa"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Sakrij/Prikaži pravila sa statusom 'Nije snimljeno'"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Osvježi predmemoriju za prikaz ikona programa"

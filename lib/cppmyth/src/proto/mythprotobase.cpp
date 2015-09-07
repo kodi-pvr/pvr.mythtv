@@ -34,7 +34,7 @@ using namespace Myth;
 typedef struct
 {
   unsigned version;
-  char token[30]; // up to 29 chars used in v86 + the terminating NULL character
+  char token[44]; // up to 43 chars used in v87 + the terminating NULL character
 } myth_protomap_t;
 
 static myth_protomap_t protomap[] = {
@@ -49,6 +49,7 @@ static myth_protomap_t protomap[] = {
   {84, "CanaryCoalmine"},
   {85, "BluePool"},
   {86, "(ノಠ益ಠ)ノ彡┻━┻"},
+  {87, "(ノಠ益ಠ)ノ彡┻━┻_No_entiendo!)"},
   {0, ""}
 };
 
@@ -63,6 +64,7 @@ ProtoBase::ProtoBase(const std::string& server, unsigned port)
 , m_msgLength(0)
 , m_msgConsumed(0)
 , m_isOpen(false)
+, m_protoError(ERROR_NO_ERROR)
 {
   m_socket->SetReadAttempt(6); // 60 sec to hang up
 }
@@ -292,11 +294,16 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     ProtoBase::Close();
   // If socket connection failed then hang will remain up allowing retry
   m_hang = true;
+  // Reset error status
+  m_protoError = ERROR_NO_ERROR;
   do
   {
     retry = false;
     if (!(ok = m_socket->Connect(m_server.c_str(), m_port, rcvbuf)))
+    {
+      m_protoError = ERROR_SERVER_UNREACHABLE;
       continue;
+    }
     // Now socket is connected: Reset hang
     m_hang = false;
 
@@ -306,6 +313,7 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     ok = false;
     if (map->version == 0)
     {
+      m_protoError = ERROR_UNKNOWN_VERSION;
       DBG(MYTH_DBG_ERROR, "%s: failed to connect with any version\n", __FUNCTION__);
       continue;
     }
@@ -337,6 +345,9 @@ bool ProtoBase::OpenConnection(int rcvbuf)
     m_socket->Disconnect();
     m_isOpen = false;
     m_protoVersion = 0;
+    // An unknown error occurred: We should check error from socket
+    if (m_protoError == ERROR_NO_ERROR)
+      m_protoError = ERROR_SOCKET_ERROR;
     return false;
   }
   DBG(MYTH_DBG_DEBUG, "%s: agreed on Version %u protocol\n", __FUNCTION__, tmp_ver);
@@ -404,6 +415,11 @@ bool ProtoBase::HasHanging() const
 void ProtoBase::CleanHanging()
 {
   m_tainted = false;
+}
+
+ProtoBase::ERROR_t ProtoBase::GetProtoError() const
+{
+  return m_protoError;
 }
 
 ProgramPtr ProtoBase::RcvProgramInfo75()

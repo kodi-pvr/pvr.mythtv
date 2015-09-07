@@ -201,7 +201,11 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr ""
 
-#empty strings from id 30065 to 30099
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr ""
+
+#empty strings from id 30066 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
@@ -219,15 +223,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr ""
 
-#empty strings from id 30112 to 30299
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr ""
+
+#empty strings from id 30114 to 30299
 
 # Notifications
 msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr ""
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
 
 msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
 msgstr ""
 
 msgctxt "#30302"
@@ -288,14 +299,22 @@ msgstr ""
 #empty strings from id 30413 to 30420
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
+msgid "Show/hide inactive upcomings"
 msgstr ""
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr ""
 
-#empty strings from id 30423 to 30450
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr ""
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr ""
+
+#empty strings from id 30425 to 30450
 
 msgctxt "#30451"
 msgid "Unhandled"
@@ -346,7 +365,7 @@ msgid "Record this"
 msgstr ""
 
 msgctxt "#30466"
-msgid "Record series from guide"
+msgid "Record series"
 msgstr ""
 
 msgctxt "#30467"

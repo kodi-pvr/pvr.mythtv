@@ -42,7 +42,7 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
     case Myth::RS_LATER_SHOWING:      //will record later
     case Myth::RS_CURRENT_RECORDING:  //Already in the current library
     case Myth::RS_PREVIOUS_RECORDING: //Previoulsy recorded but no longer in the library
-      if (true /*!m_showNotRecording*/)
+      if (!m_manager->ShowNotRecording())
       {
         XBMC->Log(LOG_DEBUG, "85::%s: Skipping %s:%s on %s because status %d", __FUNCTION__,
                   recording.Title().c_str(), recording.Subtitle().c_str(), recording.ChannelName().c_str(),
@@ -64,12 +64,12 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       case Myth::RT_SingleRecord:
         return false; // Discard upcoming. We show only main rule.
       case Myth::RT_DontRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
+        entry.recordingStatus = recording.Status();
         entry.timerType = TIMER_TYPE_DONT_RECORD;
         entry.isInactive = rule.Inactive();
         break;
       case Myth::RT_OverrideRecord:
-        entry.recordingStatus = Myth::RS_UNKNOWN; // Show modifier status
+        entry.recordingStatus = recording.Status();
         entry.timerType = TIMER_TYPE_OVERRIDE;
         entry.isInactive = rule.Inactive();
         break;
@@ -106,7 +106,7 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
   entry.endTime = recording.EndTime();
   entry.title.assign(recording.Title());
   if (!recording.Subtitle().empty())
-    entry.title.append(" - ").append(recording.Subtitle());
+    entry.title.append(" (").append(recording.Subtitle()).append(")");
   if (recording.Season() || recording.Episode())
     entry.title.append(" - ").append(Myth::IntToString(recording.Season())).append(".").append(Myth::IntToString(recording.Episode()));
   entry.recordingGroup = GetRuleRecordingGroupId(recording.RecordingGroup());

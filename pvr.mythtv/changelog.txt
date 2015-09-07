@@ -1,3 +1,12 @@
+v3.3.0
+- Sync cppmyth upstream (2.3.0)
+- Support protocol 0.28-pre:87
+- Security fix for JSON parser
+- New setting limit_tune_attempts
+- Add EPG Entry associated with recent Recording
+- Improvements with API 3.0.0
+- Notify user on addon failure
+
 v3.2.2
 - Minimal Support PVR API 3.0.0
 

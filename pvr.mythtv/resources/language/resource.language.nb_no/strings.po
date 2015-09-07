@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Fortsett LiveTV opptak"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Vis/Skjul regler med status 'Tar ikke opp'"
-
 msgctxt "#30431"
 msgid "Record all showings (this channel)"
 msgstr "Ta opp alle sendinger (denne kanalen)"

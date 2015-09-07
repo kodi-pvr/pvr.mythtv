@@ -42,10 +42,6 @@ namespace Myth
     virtual void Close();
     virtual bool IsOpen();
 
-    ProtoRecorderPtr GetNextFreeRecorder(int rnum)
-    {
-      return GetNextFreeRecorder75(rnum);
-    }
     ProtoRecorderPtr GetRecorderFromNum(int rnum)
     {
       return GetRecorderFromNum75(rnum);
@@ -104,12 +100,25 @@ namespace Myth
       m_blockShutdown = false;
       return AllowShutdown75();
     }
+    /**
+     * @deprecated Use instead GetFreeInputs(0) since protocol 87.
+     * @brief Asks the backend for a list of free recorders.
+     * @return List of recorder num (card ids)
+     */
     std::vector<int> GetFreeCardIdList()
     {
+      if (m_protoVersion >= 87) return GetFreeCardIdList87();
       return GetFreeCardIdList75();
     }
+    /**
+     * @brief Asks the backend for a list of free inputs. A free input is one that is connected but not busy, not in a busy input group or is locked.
+     * @param rnum Up to protocol 86: Related recorder num (cardId)
+     * @param rnum Since protocol 87: Input to exclude (not counted as busy). Use 0 for none.
+     * @return
+     */
     CardInputListPtr GetFreeInputs(int rnum)
     {
+      if (m_protoVersion >= 87) return GetFreeInputs87(rnum);
       if (m_protoVersion >= 81) return GetFreeInputs81(rnum);
       if (m_protoVersion >= 79) return GetFreeInputs79(rnum);
       return GetFreeInputs75(rnum);
@@ -119,7 +128,6 @@ namespace Myth
     bool m_blockShutdown;
 
     bool Announce75();
-    ProtoRecorderPtr GetNextFreeRecorder75(int rnum);
     ProtoRecorderPtr GetRecorderFromNum75(int rnum);
     bool QueryFreeSpaceSummary75(int64_t *total, int64_t *used);
     std::string GetSetting75(const std::string& hostname, const std::string& setting);
@@ -135,9 +143,11 @@ namespace Myth
     bool BlockShutdown75();
     bool AllowShutdown75();
     std::vector<int> GetFreeCardIdList75();
+    std::vector<int> GetFreeCardIdList87();
     CardInputListPtr GetFreeInputs75(int rnum);
     CardInputListPtr GetFreeInputs79(int rnum);
     CardInputListPtr GetFreeInputs81(int rnum);
+    CardInputListPtr GetFreeInputs87(int rnum);
 
     // Not implemented
     //int64_t GetBookmark75(Program& program);

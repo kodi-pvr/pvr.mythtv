@@ -264,10 +264,6 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "라이브 TV 녹화 유지"
 
-msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "'녹화 중 아님' 상태 보이기/감추기"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "채널 아이콘 캐시 새로 고침"

@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Activeer opname fanart/miniaturen"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Verminderen tuning pogingen"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol versie: %i - Database versie: %i"
@@ -265,8 +269,8 @@ msgid "Keep LiveTV recording"
 msgstr "Behoud LiveTV opname"
 
 msgctxt "#30421"
-msgid "Show/hide rules with status 'Not Recording'"
-msgstr "Toon/verber regels met status 'niet aan het opnemen'"
+msgid "Show/hide inactive upcomings"
+msgstr "Toon/Verberg inactief programmering"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
