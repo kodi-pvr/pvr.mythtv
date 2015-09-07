@@ -235,11 +235,10 @@ msgstr ""
 
 # Notifications
 msgctxt "#30300"
-msgid "Failed to connect the MythTV backend with the known protocol versions."
-msgstr ""
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
 
 msgctxt "#30301"
-msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup."
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
 msgstr ""
 
 msgctxt "#30302"
