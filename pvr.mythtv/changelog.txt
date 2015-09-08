@@ -1,3 +1,6 @@
+v3.3.1
+- Cleanup localized strings
+
 v3.3.0
 - Sync cppmyth upstream (2.3.0)
 - Support protocol 0.28-pre:87
