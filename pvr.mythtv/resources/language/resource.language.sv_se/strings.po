@@ -204,14 +204,6 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Klipplista eller reklamhopp har hittats.\nVill du aktivera EDL-funktionalitet för denna visning?"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Kunde inte ansluta till MythTV backend"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Kunde inte ansluta till MythTV databas"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Anslutning till MythTV backend förlorad"

@@ -148,14 +148,6 @@ msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokolli versioon: %i - Andmebaasi versioon: %i"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Ühendumine MythTV taustaprogrammiga nurjus"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "MythTV andmebaasiga ühendumine nurjus"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Ühendus MythTV taustaprogrammiga katkes"
