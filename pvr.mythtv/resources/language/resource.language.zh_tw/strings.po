@@ -148,14 +148,6 @@ msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol 版本: %i - 資料庫版本: %i"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "連接MythTV後端失敗"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "連接MythTV資料庫失敗"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "MythTV後端連線斷失"

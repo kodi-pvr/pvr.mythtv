@@ -204,14 +204,6 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Byly nalezeny střihy nebo reklamní pauzy.\nChcete aktivovat EDL funkcionalitu pro tento pořad ?"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Selhalo spojení s podpůrnou vrstvou MythTV"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Selhalo spojení s databází MythTV"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Spojení s podpůrnou vrstvou MythTV ztraceno"

@@ -204,14 +204,6 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Mae rhestr dorri neu hepgoriadau hysbysebion wedi eu canfod.\nHoffech chi weithredu swyddogaethau EDL ar gyfer y sioe yma"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Methwyd cysylltu i gefn MythTV"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Methwyd cysylltu i gronfa ddata MythTV"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Cysylltiad wedi ei golli i gefn MythTV"
