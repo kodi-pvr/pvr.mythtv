@@ -47,6 +47,14 @@ namespace Myth
     ProtoBase(const std::string& server, unsigned port);
     virtual ~ProtoBase();
 
+    typedef enum
+    {
+      ERROR_NO_ERROR = 0,
+      ERROR_SERVER_UNREACHABLE,
+      ERROR_SOCKET_ERROR,
+      ERROR_UNKNOWN_VERSION,
+    } ERROR_t;
+
     virtual bool Open() = 0;
     virtual void Close();
     virtual bool IsOpen() { return m_isOpen; }
@@ -57,6 +65,7 @@ namespace Myth
     virtual int GetSocket() const;
     virtual bool HasHanging() const;
     virtual void CleanHanging();
+    virtual ERROR_t GetProtoError() const;
 
   protected:
     OS::CMutex *m_mutex;
@@ -98,6 +107,7 @@ namespace Myth
 
   private:
     bool m_isOpen;
+    ERROR_t m_protoError;
 
     bool RcvVersion(unsigned *version);
 

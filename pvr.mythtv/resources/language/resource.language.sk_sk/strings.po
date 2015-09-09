@@ -160,14 +160,6 @@ msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Verzia protokolu: %i - Verzia databázy: %i"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Pri pripojení k MythTV backendu nastala chyba"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Pri pripojení k MythTV databáze nastala chyba"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Spojenie k MythTV backendu bolo prerušené"

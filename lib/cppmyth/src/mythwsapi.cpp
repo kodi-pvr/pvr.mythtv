@@ -76,17 +76,20 @@ bool WSAPI::InitWSAPI()
   else if (mythwsv.ranking >= 0x00020000)
     status = CheckServerHostName2_0() & CheckVersion2_0();
 
+  // If everything is fine then check other services
   if (status)
   {
-    GetServiceVersion(WS_Capture, m_serviceVersion[WS_Capture]);
-    GetServiceVersion(WS_Channel, m_serviceVersion[WS_Channel]);
-    GetServiceVersion(WS_Guide, m_serviceVersion[WS_Guide]);
-    GetServiceVersion(WS_Content, m_serviceVersion[WS_Content]);
-    GetServiceVersion(WS_Dvr, m_serviceVersion[WS_Dvr]);
-    DBG(MYTH_DBG_INFO, "%s: MythTV API service is available: %s:%d(%s) protocol(%d) schema(%d)\n",
-            __FUNCTION__, m_serverHostName.c_str(), m_port, m_version.version.c_str(),
-            (unsigned)m_version.protocol, (unsigned)m_version.schema);
-    return true;
+    if (GetServiceVersion(WS_Capture, m_serviceVersion[WS_Capture]) &&
+        GetServiceVersion(WS_Channel, m_serviceVersion[WS_Channel]) &&
+        GetServiceVersion(WS_Guide, m_serviceVersion[WS_Guide]) &&
+        GetServiceVersion(WS_Content, m_serviceVersion[WS_Content]) &&
+        GetServiceVersion(WS_Dvr, m_serviceVersion[WS_Dvr]))
+    {
+      DBG(MYTH_DBG_INFO, "%s: MythTV API service is available: %s:%d(%s) protocol(%d) schema(%d)\n",
+              __FUNCTION__, m_serverHostName.c_str(), m_port, m_version.version.c_str(),
+              (unsigned)m_version.protocol, (unsigned)m_version.schema);
+      return true;
+    }
   }
   DBG(MYTH_DBG_ERROR, "%s: MythTV API service is not supported or unavailable: %s:%d (%u.%u)\n",
           __FUNCTION__, m_server.c_str(), m_port, mythwsv.major, mythwsv.minor);

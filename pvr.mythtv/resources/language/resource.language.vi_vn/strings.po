@@ -148,14 +148,6 @@ msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol version: %i - Database version: %i"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Lỗi kết nối tới MythTV"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Lỗi kết nối tới MythTV database"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Mất kết nối tới MythTV"

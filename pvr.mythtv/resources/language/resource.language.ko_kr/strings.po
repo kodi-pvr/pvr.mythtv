@@ -204,14 +204,6 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "컷 목록 또는 광고 건너뛰기가 발견됐습니다.\n이 쇼에 대해 EDL 기능을 사용하겠습니까?"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "MythTV 백엔드 접속 실패"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "MythTV 데이터베이스 접속 실패"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "MythTV 백엔드 연결 끊김 "

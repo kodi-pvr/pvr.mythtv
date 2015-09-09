@@ -176,14 +176,6 @@ msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "Activare EDL"
 
-msgctxt "#30300"
-msgid "Failed to connect to MythTV backend"
-msgstr "Conexiunea la MythTV backend eșuată"
-
-msgctxt "#30301"
-msgid "Failed to connect to MythTV database"
-msgstr "Conexiunea la baza de date MythTV eșuată"
-
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Conexiunea la MythTV backend pierdută "

@@ -1,3 +1,7 @@
+v2.7.2
+- Notify user on addon failure
+- Sync cppmyth upstream (2.3.0)
+
 v2.6.2
 - Security fix for JSON parser
 - Add EPG Entry associated with recent Recording
