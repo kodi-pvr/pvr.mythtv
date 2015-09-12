@@ -848,7 +848,6 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
     }
   }
-  time_t now = time(NULL);
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -912,10 +911,6 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
       PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
-
-      // EPG Entry (Enables "Play recording" option and icon)
-      if (difftime(now, it->second.EndTime()) < INTERVAL_DAY) // Up to 1 day in the past
-        tag.iEpgEventId = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid(it->second.ChannelID()), it->second.StartTime());
 
       // Unimplemented
       tag.iLifetime = 0;
@@ -1596,7 +1591,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.iWeekdays = PVR_WEEKDAY_NONE; // not implemented
     tag.iPreventDuplicateEpisodes = static_cast<unsigned>((*it)->dupMethod);
     if ((*it)->epgCheck)
-      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid((*it)->chanid), (*it)->startTime);
+      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(tag.iClientChannelUid, tag.startTime);
     tag.iMarginStart = (*it)->startOffset;
     tag.iMarginEnd = (*it)->endOffset;
     int genre = m_categories.Category((*it)->category);
