@@ -1596,7 +1596,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.iWeekdays = PVR_WEEKDAY_NONE; // not implemented
     tag.iPreventDuplicateEpisodes = static_cast<unsigned>((*it)->dupMethod);
     if ((*it)->epgCheck)
-      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid((*it)->chanid), (*it)->startTime);
+      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(tag.iClientChannelUid, tag.startTime);
     tag.iMarginStart = (*it)->startOffset;
     tag.iMarginEnd = (*it)->endOffset;
     int genre = m_categories.Category((*it)->category);
