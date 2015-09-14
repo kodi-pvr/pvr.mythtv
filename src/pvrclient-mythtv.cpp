@@ -1679,7 +1679,7 @@ PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
   return PVR_ERROR_NO_ERROR;
 }
 
-PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool bDeleteScheduled)
+PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool force)
 {
   if (!m_scheduleManager)
     return PVR_ERROR_SERVER_ERROR;
@@ -1714,9 +1714,9 @@ PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool bDeleteSched
   }
 
   // Otherwise delete timer
-  XBMC->Log(LOG_DEBUG, "%s: Deleting timer %u force %s", __FUNCTION__, timer.iClientIndex, (bDeleteScheduled ? "true" : "false"));
+  XBMC->Log(LOG_DEBUG, "%s: Deleting timer %u force %s", __FUNCTION__, timer.iClientIndex, (force ? "true" : "false"));
   MythTimerEntry entry = PVRtoTimerEntry(timer, false);
-  MythScheduleManager::MSM_ERROR ret = m_scheduleManager->DeleteTimer(entry, bDeleteScheduled);
+  MythScheduleManager::MSM_ERROR ret = m_scheduleManager->DeleteTimer(entry, force);
   if (ret == MythScheduleManager::MSM_ERROR_FAILED)
     return PVR_ERROR_FAILED;
   if (ret == MythScheduleManager::MSM_ERROR_NOT_IMPLEMENTED)
@@ -1738,7 +1738,7 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   time_t fd = timer.firstDay;
   time_t now = time(NULL);
 
-  if (checkEPG && (timer.iEpgUid > 0 || timer.iEpgUid < -1))
+  if (checkEPG && (timer.iEpgUid > PVR_TIMER_NO_EPG_UID))
   {
     entry.epgCheck = true;
     hasEpg = true;

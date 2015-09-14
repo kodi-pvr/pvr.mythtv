@@ -108,7 +108,7 @@ public:
   int GetTimersAmount();
   PVR_ERROR GetTimers(ADDON_HANDLE handle);
   PVR_ERROR AddTimer(const PVR_TIMER &timer);
-  PVR_ERROR DeleteTimer(const PVR_TIMER &timer, bool bDeleteScheduled);
+  PVR_ERROR DeleteTimer(const PVR_TIMER &timer, bool force);
   PVR_ERROR UpdateTimer(const PVR_TIMER &timer);
   PVR_ERROR GetTimerTypes(PVR_TIMER_TYPE types[], int *size);
 
