@@ -1,5 +1,6 @@
-v3.3.3
+v3.3.4
 - Updated to PVR API v4.0.0
+- Sync cppmyth upstream (2.3.1)
 
 v3.3.2
 - Workaround for Kodi bug 16141
