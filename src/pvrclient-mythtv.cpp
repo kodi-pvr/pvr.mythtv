@@ -1738,12 +1738,12 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
   time_t fd = timer.firstDay;
   time_t now = time(NULL);
 
-  if (checkEPG && (timer.iEpgUid > PVR_TIMER_NO_EPG_UID))
+  if (checkEPG && timer.iEpgUid != PVR_TIMER_NO_EPG_UID)
   {
     entry.epgCheck = true;
     hasEpg = true;
   }
-  if (timer.iClientChannelUid > 0)
+  if (timer.iClientChannelUid != PVR_TIMER_ANY_CHANNEL)
   {
     hasChannel = true;
   }
