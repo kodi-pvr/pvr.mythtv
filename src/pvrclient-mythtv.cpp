@@ -562,6 +562,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       tag.strWriter = "";
       tag.iYear = 0;
       tag.strIMDBNumber = it->second->inetref.c_str();
+      tag.iFlags = EPG_TAG_FLAG_UNDEFINED;
 
       PVR->TransferEpgEntry(handle, &tag);
     }
