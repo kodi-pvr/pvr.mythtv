@@ -155,7 +155,7 @@ public:
 
   MSM_ERROR SubmitTimer(const MythTimerEntry& entry);
   MSM_ERROR UpdateTimer(const MythTimerEntry& entry);
-  MSM_ERROR DeleteTimer(const MythTimerEntry& entry, bool force);
+  MSM_ERROR DeleteTimer(const MythTimerEntry& entry);
 
 
   MSM_ERROR DeleteModifier(uint32_t index);

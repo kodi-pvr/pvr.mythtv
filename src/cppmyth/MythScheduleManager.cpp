@@ -290,7 +290,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::UpdateTimer(const MythTimerE
   return MSM_ERROR_NOT_IMPLEMENTED;
 }
 
-MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteTimer(const MythTimerEntry& entry, bool force)
+MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteTimer(const MythTimerEntry& entry)
 {
   switch (entry.timerType)
   {
@@ -309,9 +309,7 @@ MythScheduleManager::MSM_ERROR MythScheduleManager::DeleteTimer(const MythTimerE
     case TIMER_TYPE_RECORD_SERIES:
     case TIMER_TYPE_SEARCH_KEYWORD:
     case TIMER_TYPE_SEARCH_PEOPLE:
-      if (force)
-        return DeleteRecordingRule(entry.entryIndex);
-      return MSM_ERROR_SUCCESS;
+      return DeleteRecordingRule(entry.entryIndex);
     default:
       break;
   }
