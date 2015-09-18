@@ -1716,7 +1716,7 @@ PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool force)
   // Otherwise delete timer
   XBMC->Log(LOG_DEBUG, "%s: Deleting timer %u force %s", __FUNCTION__, timer.iClientIndex, (force ? "true" : "false"));
   MythTimerEntry entry = PVRtoTimerEntry(timer, false);
-  MythScheduleManager::MSM_ERROR ret = m_scheduleManager->DeleteTimer(entry, force);
+  MythScheduleManager::MSM_ERROR ret = m_scheduleManager->DeleteTimer(entry);
   if (ret == MythScheduleManager::MSM_ERROR_FAILED)
     return PVR_ERROR_FAILED;
   if (ret == MythScheduleManager::MSM_ERROR_NOT_IMPLEMENTED)
