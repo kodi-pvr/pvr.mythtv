@@ -1,3 +1,6 @@
+v3.3.5
+- Fix issue when deleting timer rule since API v4.0.0
+
 v3.3.4
 - Updated to PVR API v4.0.0
 - Sync cppmyth upstream (2.3.1)
