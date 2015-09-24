@@ -1,3 +1,8 @@
+v2.7.3
+- Update default EIT categories
+- Sync cppmyth upstream (2.3.1)
+- Remove EPG entry for LiveTV recordings
+
 v2.7.2
 - Notify user on addon failure
 - Sync cppmyth upstream (2.3.0)
