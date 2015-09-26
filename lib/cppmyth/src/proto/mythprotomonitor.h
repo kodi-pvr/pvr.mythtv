@@ -101,27 +101,16 @@ namespace Myth
       return AllowShutdown75();
     }
     /**
-     * @deprecated Use instead GetFreeInputs(0) since protocol 87.
-     * @brief Asks the backend for a list of free recorders.
-     * @return List of recorder num (card ids)
-     */
-    std::vector<int> GetFreeCardIdList()
-    {
-      if (m_protoVersion >= 87) return GetFreeCardIdList87();
-      return GetFreeCardIdList75();
-    }
-    /**
      * @brief Asks the backend for a list of free inputs. A free input is one that is connected but not busy, not in a busy input group or is locked.
-     * @param rnum Up to protocol 86: Related recorder num (cardId)
-     * @param rnum Since protocol 87: Input to exclude (not counted as busy). Use 0 for none.
+     * @param rnum Since protocol 87: Input to exclude (not counted as busy). Defaulted with 0 for none.
      * @return
      */
-    CardInputListPtr GetFreeInputs(int rnum)
+    CardInputListPtr GetFreeInputs(int rnum = 0)
     {
       if (m_protoVersion >= 87) return GetFreeInputs87(rnum);
-      if (m_protoVersion >= 81) return GetFreeInputs81(rnum);
-      if (m_protoVersion >= 79) return GetFreeInputs79(rnum);
-      return GetFreeInputs75(rnum);
+      if (m_protoVersion >= 81) return GetFreeInputs81();
+      if (m_protoVersion >= 79) return GetFreeInputs79();
+      return GetFreeInputs75();
     }
 
   private:
@@ -143,10 +132,9 @@ namespace Myth
     bool BlockShutdown75();
     bool AllowShutdown75();
     std::vector<int> GetFreeCardIdList75();
-    std::vector<int> GetFreeCardIdList87();
-    CardInputListPtr GetFreeInputs75(int rnum);
-    CardInputListPtr GetFreeInputs79(int rnum);
-    CardInputListPtr GetFreeInputs81(int rnum);
+    CardInputListPtr GetFreeInputs75();
+    CardInputListPtr GetFreeInputs79();
+    CardInputListPtr GetFreeInputs81();
     CardInputListPtr GetFreeInputs87(int rnum);
 
     // Not implemented

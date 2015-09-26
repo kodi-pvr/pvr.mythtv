@@ -97,13 +97,7 @@ namespace Myth
     bool SwitchChainLast();
 
     typedef std::multimap<unsigned, std::pair<CardInputPtr, ChannelPtr> > preferredCards_t;
-    preferredCards_t FindTunableCardIds(const std::string& chanNum, const ChannelList& channels)
-    {
-      if (m_protoVersion >= 87) return FindTunableCardIds87(chanNum, channels);
-      return FindTunableCardIds75(chanNum, channels);
-    }
-    preferredCards_t FindTunableCardIds75(const std::string& chanNum, const ChannelList& channels);
-    preferredCards_t FindTunableCardIds87(const std::string& chanNum, const ChannelList& channels);
+    preferredCards_t FindTunableCardIds(const std::string& chanNum, const ChannelList& channels);
   };
 
 }
