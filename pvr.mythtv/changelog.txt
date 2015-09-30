@@ -1,3 +1,6 @@
+v2.7.4
+- Remove EPG associations with recording due a performance issue
+
 v2.7.3
 - Update default EIT categories
 - Sync cppmyth upstream (2.3.1)
