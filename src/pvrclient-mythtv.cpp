@@ -852,6 +852,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
     }
   }
+  time_t now = time(NULL);
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -915,6 +916,10 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
       PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
+
+      // EPG Entry (Enables "Play recording" option and icon)
+      if (!it->second.IsLiveTV() && difftime(now, it->second.EndTime()) < INTERVAL_DAY) // Up to 1 day in the past
+        tag.iEpgEventId = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid(it->second.ChannelID()), it->second.StartTime());
 
       // Unimplemented
       tag.iLifetime = 0;
