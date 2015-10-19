@@ -83,7 +83,7 @@ std::string FileOps::GetChannelIconPath(const MythChannel& channel)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: determined localFilename: %s", __FUNCTION__, localFilename.c_str());
 
-  if (!CheckFile(localFilename.c_str()))
+  if (!CheckFile(localFilename))
   {
     CLockObject lock(m_lock);
     FileOps::JobItem job(localFilename, FileTypeChannelIcon, channel);
@@ -115,7 +115,7 @@ std::string FileOps::GetPreviewIconPath(const MythProgramInfo& recording)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: determined localFilename: %s", __FUNCTION__, localFilename.c_str());
 
-  if (!CheckFile(localFilename.c_str()))
+  if (!CheckFile(localFilename))
   {
     CLockObject lock(m_lock);
     FileOps::JobItem job(localFilename, FileTypeThumbnail, recording);
@@ -256,7 +256,7 @@ void *FileOps::Process()
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG,"%s: Job fetched: type: %d, local: %s", __FUNCTION__, job.m_fileType, job.m_localFilename.c_str());
       // Try to open the destination file
-      void *file = OpenFile(job.m_localFilename.c_str());
+      void *file = OpenFile(job.m_localFilename);
       if (!file)
         continue;
 
