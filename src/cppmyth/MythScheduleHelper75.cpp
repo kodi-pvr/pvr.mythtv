@@ -174,7 +174,7 @@ MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 
     m_timerTypeList.push_back(MythTimerTypePtr(new MythTimerType(TIMER_TYPE_RECORD_SERIES,
             PVR_TIMER_TYPE_IS_REPEATING |
-            PVR_TIMER_TYPE_REQUIRES_EPG_TAG_ON_CREATE |
+            PVR_TIMER_TYPE_REQUIRES_EPG_SERIES_ON_CREATE |
             PVR_TIMER_TYPE_SUPPORTS_ENABLE_DISABLE |
             PVR_TIMER_TYPE_SUPPORTS_RECORD_ONLY_NEW_EPISODES |
             PVR_TIMER_TYPE_SUPPORTS_START_END_MARGIN |
