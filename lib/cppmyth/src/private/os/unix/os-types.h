@@ -12,8 +12,7 @@
 #endif
 #include <inttypes.h>
 
-typedef int socket_t;
-typedef socket_t tcp_socket_t;
+typedef int net_socket_t;
 #define INVALID_SOCKET_VALUE        (-1)
 
 typedef long LONG;
