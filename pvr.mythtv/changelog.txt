@@ -1,3 +1,7 @@
+v2.8.0
+- Enable buffering for socket
+- Sync cppmyth upstream (2.4.0)
+
 v2.7.4
 - Remove EPG associations with recording due a performance issue
 
