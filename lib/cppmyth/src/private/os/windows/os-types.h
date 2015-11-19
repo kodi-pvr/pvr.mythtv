@@ -32,7 +32,7 @@
 /* prevent inclusion of wingdi.h */
 #define NOGDI
 
-typedef SOCKET tcp_socket_t;
+typedef SOCKET net_socket_t;
 #define INVALID_SOCKET_VALUE        INVALID_SOCKET
 
 /* OS dependent path separator */

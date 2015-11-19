@@ -1,3 +1,7 @@
+v3.3.9
+- Enable buffering for socket
+- Sync cppmyth upstream (2.4.0)
+
 v3.3.8
 - Updated to kodi.guilib API v5.8.0
 - Sync cppmyth upstream (2.4.0)
