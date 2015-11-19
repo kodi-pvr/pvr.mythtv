@@ -158,10 +158,10 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     return n;
 
   fdc = GetSocket();
-  if (INVALID_SOCKET_VALUE == (tcp_socket_t)fdc)
+  if (INVALID_SOCKET_VALUE == (net_socket_t)fdc)
     return -1;
   fdd = transfer.GetSocket();
-  if (INVALID_SOCKET_VALUE == (tcp_socket_t)fdd)
+  if (INVALID_SOCKET_VALUE == (net_socket_t)fdd)
     return -1;
   // Max size is RCVBUF size
   if (n > PROTO_TRANSFER_RCVBUF)
@@ -184,11 +184,11 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     FD_ZERO(&fds);
     if (request)
     {
-      FD_SET((tcp_socket_t)fdc, &fds);
+      FD_SET((net_socket_t)fdc, &fds);
       if (nfds < fdc)
         nfds = fdc;
     }
-    FD_SET((tcp_socket_t)fdd, &fds);
+    FD_SET((net_socket_t)fdd, &fds);
     if (nfds < fdd)
       nfds = fdd;
 
@@ -218,9 +218,9 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
     }
     // Check for data
     data = false;
-    if (FD_ISSET((tcp_socket_t)fdd, &fds))
+    if (FD_ISSET((net_socket_t)fdd, &fds))
     {
-      r = recv((tcp_socket_t)fdd, p, (size_t)(n - s), 0);
+      r = recv((net_socket_t)fdd, p, (size_t)(n - s), 0);
       if (r < 0)
       {
         DBG(MYTH_DBG_ERROR, "%s: recv data error (%d)\n", __FUNCTION__, r);
@@ -236,7 +236,7 @@ int ProtoPlayback::TransferRequestBlock(ProtoTransfer& transfer, void *buffer, u
       }
     }
     // Check for response of request
-    if (request && FD_ISSET((tcp_socket_t)fdc, &fds))
+    if (request && FD_ISSET((net_socket_t)fdc, &fds))
     {
       int32_t rlen = TransferRequestBlockFeedback75();
       request = false; // request is completed
