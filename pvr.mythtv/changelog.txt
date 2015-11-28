@@ -1,3 +1,10 @@
+v2.8.4
+- Show stream 'channel unavailable' when channel tuning failed
+
+v2.8.1
+- Retry read after system call interruption
+- Sync cppmyth upstream (2.4.0)
+
 v2.8.0
 - Enable buffering for socket
 - Sync cppmyth upstream (2.4.0)
