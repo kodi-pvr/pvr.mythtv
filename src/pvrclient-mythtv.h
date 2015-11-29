@@ -25,6 +25,7 @@
 #include "fileOps.h"
 #include "categories.h"
 #include "demux.h"
+#include "filestreaming.h"
 
 #include <kodi/xbmc_pvr_types.h>
 #include <platform/threads/mutex.h>
@@ -154,6 +155,7 @@ private:
   Myth::Control *m_control;
   Myth::LiveTVPlayback *m_liveStream;
   Myth::RecordingPlayback *m_recordingStream;
+  FileStreaming *m_dummyStream;
   bool m_hang;
   bool m_powerSaving;
 
