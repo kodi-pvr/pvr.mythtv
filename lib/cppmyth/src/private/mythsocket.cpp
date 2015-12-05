@@ -31,6 +31,7 @@
 #define SHUT_RDWR SD_BOTH
 #define SHUT_WR   SD_SEND
 #define LASTERROR WSAGetLastError()
+#define ERRNO_INTR WSAEINTR
 typedef int socklen_t;
 typedef IN_ADDR in_addr_t;
 
@@ -44,6 +45,7 @@ typedef IN_ADDR in_addr_t;
 #include <arpa/inet.h>
 #define closesocket(a) close(a)
 #define LASTERROR errno
+#define ERRNO_INTR EINTR
 #endif /* __WINDOWS__ */
 
 #include <signal.h>
@@ -325,7 +327,8 @@ size_t TcpSocket::ReadResponse(void *buf, size_t n)
       if (r < 0)
       {
         m_errno = LASTERROR;
-        break;
+        if (m_errno != ERRNO_INTR)
+          break;
       }
     }
     return rcvlen;

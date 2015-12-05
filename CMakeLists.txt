@@ -45,7 +45,8 @@ set(MYTHTV_SOURCES src/avinfo.cpp
                    src/cppmyth/MythProgramInfo.cpp
                    src/cppmyth/MythChannel.cpp
                    src/client.cpp
-                   src/fileOps.cpp)
+                   src/fileOps.cpp
+                   src/filestreaming.cpp)
 
 add_subdirectory(lib/cppmyth)
 
