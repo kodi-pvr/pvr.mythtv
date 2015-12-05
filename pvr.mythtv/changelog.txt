@@ -1,3 +1,6 @@
+v3.4.0
+- Show stream "channel unavailable" when channel tuning failed
+
 v3.3.9
 - Enable buffering for socket
 - Sync cppmyth upstream (2.4.0)
