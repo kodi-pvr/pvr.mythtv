@@ -1,3 +1,6 @@
+v3.4.1
+- Updated to GUI API v5.10.0
+
 v3.4.0
 - Show stream "channel unavailable" when channel tuning failed
 
