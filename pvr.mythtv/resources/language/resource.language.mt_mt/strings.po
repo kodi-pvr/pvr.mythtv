@@ -24,13 +24,25 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avvanzat"
 
+msgctxt "#30055"
+msgid "Always"
+msgstr "Dejjem"
+
 msgctxt "#30057"
 msgid "Never"
 msgstr "Qatt"
 
+msgctxt "#30059"
+msgid "Always"
+msgstr "Dejjem"
+
 msgctxt "#30061"
 msgid "Never"
 msgstr "Qatt"
+
+msgctxt "#30305"
+msgid "Channel unavailable"
+msgstr "L-istazzjon mhux disponibbli"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -39,3 +51,7 @@ msgstr "Jintuża"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Mhux attiv"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manwali"

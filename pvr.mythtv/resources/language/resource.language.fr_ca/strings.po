@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Nom d'hôte ou adresse IP du dorsal MythTV"
+msgstr "Nom d'hôte ou adresse IP de la dorsale MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Port du dorsal MythTV"
+msgstr "Port de la dorsale MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -70,7 +70,7 @@ msgstr "Adresse Ethernet (WOL) du dorsa MythTV"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Port du dorsal MythTV pour les services d'API"
+msgstr "Port de la dorsale MythTV pour les services d'API"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -182,7 +182,7 @@ msgstr "Jamais"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloquer l'extinction du dorsal"
+msgstr "Bloquer l'extinction de la dorsale"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -194,7 +194,7 @@ msgstr "Activer l'enregistrement du fanart/des imagettes"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Limiter les tentatives de syntonisation"
+msgstr "Limiter les tentatives de syntonisation des chaînes"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -208,9 +208,17 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Une liste de coupures ou des sauts publicitaires ont été trouvés.\nVoulez-vous activer la fonctionnalité EDL pour cette émission?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Échec de la connexion"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Voulez-vous réessayer?"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "La connexion au dorsal MythTV a été perdue"
+msgstr "La connexion à la dorsale MythTV a été perdue"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
@@ -218,7 +226,7 @@ msgstr "La connexion à MythTV est rétablie"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Aucune réponse du dorsal MythTV"
+msgstr "Aucune réponse de la dorsale MythTV"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -268,22 +276,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Rafraîchir le cache des icônes de chaînes"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Enregistrer toutes les présentations (cette chaîne)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manuel"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Enregistrer cette présentation toutes les semaines"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Enregistrer cette présentation tous les jours"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Enregistrer une présentation (toutes les chaînes)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Enregistrer tous les nouveaux épisodes (cette chaîne)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permettre l'expiration des enregistrements"

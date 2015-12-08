@@ -83,3 +83,7 @@ msgstr "Уключана"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Забаронена"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Ручны"

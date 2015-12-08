@@ -47,3 +47,7 @@ msgstr "Gaituta"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Ezgaituta"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Eskuz"

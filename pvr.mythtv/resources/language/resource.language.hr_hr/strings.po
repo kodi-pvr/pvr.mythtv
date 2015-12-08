@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Omogući snimanje postere/minijature"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Ograniči pokušaje podešavanja programa"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Inačica protokola: %i - Inačica baze podataka: %i"
@@ -203,6 +207,22 @@ msgstr "Omogućavanje EDL"
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Popis izbacivanja ili preskakanja reklama je pronađen.\nŽelite li aktivirati EDL funkciju za ovu emisiju?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Neuspjelo povezivanje"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Želite li ponovno pokušati?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Neuspjelo povezivanje s MythTV pozadinskim softverom s nepoznatom inačicom protokola. Provjerite mapu kompatibilnosti dodatka i nadogradite svoj pozadinski softver na podržanu inačicu."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Neuspjelo povezivanje s API uslugama MythTV pozadinskog softvera. Provjerite svoj PIN kôd ili postavke pozadinskog softvera. PIN kôd mora biti postavljen u vašem pozadinskom softverom kako bi dopustio povezivanje."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -256,26 +276,114 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Nastavi snimanje TV programa"
 
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Prikaži/Sakrij neaktivne nadolazeće"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Osvježi predmemoriju za prikaz ikona programa"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Snimi sve emisije (ovaj program)"
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Pokreni ažuriranje programa"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Snimi ovu emisiju svaki tjedan"
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Prikaži stanje rasporeda"
 
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Snimi ovu emisiju svaki dan"
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Slobodne"
 
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Snimi jednu emisiju (svi programi)"
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Nadolazeće"
 
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Snimi sve nove epizode (svi programi)"
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Prošle"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Ne snimaj"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Nadolazeće ručno"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombi"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Ručno"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Snimi jednom"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Snimi tjedno"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Snimi dnevno"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Snimi sve"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Snimi ovo"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Snimi seriju"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Pretraži ključnu riječ"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Pretraži ljude"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Ne uspoređuj duplikate"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Uspoređuj duplikate pomoću podnaslova"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Uspoređuj duplikate pomoću opisa"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Uspoređuj duplikate pomoću podnaslova i opisa"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Uspoređuj duplikate pomoću podnaslova zatim opisa"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Snimanje nikada ne istječe"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Dopusti istek snimanja"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Zadrži do %d snimka"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Zadrži %d najnovijih i ukloni stare"

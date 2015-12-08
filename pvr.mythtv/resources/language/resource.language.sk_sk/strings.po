@@ -72,6 +72,10 @@ msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
 msgstr "Sieťový port MythTV backendu pre služby API"
 
+msgctxt "#30014"
+msgid "MythTV Security Pin for API services"
+msgstr "Bezpečnostný kód PIN MythTV pre služby API"
+
 msgctxt "#30019"
 msgid "General"
 msgstr "Všeobecné"
@@ -140,25 +144,85 @@ msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr "Povoliť demultiplexovanie MPEG-TS"
 
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr "Oneskorenie ladenia (s)"
+
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr "Zoskupiť nahrávky podľa názvu"
+
 msgctxt "#30055"
 msgid "Always"
 msgstr "Vždy"
+
+msgctxt "#30056"
+msgid "Only for series"
+msgstr "Len pre seriály"
 
 msgctxt "#30057"
 msgid "Never"
 msgstr "Nikdy"
 
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Zapnúť preskakovanie reklám (EDL)"
+
 msgctxt "#30059"
 msgid "Always"
 msgstr "Vždy"
+
+msgctxt "#30060"
+msgid "Dialog"
+msgstr "Dialóg"
 
 msgctxt "#30061"
 msgid "Never"
 msgstr "Nikdy"
 
+msgctxt "#30062"
+msgid "Block backend shutdown"
+msgstr "Zablokovať vypnutie na serveri"
+
+msgctxt "#30063"
+msgid "Enable channel icons"
+msgstr "Aktivovať ikony kanálu"
+
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Aktivovať náhľad/fanart nahrávok"
+
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Obmedziť počet pokusov o ladenie kanálu"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Verzia protokolu: %i - Verzia databázy: %i"
+
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr "Aktivuje sa EDL"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "Našiel sa zoznam vynechaných prvkov alebo preskočených reklám.\nChcete pre tento program aktivovať funkciu EDL?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Spojenie zlyhalo"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Skúsiť znovu?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Pripojenie služby MythTV zo strany servera pomocou známych verzií protokolu zlyhalo. Skontrolujte kompatibilitu doplnku a aktualizujte softvér na strane servera na verziu, ktorá je podporovaná."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Pripojenie služieb API zo strany serveru MythTV zlyhalo. Skontroluje kód PIN alebo nastavenie systému na strane servera. Aby bolo spojenie úspešné, kód PIN musí byť na strane servera vytvorený."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -212,22 +276,14 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Ponechať nahrávky LiveTV"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Nahrať všetky predstavenia (na tomto kanáli)"
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr "Obnoviť dočasné úložisko pre ikony kanálov"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Nahrať toto predstavenie každý týždeň"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manuálne"
 
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Nahrať toto predstavenie každý deň"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Nahrať jedno predstavenie (na všetkých kanáloch)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Nahrať všetky nové epizódy (na tomto kanáli)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Povoliť expiráciu nahrávok"

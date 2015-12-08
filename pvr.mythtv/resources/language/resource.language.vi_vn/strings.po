@@ -183,3 +183,11 @@ msgstr "Đã bật"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Đã tắt"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Thủ công"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Cho phép các bản thu hết hạn"

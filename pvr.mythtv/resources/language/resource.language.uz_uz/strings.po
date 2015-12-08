@@ -43,3 +43,7 @@ msgstr "Kanal mavjud emas"
 msgctxt "#30310"
 msgid "Enabled"
 msgstr "Yoqilgan"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Qo‘lda"

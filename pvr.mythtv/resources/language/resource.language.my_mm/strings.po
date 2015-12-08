@@ -71,3 +71,7 @@ msgstr "ဖွင့်ထားမည်"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "ပိတ်ထားမည်"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "စိတ်ကြိုက်"

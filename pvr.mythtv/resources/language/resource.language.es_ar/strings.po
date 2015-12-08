@@ -260,22 +260,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar cache de ícones de canales"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Grabar todos los programas (este canal)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Grabar este programa todas las semanas"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Grabar este programa todos los dias"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Grabar un programa (todos los canales)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Grabar todos los episodios nuevos (este canal)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permitir expirar a las grabaciones"

@@ -260,22 +260,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Освежи го кешот за иконите на каналот"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Сними ги сите емисии (од овој канал)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Рачно"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Снимај ја оваа емисија секоја недела"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Снимај ја оваа емисија секој ден"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Сними една емисија (од сите канали)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Сними ги сите нови епизоди (од овој канал)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Снимките имаат рок на траење"

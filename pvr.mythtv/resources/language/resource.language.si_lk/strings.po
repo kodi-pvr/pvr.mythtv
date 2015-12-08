@@ -39,3 +39,7 @@ msgstr "ක්‍රියාත්මක කලා"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "අක්‍රිය කර ඇත."
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "කාය වශයෙන්"

@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "MythTV ana bilgisayar adı ya da IP'si"
+msgstr "MythTV Arka Uç Ana Bilgisayar Adı veya IP'si"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "MythTV Kumanda Port'u"
+msgstr "MythTV Arka Uç Bağlantı Noktası"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -42,7 +42,7 @@ msgstr "Günlük dosyasına daha fazla hata ayıklama bilgisi ekle"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Canlı TV aktifleştir"
+msgstr "Canlı TV'yi etkinleştir"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
@@ -82,7 +82,7 @@ msgstr "Genel"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Görünüm sağlayıcısı"
+msgstr "Şablon sağlayıcısı"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -94,7 +94,7 @@ msgstr "MythTV"
 
 msgctxt "#30025"
 msgid "Internal template"
-msgstr "Dahili görünüm"
+msgstr "Dahili şablon"
 
 msgctxt "#30026"
 msgid "Automatically Look Up Metadata"
@@ -106,7 +106,7 @@ msgstr "Yeni kayıtlarda Reklam Bayrağı"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
-msgstr "Yeni dönüştürücü kayıtları"
+msgstr "Yeni kayıtları dönüştür"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
@@ -134,7 +134,7 @@ msgstr "Kayıtların geçerliliğini yitirmesine izin ver"
 
 msgctxt "#30049"
 msgid "Recording template"
-msgstr "Şablon kaydedildi."
+msgstr "Kaydetme şablonu"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -190,7 +190,7 @@ msgstr "Kanal logolarını etkinleştir"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Fanart/önizlemelerin kaydına izin ver"
+msgstr "Kayıt için fanart ve küçük resimleri etkinleştir "
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -260,22 +260,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Kanal logoları için önbelleği tazele"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Tüm kayıtları göster (bu kanal için)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "El ile"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Tüm Hafta  kayıtlarını göster"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Hergün kaydı höster"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Kayıt göster (Tüm Kanallar)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Tüm bölümleri göster (nu kanal için)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Kayıtların geçerliliğini yitirmesine izin ver"

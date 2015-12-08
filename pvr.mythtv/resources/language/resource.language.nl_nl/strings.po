@@ -194,7 +194,7 @@ msgstr "Activeer opname fanart/miniaturen"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Verminderen tuning pogingen"
+msgstr "Limiteer kanaal tuning pogingen"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -207,6 +207,22 @@ msgstr "Activeren EDL"
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "EEN knip lijst of reclame skips zijn gevonden.\nWil je de EDL functionaliteit activeren voor deze uitzending?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Verbinden mislukt"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Wilt u het opnieuw proberen?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Niet gelukt te verbinden met MythTV server met de vertrouwde protocol versies. Controleer de compabiliteitsmap van de add-on en werk de server bij naar een ondersteunende versie."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Niet gelukt te verbinden met de API diensten van MythTV server. Controleer uw PIN code of server instellingen. De PIN code moet geconfigureerd zijn in uw server om verbinding toe te staan."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -268,22 +284,106 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ververs geheugen voor de kanaaliconen"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Neem alle uitzendingen op (dit kanaal)"
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Trigger update van kanalen"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Neem deze uitzending elke week op"
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Toon status van inplanning"
 
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Neem deze uitzending elke dag op"
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Onafgehandeld"
 
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "neem een uitzending op (alle kanalen)"
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Aankomend"
 
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Neem alle nieuwe afleveringen op (dit kanaal)"
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Overschreven"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Niet opgenomen"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Aankomend handmatig"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Handmatig"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Neem één op"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Neem wekelijks op"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Neem dagelijks op"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Neem alles op"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Neem dit op"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Neem serie op"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Zoek op trefwoord"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Zoek personen"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Niet duplicaten matchen"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Match dubbelen op ondertitel"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Match dubbelen op beschrijving"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Match dubbelen op ondertitel & beschrijving"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Match dubbelen op ondertitel daarna beschrijving"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Opnames verlopen nooit"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Sta opnames toe te expireren"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Bewaar tot en met %d opnames"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Bewaar %d nieuwste en ouden verlopen"

@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Nume gazdă sau IP pentru backend MythTV"
+msgstr "Nume gazdă sau IP pentru furnizorul din spate MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Port backend MythTV"
+msgstr "Port furnizor din spate MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -66,7 +66,15 @@ msgstr "Prefera Live TV și anulează înregistrările conflictuale "
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "MythTV Adresă Ethernet (WOL) "
+msgstr "Adresă ethernet furnizor din spate MythTV  (WOL) "
+
+msgctxt "#30013"
+msgid "MythTV Backend Port for API services"
+msgstr "Port furnizor din spate MythTV pentru servicii API"
+
+msgctxt "#30014"
+msgid "MythTV Security Pin for API services"
+msgstr "PIN de securitate MythTV pentru servicii API"
 
 msgctxt "#30019"
 msgid "General"
@@ -136,6 +144,10 @@ msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr "Activează demultiplicarea MPEG-TS"
 
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr "întârziere prindere (sec)"
+
 msgctxt "#30054"
 msgid "Group recordings by title"
 msgstr "Grupează înregistrările după nume"
@@ -144,9 +156,17 @@ msgctxt "#30055"
 msgid "Always"
 msgstr "Întotdeauna"
 
+msgctxt "#30056"
+msgid "Only for series"
+msgstr "Doar pentru serii"
+
 msgctxt "#30057"
 msgid "Never"
 msgstr "Niciodată"
+
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Activare sărire peste reclame (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -160,6 +180,10 @@ msgctxt "#30061"
 msgid "Never"
 msgstr "Niciodată"
 
+msgctxt "#30062"
+msgid "Block backend shutdown"
+msgstr "Blochează închiderea furnizorului din spate"
+
 msgctxt "#30063"
 msgid "Enable channel icons"
 msgstr "Activează pictograme canale"
@@ -167,6 +191,10 @@ msgstr "Activează pictograme canale"
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Activează înregistrare creație artistică/miniaturi"
+
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limitează numărul de încercări de prindere a unui program"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -176,9 +204,29 @@ msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "Activare EDL"
 
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "A fost găsită o listă de tăieri sau de salturi peste reclame.\nDoriți să activați funcționalitatea EDL pentru această emisiune ?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Conexiunea a eșuat"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Doriți să reîncercați ?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Eșuare la conectare la furnizorul din spate MythTV cu versiunile de protocol cunoscute. Verificați harta de compatibilitate a suplimentului și actualizați furnizorul din spate la versiunea suportată."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Eșuare la conectarea serviciilor API ale furnizorului din spate MythTV. Verificați codul dumneavoastră PIN code sau configurația furnizorului din spate. Codul PIN trebuie să fie configurat în furnizorul din spate pentru a permite conexiunea."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "Conexiunea la MythTV backend pierdută "
+msgstr "Conexiunea la furnizorul din spate MythTV a fost pierdută "
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
@@ -186,7 +234,7 @@ msgstr "Conexiunea la MythTV backend restabilită "
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Nici un răspuns de la MythTV backend"
+msgstr "Niciun răspuns de furnizorul din spate MythTV"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -228,22 +276,62 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Pastreaza inregistrarea TV"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Înregistra toate emisiunile (acest canal)"
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr "Reîmprospătează stocarea în avans a siglelor canalelor"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Înregistrează această emisiune în fiecare săptămână"
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Declanșare actualizare canale"
 
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Înregistrează această emisiune în fiecare zi"
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Arată starea planificării"
 
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Înregistrează o emisiune (toate canalele)"
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Fără gestionar"
 
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Înregistrează toate episoadele noi (acest canal)"
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Viitoare"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Nu înregistra"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Înregistrează unul"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Înregistrează săptămânal"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Înregistrează zilnic"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Înregistrează toate"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Căutare cuvânt cheie"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Căutare persoane"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Înregistrările nu expiră niciodată"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permite expirarea înregistrării"

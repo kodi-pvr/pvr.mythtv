@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Enable recording fanart/thumbnails"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limit channel tuning attempts"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol version: %i - Database version: %i"
@@ -203,6 +207,22 @@ msgstr "Enabling EDL"
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Connection failed"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Do you want to retry ?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -264,22 +284,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refresh cache for channel icons"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Record all showings (this channel)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Record this showing every week"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Record this showing every day"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Record one showing (all channels)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Record all new episodes (this channel)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Allow recordings to expire"

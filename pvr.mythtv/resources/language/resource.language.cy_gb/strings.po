@@ -260,22 +260,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ail-lwytho'r gelc ar gyfer eiconau sianeli"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Recordio pob dangosiad (y sianel hon)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Gyda llaw"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Recordio'r dangosiad hwn bob wythnos"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Recordio'r dangosiad bob dydd"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Recordio pob dangosiad (pob sianel)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Recordio pob rhifyn newydd (y sianel hon)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Caniatáu i recordiadau ddod i ben"

@@ -83,3 +83,7 @@ msgstr "Activado"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Deshabilitado"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"

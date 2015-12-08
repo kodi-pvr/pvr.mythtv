@@ -18,7 +18,7 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Nom d'hôte du serveur MythTV ou IP"
+msgstr "Nom d'hôte ou IP du serveur MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
@@ -38,7 +38,7 @@ msgstr "Nom de la base de données MythTV"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Inclure plus d'informations de débogage dans le fichier de journal."
+msgstr "Inclure plus d'informations de débogage dans le fichier de journal"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -58,11 +58,11 @@ msgstr "Préférer la TV en direct si possible"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Préférer l'enregistrement et arrêter la TV"
+msgstr "Préférer l'enregistrement et arrêter la TV en direct"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Préférer la TV et annuler l'enregistrement"
+msgstr "Préférer la TV en direct et annuler l'enregistrement en conflit"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -74,7 +74,7 @@ msgstr "Port du serveur MythTV pour les services API"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "Code PIN de sécurité pour les services API"
+msgstr "Code PIN de sécurité MythTV pour les services API"
 
 msgctxt "#30019"
 msgid "General"
@@ -82,7 +82,7 @@ msgstr "Général"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Fournisseur de modèle"
+msgstr "Fournisseur de modèles"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -182,7 +182,7 @@ msgstr "Jamais"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloquer l'arrêt du serveur"
+msgstr "Bloquer l'extinction du serveur"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -190,7 +190,7 @@ msgstr "Afficher l'icône des chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Afficher les vignettes des enregistrements"
+msgstr "Activer l'enregistrement des fanarts/miniatures"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -198,23 +198,31 @@ msgstr "Limiter les tentatives de syntonisation"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Version du protocole: %i - Version de la base de données: %i"
+msgstr "Version du protocole : %i - Version de la base de données: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
-msgstr "Activation de EDL"
+msgstr "Activation de l'EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Une liste de coupures ou des sauts publicitaires ont été trouvés.\nVoulez-vous activer la fonctionnalité EDL pour cette représentation ?"
+msgstr "Une liste de coupures ou de sauts publicitaires a été trouvée.\nFaut-il activer la fonctionnalité EDL pour cette émission ?"
 
 msgctxt "#30112"
 msgid "Connection failed"
-msgstr "La connexion a échouée"
+msgstr "Connexion échouée"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
-msgstr "Voulez-vous réessayer ?"
+msgstr "Faut-il réessayer ?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Impossible de se connecter au serveur MythTV avec les versions connues du protocole. Merci de vérifier le mappage de compatibilité de l'extension et de mettre à jour le serveur vers une version gérée."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Impossible de se connecter au services API du serveur MythTV. Merci de vérifier le code PIN ou la configuration du serveur. Le code PIN doit être configuré sur le serveur pour permettre la connexion."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -238,15 +246,15 @@ msgstr "Enregistreur indisponible"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
-msgstr "Annuler l'enregistrement en conflit: %s"
+msgstr "Annuler l'enregistrement en conflit : %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Arrêter la TV en direct pour l'enregistrement en conflit: %s"
+msgstr "Arrêt de la TV en direct pour l'enregistrement en conflit : %s"
 
 msgctxt "#30309"
 msgid "Not recording"
-msgstr "Pas d'enregistrement"
+msgstr "N'enregistre pas"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -266,7 +274,7 @@ msgstr "Supprimer et réenregistrer"
 
 msgctxt "#30412"
 msgid "Keep LiveTV recording"
-msgstr "Garder l'enregistrement sur la TV en direct"
+msgstr "Conserver l'enregistrement de la TV en direct"
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"

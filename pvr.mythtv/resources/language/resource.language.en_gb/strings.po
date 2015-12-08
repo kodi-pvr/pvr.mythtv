@@ -77,7 +77,7 @@ msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
 msgstr ""
 
-# empty strings from id 30015 to 30018
+#empty strings from id 30015 to 30018
 
 msgctxt "#30019"
 msgid "General"
@@ -95,7 +95,7 @@ msgctxt "#30022"
 msgid "MythTV"
 msgstr ""
 
-# empty strings from id 30023 to 30024
+#empty strings from id 30023 to 30024
 
 msgctxt "#30025"
 msgid "Internal template"
@@ -137,7 +137,7 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr ""
 
-# empty strings from id 30035 to 30048
+#empty strings from id 30035 to 30048
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -147,7 +147,7 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr ""
 
-# empty string with id 30051
+#empty string with id 30051
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -205,14 +205,14 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr ""
 
-# empty strings from id 30066 to 30099
+#empty strings from id 30066 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr ""
 
-# empty strings from id 30101 to 30109
+#empty strings from id 30101 to 30109
 
 # Dialog labels
 msgctxt "#30110"
@@ -231,7 +231,7 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr ""
 
-# empty strings from id 30114 to 30299
+#empty strings from id 30114 to 30299
 
 # Notifications
 msgctxt "#30300"
@@ -286,7 +286,7 @@ msgctxt "#30312"
 msgid "No broadcast found"
 msgstr ""
 
-# empty strings from id 30313 to 30410
+#empty strings from id 30313 to 30410
 
 # Menu Hooks
 msgctxt "#30411"
@@ -297,7 +297,7 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr ""
 
-# empty strings from id 30413 to 30420
+#empty strings from id 30413 to 30420
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
@@ -315,7 +315,7 @@ msgctxt "#30424"
 msgid "Show status of scheduling"
 msgstr ""
 
-# empty strings from id 30425 to 30450
+#empty strings from id 30425 to 30450
 
 msgctxt "#30451"
 msgid "Unhandled"
@@ -340,6 +340,8 @@ msgstr ""
 msgctxt "#30456"
 msgid "Zombie"
 msgstr ""
+
+#empty strings from id 30457 to 30459
 
 msgctxt "#30460"
 msgid "Manual"
@@ -377,7 +379,7 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr ""
 
-# empty strings from id 30469 to 30500
+#empty strings from id 30469 to 30500
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

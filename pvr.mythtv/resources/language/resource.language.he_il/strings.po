@@ -46,7 +46,7 @@ msgstr "אפשר שידור חי"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "אפשר לצפיה בשידור חי לדחות תזמון הקלטה"
+msgstr "אפשר לצפייה בשידור חי לדחות תזמון הקלטה"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -58,7 +58,7 @@ msgstr "העדף שידור חי כאשר קיים שידור חוזר להקל�
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "העדף הקלטה והפסק צפיה בשידור חי"
+msgstr "העדף הקלטה והפסק צפייה בשידור חי"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
@@ -98,7 +98,7 @@ msgstr "תבנית פנימית"
 
 msgctxt "#30026"
 msgid "Automatically Look Up Metadata"
-msgstr "חיפוש  מידע נוסף אוטומטי"
+msgstr "חיפוש מידע נוסף אוטומטי"
 
 msgctxt "#30027"
 msgid "Commercial Flag new recordings"
@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "אפשר פאנארט/תמונות ממוזערות של הקלטות"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "הגבל מס' ניסיונות צפייה בערוץ"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "גרסת פרוטוקול: %i - גרסת מסד נתונים: %i"
@@ -258,24 +262,12 @@ msgstr "השאר הקלטת שידור חי"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
-msgstr "רענן מטמון סימלי ערוץ"
+msgstr "רענן מטמון סמלי ערוץ"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "הקלטת כל ההצגות (ערוץ זה)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "ידני"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "הקלטת הצגה זו בכל שבוע"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "הקלטת הצגה זו בכל יום"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "הקלטת הצגה אחת (כל הערוצים)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "הקלטת כל הפרקים החדשים (ערוץ זה)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "אפשר פקיעת תוקף הקלטות"

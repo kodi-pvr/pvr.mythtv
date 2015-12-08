@@ -208,6 +208,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "E' stata trovata una lista di tagli o di salti di pubblicità.\nDesideri attivare la funzionalità EDL per questa serie?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Connessione fallita"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Vuoi riprovare?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Connessione al backend MythTV fallita con le versioni conosciute del protocollo. Controlla la mappa compatibilità dell'Add-on e aggiorna il backend a una versione supportata."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Connessione ai servizi API di MythTV fallita. Controlla il tuo codice PIN o la configurazione del backend. Il codice PIN deve essere configurato nel tuo backend per permettere la connessione."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Connessione al backend MythTV persa"
@@ -268,22 +284,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ricarica la cache per le icone dei canali"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Registra tutte le trasmissioni (questo canale)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manuale"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Registra questa trasmissione ogni settimana"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Registra questa trasmissione ogni giorno"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Registra una trasmissione (tutti i canali)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Registra tutti i nuovi episodi (questo canale)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permetti alle registrazioni di scadere"

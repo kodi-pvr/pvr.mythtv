@@ -51,3 +51,7 @@ msgstr "ใช้งาน"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "ปิดการใช้งาน"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "ด้วยตนเอง"

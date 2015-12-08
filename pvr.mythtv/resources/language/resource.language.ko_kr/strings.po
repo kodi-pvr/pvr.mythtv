@@ -260,22 +260,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "채널 아이콘 캐시 새로 고침"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "모든 프로그램 녹화 (이 채널)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "수동"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "이 프로그램 매 주 녹화"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "이 프로그램 매일 녹화 "
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "프로그램 한 개만 녹화 (모든 채널)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "모든 새 에피소드 녹화 (이 채널)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "녹화 만료 허용"

@@ -260,22 +260,10 @@ msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Show/hide inactive upcomings"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "Record all showings (this channel)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "Record this showing every week"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "Record this showing every day"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "Record one showing (all channels)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "Record all new episodes (this channel)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Allow recordings to expire"

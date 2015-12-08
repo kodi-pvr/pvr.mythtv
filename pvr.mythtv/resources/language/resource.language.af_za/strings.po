@@ -83,3 +83,7 @@ msgstr "In staat gestel"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Nie in staat gestel"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Handrolies"

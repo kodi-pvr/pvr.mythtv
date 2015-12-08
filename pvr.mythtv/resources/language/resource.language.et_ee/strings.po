@@ -195,3 +195,11 @@ msgstr "Kustuta ja salvesta uuesti"
 msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Jätka OtseTV salvestamist"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Käsitsi"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Luba salvestistel aeguda"

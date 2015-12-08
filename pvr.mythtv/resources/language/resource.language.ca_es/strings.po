@@ -16,6 +16,14 @@ msgstr ""
 "Language: ca_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgctxt "#30000"
+msgid "MythTV Backend Hostname or IP"
+msgstr "Hostname o IP del Back-end de MythTV"
+
+msgctxt "#30001"
+msgid "MythTV Backend Port"
+msgstr "Port del Back-end de MythTV"
+
 msgctxt "#30002"
 msgid "MythTV Database Username"
 msgstr "Nom d'usuari de la base de dades del MythTV"
@@ -23,6 +31,10 @@ msgstr "Nom d'usuari de la base de dades del MythTV"
 msgctxt "#30003"
 msgid "MythTV Database Password"
 msgstr "Contrasenya de la base de dades del MythTV"
+
+msgctxt "#30004"
+msgid "MythTV Database Databasename"
+msgstr "Nom de la Base de dades de MythTV"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
@@ -32,9 +44,17 @@ msgctxt "#30006"
 msgid "Enable Live TV"
 msgstr "Habilita la televisió en directe"
 
+msgctxt "#30007"
+msgid "Allow Live TV to move scheduled shows"
+msgstr "Permetre a la TV en Viu canviar els esdeveniments programats"
+
 msgctxt "#30008"
 msgid "Conflict handling"
 msgstr "Tractament de conflictes"
+
+msgctxt "#30009"
+msgid "Prefer Live TV when recording has later slot"
+msgstr "Preferir TV en viu i deixar l'enregistrament per mes tarda"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
@@ -43,6 +63,18 @@ msgstr "Preferència per gravar i parar la TV  en directe"
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
 msgstr "Preferir la TV en directe i cancelar el conflicte en la gravació "
+
+msgctxt "#30012"
+msgid "MythTV Backend Ethernet address (WOL)"
+msgstr "Adreça IP MythTV Backend (WOL)"
+
+msgctxt "#30013"
+msgid "MythTV Backend Port for API services"
+msgstr "Port del Backend de MythTV per als serveis API"
+
+msgctxt "#30014"
+msgid "MythTV Security Pin for API services"
+msgstr "Pin de Seguretat de MythTV per als serveis API"
 
 msgctxt "#30019"
 msgid "General"
@@ -63,6 +95,14 @@ msgstr "MythTV"
 msgctxt "#30025"
 msgid "Internal template"
 msgstr "Plantilla interna"
+
+msgctxt "#30026"
+msgid "Automatically Look Up Metadata"
+msgstr "Buscar Metadades automàticament"
+
+msgctxt "#30027"
+msgid "Commercial Flag new recordings"
+msgstr "Indicador Comercial en nous enregistraments"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
@@ -88,6 +128,10 @@ msgctxt "#30033"
 msgid "Transcoder"
 msgstr "Transcodificador"
 
+msgctxt "#30034"
+msgid "Allow recordings to expire"
+msgstr "Permetre expirar als enregistraments"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Plantilla de gravació "
@@ -100,13 +144,29 @@ msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr "Habilita el desmultiplexatge MPEG-TS"
 
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr "Retard de Sintonitzat (segons)"
+
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr "Agrupar enregistraments per títol"
+
 msgctxt "#30055"
 msgid "Always"
 msgstr "Sempre"
 
+msgctxt "#30056"
+msgid "Only for series"
+msgstr "Solament per a sèries"
+
 msgctxt "#30057"
 msgid "Never"
 msgstr "Mai"
+
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Habilitar passar anuncis (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -120,6 +180,22 @@ msgctxt "#30061"
 msgid "Never"
 msgstr "Mai"
 
+msgctxt "#30062"
+msgid "Block backend shutdown"
+msgstr "Bloquejar apagat de backend"
+
+msgctxt "#30063"
+msgid "Enable channel icons"
+msgstr "Habilitar icones de canal"
+
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Habilitar guardat de fanart/miniatures"
+
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limitar els intents sintonitzat"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Versió del protocol: %i - versió de la base de dades: %i "
@@ -127,6 +203,22 @@ msgstr "Versió del protocol: %i - versió de la base de dades: %i "
 msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "S'està activant EDL"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "S'ha trobat una llista de tall o de passar anuncis.\nVol activar la funcionalitat EDL per a aquest programa?"
+
+msgctxt "#30302"
+msgid "Connection to MythTV backend lost"
+msgstr "Connexió amb backend de MythTV perduda"
+
+msgctxt "#30303"
+msgid "Connection to MythTV restored"
+msgstr "Connexió amb backend de MythTV restaurada"
+
+msgctxt "#30304"
+msgid "No response from MythTV backend"
+msgstr "No hi ha resposta del backend de MythTV"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -155,3 +247,27 @@ msgstr "Habilitat"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "Inhabilitat"
+
+msgctxt "#30312"
+msgid "No broadcast found"
+msgstr "No s'ha trobat broadcast"
+
+msgctxt "#30411"
+msgid "Delete and re-record"
+msgstr "Esborrar i tornar a gravar"
+
+msgctxt "#30412"
+msgid "Keep LiveTV recording"
+msgstr "Mantenir l'enregistrament LiveTV"
+
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr "Refrescar memòria cau de les icones per als canals"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "Manual"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permetre expirar als enregistraments"

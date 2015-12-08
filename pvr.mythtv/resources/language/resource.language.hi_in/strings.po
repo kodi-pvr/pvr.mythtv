@@ -31,3 +31,7 @@ msgstr "सक्रिय"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "विकलांग"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "मैनुअल"

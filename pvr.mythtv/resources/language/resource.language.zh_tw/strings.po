@@ -183,3 +183,11 @@ msgstr "啟用"
 msgctxt "#30311"
 msgid "Disabled"
 msgstr "關閉"
+
+msgctxt "#30460"
+msgid "Manual"
+msgstr "手動"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "允許錄影到期"

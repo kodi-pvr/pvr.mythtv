@@ -256,22 +256,10 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "テレビ放送の録画をつづける"
 
-msgctxt "#30431"
-msgid "Record all showings (this channel)"
-msgstr "すべてを録画する (このチャンネル)"
+msgctxt "#30460"
+msgid "Manual"
+msgstr "マニュアル"
 
-msgctxt "#30432"
-msgid "Record this showing every week"
-msgstr "この番組を毎週録画する"
-
-msgctxt "#30433"
-msgid "Record this showing every day"
-msgstr "この番組を毎日録画する"
-
-msgctxt "#30434"
-msgid "Record one showing (all channels)"
-msgstr "この番組を1回録画する (すべてのチャンネル)"
-
-msgctxt "#30435"
-msgid "Record all new episodes (this channel)"
-msgstr "すべての新しい回を録画する (このチャンネル)"
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "録音の期限切れを許可しますか"
