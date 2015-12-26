@@ -38,6 +38,7 @@ typedef struct
 } myth_protomap_t;
 
 static myth_protomap_t protomap[] = {
+  {88, "XmasGift"},
   {87, "(ノಠ益ಠ)ノ彡┻━┻_No_entiendo!)"},
   {86, "(ノಠ益ಠ)ノ彡┻━┻"},
   {85, "BluePool"},
