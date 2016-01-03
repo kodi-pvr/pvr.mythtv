@@ -208,6 +208,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Листа сечења или прескакања реклама је пронађена.\nДа ли желите да активирате EDL функционалност за ову емисију?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Неуспело повезивање"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Да ли желите поново да покушате?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Неуспело повезивање MythTV позадине са верзијом познатог протокола. Молимо, проверите мапу компатибилности додатног програма и ажурирајте вашу позадину на подржану верзију."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Неуспело повезивање API сервиса са MythTV позадином. Молимо, проверите ваш PIN код или подешавања позадине. PIN код мора бити подешен у вашој позадини да би дозволио повезивање."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Изгубљена веза са MythTV позадином"
@@ -260,14 +276,114 @@ msgctxt "#30412"
 msgid "Keep LiveTV recording"
 msgstr "Задржи снимак ТВ Уживо"
 
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Прикажи/сакриј неактивне предстојеће"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Освежи кеш за иконе канала"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Активирај ажурирање канала"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Прикажи статус заказивања"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Без руковања"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Предстојеће"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Премошћено"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Немој да снимаш"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Предстојеће ручно"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Зомби"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ручно"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Сними једно"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Снимај недељно"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Снимај дневно"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Сними све"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Сними ово"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Сними серију"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Претражи реч"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Претражи људе"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Неподударај дупликате"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Подудари дупликате користећи титлове"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Подудари дупликате користећи опис"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Подудари дупликате користећи титлове & опис"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Подудари дупликате користећи титлове па опис"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Снимци никада не истичу"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Дозволи снимцима да истекну"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Задржи до %d снимака"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Задржи %d најновијих и стари нека истекну"

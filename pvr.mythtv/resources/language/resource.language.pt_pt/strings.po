@@ -208,6 +208,14 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Uma da lista de cortes ou omissões comerciais foram encontrados.\nQuer ativar a funcionalidade EDL para este programa?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "A ligação falhou"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Deseja tentar novamente?"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "A ligação À estrutura MythTV foi perdida"
@@ -263,6 +271,10 @@ msgstr "Manter gravação LiveTV"
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Recarregar cache dos ícones de canal"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Não gravar"
 
 msgctxt "#30460"
 msgid "Manual"

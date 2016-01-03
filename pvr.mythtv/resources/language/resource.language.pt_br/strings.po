@@ -280,9 +280,53 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Atualização de cache para logos de canais"
 
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Mostrar estatus dos agendamentos"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Não gravar"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Gravar um"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Gravações semanais"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Gravações diárias"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Gravar todos"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Gravar este"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Gravações de seriados"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Procura por palavras chaves"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Procurar pessoas"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Gravações nunca expiram"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"

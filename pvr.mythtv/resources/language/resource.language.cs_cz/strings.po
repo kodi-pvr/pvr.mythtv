@@ -208,6 +208,14 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Byly nalezeny střihy nebo reklamní pauzy.\nChcete aktivovat EDL funkcionalitu pro tento pořad ?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Připojení selhalo"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Chcete to zkusit znovu?"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Spojení s podpůrnou vrstvou MythTV ztraceno"
@@ -264,10 +272,74 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Obnov cache pro ikonky kanálů"
 
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Nadcházející"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Přepsaný"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Nenahrávat"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Nadcházející manuální"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ručně"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Nahrát jednu"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Nahrávat týdně"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Nahrávat denně"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Nahrát vše"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Nahrát toto"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Nahrát sérii"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Vyhledat klíčové slovo"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Vyhledat osobnosti"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Nahrávky nikdy nevyprší"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Umožnit aby nahrávky vypršely"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Ponechat max. %d nahrávek/ky"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Ponechat %d nejnovějších a expirovat staré"

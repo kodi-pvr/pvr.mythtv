@@ -208,6 +208,18 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Se ha encontrado una lista de corte o de pasar anuncios.\n¿Quiere activar la funcionalidad EDL para este programa?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Fallo en la conexión"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "¿Volver a intentar?"
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Fallo en la conexión del API del backend de MythTV. Por favor revisa tu código PIN o configuración del backend. El código PIN debe ser configurado en el backend para permitir la conexión"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Conexión con backend de MythTV perdida"
@@ -268,10 +280,66 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar cache de los iconos para los canales"
 
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Muestra el estado de la programación"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Por venir"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "No grabar"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Grabar una vez"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Grabación semanal"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Grabación diaria"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Grabarlo todo"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Grabar esto"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Grabar series"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Buscar palabra clave"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Buscar gente"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "LAs grabaciones nunca caducan"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permitir expirar a las grabaciones"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Mantener hasta %d grabaciones"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Mantener las %d más nuevas y borrar las viejas"

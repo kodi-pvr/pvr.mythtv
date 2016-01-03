@@ -42,11 +42,11 @@ msgstr "Include mai multe informații de depanare în fișierul jurnal"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Activează Live TV"
+msgstr "Activează televiziunea în direct"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Permite Live TV să mute serialele planificate"
+msgstr "Permite televiziunii în direct să mute serialele planificate"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,15 +54,15 @@ msgstr "Conflict"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Prefera Live TV atunci când înregistrarea are slot pentru mai târziu"
+msgstr "Preferă televiziunea în direct atunci când înregistrarea are slot pentru mai târziu"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Prefera înregistrarea și oprește Live TV "
+msgstr "Preferă înregistrarea și oprește televiziunea în direct"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Prefera Live TV și anulează înregistrările conflictuale "
+msgstr "Preferă televiziunea în direct și abandonează înregistrările conflictuale "
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -110,19 +110,19 @@ msgstr "Transcode înregistrările noi"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
-msgstr "Rulează jobul utilizatorului # 1"
+msgstr "Rulează sarcina utilizatorului # 1"
 
 msgctxt "#30030"
 msgid "Run User Job #2"
-msgstr "Rulează jobul utilizatorului # 2"
+msgstr "Rulează sarcina utilizatorului # 2"
 
 msgctxt "#30031"
 msgid "Run User Job #3"
-msgstr "Rulează jobul utilizatorului # 3"
+msgstr "Rulează sarcina utilizatorului # 3"
 
 msgctxt "#30032"
 msgid "Run User Job #4"
-msgstr "Rulează jobul utilizatorului # 4"
+msgstr "Rulează sarcina utilizatorului # 4"
 
 msgctxt "#30033"
 msgid "Transcoder"
@@ -250,7 +250,7 @@ msgstr " Anulează înregistrările conflictuale: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Oprește Live TV datorită înregistrărilor conflictuale: %s"
+msgstr "Se oprește televiziunea în direct din cauza înregistrărilor conflictuale: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -274,7 +274,11 @@ msgstr "Sterge si reinregistraza"
 
 msgctxt "#30412"
 msgid "Keep LiveTV recording"
-msgstr "Pastreaza inregistrarea TV"
+msgstr "Păstreaza înregistrarea televiziunii în direct"
+
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Arată/ascunde viitoare inactive"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -296,9 +300,21 @@ msgctxt "#30452"
 msgid "Upcoming"
 msgstr "Viitoare"
 
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Ignorat"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Nu înregistra"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Viitoare manual"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombi"
 
 msgctxt "#30460"
 msgid "Manual"
@@ -320,6 +336,14 @@ msgctxt "#30464"
 msgid "Record all"
 msgstr "Înregistrează toate"
 
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Înregistrează asta"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Înregistrează seriile"
+
 msgctxt "#30467"
 msgid "Search keyword"
 msgstr "Căutare cuvânt cheie"
@@ -328,6 +352,26 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Căutare persoane"
 
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Nu potrivi cu duplicatele"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Potrivește cu duplicatele folosind subtitlul"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Potrivește cu duplicatele folosind descrierea"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Potrivește cu duplicatele folosind subtitlul și descrierea"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Potrivește cu duplicatele folosind subtitlul apoi descrierea"
+
 msgctxt "#30506"
 msgid "Recordings never expire"
 msgstr "Înregistrările nu expiră niciodată"
@@ -335,3 +379,11 @@ msgstr "Înregistrările nu expiră niciodată"
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permite expirarea înregistrării"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Păstrează până la %d înregistrări"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Păstrează %d cele mai noi și expiră pe cele vechi"

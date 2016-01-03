@@ -66,7 +66,7 @@ msgstr "Préférer la télé en direct et arrêter les enregistrements en confli
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "Adresse Ethernet (WOL) du dorsa MythTV"
+msgstr "Adresse Ethernet (WOL) de la dorsale MythTV"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
@@ -210,11 +210,19 @@ msgstr "Une liste de coupures ou des sauts publicitaires ont été trouvés.\nVo
 
 msgctxt "#30112"
 msgid "Connection failed"
-msgstr "Échec de la connexion"
+msgstr "Échec de connexion"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
-msgstr "Voulez-vous réessayer?"
+msgstr "Voulez-vous ressayer?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Échec de connexion de la dorsale MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l'addiciel et mettre votre dorsale à niveau vers une version prise en charge."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Échec de connexion des services d'API de la dorsale MythTV. Veuillez vérifier votre NIP ou la configuration de la dorsale. Le NIP doit être configuré dans la dorsale afin de permettre la connexion."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -270,16 +278,112 @@ msgstr "Garder l'enregistrement de la télé en direct"
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
-msgstr "Montrer/cacher les programmations inactives"
+msgstr "Montrer/cacher les enregistrements à venir inactifs"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Rafraîchir le cache des icônes de chaînes"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Déclencher la mise à jour des chaînes"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Montrer l'état de la programmation"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Non géré"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "À venir"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Remplacé"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Ne pas enregistrer"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "À venir manuel"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuel"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "En enregistrer un"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Enregistrer hebdomadairement"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Enregistrer quotidiennement"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Tout enregistrer"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Enregistrer ceci"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Enregistrer la série"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Rechercher par mot-clef"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Rechercher par personne"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Ne pas faire correspondre les doublons"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Faire correspondre les doublons en utilisant les sous-titres"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Faire correspondre les doublons en utilisant la description"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Faire correspondre les doublons en utilisant les sous-titres et la description"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Faire correspondre les doublons en utilisant les sous-titres puis la description"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Les enregistrements n'expirent jamais"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permettre l'expiration des enregistrements"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Garder jusqu'à %d enregistrements"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Garder les %d plus récents et faire expirer les anciens"

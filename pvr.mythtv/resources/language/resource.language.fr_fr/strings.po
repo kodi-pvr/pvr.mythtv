@@ -58,7 +58,7 @@ msgstr "Préférer la TV en direct si possible"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Préférer l'enregistrement et arrêter la TV en direct"
+msgstr "Préférer l'enregistrement et stopper la TV en direct"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
@@ -182,7 +182,7 @@ msgstr "Jamais"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloquer l'extinction du serveur"
+msgstr "Bloquer l'arrêt du serveur"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -250,7 +250,7 @@ msgstr "Annuler l'enregistrement en conflit : %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Arrêt de la TV en direct pour l'enregistrement en conflit : %s"
+msgstr "TV en direct stoppée pour l'enregistrement en conflit : %s"
 
 msgctxt "#30309"
 msgid "Not recording"
