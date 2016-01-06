@@ -28,7 +28,7 @@
 #include "filestreaming.h"
 
 #include <kodi/xbmc_pvr_types.h>
-#include <platform/threads/mutex.h>
+#include <p8-platform/threads/mutex.h>
 #include <mythsharedptr.h>
 #include <mythcontrol.h>
 #include <mytheventhandler.h>
@@ -162,7 +162,7 @@ private:
   // Backend
   FileOps *m_fileOps;
   MythScheduleManager *m_scheduleManager;
-  PLATFORM::CMutex m_lock;
+  P8PLATFORM::CMutex m_lock;
 
   // Categories
   Categories m_categories;
@@ -182,7 +182,7 @@ private:
   PVRChannelGroupMap m_PVRChannelGroups;
   typedef std::map<unsigned int, unsigned int> PVRChannelMap;
   PVRChannelMap m_PVRChannelUidById;
-  mutable PLATFORM::CMutex m_channelsLock;
+  mutable P8PLATFORM::CMutex m_channelsLock;
   int FillChannelsAndChannelGroups();
   MythChannel FindChannel(uint32_t channelId) const;
   int FindPVRChannelUid(uint32_t channelId) const;
@@ -192,7 +192,7 @@ private:
 
   // Recordings
   ProgramInfoMap m_recordings;
-  mutable PLATFORM::CMutex m_recordingsLock;
+  mutable P8PLATFORM::CMutex m_recordingsLock;
   unsigned m_recordingChangePinCount;
   bool m_recordingsAmountChange;
   int m_recordingsAmount;

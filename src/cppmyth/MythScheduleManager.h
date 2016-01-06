@@ -26,7 +26,7 @@
 #include "MythChannel.h"
 
 #include <kodi/xbmc_pvr_types.h>
-#include <platform/threads/mutex.h>
+#include <p8-platform/threads/mutex.h>
 
 #include <vector>
 #include <list>
@@ -209,7 +209,7 @@ public:
   static uint32_t MakeIndex(const MythRecordingRule& rule);
 
 private:
-  mutable PLATFORM::CMutex m_lock;
+  mutable P8PLATFORM::CMutex m_lock;
   Myth::Control *m_control;
 
   int m_protoVersion;

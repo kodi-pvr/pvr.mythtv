@@ -25,9 +25,9 @@
 #include "client.h"
 
 #include <mythstream.h>
-#include <platform/threads/threads.h>
-#include <platform/threads/mutex.h>
-#include <platform/util/buffer.h>
+#include <p8-platform/threads/threads.h>
+#include <p8-platform/threads/mutex.h>
+#include <p8-platform/util/buffer.h>
 #include <kodi/xbmc_stream_utils.hpp>
 
 #include <map>
@@ -35,7 +35,7 @@
 
 #define AV_BUFFER_SIZE          131072
 
-class Demux : public TSDemux::TSDemuxer, PLATFORM::CThread
+class Demux : public TSDemux::TSDemuxer, P8PLATFORM::CThread
 {
 public:
   Demux(Myth::Stream *file);
@@ -56,8 +56,8 @@ public:
 private:
   Myth::Stream *m_file;
   uint16_t m_channel;
-  PLATFORM::SyncedBuffer<DemuxPacket*> m_demuxPacketBuffer;
-  PLATFORM::CMutex m_mutex;
+  P8PLATFORM::SyncedBuffer<DemuxPacket*> m_demuxPacketBuffer;
+  P8PLATFORM::CMutex m_mutex;
   ADDON::XbmcStreamProperties m_streams;
 
   bool get_stream_data(TSDemux::STREAM_PKT* pkt);

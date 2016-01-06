@@ -25,7 +25,7 @@
 #include "cppmyth/MythProgramInfo.h"
 
 #include <mythwsapi.h>
-#include <platform/threads/threads.h>
+#include <p8-platform/threads/threads.h>
 
 #include <string>
 #include <vector>
@@ -39,7 +39,7 @@ public:
   virtual void HandleCleanedCache() = 0;
 };
 
-class FileOps : public PLATFORM::CThread
+class FileOps : public P8PLATFORM::CThread
 {
 public:
   enum FileType
@@ -152,7 +152,7 @@ protected:
     int             m_errorCount;
   };
 
-  PLATFORM::CMutex m_lock;
-  PLATFORM::CEvent m_queueContent;
+  P8PLATFORM::CMutex m_lock;
+  P8PLATFORM::CEvent m_queueContent;
   std::list<FileOps::JobItem> m_jobQueue;
 };

@@ -73,7 +73,7 @@ protected:
   virtual const MythTimerType::AttributeList& GetRuleExpirationNameList() const;
   virtual const MythTimerType::AttributeList& GetRuleRecordingGroupList() const;
 
-  mutable PLATFORM::CMutex m_lock;
+  mutable P8PLATFORM::CMutex m_lock;
 
   mutable bool                            m_timerTypeListInit;
   mutable MythTimerTypeList               m_timerTypeList;

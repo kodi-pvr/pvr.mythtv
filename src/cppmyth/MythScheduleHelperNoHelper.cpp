@@ -40,7 +40,7 @@ MythScheduleHelperNoHelper::MythScheduleHelperNoHelper()
 
 MythTimerTypeList MythScheduleHelperNoHelper::GetTimerTypes() const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   return m_timerTypeList;
 }
 
@@ -103,7 +103,7 @@ static inline uint32_t expiration_key(const MythScheduleHelperNoHelper::RuleExpi
 
 int MythScheduleHelperNoHelper::GetRuleExpirationId(const RuleExpiration& expiration) const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   if (!m_expirationByKeyInit)
   {
     m_expirationByKeyInit = true;
@@ -119,7 +119,7 @@ int MythScheduleHelperNoHelper::GetRuleExpirationId(const RuleExpiration& expira
 
 MythScheduleHelperNoHelper::RuleExpiration MythScheduleHelperNoHelper::GetRuleExpiration(int id) const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   static RuleExpiration _empty(false, 0, false);
   RuleExpirationMap::const_iterator it = GetRuleExpirationMap().find(id);
   if (it != m_expirationMap.end())
@@ -129,7 +129,7 @@ MythScheduleHelperNoHelper::RuleExpiration MythScheduleHelperNoHelper::GetRuleEx
 
 int MythScheduleHelperNoHelper::GetRuleRecordingGroupId(const std::string& name) const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   if (!m_recGroupByNameInit)
   {
     m_recGroupByNameInit = true;
@@ -145,7 +145,7 @@ int MythScheduleHelperNoHelper::GetRuleRecordingGroupId(const std::string& name)
 
 std::string MythScheduleHelperNoHelper::GetRuleRecordingGroupName(int id) const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   static std::string _empty = "";
   if (!m_recGroupByIdInit)
   {

@@ -34,7 +34,7 @@ using namespace ADDON;
 
 MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 {
-  PLATFORM::CLockObject lock(m_lock);
+  P8PLATFORM::CLockObject lock(m_lock);
   if (!m_timerTypeListInit)
   {
     m_timerTypeListInit = true;
