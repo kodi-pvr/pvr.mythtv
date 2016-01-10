@@ -264,10 +264,54 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Förnya cache för kanalikoner"
 
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Spela inte in"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuell"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Spela in en"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Spela in veckovis"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Spela in dagligen"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Spela in alla"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Spela on detta"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Sök serier"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Sök nyckelord"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Sök personer"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Tillåt inspelningar att gå ut"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Behåll upp till %d inspelningar"

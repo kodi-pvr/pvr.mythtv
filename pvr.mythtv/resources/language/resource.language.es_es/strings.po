@@ -292,6 +292,10 @@ msgctxt "#30454"
 msgid "Don't record"
 msgstr "No grabar"
 
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombi"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"

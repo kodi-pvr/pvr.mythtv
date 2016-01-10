@@ -208,6 +208,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "发现剪辑表或广告过滤，\n对此节目激活 EDL 功能吗？"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "连接失败"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "要重试吗？"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "用已知协议版本连接 MythTV 后端失败。请查看插件兼容信息并升级后端为支持的版本。"
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "连接 MythTV 后端的 API 服务失败。请检查 PIN 码或后端设置。后端需设置 PIN 码以允许连接。"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "MythTV 后端连接丢失"
@@ -266,7 +282,7 @@ msgstr "刷新频道图标缓存"
 
 msgctxt "#30460"
 msgid "Manual"
-msgstr "手动查询"
+msgstr "手动"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
