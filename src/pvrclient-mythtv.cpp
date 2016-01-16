@@ -1604,7 +1604,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.iWeekdays = PVR_WEEKDAY_NONE; // not implemented
     tag.iPreventDuplicateEpisodes = static_cast<unsigned>((*it)->dupMethod);
     if ((*it)->epgCheck)
-      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(tag.iClientChannelUid, tag.startTime);
+      tag.iEpgUid = MythEPGInfo::MakeBroadcastID(FindPVRChannelUid((*it)->epgInfo.ChannelID()) , (*it)->epgInfo.StartTime());
     tag.iMarginStart = (*it)->startOffset;
     tag.iMarginEnd = (*it)->endOffset;
     int genre = m_categories.Category((*it)->category);
@@ -1824,9 +1824,13 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
     unsigned bid;
     time_t bst;
     MythEPGInfo::BreakBroadcastID(timer.iEpgUid, &bid, &bst);
+    XBMC->Log(LOG_DEBUG, "%s: broadcastid=%u chanid=%u localtime=%s", __FUNCTION__, (unsigned)timer.iEpgUid, bid, Myth::TimeToString(bst, false).c_str());
     // Retrieve broadcast using prior selected channel if valid else use original channel
     if (hasChannel)
+    {
       bid = static_cast<unsigned>(timer.iClientChannelUid);
+      XBMC->Log(LOG_DEBUG, "%s: original chanid is overridden with id %u", __FUNCTION__, bid);
+    }
     Myth::ProgramMapPtr epg = m_control->GetProgramGuide(bid, bst, bst);
     Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
     if (epgit != epg->rend())

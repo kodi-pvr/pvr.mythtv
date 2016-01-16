@@ -22,14 +22,22 @@
 #include "../tools.h"
 
 MythEPGInfo::MythEPGInfo()
-  : m_epginfo()
+: m_epginfo()
 {
 }
 
-MythEPGInfo::MythEPGInfo(Myth::ProgramPtr epginfo)
-  : m_epginfo()
+MythEPGInfo::MythEPGInfo(const Myth::ProgramPtr& epginfo)
+: m_epginfo(epginfo)
 {
-  m_epginfo.swap(epginfo);
+}
+
+MythEPGInfo::MythEPGInfo(unsigned chanid, time_t starttime, time_t endtime)
+: m_epginfo()
+{
+  m_epginfo.reset(new Myth::Program());
+  m_epginfo->channel.chanId = chanid;
+  m_epginfo->startTime = starttime;
+  m_epginfo->endTime = endtime;
 }
 
 bool MythEPGInfo::IsNull() const
@@ -81,12 +89,12 @@ std::string MythEPGInfo::Description() const
 
 time_t MythEPGInfo::StartTime() const
 {
-  return (m_epginfo ? m_epginfo->startTime : (time_t)(-1));
+  return (m_epginfo ? m_epginfo->startTime : 0);
 }
 
 time_t MythEPGInfo::EndTime() const
 {
-  return (m_epginfo ? m_epginfo->endTime : (time_t)(-1));
+  return (m_epginfo ? m_epginfo->endTime : 0);
 }
 
 std::string MythEPGInfo::ProgramID() const
@@ -148,9 +156,4 @@ void MythEPGInfo::BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t
 
   *attime = mktime(&epgtm);
   *chanid = (unsigned int)broadcastid & 0xFFFF;
-}
-
-int MythEPGInfo::MakeBroadcastID()
-{
-  return (m_epginfo ? MakeBroadcastID(m_epginfo->channel.chanId, m_epginfo->startTime) : 0);
 }
