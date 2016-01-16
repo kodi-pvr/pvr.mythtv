@@ -99,6 +99,7 @@ bool MythScheduleHelper85::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       entry.epgCheck = false;
   }
 
+  entry.epgInfo = MythEPGInfo(recording.ChannelID(), recording.StartTime(), recording.EndTime());
   entry.description = "";
   entry.chanid = recording.ChannelID();
   entry.callsign = recording.Callsign();

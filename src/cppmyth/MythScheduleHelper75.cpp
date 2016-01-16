@@ -556,6 +556,7 @@ bool MythScheduleHelper75::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   }
 
   // fill others
+  entry.epgInfo = MythEPGInfo(rule.ChannelID(), rule.StartTime(), rule.EndTime());
   entry.title = rule.Title();
   entry.category = rule.Category();
   entry.startOffset = rule.StartOffset();
@@ -650,6 +651,7 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
       entry.epgCheck = false;
   }
 
+  entry.epgInfo = MythEPGInfo(recording.ChannelID(), recording.StartTime(), recording.EndTime());
   entry.description = "";
   entry.chanid = recording.ChannelID();
   entry.callsign = recording.Callsign();
@@ -664,6 +666,7 @@ bool MythScheduleHelper75::FillTimerEntryWithUpcoming(MythTimerEntry& entry, con
     entry.title.append(" - S").append(Myth::IntToString(recording.Episode()));
   entry.recordingGroup = GetRuleRecordingGroupId(recording.RecordingGroup());
   entry.entryIndex = MythScheduleManager::MakeIndex(recording); // upcoming index
+
   return true;
 }
 

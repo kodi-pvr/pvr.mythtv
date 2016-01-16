@@ -25,7 +25,8 @@ class MythEPGInfo
 {
 public:
   MythEPGInfo();
-  MythEPGInfo(Myth::ProgramPtr epginfo);
+  MythEPGInfo(const Myth::ProgramPtr& epginfo);
+  MythEPGInfo(unsigned chanid, time_t starttime, time_t endtime);
 
   bool IsNull() const;
   Myth::ProgramPtr GetPtr() const;
@@ -51,7 +52,6 @@ public:
    */
   static int MakeBroadcastID(unsigned int chanid, time_t starttime);
   static void BreakBroadcastID(int broadcastid, unsigned int *chanid, time_t *starttime);
-  int MakeBroadcastID();
 
 private:
   Myth::ProgramPtr m_epginfo;

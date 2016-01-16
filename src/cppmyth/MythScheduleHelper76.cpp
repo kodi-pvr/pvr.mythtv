@@ -215,6 +215,7 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   }
 
   // fill others
+  entry.epgInfo = MythEPGInfo(rule.ChannelID(), rule.StartTime(), rule.EndTime());
   entry.title = rule.Title();
   entry.category = rule.Category();
   entry.startOffset = rule.StartOffset();
