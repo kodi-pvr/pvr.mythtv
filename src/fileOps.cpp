@@ -34,7 +34,7 @@
 #define FILEOPS_RECORDING_DUMMY_ICON  "recording.png"
 
 using namespace ADDON;
-using namespace PLATFORM;
+using namespace P8PLATFORM;
 
 FileOps::FileOps(FileConsumer *consumer, const std::string& server, unsigned wsapiport, const std::string& wsapiSecurityPin)
 : CThread()

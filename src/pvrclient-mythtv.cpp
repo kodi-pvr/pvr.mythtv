@@ -31,7 +31,7 @@
 #include <cassert>
 
 using namespace ADDON;
-using namespace PLATFORM;
+using namespace P8PLATFORM;
 
 PVRClientMythTV::PVRClientMythTV()
 : m_connectionError(CONN_ERROR_NO_ERROR)

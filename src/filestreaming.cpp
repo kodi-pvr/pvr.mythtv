@@ -22,7 +22,7 @@
 
 #include "filestreaming.h"
 #include "client.h"
-#include <platform/os.h>
+#include <p8-platform/os.h>
 
 #define MAX_READ_SIZE  131072
 

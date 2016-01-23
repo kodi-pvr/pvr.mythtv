@@ -32,7 +32,7 @@
 #include <math.h>
 
 using namespace ADDON;
-using namespace PLATFORM;
+using namespace P8PLATFORM;
 
 enum
 {

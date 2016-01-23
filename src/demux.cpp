@@ -20,7 +20,7 @@
  *
  */
 
-#include <platform/os.h>
+#include <p8-platform/os.h>
 #include <kodi/libXBMC_pvr.h>
 #include <kodi/xbmc_codec_types.h>
 
@@ -34,7 +34,7 @@
 #define READAV_TIMEOUT          10000                     // 10 secs
 
 using namespace ADDON;
-using namespace PLATFORM;
+using namespace P8PLATFORM;
 
 void DemuxLog(int level, char *msg)
 {
