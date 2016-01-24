@@ -1109,6 +1109,13 @@ long long LengthLiveStream(void)
   return g_client->LengthLiveStream();
 }
 
+bool IsRealTimeStream(void)
+{
+  if (g_client == NULL)
+    return false;
+
+  return g_client->IsRealTimeStream();
+}
 
 /*
  * PVR Recording Stream Functions
@@ -1228,6 +1235,8 @@ time_t GetBufferTimeEnd()
   return 0;
 }
 
+bool IsTimeshifting(void) { return true; }
+
 /*
  * Unused API Functions
  */
@@ -1235,6 +1244,5 @@ time_t GetBufferTimeEnd()
 void DemuxReset() {}
 const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
-bool IsTimeshifting(void) { return true; }
 
 } //end extern "C"
