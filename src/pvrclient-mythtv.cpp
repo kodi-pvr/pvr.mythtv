@@ -758,7 +758,8 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
       mapuid_t::iterator itm = channelIdentifiers.find(channelIdentifier);
       if (itm != channelIdentifiers.end())
       {
-        XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, chanid);
+        if (g_bExtraDebug)
+          XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, chanid);
         // Link channel to PVR item
         m_PVRChannelUidById.insert(std::make_pair(chanid, itm->second.iUniqueId));
         // Add found PVR item to the grouping set
