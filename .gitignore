@@ -1,4 +1,28 @@
-/build
+# build artifacts
+build/
+debian/changelog
+debian/files
+debian/kodi-pvr-mythtv-dbg.debhelper.log
+debian/kodi-pvr-mythtv-dbg.substvars
+debian/kodi-pvr-mythtv-dbg/
+debian/kodi-pvr-mythtv.debhelper.log
+debian/kodi-pvr-mythtv.postinst.debhelper
+debian/kodi-pvr-mythtv.postrm.debhelper
+debian/kodi-pvr-mythtv.substvars
+debian/kodi-pvr-mythtv/
+debian/tmp/
+obj-x86_64-linux-gnu/
+pvr.mythtv/addon.xml
+
+# clion
+.idea/
+
+# Eclipse/CDT
+.cproject
+.project
+.settings/
+
+# others
 nbproject
 cppmyth_config.h
 *.swp
