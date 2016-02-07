@@ -389,7 +389,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 
   memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
   menuHook.category = PVR_MENUHOOK_RECORDING;
-  menuHook.iHookId = MENUHOOK_KEEP_LIVETV_RECORDING;
+  menuHook.iHookId = MENUHOOK_KEEP_RECORDING;
   menuHook.iLocalizedStringId = 30412;
   PVR->AddMenuHook(&menuHook);
 

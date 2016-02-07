@@ -2406,7 +2406,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     return DeleteAndForgetRecording(item.data.recording);
   }
 
-  if (menuhook.iHookId == MENUHOOK_KEEP_LIVETV_RECORDING && item.cat == PVR_MENUHOOK_RECORDING)
+  if (menuhook.iHookId == MENUHOOK_KEEP_RECORDING && item.cat == PVR_MENUHOOK_RECORDING)
   {
     CLockObject lock(m_recordingsLock);
     ProgramInfoMap::iterator it = m_recordings.find(item.data.recording.strRecordingId);
@@ -2416,9 +2416,6 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       return PVR_ERROR_INVALID_PARAMETERS;
     }
 
-    if (!it->second.IsLiveTV())
-      return PVR_ERROR_NO_ERROR;
-
     // If recording is current live show then keep it and set live recorder
     if (IsMyLiveRecording(it->second))
     {
@@ -2427,7 +2424,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
         return PVR_ERROR_NO_ERROR;
       return PVR_ERROR_FAILED;
     }
-    // Else keep old live recording
+    // Else keep recording
     else
     {
       if (m_control->UndeleteRecording(*(it->second.GetPtr())))
