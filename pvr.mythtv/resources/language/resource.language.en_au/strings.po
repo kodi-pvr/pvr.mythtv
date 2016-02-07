@@ -253,8 +253,8 @@ msgid "Delete and re-record"
 msgstr "Delete and re-record"
 
 msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Keep LiveTV recording"
+msgid "Keep recording"
+msgstr "Keep recording"
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
