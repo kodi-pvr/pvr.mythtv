@@ -1046,14 +1046,6 @@ int ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize)
   return dataread;
 }
 
-int GetCurrentClientChannel()
-{
-  if (g_client == NULL)
-    return -1;
-
-  return g_client->GetCurrentClientChannel();
-}
-
 bool SwitchChannel(const PVR_CHANNEL &channel)
 {
   if (g_client == NULL)
