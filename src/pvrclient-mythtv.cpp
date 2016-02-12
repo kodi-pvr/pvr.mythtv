@@ -2159,9 +2159,6 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
       PVR_STRCPY(signalStatus.strAdapterStatus, "Locked");
     else
       PVR_STRCPY(signalStatus.strAdapterStatus, "No lock");
-    signalStatus.dAudioBitrate = 0;
-    signalStatus.dDolbyBitrate = 0;
-    signalStatus.dVideoBitrate = 0;
     signalStatus.iSignal = signal->signal;
     signalStatus.iBER = signal->ber;
     signalStatus.iSNR = signal->snr;
