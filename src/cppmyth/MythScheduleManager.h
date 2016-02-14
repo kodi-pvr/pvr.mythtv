@@ -189,7 +189,7 @@ public:
   MythRecordingRuleList GetTemplateRules() const;
 
   bool ToggleShowNotRecording();
-  bool ShowNotRecording() const { return m_showNotRecording; }
+  bool ShowNotRecording();
 
   class VersionHelper
   {
@@ -238,7 +238,6 @@ private:
   RecordingIndexByRuleId* m_recordingIndexByRuleId;
   MythRecordingRuleList* m_templates;
 
-  bool m_showNotRecording;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
