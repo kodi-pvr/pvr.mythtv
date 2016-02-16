@@ -117,7 +117,6 @@ public:
   bool OpenLiveStream(const PVR_CHANNEL &channel);
   void CloseLiveStream();
   int ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize);
-  int GetCurrentClientChannel();
   bool SwitchChannel(const PVR_CHANNEL &channel);
   long long SeekLiveStream(long long iPosition, int iWhence);
   long long LengthLiveStream();

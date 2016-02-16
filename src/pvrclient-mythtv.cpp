@@ -931,6 +931,9 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strPlotOutline, "");
       PVR_STRCPY(tag.strStreamURL, "");
 
+      /* TODO: PVR API 5.0.0: Implement this */
+      tag.iChannelUid = PVR_CHANNEL_INVALID_UID;
+
       PVR->TransferRecordingEntry(handle, &tag);
     }
   }
@@ -1038,6 +1041,9 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
       tag.iPriority = 0;
       PVR_STRCPY(tag.strPlotOutline, "");
       PVR_STRCPY(tag.strStreamURL, "");
+
+      /* TODO: PVR API 5.0.0: Implement this */
+      tag.iChannelUid = PVR_CHANNEL_INVALID_UID;
 
       PVR->TransferRecordingEntry(handle, &tag);
     }
@@ -2061,21 +2067,6 @@ int PVRClientMythTV::ReadLiveStream(unsigned char *pBuffer, unsigned int iBuffer
   return -1;
 }
 
-int PVRClientMythTV::GetCurrentClientChannel()
-{
-  if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
-
-  // Begin critical section
-  CLockObject lock(m_lock);
-  // Have live stream
-  if (!m_liveStream)
-    return -1;
-
-  Myth::ProgramPtr program = m_liveStream->GetPlayedProgram();
-  return (int)program->channel.chanId;
-}
-
 bool PVRClientMythTV::SwitchChannel(const PVR_CHANNEL &channel)
 {
   if (g_bExtraDebug)
@@ -2168,9 +2159,6 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
       PVR_STRCPY(signalStatus.strAdapterStatus, "Locked");
     else
       PVR_STRCPY(signalStatus.strAdapterStatus, "No lock");
-    signalStatus.dAudioBitrate = 0;
-    signalStatus.dDolbyBitrate = 0;
-    signalStatus.dVideoBitrate = 0;
     signalStatus.iSignal = signal->signal;
     signalStatus.iBER = signal->ber;
     signalStatus.iSNR = signal->snr;
