@@ -264,6 +264,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Опресни кеша за иконки на каналите"
 
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Предстоящи"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ръчно"

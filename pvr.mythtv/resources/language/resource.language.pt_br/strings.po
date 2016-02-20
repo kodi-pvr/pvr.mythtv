@@ -288,6 +288,10 @@ msgctxt "#30454"
 msgid "Don't record"
 msgstr "Não gravar"
 
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zumbie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -331,3 +335,7 @@ msgstr "Gravações nunca expiram"
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permitir gravações expirar"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Manter até %d gravações"

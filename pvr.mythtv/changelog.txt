@@ -1,3 +1,6 @@
+v3.4.7
+- Updated language files from Transifex
+
 v3.4.6
 - fix timer update caused by invalid epg ID
 
