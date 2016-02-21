@@ -294,7 +294,7 @@ msgid "Delete and re-record"
 msgstr ""
 
 msgctxt "#30412"
-msgid "Keep LiveTV recording"
+msgid "Keep recording"
 msgstr ""
 
 #empty strings from id 30413 to 30420

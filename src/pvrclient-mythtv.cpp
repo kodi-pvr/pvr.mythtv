@@ -758,7 +758,8 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
       mapuid_t::iterator itm = channelIdentifiers.find(channelIdentifier);
       if (itm != channelIdentifiers.end())
       {
-        XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, chanid);
+        if (g_bExtraDebug)
+          XBMC->Log(LOG_DEBUG, "%s: skipping channel: %d", __FUNCTION__, chanid);
         // Link channel to PVR item
         m_PVRChannelUidById.insert(std::make_pair(chanid, itm->second.iUniqueId));
         // Add found PVR item to the grouping set
@@ -797,7 +798,7 @@ int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
   PVRChannelMap::const_iterator it = m_PVRChannelUidById.find(channelId);
   if (it != m_PVRChannelUidById.end())
     return it->second;
-  return -1; // PVR dummy channel UID
+  return PVR_CHANNEL_INVALID_UID;
 }
 
 int PVRClientMythTV::GetRecordingsAmount()
@@ -828,9 +829,6 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
   CLockObject lock(m_recordingsLock);
 
-  // Load recordings list
-  if (m_recordings.empty())
-    FillRecordings();
   // Setup series
   if (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES)
   {
@@ -887,6 +885,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
+      tag.iChannelUid = FindPVRChannelUid(it->second.ChannelID());
 
       int genre = m_categories.Category(it->second.Category());
       tag.iGenreSubType = genre&0x0F;
@@ -931,9 +930,6 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strPlotOutline, "");
       PVR_STRCPY(tag.strStreamURL, "");
 
-      /* TODO: PVR API 5.0.0: Implement this */
-      tag.iChannelUid = PVR_CHANNEL_INVALID_UID;
-
       PVR->TransferRecordingEntry(handle, &tag);
     }
   }
@@ -972,9 +968,6 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
 
   CLockObject lock(m_recordingsLock);
 
-  // Load recordings list
-  if (m_recordings.empty())
-    FillRecordings();
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -2411,7 +2404,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     return DeleteAndForgetRecording(item.data.recording);
   }
 
-  if (menuhook.iHookId == MENUHOOK_KEEP_LIVETV_RECORDING && item.cat == PVR_MENUHOOK_RECORDING)
+  if (menuhook.iHookId == MENUHOOK_KEEP_RECORDING && item.cat == PVR_MENUHOOK_RECORDING)
   {
     CLockObject lock(m_recordingsLock);
     ProgramInfoMap::iterator it = m_recordings.find(item.data.recording.strRecordingId);
@@ -2421,9 +2414,6 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       return PVR_ERROR_INVALID_PARAMETERS;
     }
 
-    if (!it->second.IsLiveTV())
-      return PVR_ERROR_NO_ERROR;
-
     // If recording is current live show then keep it and set live recorder
     if (IsMyLiveRecording(it->second))
     {
@@ -2432,7 +2422,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
         return PVR_ERROR_NO_ERROR;
       return PVR_ERROR_FAILED;
     }
-    // Else keep old live recording
+    // Else keep recording
     else
     {
       if (m_control->UndeleteRecording(*(it->second.GetPtr())))

@@ -1,3 +1,8 @@
+v4.2.1
+- Fill PVR channel UID of recordings
+- Allowing to disable auto-expire for any recording
+- Minor improvements
+
 v4.2.0
 - Updated to PVR addon API v5.0.0
 

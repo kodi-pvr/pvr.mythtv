@@ -273,8 +273,8 @@ msgid "Delete and re-record"
 msgstr "Supprimer et réenregistrer"
 
 msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Conserver l'enregistrement de la TV en direct"
+msgid "Keep recording"
+msgstr "Conserver l'enregistrement"
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"

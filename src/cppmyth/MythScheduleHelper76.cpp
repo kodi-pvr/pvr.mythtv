@@ -55,7 +55,8 @@ bool MythScheduleHelper76::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   // that which is applied in function 'NewFromTimer'
 
   MythRecordingRule rule = node.GetRule();
-  XBMC->Log(LOG_DEBUG, "76::%s: RecordID %u", __FUNCTION__, rule.RecordID());
+  if (g_bExtraDebug)
+    XBMC->Log(LOG_DEBUG, "76::%s: RecordID %u", __FUNCTION__, rule.RecordID());
 
   switch (rule.Type())
   {
