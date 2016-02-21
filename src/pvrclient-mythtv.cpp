@@ -798,7 +798,7 @@ int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
   PVRChannelMap::const_iterator it = m_PVRChannelUidById.find(channelId);
   if (it != m_PVRChannelUidById.end())
     return it->second;
-  return -1; // PVR dummy channel UID
+  return PVR_CHANNEL_INVALID_UID;
 }
 
 int PVRClientMythTV::GetRecordingsAmount()
@@ -885,6 +885,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
+      tag.iChannelUid = FindPVRChannelUid(it->second.ChannelID());
 
       int genre = m_categories.Category(it->second.Category());
       tag.iGenreSubType = genre&0x0F;
@@ -928,9 +929,6 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       tag.iPriority = 0;
       PVR_STRCPY(tag.strPlotOutline, "");
       PVR_STRCPY(tag.strStreamURL, "");
-
-      /* TODO: PVR API 5.0.0: Implement this */
-      tag.iChannelUid = PVR_CHANNEL_INVALID_UID;
 
       PVR->TransferRecordingEntry(handle, &tag);
     }
