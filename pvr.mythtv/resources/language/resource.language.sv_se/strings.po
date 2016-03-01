@@ -208,6 +208,14 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Klipplista eller reklamhopp har hittats.\nVill du aktivera EDL-funktionalitet för denna visning?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Anslutningen misslyckades"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Vill du försöka igen?"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Anslutning till MythTV backend förlorad"
@@ -264,6 +272,10 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Förnya cache för kanalikoner"
 
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Kommande"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Spela inte in"
@@ -308,6 +320,14 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Sök personer"
 
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Matcha inte dubbletter"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Inspelningen upphör aldrig"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Tillåt inspelningar att gå ut"
@@ -315,3 +335,7 @@ msgstr "Tillåt inspelningar att gå ut"
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
 msgstr "Behåll upp till %d inspelningar"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Behåll %d nyaste och upphäv de gamla"

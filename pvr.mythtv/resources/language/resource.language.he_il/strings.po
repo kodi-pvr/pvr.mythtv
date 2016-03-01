@@ -206,7 +206,7 @@ msgstr "מפעיל EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "רשימת נק' חיתוך הקלטה או דילוגי פרסומות נמצאו.\nהאם לאפשר את תכונת EDL עבור תוכנית זו?"
+msgstr "רשימת נק' חיתוך הקלטה או דילוגי פרסומות נמצאו.\nהאם לאפשר את תכונת EDL עבור תכנית זו?"
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
