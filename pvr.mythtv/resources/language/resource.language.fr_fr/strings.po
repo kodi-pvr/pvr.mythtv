@@ -42,11 +42,11 @@ msgstr "Inclure plus d'informations de débogage dans le fichier de journal"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Activer la télévision en direct"
+msgstr "Activer la TV en direct"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Autoriser la TV à modifier la planification des programmes"
+msgstr "Autoriser la TV en direct à modifier la planification des programmes"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -190,7 +190,7 @@ msgstr "Afficher l'icône des chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activer l'enregistrement des fanarts/miniatures"
+msgstr "Activer l'enregistrement des FanArts/miniatures"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
