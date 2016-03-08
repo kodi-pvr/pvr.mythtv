@@ -887,6 +887,9 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
       tag.iChannelUid = FindPVRChannelUid(it->second.ChannelID());
 
+      /* TODO: PVR API 5.1.0: Implement this */
+      tag.channelType = PVR_RECORDING_CHANNEL_TYPE_UNKNOWN;
+
       int genre = m_categories.Category(it->second.Category());
       tag.iGenreSubType = genre&0x0F;
       tag.iGenreType = genre&0xF0;
@@ -1037,6 +1040,9 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
 
       /* TODO: PVR API 5.0.0: Implement this */
       tag.iChannelUid = PVR_CHANNEL_INVALID_UID;
+
+      /* TODO: PVR API 5.1.0: Implement this */
+      tag.channelType = PVR_RECORDING_CHANNEL_TYPE_UNKNOWN;
 
       PVR->TransferRecordingEntry(handle, &tag);
     }
