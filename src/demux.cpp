@@ -245,7 +245,13 @@ bool Demux::GetStreamProperties(PVR_STREAM_PROPERTIES* props)
 
   CLockObject lock(m_mutex);
   m_isChangePlaced = false;
-  return m_streams.GetProperties(props);
+  for (int i = 0; i < m_streams.iStreamCount; i++)
+  {
+    memcpy(&props->stream[i], &m_streams.stream[i], sizeof(PVR_STREAM_PROPERTIES::PVR_STREAM));
+  }
+
+  props->iStreamCount = m_streams.iStreamCount;
+  return true;
 }
 
 void Demux::Flush(void)
@@ -413,14 +419,16 @@ void Demux::populate_pvr_streams()
 
   uint16_t mainPid = 0xffff;
   int mainType = XBMC_CODEC_TYPE_UNKNOWN;
-  std::vector<XbmcPvrStream> new_streams;
   const std::vector<TSDemux::ElementaryStream*> es_streams = m_AVContext->GetStreams();
+  int count = 0;
   for (std::vector<TSDemux::ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
   {
     const char* codec_name = (*it)->GetStreamCodecName();
     xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
     if (codec.codec_type != XBMC_CODEC_TYPE_UNKNOWN)
     {
+      memset(&m_streams.stream[count], 0, sizeof(m_streams.stream[count]));
+
       // Find the main stream:
       // The best candidate would be the first video. Else the first audio
       switch (mainType)
@@ -435,25 +443,22 @@ void Demux::populate_pvr_streams()
         mainType = codec.codec_type;
       }
 
-      XbmcPvrStream new_stream;
-      m_streams.GetStreamData((*it)->pid, &new_stream);
+      m_streams.stream[count].iCodecId       = codec.codec_id;
+      m_streams.stream[count].iCodecType     = codec.codec_type;
+      recode_language((*it)->stream_info.language, m_streams.stream[count].strLanguage);
+      m_streams.stream[count].iSubtitleInfo  = stream_identifier((*it)->stream_info.composition_id, (*it)->stream_info.ancillary_id);
+      m_streams.stream[count].iFPSScale      = (*it)->stream_info.fps_scale;
+      m_streams.stream[count].iFPSRate       = (*it)->stream_info.fps_rate;
+      m_streams.stream[count].iHeight        = (*it)->stream_info.height;
+      m_streams.stream[count].iWidth         = (*it)->stream_info.width;
+      m_streams.stream[count].fAspect        = (*it)->stream_info.aspect;
+      m_streams.stream[count].iChannels      = (*it)->stream_info.channels;
+      m_streams.stream[count].iSampleRate    = (*it)->stream_info.sample_rate;
+      m_streams.stream[count].iBlockAlign    = (*it)->stream_info.block_align;
+      m_streams.stream[count].iBitRate       = (*it)->stream_info.bit_rate;
+      m_streams.stream[count].iBitsPerSample = (*it)->stream_info.bits_per_sample;
 
-      new_stream.iCodecId       = codec.codec_id;
-      new_stream.iCodecType     = codec.codec_type;
-      recode_language((*it)->stream_info.language, new_stream.strLanguage);
-      new_stream.iIdentifier    = stream_identifier((*it)->stream_info.composition_id, (*it)->stream_info.ancillary_id);
-      new_stream.iFPSScale      = (*it)->stream_info.fps_scale;
-      new_stream.iFPSRate       = (*it)->stream_info.fps_rate;
-      new_stream.iHeight        = (*it)->stream_info.height;
-      new_stream.iWidth         = (*it)->stream_info.width;
-      new_stream.fAspect        = (*it)->stream_info.aspect;
-      new_stream.iChannels      = (*it)->stream_info.channels;
-      new_stream.iSampleRate    = (*it)->stream_info.sample_rate;
-      new_stream.iBlockAlign    = (*it)->stream_info.block_align;
-      new_stream.iBitRate       = (*it)->stream_info.bit_rate;
-      new_stream.iBitsPerSample = (*it)->stream_info.bits_per_sample;
-
-      new_streams.push_back(new_stream);
+      count++;
       m_AVContext->StartStreaming((*it)->pid);
 
       // Add stream to no setup set
@@ -464,7 +469,7 @@ void Demux::populate_pvr_streams()
         XBMC->Log(LOG_DEBUG, LOGTAG "%s: register PES %.4x %s", __FUNCTION__, (*it)->pid, codec_name);
     }
   }
-  m_streams.UpdateStreams(new_streams);
+  m_streams.iStreamCount = count;
   // Renew main stream
   m_mainStreamPID = mainPid;
 }
@@ -482,23 +487,33 @@ bool Demux::update_pvr_stream(uint16_t pid)
 
   CLockObject Lock(m_mutex);
 
-  XbmcPvrStream* stream = m_streams.GetStreamById(es->pid);
-  if (stream)
+  // find stream index for pid
+  int idx = -1;
+  for (int i = 0; i < m_streams.iStreamCount; i++)
   {
-    stream->iCodecId       = codec.codec_id;
-    stream->iCodecType     = codec.codec_type;
-    recode_language(es->stream_info.language, stream->strLanguage);
-    stream->iIdentifier    = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
-    stream->iFPSScale      = es->stream_info.fps_scale;
-    stream->iFPSRate       = es->stream_info.fps_rate;
-    stream->iHeight        = es->stream_info.height;
-    stream->iWidth         = es->stream_info.width;
-    stream->fAspect        = es->stream_info.aspect;
-    stream->iChannels      = es->stream_info.channels;
-    stream->iSampleRate    = es->stream_info.sample_rate;
-    stream->iBlockAlign    = es->stream_info.block_align;
-    stream->iBitRate       = es->stream_info.bit_rate;
-    stream->iBitsPerSample = es->stream_info.bits_per_sample;
+    if (m_streams.stream[i].iPID == es->pid)
+    {
+      idx = i;
+      break;
+    }
+  }
+
+  if (idx >= 0)
+  {
+    m_streams.stream[idx].iCodecId       = codec.codec_id;
+    m_streams.stream[idx].iCodecType     = codec.codec_type;
+    recode_language(es->stream_info.language, m_streams.stream[idx].strLanguage);
+    m_streams.stream[idx].iSubtitleInfo  = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
+    m_streams.stream[idx].iFPSScale      = es->stream_info.fps_scale;
+    m_streams.stream[idx].iFPSRate       = es->stream_info.fps_rate;
+    m_streams.stream[idx].iHeight        = es->stream_info.height;
+    m_streams.stream[idx].iWidth         = es->stream_info.width;
+    m_streams.stream[idx].fAspect        = es->stream_info.aspect;
+    m_streams.stream[idx].iChannels      = es->stream_info.channels;
+    m_streams.stream[idx].iSampleRate    = es->stream_info.sample_rate;
+    m_streams.stream[idx].iBlockAlign    = es->stream_info.block_align;
+    m_streams.stream[idx].iBitRate       = es->stream_info.bit_rate;
+    m_streams.stream[idx].iBitsPerSample = es->stream_info.bits_per_sample;
 
     if (es->has_stream_info)
     {
@@ -558,7 +573,18 @@ DemuxPacket* Demux::stream_pvr_data(TSDemux::STREAM_PKT* pkt)
     else
       dxp->pts = DVD_NOPTS_VALUE;
 
-    dxp->iStreamId = m_streams.GetStreamId((unsigned int)pkt->pid);
+    // find stream index for pid
+    int idx = -1;
+    for (int i = 0; i < m_streams.iStreamCount; i++)
+    {
+      if (m_streams.stream[i].iPID == (unsigned int)pkt->pid)
+      {
+        idx = i;
+        break;
+      }
+    }
+
+    dxp->iStreamId = idx;
   }
   return dxp;
 }
