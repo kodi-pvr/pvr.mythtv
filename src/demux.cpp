@@ -245,10 +245,8 @@ bool Demux::GetStreamProperties(PVR_STREAM_PROPERTIES* props)
 
   CLockObject lock(m_mutex);
   m_isChangePlaced = false;
-  for (int i = 0; i < m_streams.iStreamCount; i++)
-  {
+  for (unsigned i = 0; i < m_streams.iStreamCount; i++)
     memcpy(&props->stream[i], &m_streams.stream[i], sizeof(PVR_STREAM_PROPERTIES::PVR_STREAM));
-  }
 
   props->iStreamCount = m_streams.iStreamCount;
   return true;
@@ -427,7 +425,7 @@ void Demux::populate_pvr_streams()
     xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
     if (codec.codec_type != XBMC_CODEC_TYPE_UNKNOWN)
     {
-      memset(&m_streams.stream[count], 0, sizeof(m_streams.stream[count]));
+      memset(&m_streams.stream[count], 0, sizeof(PVR_STREAM_PROPERTIES::PVR_STREAM));
 
       // Find the main stream:
       // The best candidate would be the first video. Else the first audio
@@ -443,6 +441,7 @@ void Demux::populate_pvr_streams()
         mainType = codec.codec_type;
       }
 
+      m_streams.stream[count].iPID           = (*it)->pid;
       m_streams.stream[count].iCodecId       = codec.codec_id;
       m_streams.stream[count].iCodecType     = codec.codec_type;
       recode_language((*it)->stream_info.language, m_streams.stream[count].strLanguage);
@@ -488,45 +487,38 @@ bool Demux::update_pvr_stream(uint16_t pid)
   CLockObject Lock(m_mutex);
 
   // find stream index for pid
-  int idx = -1;
-  for (int i = 0; i < m_streams.iStreamCount; i++)
+  for (unsigned i = 0; i < m_streams.iStreamCount; i++)
   {
     if (m_streams.stream[i].iPID == es->pid)
     {
-      idx = i;
-      break;
-    }
-  }
+      m_streams.stream[i].iCodecId       = codec.codec_id;
+      m_streams.stream[i].iCodecType     = codec.codec_type;
+      recode_language(es->stream_info.language, m_streams.stream[i].strLanguage);
+      m_streams.stream[i].iSubtitleInfo  = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
+      m_streams.stream[i].iFPSScale      = es->stream_info.fps_scale;
+      m_streams.stream[i].iFPSRate       = es->stream_info.fps_rate;
+      m_streams.stream[i].iHeight        = es->stream_info.height;
+      m_streams.stream[i].iWidth         = es->stream_info.width;
+      m_streams.stream[i].fAspect        = es->stream_info.aspect;
+      m_streams.stream[i].iChannels      = es->stream_info.channels;
+      m_streams.stream[i].iSampleRate    = es->stream_info.sample_rate;
+      m_streams.stream[i].iBlockAlign    = es->stream_info.block_align;
+      m_streams.stream[i].iBitRate       = es->stream_info.bit_rate;
+      m_streams.stream[i].iBitsPerSample = es->stream_info.bits_per_sample;
 
-  if (idx >= 0)
-  {
-    m_streams.stream[idx].iCodecId       = codec.codec_id;
-    m_streams.stream[idx].iCodecType     = codec.codec_type;
-    recode_language(es->stream_info.language, m_streams.stream[idx].strLanguage);
-    m_streams.stream[idx].iSubtitleInfo  = stream_identifier(es->stream_info.composition_id, es->stream_info.ancillary_id);
-    m_streams.stream[idx].iFPSScale      = es->stream_info.fps_scale;
-    m_streams.stream[idx].iFPSRate       = es->stream_info.fps_rate;
-    m_streams.stream[idx].iHeight        = es->stream_info.height;
-    m_streams.stream[idx].iWidth         = es->stream_info.width;
-    m_streams.stream[idx].fAspect        = es->stream_info.aspect;
-    m_streams.stream[idx].iChannels      = es->stream_info.channels;
-    m_streams.stream[idx].iSampleRate    = es->stream_info.sample_rate;
-    m_streams.stream[idx].iBlockAlign    = es->stream_info.block_align;
-    m_streams.stream[idx].iBitRate       = es->stream_info.bit_rate;
-    m_streams.stream[idx].iBitsPerSample = es->stream_info.bits_per_sample;
-
-    if (es->has_stream_info)
-    {
-      // Now stream is setup. Remove it from no setup set
-      std::set<uint16_t>::iterator it = m_nosetup.find(es->pid);
-      if (it != m_nosetup.end())
+      if (es->has_stream_info)
       {
-        m_nosetup.erase(it);
-        if (m_nosetup.empty())
-          XBMC->Log(LOG_DEBUG, LOGTAG "%s: setup is completed", __FUNCTION__);
+        // Now stream is setup. Remove it from no setup set
+        std::set<uint16_t>::iterator it = m_nosetup.find(es->pid);
+        if (it != m_nosetup.end())
+        {
+          m_nosetup.erase(it);
+          if (m_nosetup.empty())
+            XBMC->Log(LOG_DEBUG, LOGTAG "%s: setup is completed", __FUNCTION__);
+        }
       }
+      return true;
     }
-    return true;
   }
   return false;
 }
@@ -562,6 +554,7 @@ DemuxPacket* Demux::stream_pvr_data(TSDemux::STREAM_PKT* pkt)
     if (pkt->size > 0 && pkt->data)
       memcpy(dxp->pData, pkt->data, pkt->size);
 
+    dxp->iStreamId = (int)(pkt->pid);
     dxp->iSize = pkt->size;
     dxp->duration = (double)pkt->duration * DVD_TIME_BASE / PTS_TIME_BASE;
     if (pkt->dts != PTS_UNSET)
@@ -572,19 +565,6 @@ DemuxPacket* Demux::stream_pvr_data(TSDemux::STREAM_PKT* pkt)
       dxp->pts = (double)pkt->pts * DVD_TIME_BASE / PTS_TIME_BASE;
     else
       dxp->pts = DVD_NOPTS_VALUE;
-
-    // find stream index for pid
-    int idx = -1;
-    for (int i = 0; i < m_streams.iStreamCount; i++)
-    {
-      if (m_streams.stream[i].iPID == (unsigned int)pkt->pid)
-      {
-        idx = i;
-        break;
-      }
-    }
-
-    dxp->iStreamId = idx;
   }
   return dxp;
 }
