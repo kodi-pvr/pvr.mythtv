@@ -28,7 +28,6 @@
 #include <p8-platform/threads/threads.h>
 #include <p8-platform/threads/mutex.h>
 #include <p8-platform/util/buffer.h>
-#include <kodi/xbmc_stream_utils.hpp>
 
 #include <map>
 #include <set>
@@ -58,7 +57,7 @@ private:
   uint16_t m_channel;
   P8PLATFORM::SyncedBuffer<DemuxPacket*> m_demuxPacketBuffer;
   P8PLATFORM::CMutex m_mutex;
-  ADDON::XbmcStreamProperties m_streams;
+  PVR_STREAM_PROPERTIES m_streams;
 
   bool get_stream_data(TSDemux::STREAM_PKT* pkt);
   void reset_posmap();
