@@ -82,7 +82,7 @@ Demux::Demux(Myth::Stream *file)
   , m_endTime(0)
   , m_isChangePlaced(false)
 {
-  m_streams.iStreamCount = 0;
+  memset(&m_streams, 0, sizeof(PVR_STREAM_PROPERTIES));
   m_av_buf = (unsigned char*)malloc(sizeof(*m_av_buf) * (m_av_buf_size + 1));
   if (m_av_buf)
   {
@@ -265,6 +265,7 @@ void Demux::Abort()
 {
   StopThread(0);
   Flush();
+  m_streams.iStreamCount = 0;
 }
 
 DemuxPacket* Demux::Read()
