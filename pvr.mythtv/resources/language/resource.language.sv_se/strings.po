@@ -272,6 +272,14 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Förnya cache för kanalikoner"
 
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Visa schemaläggningens status"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "O-hanterad"
+
 msgctxt "#30452"
 msgid "Upcoming"
 msgstr "Kommande"
@@ -279,6 +287,10 @@ msgstr "Kommande"
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Spela inte in"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Kommande manual"
 
 msgctxt "#30456"
 msgid "Zombie"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="3.4.9"
+  version="3.4.10"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
