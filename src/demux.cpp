@@ -1,6 +1,6 @@
 /*
- *      Copyright (C) 2005-2013 Team XBMC
- *      http://www.xbmc.org
+ *      Copyright (C) 2013-2016 Team Kodi
+ *      http://www.kodi.tv
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -82,6 +82,7 @@ Demux::Demux(Myth::Stream *file)
   , m_endTime(0)
   , m_isChangePlaced(false)
 {
+  m_streams.iStreamCount = 0;
   m_av_buf = (unsigned char*)malloc(sizeof(*m_av_buf) * (m_av_buf_size + 1));
   if (m_av_buf)
   {
