@@ -88,19 +88,24 @@ void WSRequest::SetContentCustom(CT_t contentType, const char *content)
   m_contentData = content;
 }
 
+void WSRequest::SetHeader(const std::string& field, const std::string& value)
+{
+  m_headers[field] = value;
+}
+
 void WSRequest::ClearContent()
 {
   m_contentData.clear();
   m_contentType = CT_FORM;
 }
 
-void WSRequest::MakeMessageGET(std::string& msg) const
+void WSRequest::MakeMessageGET(std::string& msg, const char* method) const
 {
   char buf[32];
 
   msg.clear();
   msg.reserve(256);
-  msg.append("GET ").append(m_service_url);
+  msg.append(method).append(" ").append(m_service_url);
   if (!m_contentData.empty())
     msg.append("?").append(m_contentData);
   msg.append(" " REQUEST_PROTOCOL "\r\n");
@@ -111,17 +116,19 @@ void WSRequest::MakeMessageGET(std::string& msg) const
   if (m_accept != CT_NONE)
     msg.append("Accept: ").append(MimeFromContentType(m_accept)).append("\r\n");
   msg.append("Accept-Charset: ").append(m_charset).append("\r\n");
+  for (std::map<std::string, std::string>::const_iterator it = m_headers.begin(); it != m_headers.end(); ++it)
+    msg.append(it->first).append(": ").append(it->second).append("\r\n");
   msg.append("\r\n");
 }
 
-void WSRequest::MakeMessagePOST(std::string& msg) const
+void WSRequest::MakeMessagePOST(std::string& msg, const char* method) const
 {
   char buf[32];
   size_t content_len = m_contentData.size();
 
   msg.clear();
   msg.reserve(256);
-  msg.append("POST ").append(m_service_url).append(" HTTP/1.1\r\n");
+  msg.append(method).append(" ").append(m_service_url).append(" " REQUEST_PROTOCOL "\r\n");
   sprintf(buf, "%u", m_port);
   msg.append("Host: ").append(m_server).append(":").append(buf).append("\r\n");
   msg.append("User-Agent: " REQUEST_USER_AGENT "\r\n");
@@ -134,23 +141,25 @@ void WSRequest::MakeMessagePOST(std::string& msg) const
     sprintf(buf, "%lu", (unsigned long)content_len);
     msg.append("Content-Type: ").append(MimeFromContentType(m_contentType));
     msg.append("; charset=" REQUEST_STD_CHARSET "\r\n");
-    msg.append("Content-Length: ").append(buf).append("\r\n\r\n");
-    msg.append(m_contentData);
+    msg.append("Content-Length: ").append(buf).append("\r\n");
   }
-  else
-    msg.append("\r\n");
+  for (std::map<std::string, std::string>::const_iterator it = m_headers.begin(); it != m_headers.end(); ++it)
+    msg.append(it->first).append(": ").append(it->second).append("\r\n");
+  msg.append("\r\n");
+  if (content_len)
+    msg.append(m_contentData);
 }
 
-void WSRequest::MakeMessageHEAD(std::string& msg) const
+void WSRequest::MakeMessageHEAD(std::string& msg, const char* method) const
 {
   char buf[32];
 
   msg.clear();
   msg.reserve(256);
-  msg.append("HEAD ").append(m_service_url);
+  msg.append(method).append(" ").append(m_service_url);
   if (!m_contentData.empty())
     msg.append("?").append(m_contentData);
-  msg.append(" HTTP/1.1\r\n");
+  msg.append(" " REQUEST_PROTOCOL "\r\n");
   sprintf(buf, "%u", m_port);
   msg.append("Host: ").append(m_server).append(":").append(buf).append("\r\n");
   msg.append("User-Agent: " REQUEST_USER_AGENT "\r\n");
@@ -158,5 +167,7 @@ void WSRequest::MakeMessageHEAD(std::string& msg) const
   if (m_accept != CT_NONE)
     msg.append("Accept: ").append(MimeFromContentType(m_accept)).append("\r\n");
   msg.append("Accept-Charset: ").append(m_charset).append("\r\n");
+  for (std::map<std::string, std::string>::const_iterator it = m_headers.begin(); it != m_headers.end(); ++it)
+    msg.append(it->first).append(": ").append(it->second).append("\r\n");
   msg.append("\r\n");
 }

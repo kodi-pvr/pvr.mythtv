@@ -56,14 +56,14 @@ CT_t Myth::ContentTypeFromMime(const char *mime)
   return CT_UNKNOWN;
 }
 
-const char *Myth::MimeFromContentType(CT_t ct)
+const char* Myth::MimeFromContentType(CT_t ct)
 {
   if (ct >= 0 && ct < CT_UNKNOWN)
     return mimetypes[ct].content_type;
   return mimetypes[CT_UNKNOWN].content_type;
 }
 
-const char *Myth::ExtnFromContentType(CT_t ct)
+const char* Myth::ExtnFromContentType(CT_t ct)
 {
   if (ct >= 0 && ct < CT_UNKNOWN)
     return mimetypes[ct].extn;

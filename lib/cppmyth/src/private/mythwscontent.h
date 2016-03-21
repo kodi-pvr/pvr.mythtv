@@ -39,9 +39,9 @@ namespace Myth
     CT_UNKNOWN  // Keep at last
   } CT_t;
 
-  CT_t ContentTypeFromMime(const char *mime);
-  const char *MimeFromContentType(CT_t ct);
-  const char *ExtnFromContentType(CT_t ct);
+  CT_t ContentTypeFromMime(const char* mime);
+  const char* MimeFromContentType(CT_t ct);
+  const char* ExtnFromContentType(CT_t ct);
 
 }
 
