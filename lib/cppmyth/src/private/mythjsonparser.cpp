@@ -174,9 +174,9 @@ JSON::Document::Document(Myth::WSResponse& resp)
 , m_document(NULL)
 {
   // Read content response
-  size_t r, content_length = resp.GetContentLength();
+  size_t content_length = resp.GetContentLength();
   char *content = new char[content_length + 1];
-  if ((r = resp.ReadContent(content, content_length)) == content_length)
+  if (resp.ReadContent(content, content_length) == content_length)
   {
     content[content_length] = '\0';
     DBG(MYTH_DBG_PROTO, "%s: %s\n", __FUNCTION__, content);

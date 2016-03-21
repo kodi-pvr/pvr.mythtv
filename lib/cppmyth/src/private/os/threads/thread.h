@@ -43,15 +43,18 @@ namespace OS
 
     CThread(const CThread& _thread)
     {
-      (void)_thread;
       this->m_handle = new Handle();
+      this->m_finalizeOnStop = _thread.m_finalizeOnStop;
     }
 
     CThread& operator=(const CThread& _thread)
     {
-      (void)_thread;
-      delete this->m_handle;
-      this->m_handle = new Handle();
+      if (this != &_thread)
+      {
+        delete this->m_handle;
+        this->m_handle = new Handle();
+        this->m_finalizeOnStop = _thread.m_finalizeOnStop;
+      }
       return *this;
     }
 
@@ -137,7 +140,7 @@ namespace OS
       Handle()
       : nativeHandle(0)
       , running(false)
-      , stopped(false)
+      , stopped(true)
       , notifiedStop(false)
       , started(false)
       , condition()
