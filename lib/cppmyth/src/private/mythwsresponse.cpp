@@ -34,7 +34,7 @@
 
 using namespace Myth;
 
-static bool __readHeaderLine(TcpSocket *socket, const char *eol, std::string& line, size_t *len)
+bool WSResponse::ReadHeaderLine(NetSocket *socket, const char *eol, std::string& line, size_t *len)
 {
   char buf[RESPONSE_BUFFER_SIZE];
   const char *s_eol;
@@ -50,7 +50,7 @@ static bool __readHeaderLine(TcpSocket *socket, const char *eol, std::string& li
   line.clear();
   do
   {
-    if (socket->ReadResponse(&buf[p], 1) > 0)
+    if (socket->ReceiveData(&buf[p], 1) > 0)
     {
       if (buf[p++] == s_eol[p_eol])
       {
@@ -95,8 +95,12 @@ WSResponse::WSResponse(const WSRequest &request)
 , m_etag()
 , m_location()
 , m_contentType(CT_NONE)
+, m_contentChunked(false)
 , m_contentLength(0)
 , m_consumed(0)
+, m_chunkBuffer(NULL)
+, m_chunkPtr(NULL)
+, m_chunkEnd(NULL)
 {
   if (m_socket->Connect(request.GetServer().c_str(), request.GetPort(), SOCKET_RCVBUF_MINSIZE))
   {
@@ -121,6 +125,7 @@ WSResponse::WSResponse(const WSRequest &request)
 
 WSResponse::~WSResponse()
 {
+  SAFE_DELETE_ARRAY(m_chunkBuffer);
   SAFE_DELETE(m_socket);
 }
 
@@ -147,7 +152,7 @@ bool WSResponse::GetResponse()
   bool ret = false;
 
   token[0] = 0;
-  while (__readHeaderLine(m_socket, "\r\n", strread, &len))
+  while (ReadHeaderLine(m_socket, "\r\n", strread, &len))
   {
     const char *line = strread.c_str(), *val = NULL;
     int value_len = 0;
@@ -203,6 +208,7 @@ bool WSResponse::GetResponse()
         token[p] = toupper(line[p]);
       token[token_len] = 0;
       while ((value_len = len - (val - line)) && *(++val) == ' ');
+      m_headers.push_front(std::make_pair(token, ""));
     }
     else
     {
@@ -213,27 +219,36 @@ bool WSResponse::GetResponse()
 
     if (token_len)
     {
+      m_headers.front().second.append(val);
       switch (token_len)
       {
         case 4:
-          if (val && memcmp(token, "ETAG", token_len) == 0)
+          if (memcmp(token, "ETAG", token_len) == 0)
             m_etag.append(val);
           break;
         case 6:
-          if (val && memcmp(token, "SERVER", token_len) == 0)
+          if (memcmp(token, "SERVER", token_len) == 0)
             m_serverInfo.append(val);
           break;
         case 8:
-          if (val && memcmp(token, "LOCATION", token_len) == 0)
+          if (memcmp(token, "LOCATION", token_len) == 0)
             m_location.append(val);
           break;
         case 12:
-          if (val && memcmp(token, "CONTENT-TYPE", token_len) == 0)
+          if (memcmp(token, "CONTENT-TYPE", token_len) == 0)
             m_contentType = ContentTypeFromMime(val);
           break;
         case 14:
-          if (val && memcmp(token, "CONTENT-LENGTH", token_len) == 0)
+          if (memcmp(token, "CONTENT-LENGTH", token_len) == 0)
             m_contentLength = atol(val);
+          break;
+        case 17:
+          if (memcmp(token, "TRANSFER-ENCODING", token_len) == 0)
+          {
+            m_transferEncoding.append(val);
+            if (m_transferEncoding == "chunked")
+              m_contentChunked = true;
+          }
           break;
         default:
           break;
@@ -246,9 +261,59 @@ bool WSResponse::GetResponse()
 
 size_t WSResponse::ReadContent(char* buf, size_t buflen)
 {
-  if (!m_socket->IsConnected())
-    return 0;
-  size_t s = m_socket->ReadResponse(buf, buflen);
+  size_t s = 0;
+  if (!m_contentChunked)
+  {
+    // let read on unknown length
+    if (!m_contentLength)
+      s = m_socket->ReadResponse(buf, buflen);
+    else if (m_contentLength > m_consumed)
+    {
+      size_t len = m_contentLength - m_consumed;
+      s = m_socket->ReadResponse(buf, len > buflen ? buflen : len);
+    }
+  }
+  else
+  {
+    if (m_chunkPtr == NULL || m_chunkPtr >= m_chunkEnd)
+    {
+      SAFE_DELETE_ARRAY(m_chunkBuffer);
+      m_chunkBuffer = m_chunkPtr = m_chunkEnd = NULL;
+      std::string strread;
+      size_t len = 0;
+      while (ReadHeaderLine(m_socket, "\r\n", strread, &len) && len == 0);
+      DBG(MYTH_DBG_PROTO, "%s: chunked data (%s)\n", __FUNCTION__, strread.c_str());
+      std::string chunkStr("0x0");
+      uint32_t chunkSize = 0;
+      if (!strread.empty() && sscanf(chunkStr.append(strread).c_str(), "%x", &chunkSize) == 1 && chunkSize > 0)
+      {
+        if (!(m_chunkBuffer = new char[chunkSize]))
+          return 0;
+        m_chunkPtr = m_chunkBuffer;
+        m_chunkEnd = m_chunkBuffer + chunkSize;
+        if (m_socket->ReadResponse(m_chunkBuffer, chunkSize) != chunkSize)
+          return 0;
+      }
+      else
+        return 0;
+    }
+    if ((s = m_chunkEnd - m_chunkPtr) > buflen)
+      s = buflen;
+    memcpy(buf, m_chunkPtr, s);
+    m_chunkPtr += s;
+  }
   m_consumed += s;
   return s;
+}
+
+bool WSResponse::GetHeaderValue(const std::string& header, std::string& value)
+{
+  for (HeaderList::const_iterator it = m_headers.begin(); it != m_headers.end(); ++it)
+  {
+    if (it->first != header)
+      continue;
+    value.assign(it->second);
+    return true;
+  }
+  return false;
 }

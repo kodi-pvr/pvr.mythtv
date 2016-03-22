@@ -26,10 +26,10 @@
 
 #include <cstddef>  // for size_t
 #include <string>
-#include <vector>
+#include <map>
 
 #define REQUEST_PROTOCOL      "HTTP/1.1"
-#define REQUEST_USER_AGENT    "libcppmyth/1.0"
+#define REQUEST_USER_AGENT    "libcppmyth/2.5"
 #define REQUEST_CONNECTION    "close" // "keep-alive"
 #define REQUEST_STD_CHARSET   "utf-8"
 
@@ -53,6 +53,7 @@ namespace Myth
     void RequestAccept(CT_t contentType);
     void SetContentParam(const std::string& param, const std::string& value);
     void SetContentCustom(CT_t contentType, const char *content);
+    void SetHeader(const std::string& field, const std::string& value);
     const std::string& GetContent() const { return m_contentData; }
     void ClearContent();
 
@@ -75,10 +76,11 @@ namespace Myth
     CT_t m_accept;
     CT_t m_contentType;
     std::string m_contentData;
+    std::map<std::string, std::string> m_headers;
 
-    void MakeMessageGET(std::string& msg) const;
-    void MakeMessagePOST(std::string& msg) const;
-    void MakeMessageHEAD(std::string& msg) const;
+    void MakeMessageGET(std::string& msg, const char* method = "GET") const;
+    void MakeMessagePOST(std::string& msg, const char* method = "POST") const;
+    void MakeMessageHEAD(std::string& msg, const char* method = "HEAD") const;
   };
 
 }

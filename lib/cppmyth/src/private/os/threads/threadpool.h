@@ -91,8 +91,8 @@ namespace OS
   {
     friend class CThreadPool;
   public:
-    CWorker() : m_queued(false) { };
-    virtual ~CWorker() { };
+    CWorker() : m_queued(false) { }
+    virtual ~CWorker() { }
     virtual void Process() = 0;
 
   private:

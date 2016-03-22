@@ -506,6 +506,7 @@ bool TcpServerSocket::Bind(unsigned port)
   {
     m_errno = LASTERROR;
     DBG(MYTH_DBG_ERROR, "%s: could not bind to address (%d)\n", __FUNCTION__, m_errno);
+    return false;
   }
   return true;
 }

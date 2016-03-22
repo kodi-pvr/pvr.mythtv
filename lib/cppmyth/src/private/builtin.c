@@ -231,7 +231,7 @@ int string_to_time(const char *str, time_t *time)
 
   if (*str == '\0')
   {
-    // nil string
+    /* empty string */
     *time = INVALID_TIME;
     return 0;
   }
