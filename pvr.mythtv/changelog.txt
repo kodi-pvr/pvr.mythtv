@@ -1,3 +1,6 @@
+v3.4.12
+- Sync cppmyth upstream (2.5.1)
+
 v3.4.11
 - Sync cppmyth upstream (2.5.0)
 
