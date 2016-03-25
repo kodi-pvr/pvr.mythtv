@@ -27,10 +27,12 @@
 
 #include <cstddef>  // for size_t
 #include <string>
+#include <list>
 
 namespace Myth
 {
 
+  class NetSocket;
   class TcpSocket;
 
   class WSResponse
@@ -40,11 +42,16 @@ namespace Myth
     ~WSResponse();
 
     bool IsSuccessful() const { return m_successful; }
+    bool IsChunkedTransfer() const { return m_contentChunked; }
     size_t GetContentLength() const { return m_contentLength; }
     size_t ReadContent(char *buf, size_t buflen);
     size_t GetConsumed() const { return m_consumed; }
     int GetStatusCode() const { return m_statusCode; }
     const std::string& Redirection() const { return m_location; }
+
+    bool GetHeaderValue(const std::string& header, std::string& value);
+
+    static bool ReadHeaderLine(NetSocket *socket, const char *eol, std::string& line, size_t *len);
 
   private:
     TcpSocket *m_socket;
@@ -53,9 +60,17 @@ namespace Myth
     std::string m_serverInfo;
     std::string m_etag;
     std::string m_location;
+    std::string m_transferEncoding;
     CT_t m_contentType;
+    bool m_contentChunked;
     size_t m_contentLength;
     size_t m_consumed;
+    char* m_chunkBuffer;
+    char* m_chunkPtr;
+    char* m_chunkEnd;
+
+    typedef std::list<std::pair<std::string, std::string> > HeaderList;
+    HeaderList m_headers;
 
     // prevent copy
     WSResponse(const WSResponse&);
