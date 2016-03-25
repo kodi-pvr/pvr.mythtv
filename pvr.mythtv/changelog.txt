@@ -1,3 +1,6 @@
+v4.3.1
+- Sync cppmyth upstream (2.5.1)
+
 v4.3.0
 - Updated to PVR addon API v5.1.0
 
