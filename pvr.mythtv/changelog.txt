@@ -1,3 +1,6 @@
+v3.4.13
+- Updated language files from Transifex
+
 v3.4.12
 - Sync cppmyth upstream (2.5.1)
 
