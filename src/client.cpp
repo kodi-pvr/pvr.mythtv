@@ -441,29 +441,6 @@ void ADDON_Destroy()
 
 void ADDON_Announce(const char *flag, const char *sender, const char *message, const void *data)
 {
-  (void)data;
-  XBMC->Log(LOG_INFO, "Received announcement: %s, %s, %s", flag, sender, message);
-
-  if (g_client == NULL)
-    return;
-
-  if (strcmp("xbmc", sender) == 0)
-  {
-    if (strcmp("System", flag) == 0)
-    {
-      if (strcmp("OnSleep", message) == 0)
-        g_client->OnSleep();
-      else if (strcmp("OnWake", message) == 0)
-        g_client->OnWake();
-    }
-    else if (strcmp("GUI", flag) == 0)
-    {
-      if (strcmp("OnScreensaverDeactivated", message) == 0)
-        g_client->OnActivatedGUI();
-      else if (strcmp("OnScreensaverActivated", message) == 0)
-        g_client->OnDeactivatedGUI();
-    }
-  }
 }
 
 ADDON_STATUS ADDON_GetStatus()
@@ -785,6 +762,34 @@ PVR_ERROR CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_MENUHOOK_DATA &it
     return PVR_ERROR_SERVER_ERROR;
 
   return g_client->CallMenuHook(menuhook, item);
+}
+
+void OnSystemSleep()
+{
+  XBMC->Log(LOG_INFO, "Received event: %s", __FUNCTION__);
+  if (g_client)
+    g_client->OnSleep();
+}
+
+void OnSystemWake()
+{
+  XBMC->Log(LOG_INFO, "Received event: %s", __FUNCTION__);
+  if (g_client)
+    g_client->OnWake();
+}
+
+void OnPowerSavingActivated()
+{
+  XBMC->Log(LOG_INFO, "Received event: %s", __FUNCTION__);
+  if (g_client)
+    g_client->OnDeactivatedGUI();
+}
+
+void OnPowerSavingDeactivated()
+{
+  XBMC->Log(LOG_INFO, "Received event: %s", __FUNCTION__);
+  if (g_client)
+    g_client->OnActivatedGUI();
 }
 
 /*
