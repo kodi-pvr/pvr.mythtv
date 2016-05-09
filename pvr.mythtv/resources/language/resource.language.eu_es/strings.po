@@ -20,6 +20,10 @@ msgctxt "#30019"
 msgid "General"
 msgstr "Orokorra"
 
+msgctxt "#30050"
+msgid "Advanced"
+msgstr "Aurreratua"
+
 msgctxt "#30055"
 msgid "Always"
 msgstr "Beti"
