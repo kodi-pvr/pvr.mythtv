@@ -24,7 +24,7 @@
 #include "pvrclient-mythtv.h"
 #include "guidialogyesno.h"
 
-#include <kodi/xbmc_pvr_dll.h>
+#include <xbmc_pvr_dll.h>
 
 using namespace ADDON;
 

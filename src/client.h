@@ -25,10 +25,10 @@
 #define CLIENT_H
 
 #include <string>
-#include <kodi/libXBMC_addon.h>
-#include <kodi/libXBMC_pvr.h>
-#include <kodi/libKODI_guilib.h>
-#include <kodi/libXBMC_codec.h>
+#include <libXBMC_addon.h>
+#include <libXBMC_pvr.h>
+#include <libKODI_guilib.h>
+#include <libXBMC_codec.h>
 
 #define LIVETV_CONFLICT_STRATEGY_HASLATER   0
 #define LIVETV_CONFLICT_STRATEGY_STOPTV     1
