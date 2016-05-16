@@ -21,8 +21,8 @@
  */
 
 #include <p8-platform/os.h>
-#include <kodi/libXBMC_pvr.h>
-#include <kodi/xbmc_codec_types.h>
+#include <libXBMC_pvr.h>
+#include <xbmc_codec_types.h>
 
 #include "demux.h"
 #include "demuxer/debug.h"
