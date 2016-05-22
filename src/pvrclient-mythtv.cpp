@@ -438,6 +438,8 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
       prog.ResetProps();
       // Keep props
       prog.CopyProps(it->second);
+      // Keep original air date
+      prog.GetPtr()->airdate = it->second.Airdate();
       // Update recording
       it->second = prog;
       ++m_recordingChangePinCount;
