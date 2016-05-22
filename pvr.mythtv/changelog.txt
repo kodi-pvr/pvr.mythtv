@@ -1,3 +1,7 @@
+v4.5.1
+- Keep original air date of recording on update event from protocol
+- Sync cppmyth upstream (2.5.2)
+
 v4.5.0
 - Cmake: rename find_package kodi to Kodi
 
