@@ -100,7 +100,7 @@ static CC_INLINE void uint8_to_string(uint8_t num, char *str)
 #define TIMESTAMP_UTC_LEN (sizeof("YYYY-MM-DDTHH:MM:SSZ") - 1)
 #define TIMESTAMP_LEN     (sizeof("YYYY-MM-DDTHH:MM:SS") - 1)
 #define DATESTAMP_LEN     (sizeof("YYYY-MM-DD") - 1)
-#define INVALID_TIME      (time_t)(-1)
+#define INVALID_TIME      (time_t)(0)
 
 #if !HAVE_TIMEGM && !defined(timegm)
 #define timegm __timegm
