@@ -415,6 +415,53 @@ CardInputListPtr ProtoRecorder::GetFreeInputs87()
   return list;
 }
 
+CardInputListPtr ProtoRecorder::GetFreeInputs89()
+{
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
+  std::string field;
+
+  OS::CLockGuard lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("GET_FREE_INPUT_INFO 0");
+
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    CardInputPtr input(new CardInput());
+    if (!ReadField(input->inputName))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->sourceId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->inputId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->cardId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->mplexId)))
+      break;
+    if (!ReadField(field) || string_to_uint8(field.c_str(), &(input->liveTVOrder)))
+      break;
+    if (!ReadField(field)) // displayName
+      break;
+    if (!ReadField(field)) // recPriority
+      break;
+    if (!ReadField(field)) // schedOrder
+      break;
+    if (!ReadField(field)) // quickTune
+      break;
+    if (!ReadField(field)) // chanid
+      break;
+    if (!ReadField(field)) // reclimit
+      break;
+    if (input->cardId == static_cast<unsigned>(m_num))
+      list->push_back(input);
+  }
+  FlushMessage();
+  return list;
+}
+
 bool ProtoRecorder::IsLiveRecording()
 {
   OS::CLockGuard lock(*m_mutex);
