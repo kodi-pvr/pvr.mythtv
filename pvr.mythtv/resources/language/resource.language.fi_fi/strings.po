@@ -88,9 +88,29 @@ msgctxt "#30028"
 msgid "Transcode new recordings"
 msgstr "Transkoodaa uudet tallennukset"
 
+msgctxt "#30029"
+msgid "Run User Job #1"
+msgstr "Aja käyttäjän tehtävä #1"
+
+msgctxt "#30030"
+msgid "Run User Job #2"
+msgstr "Aja käyttäjän tehtävä #2"
+
+msgctxt "#30031"
+msgid "Run User Job #3"
+msgstr "Aja käyttäjän tehtävä #3"
+
+msgctxt "#30032"
+msgid "Run User Job #4"
+msgstr "Aja käyttäjän tehtävä #4"
+
 msgctxt "#30033"
 msgid "Transcoder"
 msgstr "Transkooderi"
+
+msgctxt "#30034"
+msgid "Allow recordings to expire"
+msgstr "Salli tallennusten vanheta"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -204,9 +224,61 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Päivitä kanavalogojen välimuisti"
 
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Näytä ajastusten tila"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Tuleva"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Älä tallenna"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuaalisesti"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Tallenna yksi"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Tallenna viikoittain"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Tallenna päivittäin"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Tallenna kaikki"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Tallenna tämä"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Tallenna sarjoja"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Etsi avainsana"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Etsi ihmisiä"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Tallennukset eivät koskaan vanhene"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Salli tallennusten vanheta"
 
 msgctxt "#30508"
 msgid "Keep up to %d recordings"

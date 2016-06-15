@@ -272,9 +272,21 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ανανεώστε τη μνήμη cache για εικ. καναλιών"
 
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Επερχόμενο"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Χειροκίνητα"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Αναζήτηση λέξης-κλειδί"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Αναζήτηση ανθρώπων"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
