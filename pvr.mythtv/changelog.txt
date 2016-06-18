@@ -1,3 +1,6 @@
+v4.5.2
+- Updated language files from Transifex
+
 v4.5.1
 - Keep original air date of recording on update event from protocol
 - Sync cppmyth upstream (2.5.2)

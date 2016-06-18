@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Sterge si reinregistraza"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Păstreaza înregistrarea televiziunii în direct"
-
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Arată/ascunde viitoare inactive"

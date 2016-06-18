@@ -256,10 +256,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Изтрий и повторно запиши"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Съхранявай LiveTV записите"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Опресни кеша за иконки на каналите"

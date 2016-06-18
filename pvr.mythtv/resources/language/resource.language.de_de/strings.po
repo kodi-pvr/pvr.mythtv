@@ -208,6 +208,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Eine Schnittliste oder Werbungsmarkierungen wurden gefunden.\nSoll für diese Sendung die Schnittlisten-Funktionalität aktiviert werden?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Verbindung fehlgeschlagen"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Erneut versuchen?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Mit den bekannten Protokoll-Versionen konnte keine Verbindung zum MythTV Backend hergestellt werden. Bitte die Kompatibilitäts-Matrix des Addons überprüfen und auf eine unterstützte Version upgraden."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Verbindung zu den API-Diensten des MythTV Backends fehlgeschlagen. Bitte PIN oder Backend Einstellungen überprüfen. Der PIN muss im Backend konfiguriert sein um eine Verbindung zu ermöglichen."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Die Verbindung zum MythTV Backend wurde unterbrochen"
@@ -256,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Löschen und neu aufnehmen"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "LiveTV-Aufnahme beibehalten"
-
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Anzeigen/Verstecken inaktiv Programmierung"
@@ -268,10 +280,106 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Cache für Senderlogos aktualisieren"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Kanal-Update auslösen"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Zeige Status der Programmierung"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Nicht gehandhabt"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Bevorstehend"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Überschrieben"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Nicht aufnehmen"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Bevorstehend Manuell"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuell"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Einmal aufnehmen"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Wöchentlich aufnehmen"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Täglich aufnehmen"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Alle aufnehmen"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Aufnehmen"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Serie aufnehmen"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Schlüsselwort suchen"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Personen suchen"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Duplikate nicht abgleichen"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Duplikate über Untertitel abgleichen"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Duplikate über Beschreibung abgleichen"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Duplikate über Untertitel & Beschreibung abgleichen"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Duplikate zuerst über Untertitel dann über Beschreibung abgleichen"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Aufnahmen haben kein Ablaufdatum"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Erlaube Aufnahmen abzulaufen"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Behalte bis zu %d Aufnahmen"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Behalte die %d Neuesten und lasse Alte auslaufen"

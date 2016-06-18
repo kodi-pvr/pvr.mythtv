@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="4.5.1"
+  version="4.5.2"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -95,7 +95,7 @@
     <description lang="nl_NL">MythTV frontend (tot MythTV 0.28). Ondersteunt streaming van Live TV &amp; opnames, luisteren naar radiokanalen, EPG en Timers.</description>
     <description lang="pl_PL">Klient telewizyjny dla MythTV (wersja 0.28 i wcześniejsze) obsługuje strumieniowanie kanałów radiowych i telewizyjnych, nagrywanie i harmonogram nagrań oraz funkcje przewodnika telewizyjnego.</description>
     <description lang="pt_BR">MythTV frontend (up para MythTV 0.28). Suporta streaming de TV ao Vivo &amp; Gravações, Escutar canais de rádios, EPG e Agendamentos.</description>
-    <description lang="pt_PT">Interface MythTV (até MythTV 0.28). Permite transmissão ao vivo de Live Tv e gravações, ouvir estações de rádio, EPG e temporizadores.</description>
+    <description lang="pt_PT">Interface MythTV (até MythTV 0.28). Permite televisão em direto, gravações, estações de rádio, EPG e temporizadores.</description>
     <description lang="ro_RO">Frontend MythTV (până la MythTV 0.28). Suportă difuzare în flux a televiziunii în direct și a înregistrăriilor, ascultarea posturilor de radio, EPG și Cronometre.</description>
     <description lang="ru_RU">Фронтэнд MythTV (вплоть до MythTV 0.28). Поддерживает поточное ТВ и записи, прослушивание радио-каналов, ЕПГ и таймеры.</description>
     <description lang="sk_SK">MythTV rozhranie (až do verzie MythTV 0.28). Podporuje streamovanie živého TV vysielania a nahrávok, počúvanie rozhlasových kanálov, EPG a časovače.</description>
@@ -141,7 +141,7 @@
     <disclaimer lang="nl_NL">Dit is onstabiele software! De auteurs zijn op geen enkele wijze verantwoordelijk voor mislukte opnames, timers, verspilde tijd of enig ander ongewild bijeffect.</disclaimer>
     <disclaimer lang="pl_PL">To oprogramowanie jest niestabilne! Autorzy w żaden sposób nie odpowiadają za nieudane nagrania, błędy w harmonogramie nagrań, stracone godziny czy też jakiekolwiek inne niepożądane efekty.</disclaimer>
     <disclaimer lang="pt_BR">Este é um software instável! Os autores não são responsáveis por falhas nas gravações, agendamentos incorretos, horas dispendidas, ou quaisquer outro efeito indesejado.</disclaimer>
-    <disclaimer lang="pt_PT">Este software é instável! Os autores não são de forma alguma responsáveis por gravações falhadas, temporizadores incorrectos, horas desperdiçadas, ou qualquer outro tipo de efeitos indesejáveis..</disclaimer>
+    <disclaimer lang="pt_PT">Este software é instável! Os autores não podem ser responsabilizados por gravações falhadas, temporizadores incorretos, horas desperdiçadas ou qualquer outro tipo de efeitos indesejáveis...</disclaimer>
     <disclaimer lang="ro_RO">Acest software nu este stabil! Autorii nu sunt responsabili în niciun caz pentru înregistrările eșuate, cronometre incorecte, ore pierdute sau orice alt efect nedorit.</disclaimer>
     <disclaimer lang="ru_RU">Это тестовая программа! Авторы не несут никакой ответственности за испорченные записи, неверные таймеры, потраченное время и за прочие нежелательные эффекты.</disclaimer>
     <disclaimer lang="sk_SK">Toto nie je stabilný software! Autori nie sú zodpovední za zlýhané nahrávky, nesprávne časovače, premrhané hodiny a iné nežiadúce efekty.</disclaimer>

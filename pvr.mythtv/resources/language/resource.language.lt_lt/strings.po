@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Ištrinti ir įrašyti iš naujo"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Išlaikyti televizijos įrašą"
-
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Rodyti/slėpti neaktyviusus artimiausius"

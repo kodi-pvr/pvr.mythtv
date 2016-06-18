@@ -272,21 +272,45 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Deletar e regravar"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Manter gravação de TV ao Vivo"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Mostrar/Ocultar por vir inativo"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Atualização de cache para logos de canais"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Disparar atualização de canais"
+
 msgctxt "#30424"
 msgid "Show status of scheduling"
 msgstr "Mostrar estatus dos agendamentos"
 
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Sem tratamento"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Próximos por vir"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Sobrepor"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Não gravar"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Próximos por vir manual"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zumbie"
 
 msgctxt "#30460"
 msgid "Manual"
@@ -324,6 +348,26 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Procurar pessoas"
 
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Duplicados não correspondentes"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Duplicados correspondam baseados na legenda"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Duplicados correspondam baseados na descrição"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Duplicados correspondam baseados na legenda & descrição"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Duplicados correspondam usando legenda então descrição"
+
 msgctxt "#30506"
 msgid "Recordings never expire"
 msgstr "Gravações nunca expiram"
@@ -331,3 +375,11 @@ msgstr "Gravações nunca expiram"
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permitir gravações expirar"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Manter até %d gravações"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "manter % mais novos e expirar os mais antigos"

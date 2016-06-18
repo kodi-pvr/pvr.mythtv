@@ -252,10 +252,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Dzēst un ierakstīt no jauna"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Paturēt tiešraides TV ierakstu"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Atsvaidzināt kešatmiņu kanālu ikonām"

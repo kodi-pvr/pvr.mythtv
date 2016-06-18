@@ -76,13 +76,45 @@ msgctxt "#30022"
 msgid "MythTV"
 msgstr "MythTV"
 
+msgctxt "#30025"
+msgid "Internal template"
+msgstr "Sisäinen malli"
+
+msgctxt "#30026"
+msgid "Automatically Look Up Metadata"
+msgstr "Etsi automaattisesti metatietoja"
+
 msgctxt "#30028"
 msgid "Transcode new recordings"
 msgstr "Transkoodaa uudet tallennukset"
 
+msgctxt "#30029"
+msgid "Run User Job #1"
+msgstr "Aja käyttäjän tehtävä #1"
+
+msgctxt "#30030"
+msgid "Run User Job #2"
+msgstr "Aja käyttäjän tehtävä #2"
+
+msgctxt "#30031"
+msgid "Run User Job #3"
+msgstr "Aja käyttäjän tehtävä #3"
+
+msgctxt "#30032"
+msgid "Run User Job #4"
+msgstr "Aja käyttäjän tehtävä #4"
+
 msgctxt "#30033"
 msgid "Transcoder"
 msgstr "Transkooderi"
+
+msgctxt "#30034"
+msgid "Allow recordings to expire"
+msgstr "Salli tallennusten vanheta"
+
+msgctxt "#30049"
+msgid "Recording template"
+msgstr "Tallennusmalli"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -91,6 +123,10 @@ msgstr "Lisäasetukset"
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
 msgstr "Viritysviive (sek)"
+
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr "Ryhmitä tallennukset nimien perusteella"
 
 msgctxt "#30055"
 msgid "Always"
@@ -108,6 +144,10 @@ msgctxt "#30059"
 msgid "Always"
 msgstr "Aina"
 
+msgctxt "#30060"
+msgid "Dialog"
+msgstr "Dialogi"
+
 msgctxt "#30061"
 msgid "Never"
 msgstr "Ei koskaan"
@@ -123,6 +163,18 @@ msgstr "Käytä kanavakuvakkeita"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Rajoita kanavanhaku yritykset"
+
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr "Ota EDL käyttöön"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Yhteys epäonnistui"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Haluatko yrittää uudelleen?"
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -164,14 +216,70 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Poista ja uudelleentallenna"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Pidä LiveTV tallennus"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Päivitä kanavalogojen välimuisti"
 
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Näytä ajastusten tila"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Tuleva"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Älä tallenna"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuaalisesti"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Tallenna yksi"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Tallenna viikoittain"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Tallenna päivittäin"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Tallenna kaikki"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Tallenna tämä"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Tallenna sarjoja"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Etsi avainsana"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Etsi ihmisiä"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Tallennukset eivät koskaan vanhene"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Salli tallennusten vanheta"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Pidä enintään %d tallennusta"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Pidä %d uusinta ja poista vanha"

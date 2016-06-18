@@ -290,7 +290,7 @@ msgstr "Déclencher la mise à jour des chaînes"
 
 msgctxt "#30424"
 msgid "Show status of scheduling"
-msgstr "Montrer l'état de la programmation"
+msgstr "Afficher l'état de la programmation"
 
 msgctxt "#30451"
 msgid "Unhandled"

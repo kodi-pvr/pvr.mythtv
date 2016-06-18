@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Izbriši i ponovo snimi"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Zadrži snimak TV Uživo"
-
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Prikaži/sakrij neaktivne predstojeće"

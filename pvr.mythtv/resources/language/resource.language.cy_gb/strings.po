@@ -252,10 +252,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Dileu ac ail recordio"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Cadw recordiad LiveTV"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ail-lwytho'r gelc ar gyfer eiconau sianeli"

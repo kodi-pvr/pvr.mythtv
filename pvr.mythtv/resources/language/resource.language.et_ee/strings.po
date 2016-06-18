@@ -192,10 +192,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Kustuta ja salvesta uuesti"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Jätka OtseTV salvestamist"
-
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Käsitsi"

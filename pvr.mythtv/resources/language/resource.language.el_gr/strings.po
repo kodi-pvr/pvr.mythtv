@@ -208,6 +208,14 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Βρέθηκαν διαφημίσεις ή κάποια λίστα αποφυγής.\nΝα ενεργοποιηθεί η λειτουργία EDL για αυτήν τη σειρά ;"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Σύνδεση απέτυχε"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Θέλετε να ξαναδοκιμάσετε ?"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Απώλεια σύνδεσης με το backend του MythTV"
@@ -256,17 +264,25 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Διαγραφή και επανεγγραφή"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Να συνεχίζεται η εγγραφή LiveTV"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Ανανεώστε τη μνήμη cache για εικ. καναλιών"
 
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Επερχόμενο"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Χειροκίνητα"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Αναζήτηση λέξης-κλειδί"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Αναζήτηση ανθρώπων"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"

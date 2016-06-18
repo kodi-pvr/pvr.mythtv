@@ -42,11 +42,11 @@ msgstr "Inclure plus d'informations de débogage dans le fichier de journal"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Activer la télévision en direct"
+msgstr "Activer la TV en direct"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Autoriser la TV à modifier la planification des programmes"
+msgstr "Autoriser la TV en direct à modifier la planification des programmes"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -174,7 +174,7 @@ msgstr "Toujours"
 
 msgctxt "#30060"
 msgid "Dialog"
-msgstr "Boîte de dialogue"
+msgstr "Fenêtre de dialogue"
 
 msgctxt "#30061"
 msgid "Never"
@@ -190,7 +190,7 @@ msgstr "Afficher l'icône des chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activer l'enregistrement des fanarts/miniatures"
+msgstr "Activer l'enregistrement des FanArts/miniatures"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -198,7 +198,7 @@ msgstr "Limiter les tentatives de syntonisation"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Version du protocole : %i - Version de la base de données: %i"
+msgstr "Version du protocole : %i - Version de la base de données : %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
@@ -250,7 +250,7 @@ msgstr "Annuler l'enregistrement en conflit : %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "TV en direct stoppée pour l'enregistrement en conflit : %s"
+msgstr "TV en direct stoppée à cause d'enregistrement en conflit : %s"
 
 msgctxt "#30309"
 msgid "Not recording"

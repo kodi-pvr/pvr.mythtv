@@ -54,7 +54,7 @@ msgstr "Gestão de conflitos"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Preferir Tv em direto se existir horário para gravar mais tarde"
+msgstr "Preferir TV em direto se existir horário para gravar mais tarde"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
@@ -82,7 +82,7 @@ msgstr "Geral"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Forncedeor de modelos"
+msgstr "Forncedor de modelos"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -142,7 +142,7 @@ msgstr "Avançado"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
-msgstr "Ativar demux MPEG-TS"
+msgstr "Ativar 'demuxing' MPEG-TS"
 
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
@@ -166,7 +166,7 @@ msgstr "Nunca"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Ativar saltos comerciais (EDL)"
+msgstr "Permitir ignorar anúncios (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -194,7 +194,7 @@ msgstr "Ativar gravação de fanart/miniaturas"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Limitar tentativas de sintonia"
+msgstr "Limitar tentativas de sintonização"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -202,15 +202,15 @@ msgstr "Versão do protocolo: %i - Versão da base de dados: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
-msgstr "Ativando EDL"
+msgstr "A ativar EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Uma da lista de cortes ou omissões comerciais foram encontrados.\nQuer ativar a funcionalidade EDL para este programa?"
+msgstr "Uma da lista de cortes ou omissões comerciais foram encontrados.\nDeseja ativar a funcionalidade EDL para este programa?"
 
 msgctxt "#30112"
 msgid "Connection failed"
-msgstr "A ligação falhou"
+msgstr "Falha de ligação"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
@@ -218,7 +218,7 @@ msgstr "Deseja tentar novamente?"
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "A ligação À estrutura MythTV foi perdida"
+msgstr "A ligação à estrutura MythTV foi perdida"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
@@ -234,7 +234,7 @@ msgstr "Canal não disponível"
 
 msgctxt "#30306"
 msgid "Recorder unavailable"
-msgstr "Gravador indisponível"
+msgstr "Gravador não disponível"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
@@ -264,22 +264,90 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Apagar e regravar"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Manter gravação LiveTV"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Mostrar/ocultar receções inativas"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Recarregar cache dos ícones de canal"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Ativar atualização de canais"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Mostrar estado do agendamento"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Não geridos"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Brevemente"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Substituídos"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Não gravar"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Gravar uma"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Gravar semanalmente"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Gravar diariamente"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Gravar tudo"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Gravar esta"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Gravar série"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Pesquisa por palavra-chave"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Procurar pessoas"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Gravações nunca expiram"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Permitir que as gravações expirem"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Manter até %d gravações"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Manter as %d mais recentes e expirar antigas"

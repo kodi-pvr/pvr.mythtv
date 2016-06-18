@@ -256,10 +256,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Esborrar i tornar a gravar"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Mantenir l'enregistrament LiveTV"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar memòria cau de les icones per als canals"

@@ -216,6 +216,14 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Chcete to zkusit znovu?"
 
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Nepodařilo se spojit s MythTV backendem pomocí známé verze protokolu. Zkontrolujte prosím kompatibilitu doplňku a aktualizujte váš backend na podporovanou verzi."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Nepodařilo se spojit se službou API MythTV backendu. Zkontrolujte prosím váš PIN kód nebo nastavení backendu. Ve vašem backendu musí být nadefinován PIN kód, jinak se nespojíte."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Spojení s podpůrnou vrstvou MythTV ztraceno"
@@ -264,13 +272,25 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Smaž a znovu nahrej"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Pokračuj v nahrávání"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Ukázat/Schovat neaktivní naplánované položky"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Obnov cache pro ikonky kanálů"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Spustit aktualizaci kanálů"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Ukázat status plánování"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Neošetřené"
 
 msgctxt "#30452"
 msgid "Upcoming"
@@ -327,6 +347,26 @@ msgstr "Vyhledat klíčové slovo"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Vyhledat osobnosti"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Nepáruj duplicitní položky"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Spáruj duplicity podle podtitulu"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Spáruj duplicity podle popisu"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Spáruj duplicity podle podtitulu & popisu"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Spáruj duplicity primárně podle podtitulu a sekundárně dle popisu"
 
 msgctxt "#30506"
 msgid "Recordings never expire"

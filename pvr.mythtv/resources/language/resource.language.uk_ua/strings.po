@@ -220,10 +220,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Видалити і перезаписати"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Залишати запис Live TV"
-
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Уручну"

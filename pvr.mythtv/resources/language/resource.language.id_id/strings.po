@@ -264,10 +264,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Hapus dan rekam ulang"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Pertahankan perekaman Siaran Langsung TV"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Perbarui cache untuk ikon kanal"

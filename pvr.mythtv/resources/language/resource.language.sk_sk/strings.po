@@ -272,18 +272,114 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Vymazať a znova nahrať"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Ponechať nahrávky LiveTV"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Zobraziť/skryť neaktívne nadchádzajúce udalosti"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Obnoviť dočasné úložisko pre ikony kanálov"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Spustiť aktualizáciu kanálov"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Zobraziť stav plánovania"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Neošetrené"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Nadchádzajúce"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Nahradené"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Nenahrávať"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Nadchádzajúce ručné"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombia"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuálne"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Nahrávať raz"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Nahrávať týždenne"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Nahrávať denne"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Nahrávať všetko"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Nahrať toto"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Nahrávať seriál"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Hľadať kľúčové slovo"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Hľadať ľudí"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Nepárovať duplikáty"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Párovať duplikáty na základe titulkov"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Párovať duplikáty na základe popisu"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Párovať duplikáty na základe titulkov a popisu"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Párovať duplikáty na základe titulkov, potom popisu"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Nahrávky nikdy neexpirujú"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Povoliť expiráciu nahrávok"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Ponechať až do %d nahrávok"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Ponechať %d najnovších a expirovať staré"

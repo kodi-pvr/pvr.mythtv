@@ -272,18 +272,114 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "删除重新录像"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "保留直播电视录像"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "显示/隐藏非活动的即将播出"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "刷新频道图标缓存"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "触发频道更新"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "显示预约状态"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "未处理"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "即将播出"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "覆盖"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "不录制"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "即将播出手动"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "僵尸"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "手动"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "单次录像"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "每周录像"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "每日录像"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "全部录制"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "录制这个"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "剧集录像"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "搜索关键字"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "搜索人"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "不匹配重复项"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "使用字幕匹配重复"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "使用介绍匹配重复"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "使用字幕和介绍匹配重复"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "先用字幕然后用介绍匹配重复"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "录像永不过期"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "允许录像过期"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "保留 %d 录像"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "保留 %d 新的并过期旧的"

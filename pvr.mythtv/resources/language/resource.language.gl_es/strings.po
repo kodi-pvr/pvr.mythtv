@@ -208,9 +208,17 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Atopouse unha listaxe de corte.\nTen a certeza de querer activar a funcionalidade EDL para esta serie?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Fallou conexión"
+
 msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Queres tentalo de novo?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Non se puido conectar o motor de MythTV "
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -259,10 +267,6 @@ msgstr "Non se atopou emisión"
 msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Eliminar e volver gravar"
-
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Manter a gravación do LiveTV"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"

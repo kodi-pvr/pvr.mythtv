@@ -256,10 +256,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Eyða og taka upp aftur"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Halda Live TV í upptöku"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Uppfæra flýtiminni fyrir táknmyndir rása"

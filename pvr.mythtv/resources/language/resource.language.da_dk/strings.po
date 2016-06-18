@@ -256,10 +256,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slet og optag på ny"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Gem LiveTV optagelse"
-
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Vis/Skjul inaktive programmering"

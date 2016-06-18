@@ -208,6 +208,22 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Klipplista eller reklamhopp har hittats.\nVill du aktivera EDL-funktionalitet för denna visning?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Anslutningen misslyckades"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Vill du försöka igen?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Det gick inte att ansluta MythTV backend med de kända protokollversionerna. Kontrollera kompatibilitet med tillägg och uppgradera din backend till en version som stöds."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Det gick inte att ansluta API tjänster MythTV backend. Kontrollera din PIN-kod eller backend inställningar. PIN-koden måste vara konfigurerade i backend för att möjliggöra anslutning."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Anslutning till MythTV backend förlorad"
@@ -256,17 +272,41 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Ta bort och spela in på nytt"
 
-msgctxt "#30412"
-msgid "Keep LiveTV recording"
-msgstr "Fortsätt spela in direktsänd TV"
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Visa/dölj inaktiva uppkommande"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Förnya cache för kanalikoner"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Trigger kanaler uppdatering"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Visa schemaläggningens status"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "O-hanterad"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Kommande"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Åsidosatt"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Spela inte in"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Kommande manual"
 
 msgctxt "#30456"
 msgid "Zombie"
@@ -308,6 +348,30 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Sök personer"
 
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Matcha inte dubbletter"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Matcha dubbletter med hjälp av undertext"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Matcha dubbletter med hjälp av beskrivning"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Matcha dubbletter med hjälp av undertext & beskrivning"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Matcha dubbletter med hjälp av undertext sedan beskrivning"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Inspelningen upphör aldrig"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Tillåt inspelningar att gå ut"
@@ -315,3 +379,7 @@ msgstr "Tillåt inspelningar att gå ut"
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
 msgstr "Behåll upp till %d inspelningar"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Behåll %d nyaste och upphäv de gamla"
