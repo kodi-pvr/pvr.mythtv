@@ -1662,12 +1662,14 @@ PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
   XBMC->Log(LOG_DEBUG, "%s: title: %s, start: %ld, end: %ld, chanID: %u", __FUNCTION__, timer.strTitle, timer.startTime, timer.endTime, timer.iClientChannelUid);
   CLockObject lock(m_lock);
   // Check if our timer is a quick recording of live tv
-  // Assumptions: Timer start time = 0, and our live recorder is locked on the same channel.
+  // Assumptions: Our live recorder is locked on the same channel and the recording starts
+  // at the same time as or before (includes 0) the currently in progress program
   // If true then keep recording, setup recorder and let the backend handle the rule.
-  if (timer.startTime == 0 && m_liveStream && m_liveStream->IsPlaying())
+  if (m_liveStream && m_liveStream->IsPlaying())
   {
     Myth::ProgramPtr program = m_liveStream->GetPlayedProgram();
-    if (timer.iClientChannelUid == FindPVRChannelUid(program->channel.chanId))
+    if (timer.iClientChannelUid == FindPVRChannelUid(program->channel.chanId) &&
+        timer.startTime <= program->startTime)
     {
       XBMC->Log(LOG_DEBUG, "%s: Timer is a quick recording. Toggling Record on", __FUNCTION__);
       if (m_liveStream->IsLiveRecording())
