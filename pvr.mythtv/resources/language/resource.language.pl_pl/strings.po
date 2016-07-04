@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Skasuj i nagraj ponownie "
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Zachowuj nagranie"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Pokazuj/Ukrywaj nieaktywne nadchodzące emisje"

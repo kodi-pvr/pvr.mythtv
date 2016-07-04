@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Obriši i ponovno snimi"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Nastavi snimanje"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Prikaži/Sakrij neaktivne nadolazeće"

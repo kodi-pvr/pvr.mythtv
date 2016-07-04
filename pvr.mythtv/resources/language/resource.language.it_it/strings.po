@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Elimina e registra di nuovo"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Mantieni registrazione"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Mostra/Nascondi programmazione inattivo"

@@ -238,7 +238,7 @@ msgstr "録画しない"
 
 msgctxt "#30310"
 msgid "Enabled"
-msgstr "LCD有効"
+msgstr "有効"
 
 msgctxt "#30311"
 msgid "Disabled"

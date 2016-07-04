@@ -216,6 +216,10 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "¿Volver a intentar?"
 
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Ha fallado la conexión al backend MythTV con las versionesde protocolos conocidas. Por favor, compruebe la tabla de compatibilidades del addon y actualice su backend a una versión soportada."
+
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
 msgstr "Fallo en la conexión del API del backend de MythTV. Por favor revisa tu código PIN o configuración del backend. El código PIN debe ser configurado en el backend para permitir la conexión"
@@ -268,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Borrar y volver a grabar"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Mantener grabación"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Mostrar/ocultar programación inactivo"
@@ -276,17 +284,33 @@ msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar cache de los iconos para los canales"
 
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Provocar la actualización de los canales"
+
 msgctxt "#30424"
 msgid "Show status of scheduling"
 msgstr "Muestra el estado de la programación"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "No soportado"
 
 msgctxt "#30452"
 msgid "Upcoming"
 msgstr "Por venir"
 
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Anulado"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "No grabar"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Siguiente programa manual"
 
 msgctxt "#30456"
 msgid "Zombie"
@@ -327,6 +351,26 @@ msgstr "Buscar palabra clave"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Buscar gente"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "No detectar duplicados"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Detectar duplicados usando subtítulos"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Detectar duplicados usando la descripción"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Detectar duplicados usando subtítulos y las descripciones"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Detectar duplicados usando subtítulos y, después, las descripciones"
 
 msgctxt "#30506"
 msgid "Recordings never expire"
