@@ -1,3 +1,9 @@
+v4.6.0
+- Sync cppmyth upstream (2.6.0)
+- Support protocol 29-pre:90
+- Support protocol 29-pre:89
+- Allow to keep live show from EPG screen
+
 v4.5.3
 - Updated language files from Transifex
 

@@ -386,6 +386,7 @@ namespace Myth
     uint32_t            mplexId;
     std::string         inputName;
     uint8_t             liveTVOrder;
+    uint32_t            recCount;
 
     CardInput()
     : inputId(0)
@@ -393,6 +394,7 @@ namespace Myth
     , sourceId(0)
     , mplexId(0)
     , liveTVOrder(0)
+    , recCount(0)
     {}
   };
 
