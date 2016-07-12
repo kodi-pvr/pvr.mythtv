@@ -1,3 +1,6 @@
+v3.4.19
+- Allow to keep live show from EPG screen
+
 v3.4.18
 - Updated language files from Transifex
 
