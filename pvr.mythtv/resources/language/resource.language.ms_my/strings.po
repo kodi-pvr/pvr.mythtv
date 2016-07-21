@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Padam dan rakam-semula"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Kekal merakam"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Tunjuk/sembunyi akan datang yang tidak aktif"

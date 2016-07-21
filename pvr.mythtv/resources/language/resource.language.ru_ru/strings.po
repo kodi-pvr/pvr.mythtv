@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Удалить и перезаписать"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Сохранять запись"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Показывать/скрыть не активные входящие"

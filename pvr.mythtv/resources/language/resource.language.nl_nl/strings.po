@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Verwijder en her-opnemen"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Behoud opname"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Toon/Verberg inactief programmering"

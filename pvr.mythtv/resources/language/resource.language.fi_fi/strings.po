@@ -48,6 +48,10 @@ msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
 msgstr "Suosi tallennuksia ja pysäytä Live TV"
 
+msgctxt "#30011"
+msgid "Prefer Live TV and cancel conflicting recording"
+msgstr "Suosi Live TV:tä ja peru päällekkäiset tallennukset"
+
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
 msgstr "MythTV:n taustaosan ethernet osoite (WOL)"
@@ -83,6 +87,10 @@ msgstr "Sisäinen malli"
 msgctxt "#30026"
 msgid "Automatically Look Up Metadata"
 msgstr "Etsi automaattisesti metatietoja"
+
+msgctxt "#30027"
+msgid "Commercial Flag new recordings"
+msgstr "Tunnista mainokset uusissa tallennuksissa"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
@@ -140,6 +148,10 @@ msgctxt "#30057"
 msgid "Never"
 msgstr "Ei koskaan"
 
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Mainosten ohitus päälle (EDL)"
+
 msgctxt "#30059"
 msgid "Always"
 msgstr "Aina"
@@ -160,13 +172,25 @@ msgctxt "#30063"
 msgid "Enable channel icons"
 msgstr "Käytä kanavakuvakkeita"
 
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Näytä tallennusten fanitaide/kuvakkeet"
+
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Rajoita kanavanhaku yritykset"
 
+msgctxt "#30100"
+msgid "Protocol version: %i - Database version: %i"
+msgstr "Protokolla versio: %i - Tietokanta versio: %i"
+
 msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "Ota EDL käyttöön"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "Mainoskatkojen leikkauslista löytyi.\nHaluatko ottaa EDL-toiminnon käyttöön tälle ohjelmalle?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -196,6 +220,14 @@ msgctxt "#30306"
 msgid "Recorder unavailable"
 msgstr "Tallennin ei saatavilla"
 
+msgctxt "#30307"
+msgid "Canceling conflicting recording: %s"
+msgstr "Perutaan päällekkäinen tallennus: %s"
+
+msgctxt "#30308"
+msgid "Stopping Live TV due to conflicting recording: %s"
+msgstr "Pysäytetään Live TV päällekkäisen tallennuksen vuoksi: %s"
+
 msgctxt "#30309"
 msgid "Not recording"
 msgstr "Ei tallenna"
@@ -216,6 +248,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Poista ja uudelleentallenna"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Jatka tallentamista"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Päivitä kanavalogojen välimuisti"
@@ -223,6 +259,10 @@ msgstr "Päivitä kanavalogojen välimuisti"
 msgctxt "#30424"
 msgid "Show status of scheduling"
 msgstr "Näytä ajastusten tila"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Käsittelemätön"
 
 msgctxt "#30452"
 msgid "Upcoming"
