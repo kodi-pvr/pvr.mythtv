@@ -107,6 +107,7 @@ namespace Myth
      */
     CardInputListPtr GetFreeInputs(int rnum = 0)
     {
+      if (m_protoVersion >= 91) return GetFreeInputs91(rnum);
       if (m_protoVersion >= 90) return GetFreeInputs90(rnum);
       if (m_protoVersion >= 89) return GetFreeInputs89(rnum);
       if (m_protoVersion >= 87) return GetFreeInputs87(rnum);
@@ -140,6 +141,7 @@ namespace Myth
     CardInputListPtr GetFreeInputs87(int rnum);
     CardInputListPtr GetFreeInputs89(int rnum);
     CardInputListPtr GetFreeInputs90(int rnum);
+    CardInputListPtr GetFreeInputs91(int rnum);
 
     // Not implemented
     //int64_t GetBookmark75(Program& program);
