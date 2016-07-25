@@ -826,7 +826,7 @@ CardInputListPtr ProtoMonitor::GetFreeInputs90(int rnum)
     if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->inputId)))
       break;
     input->cardId = input->inputId; // @FIXME: since protocol 90
-    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->recCount)))
+    if (!ReadField(field)) // reccount
       break;
     if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->mplexId)))
       break;
@@ -843,6 +843,52 @@ CardInputListPtr ProtoMonitor::GetFreeInputs90(int rnum)
     if (!ReadField(field)) // chanid
       break;
     if (!ReadField(field)) // reclimit
+      break;
+    list->push_back(input);
+  }
+  FlushMessage();
+  return list;
+}
+
+CardInputListPtr ProtoMonitor::GetFreeInputs91(int rnum)
+{
+  CardInputListPtr list = CardInputListPtr(new CardInputList());
+  char buf[32];
+  std::string field;
+
+  OS::CLockGuard lock(*m_mutex);
+  if (!IsOpen())
+    return list;
+  std::string cmd("GET_FREE_INPUT_INFO ");
+  int32_to_string((int32_t)rnum, buf);
+  cmd.append(buf);
+
+  if (!SendCommand(cmd.c_str()))
+    return list;
+
+  while (m_msgConsumed < m_msgLength)
+  {
+    CardInputPtr input(new CardInput());
+    if (!ReadField(input->inputName))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->sourceId)))
+      break;
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->inputId)))
+      break;
+    input->cardId = input->inputId; // @FIXME: since protocol 90
+    if (!ReadField(field) || string_to_uint32(field.c_str(), &(input->mplexId)))
+      break;
+    if (!ReadField(field) || string_to_uint8(field.c_str(), &(input->liveTVOrder)))
+      break;
+    if (!ReadField(field)) // displayName
+      break;
+    if (!ReadField(field)) // recPriority
+      break;
+    if (!ReadField(field)) // schedOrder
+      break;
+    if (!ReadField(field)) // quickTune
+      break;
+    if (!ReadField(field)) // chanid
       break;
     list->push_back(input);
   }
