@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slett og ta opp på nytt"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Behold opptak"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Vis/skjul inaktive kommende"

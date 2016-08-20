@@ -272,6 +272,10 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Smaž a znovu nahrej"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Ponechat nahrávku"
+
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
 msgstr "Ukázat/Schovat neaktivní naplánované položky"

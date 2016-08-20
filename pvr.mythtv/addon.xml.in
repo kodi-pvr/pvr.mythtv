@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="4.7.1"
+  version="4.7.2"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -63,7 +63,7 @@
     <description lang="af_ZA">MythTV voorprogram (tot MythTV 0.28). Ondersteun stroom van Lewendige TV &amp; Opnames, luister na Radio kanale, EPG en Tydhouers.</description>
     <description lang="be_BY">MythTV frontend (up to MythTV 0.28). Supports streaming of Live TV &amp; Recordings, listening to Radio channels, EPG and Timers.</description>
     <description lang="bg_BG">MythTV клиент (обновен до MythTV 0.28). Поддържа поточна телевизия и записване, слушане на радио канали, електронен програмен справочник и броячи.</description>
-    <description lang="ca_ES">Front-end de MythTV (fins a MythTV 0.28). Suport de transmissions de TV en Viu i Enregistraments, escoltar canals de Radi, Guia Electrònica de Programes (EPG) i Temporitzadors.</description>
+    <description lang="ca_ES">Front-end de MythTV (fins a MythTV 0.28). Suport de transmissions de TV en directe i enregistraments, escoltar canals de radi, guia electrònica de programes (EPG) i temporitzadors.</description>
     <description lang="cs_CZ">Rozhraní MythTV (do verze MythTV 0.28). Podporuje proudové vysílání živého vysílání a nahrávek, poslech kanálů rádia a EPG, a časovače.</description>
     <description lang="cy_GB">Blaen MythTV (hyd at MythTV 0.28). Cynnal ffrydio Teledu Byw a Recordiadau, gwrando ar sianeli radio, amserlenni rhaglenni electronig ac amseryddion.</description>
     <description lang="da_DK">MythTV frontend (op til MythTV 0.28) Understøtter streaming af Live TV &amp; Optagelser, Radiokanaler, EPG samt tidsplaner.</description>

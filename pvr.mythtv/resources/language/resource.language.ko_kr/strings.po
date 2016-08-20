@@ -192,6 +192,10 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "녹화 팬아트/썸네일 사용"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "채널 튜닝 시도수 제한"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "프로토콜 버전: %i - 데이터베이스 버전: %i"
@@ -203,6 +207,22 @@ msgstr "EDL 사용"
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "컷 목록 또는 광고 건너뛰기가 발견됐습니다.\n이 쇼에 대해 EDL 기능을 사용하겠습니까?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "연결 실패"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "다시 시도하시겠습니까?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "알려진 프로토콜 버젼과 MythTV 백엔드 연결 실패. 애드온의 호환성 맵을 확인하시고 지원되는 버전으로 백엔드를 업그레이드하세요."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "MythTV 백엔드 API 서비스 연결 실패. PIN 코드나 백엔드 셋업을 확인하세요. 연결하려면 백엔드에서 PIN 코드가 설정되어야 합니다."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -252,14 +272,118 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "지우고 다시 녹화"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "계속 녹화"
+
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "비활성된 방송 예정 보이기/숨기기"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "채널 아이콘 캐시 새로 고침"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "채널 업데이트 트리거"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "예약 상태 표시"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "처리하지 않음"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "예정됨"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "무시함"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "녹화하지 않음"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "예정된 매뉴얼"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "좀비"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "수동"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "한 번 녹화"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "매주 녹화"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "매일 녹화"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "모두 녹화"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "이것 녹화"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "시리즈 녹화"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "키워드 검색"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "인물 검색"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "중복 제외"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "자막 기준 중복 맞춤"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "설명 기준 중복 맞춤"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "자막과 설명 기준 중복 맞춤"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "자막 후 설명 기준 중복 맞춤"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "녹화를 만료하지 않음"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "녹화 만료 허용"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "녹화 %d편만 보존"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "최신 %d편만 보존하고 나머지는 만료"

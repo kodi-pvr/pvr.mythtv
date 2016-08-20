@@ -22,11 +22,11 @@ msgstr "Nome ou IP do servidor MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Porta da estrutura MythTV"
+msgstr "Porto da estrutura MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
-msgstr "Nome de utilizador da base de dados MythTV "
+msgstr "Nome de utilizador da base de dados MythTV"
 
 msgctxt "#30003"
 msgid "MythTV Database Password"
@@ -70,11 +70,11 @@ msgstr "Endereço ethernet da estrutura MythTV (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Porta da estrutura MythTV para os serviços API"
+msgstr "Porto da estrutura MythTV para os serviços API"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "Pin de segurança MythTV para serviços da API"
+msgstr "PIN de segurança MythTV para serviços da API"
 
 msgctxt "#30019"
 msgid "General"
@@ -82,7 +82,7 @@ msgstr "Geral"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Forncedor de modelos"
+msgstr "Fornecedor de modelos"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -134,7 +134,7 @@ msgstr "Permitir que as gravações expirem"
 
 msgctxt "#30049"
 msgid "Recording template"
-msgstr "Gravar modelo"
+msgstr "Modelo da gravação"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -174,7 +174,7 @@ msgstr "Sempre"
 
 msgctxt "#30060"
 msgid "Dialog"
-msgstr "Diálogo"
+msgstr "Janela"
 
 msgctxt "#30061"
 msgid "Never"
@@ -206,7 +206,7 @@ msgstr "A ativar EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Uma da lista de cortes ou omissões comerciais foram encontrados.\nDeseja ativar a funcionalidade EDL para este programa?"
+msgstr "Foi encontrada uma lista de cortes ou omissões comerciais.\nDeseja ativar a funcionalidade EDL para este programa?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -216,17 +216,25 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Deseja tentar novamente?"
 
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Não foi possível ligar-se à infraestrutura do MythTV com as versões conhecidas do protocolo. Verifique por favor o mapa de compatibilidades do add-on e atualize a sua infraestrutura para uma versão suportada."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Não foi possível ligar-se aos serviços da API da infraestrutura do MythTV. Verifique por favor o seu código PIN ou configuração da infraestrutura. O código PIN tem de ser configurado na sua infraestrutura para permitir a ligação."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "A ligação à estrutura MythTV foi perdida"
+msgstr "A ligação ao MythTV foi perdida"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
-msgstr "Ligação à MythTV restabelecida"
+msgstr "A ligação ao MythTV foi restabelecida"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Nenhuma resposta da estrutura MythTV"
+msgstr "Nenhuma resposta da infraestrutura do MythTV"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -242,7 +250,7 @@ msgstr "Cancelar gravação em conflito: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Parando TV em direto devido a conflito com gravação: %s"
+msgstr "A parar a TV em direto devido a conflito com gravação: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -263,6 +271,10 @@ msgstr "Emissão não encontrada"
 msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Apagar e regravar"
+
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Manter a gravação"
 
 msgctxt "#30421"
 msgid "Show/hide inactive upcomings"
@@ -295,6 +307,10 @@ msgstr "Substituídos"
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Não gravar"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Seguinte manual"
 
 msgctxt "#30456"
 msgid "Zombie"
@@ -336,9 +352,29 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Procurar pessoas"
 
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Não corresponder os duplicados"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Corresponder os duplicados pela legenda"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Corresponder os duplicados pela descrição"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Corresponder os duplicados pela legenda & descrição"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Corresponder os duplicados pela legenda e depois descrição"
+
 msgctxt "#30506"
 msgid "Recordings never expire"
-msgstr "Gravações nunca expiram"
+msgstr "As gravações nunca expiram"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"

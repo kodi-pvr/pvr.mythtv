@@ -42,15 +42,27 @@ msgstr "Sisällytä enemmän debug tietoa lokitiedostoon"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Live TV käytössä"
+msgstr "Ota tv-lähetys käyttöön"
+
+msgctxt "#30007"
+msgid "Allow Live TV to move scheduled shows"
+msgstr "Salli suorien lähetysten siirtää ajastuksia"
+
+msgctxt "#30008"
+msgid "Conflict handling"
+msgstr "Ristiriitojen käsittely"
+
+msgctxt "#30009"
+msgid "Prefer Live TV when recording has later slot"
+msgstr "Suosi suoraa lähetystä, kun tallennuksella on myöhäisempi ajankohta"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Suosi tallennuksia ja pysäytä Live TV"
+msgstr "Suosi tallennuksia ja pysäytä tv-lähetys"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Suosi Live TV:tä ja peru päällekkäiset tallennukset"
+msgstr "Suosi tv-lähetystä ja peru päällekkäiset tallennukset"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -62,7 +74,7 @@ msgstr "MythTV:n taustaosan portti API palveluille"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "MythTV Turva PIN API palveluille"
+msgstr "MythTV:n API-palveluiden Pin-koodi "
 
 msgctxt "#30019"
 msgid "General"
@@ -128,6 +140,10 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
+msgctxt "#30052"
+msgid "Enable demuxing MPEG-TS"
+msgstr "Demuxaa MPEG-TS"
+
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
 msgstr "Viritysviive (sek)"
@@ -182,7 +198,7 @@ msgstr "Rajoita kanavanhaku yritykset"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Protokolla versio: %i - Tietokanta versio: %i"
+msgstr "Protokollan versio: %i - Tietokannan versio: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
@@ -199,6 +215,14 @@ msgstr "Yhteys epäonnistui"
 msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Haluatko yrittää uudelleen?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Yhdistäminen MythTV:n taustaosaan epäonnistui. Tarkista PVR-lisäosan vaatima minimiversio ja päivitä taustaosa uudempaan versioon."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Yhdistäminen MythTV:n taustaosan API-palveluun epäonnistui. Tarkista PIN-koodisi ja taustaosan asetukset. Taustaosassa pitää olla määriteltynä PIN-koodi, jotta yhteys voidaan muodostaa."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -226,7 +250,7 @@ msgstr "Perutaan päällekkäinen tallennus: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Pysäytetään Live TV päällekkäisen tallennuksen vuoksi: %s"
+msgstr "Pysäytetään tv-lähetys päällekkäisen tallennuksen vuoksi: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -252,9 +276,17 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Jatka tallentamista"
 
+msgctxt "#30421"
+msgid "Show/hide inactive upcomings"
+msgstr "Näytä/piilota käytöstä poistetut"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Päivitä kanavalogojen välimuisti"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Käynnistä kanavatietojen päivitys"
 
 msgctxt "#30424"
 msgid "Show status of scheduling"
@@ -268,9 +300,21 @@ msgctxt "#30452"
 msgid "Upcoming"
 msgstr "Tuleva"
 
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Ohitettu"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "Älä tallenna"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Tuleva manuaalinen"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombi"
 
 msgctxt "#30460"
 msgid "Manual"
@@ -302,11 +346,31 @@ msgstr "Tallenna sarjoja"
 
 msgctxt "#30467"
 msgid "Search keyword"
-msgstr "Etsi avainsana"
+msgstr "Etsi avainsanalla"
 
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Etsi ihmisiä"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Älä etsi kaksoiskappaleita"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Selvitä kaksoiskappaleet tekstityksen avulla"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Selvitä kaksoiskappaleet selostuksen avulla"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Selvitä kaksoiskappaleet tekstityksen ja selostuksen avulla"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Selvitä kaksoiskappaleet ensijaisesti tekstityksen, sitten vasta selostuksen perusteella"
 
 msgctxt "#30506"
 msgid "Recordings never expire"
