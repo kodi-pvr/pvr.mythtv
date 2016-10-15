@@ -1,3 +1,6 @@
+v4.7.3
+- Recordings: Separate Thumbnail from Icon
+
 v4.7.2
 - Updated language files from Transifex
 
