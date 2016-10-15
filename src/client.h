@@ -58,6 +58,7 @@
 #define GROUP_RECORDINGS_ALWAYS             0
 #define GROUP_RECORDINGS_ONLY_FOR_SERIES    1
 #define GROUP_RECORDINGS_NEVER              2
+#define DEFAULT_USE_AIRDATE                 false
 #define ENABLE_EDL_ALWAYS                   0
 #define ENABLE_EDL_DIALOG                   1
 #define ENABLE_EDL_NEVER                    2
@@ -108,6 +109,7 @@ extern int          g_iRecTranscoder;
 extern bool         g_bDemuxing;
 extern int          g_iTuneDelay;
 extern int          g_iGroupRecordings;
+extern bool         g_bUseAirdate;
 extern int          g_iEnableEDL;
 extern bool         g_bBlockMythShutdown;
 extern bool         g_bLimitTuneAttempts;       ///< Limit channel tuning attempts to first card

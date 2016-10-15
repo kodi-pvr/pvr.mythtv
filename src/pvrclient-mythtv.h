@@ -220,4 +220,7 @@ private:
    * \brief Parse and fill AV stream infos for a recorded program
    */
   static void FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::Stream *stream);
+
+  /// Get the time that should be reported for this recording
+  static time_t GetRecordingTime(time_t airdate, time_t startDate);
 };

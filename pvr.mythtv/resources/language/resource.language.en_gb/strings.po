@@ -137,7 +137,11 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr ""
 
-#empty strings from id 30035 to 30048
+#empty strings from id 30035 to 30047
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr ""
 
 msgctxt "#30049"
 msgid "Recording template"
