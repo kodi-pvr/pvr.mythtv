@@ -904,9 +904,12 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
       // Images
       std::string strIconPath;
+      std::string strThumbnailPath;
       std::string strFanartPath;
       if (m_fileOps)
       {
+        strThumbnailPath = m_fileOps->GetPreviewIconPath(it->second);
+
         if (it->second.HasCoverart())
           strIconPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeCoverart);
         else if (it->second.IsLiveTV())
@@ -916,13 +919,13 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
             strIconPath = m_fileOps->GetChannelIconPath(channel);
         }
         else
-          strIconPath = m_fileOps->GetPreviewIconPath(it->second);
+          strIconPath = strThumbnailPath;
 
         if (it->second.HasFanart())
           strFanartPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeFanart);
       }
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
-      PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
+      PVR_STRCPY(tag.strThumbnailPath, strThumbnailPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
 
       // EPG Entry (Enables "Play recording" option and icon)
@@ -1013,9 +1016,12 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
 
       // Images
       std::string strIconPath;
+      std::string strThumbnailPath;
       std::string strFanartPath;
       if (m_fileOps)
       {
+        strThumbnailPath = m_fileOps->GetPreviewIconPath(it->second);
+
         if (it->second.HasCoverart())
           strIconPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeCoverart);
         else if (it->second.IsLiveTV())
@@ -1025,13 +1031,13 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
             strIconPath = m_fileOps->GetChannelIconPath(channel);
         }
         else
-          strIconPath = m_fileOps->GetPreviewIconPath(it->second);
+          strIconPath = strThumbnailPath;
 
         if (it->second.HasFanart())
           strFanartPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeFanart);
       }
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
-      PVR_STRCPY(tag.strThumbnailPath, strIconPath.c_str());
+      PVR_STRCPY(tag.strThumbnailPath, strThumbnailPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
 
       // Unimplemented
