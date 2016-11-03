@@ -1,3 +1,6 @@
+v4.8.0
+- New setting to send (original) Airdate to Kodi instead of the recording's Start Date/Time.
+
 v4.7.3
 - Recordings: Separate Thumbnail from Icon
 

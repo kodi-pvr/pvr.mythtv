@@ -866,7 +866,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       memset(&tag, 0, sizeof(PVR_RECORDING));
       tag.bIsDeleted = false;
 
-      tag.recordingTime = it->second.RecordingStartTime();
+      tag.recordingTime = GetRecordingTime(it->second.Airdate(), it->second.RecordingStartTime());
       tag.iDuration = it->second.Duration();
       tag.iPlayCount = it->second.IsWatched() ? 1 : 0;
       //@TODO: tag.iLastPlayedPosition
@@ -985,7 +985,7 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
       memset(&tag, 0, sizeof(PVR_RECORDING));
       tag.bIsDeleted = true;
 
-      tag.recordingTime = it->second.RecordingStartTime();
+      tag.recordingTime = GetRecordingTime(it->second.Airdate(), it->second.RecordingStartTime());
       tag.iDuration = it->second.Duration();
       tag.iPlayCount = it->second.IsWatched() ? 1 : 0;
       //@TODO: tag.iLastPlayedPosition
@@ -2613,4 +2613,26 @@ void PVRClientMythTV::FillRecordingAVInfo(MythProgramInfo& programInfo, Myth::St
     // Set video aspec
     programInfo.SetPropsVideoAspec(mInfo.stream_info.aspect);
   }
+}
+
+time_t PVRClientMythTV::GetRecordingTime(time_t airtt, time_t recordingtt)
+{
+  if (!g_bUseAirdate || airtt == 0)
+    return recordingtt;
+
+  /* Airdate is usually a Date, not a time.  So we include the time part from
+  the recording time in order to give the reported time something other than
+  12AM.  If two shows are recorded on the same day, typically they are aired
+  in the correct time order.  Combining airdate and recording time gives us
+  the best possible time to report to the user to allow them to sort by
+  datetime to see the correct episode ordering. */
+  struct tm airtm, rectm;
+  gmtime_r(&airtt, &airtm);
+  gmtime_r(&recordingtt, &rectm);
+
+  airtm.tm_hour = rectm.tm_hour;
+  airtm.tm_min = rectm.tm_min;
+  airtm.tm_sec = rectm.tm_sec;
+
+  return mktime(&airtm);
 }

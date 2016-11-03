@@ -57,6 +57,7 @@ int           g_iRecTranscoder          = 0;
 bool          g_bDemuxing               = DEFAULT_HANDLE_DEMUXING;
 int           g_iTuneDelay              = DEFAULT_TUNE_DELAY;
 int           g_iGroupRecordings        = GROUP_RECORDINGS_ALWAYS;
+bool          g_bUseAirdate             = DEFAULT_USE_AIRDATE;
 int           g_iEnableEDL              = ENABLE_EDL_ALWAYS;
 bool          g_bBlockMythShutdown      = DEFAULT_BLOCK_SHUTDOWN;
 bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
@@ -270,6 +271,14 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     /* If setting is unknown fallback to defaults */
     XBMC->Log(LOG_ERROR, "Couldn't get 'group_recordings' setting, falling back to '%i' as default", GROUP_RECORDINGS_ALWAYS);
     g_iGroupRecordings = GROUP_RECORDINGS_ALWAYS;
+  }
+
+  /* Read setting "use_airdate" from settings.xml */
+  if (!XBMC->GetSetting("use_airdate", &g_bUseAirdate))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'use_airdate' setting, falling back to '%b' as default", DEFAULT_USE_AIRDATE);
+    g_bUseAirdate = DEFAULT_USE_AIRDATE;
   }
 
   /* Read setting "enable_edl" from settings.xml */
@@ -628,6 +637,15 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_iGroupRecordings != *(int*)settingValue)
     {
       g_iGroupRecordings = *(int*)settingValue;
+      PVR->TriggerRecordingUpdate();
+    }
+  }
+  else if (str == "use_airdate")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'use_airdate' from %b to %b", g_bUseAirdate, *(bool*)settingValue);
+    if (g_bUseAirdate != *(bool*)settingValue)
+    {
+      g_bUseAirdate = *(bool*)settingValue;
       PVR->TriggerRecordingUpdate();
     }
   }
