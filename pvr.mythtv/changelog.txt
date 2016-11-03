@@ -1,3 +1,6 @@
+v4.9.0
+- Extra timer info
+
 v4.8.0
 - New setting to send (original) Airdate to Kodi instead of the recording's Start Date/Time.
 
