@@ -109,31 +109,31 @@ extern time_t timegm(struct tm *utctime_tm);
 
 #if !HAVE_LOCALTIME_R && !defined(localtime_r)
 #define localtime_r __localtime_r
-static CC_INLINE struct tm *localtime_r(const time_t * clock, struct tm *result)
+static CC_INLINE struct tm *localtime_r(const time_t *clock, struct tm *result)
 {
-	struct tm *data;
-	if (!clock || !result)
-		return NULL;
-	data = localtime(clock);
-	if (!data)
-		return NULL;
-	memcpy(result, data, sizeof(*result));
-	return result;
+  struct tm *data;
+  if (!clock || !result)
+    return NULL;
+  data = localtime(clock);
+  if (!data)
+    return NULL;
+  memcpy(result, data, sizeof(*result));
+  return result;
 }
 #endif
 
 #if !HAVE_GMTIME_R && !defined(gmtime_r)
 #define gmtime_r __gmtime_r
-static CC_INLINE struct tm *gmtime_r(const time_t * clock, struct tm *result)
+static CC_INLINE struct tm *gmtime_r(const time_t *clock, struct tm *result)
 {
-	struct tm *data;
-	if (!clock || !result)
-		return NULL;
-	data = gmtime(clock);
-	if (!data)
-		return NULL;
-	memcpy(result, data, sizeof(*result));
-	return result;
+  struct tm *data;
+  if (!clock || !result)
+    return NULL;
+  data = gmtime(clock);
+  if (!data)
+    return NULL;
+  memcpy(result, data, sizeof(*result));
+  return result;
 }
 #endif
 
