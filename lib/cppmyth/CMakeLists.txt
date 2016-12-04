@@ -1,5 +1,5 @@
-cmake_minimum_required (VERSION 3.0.2 FATAL_ERROR)
-cmake_policy (VERSION 3.0)
+cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
+cmake_policy (VERSION 2.8)
 
 project (cppmyth)
 
@@ -93,13 +93,7 @@ else ()
     set (HAVE_ZLIB 0)
 endif ()
 
-#find_package(OpenSSL)
-#if (OPENSSL_FOUND)
-#    include_directories (${OPENSSL_INCLUDE_DIR})
-#    set (HAVE_OPENSSL 1)
-#else ()
-    set (HAVE_OPENSSL 0)
-#endif ()
+set (HAVE_OPENSSL 0)
 
 # Check what the inline keyword is.
 check_function_keywords ("inline")
