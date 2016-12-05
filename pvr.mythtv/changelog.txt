@@ -1,3 +1,6 @@
+v5.0.1
+- Sync cppmyth upstream: fix reader of encoded content
+
 v5.0.0
 - Initial Kodi v18 version
 
