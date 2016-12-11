@@ -48,33 +48,221 @@ msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
 msgstr "Permitir TV en vivo mover shows programados"
 
+msgctxt "#30008"
+msgid "Conflict handling"
+msgstr "Manejo de conflictos"
+
+msgctxt "#30009"
+msgid "Prefer Live TV when recording has later slot"
+msgstr "Preferir TV en directo cuando la grabación tiene una ranura posterior"
+
+msgctxt "#30010"
+msgid "Prefer recording and stop Live TV"
+msgstr "Prefiere grabar y detener TV en directo"
+
+msgctxt "#30011"
+msgid "Prefer Live TV and cancel conflicting recording"
+msgstr "Preferir TV en directo y cancelar la grabación en conflicto"
+
+msgctxt "#30012"
+msgid "MythTV Backend Ethernet address (WOL)"
+msgstr "MythTV backend dirección Ethernet (WOL)"
+
+msgctxt "#30013"
+msgid "MythTV Backend Port for API services"
+msgstr "MythTV Backend Port para servicios API"
+
+msgctxt "#30014"
+msgid "MythTV Security Pin for API services"
+msgstr "Pin de seguridad MythTV para servicios de API"
+
 msgctxt "#30019"
 msgid "General"
 msgstr "General"
+
+msgctxt "#30020"
+msgid "Template provider"
+msgstr "Proveedor de plantillas"
+
+msgctxt "#30021"
+msgid "Internal"
+msgstr "interno"
+
+msgctxt "#30022"
+msgid "MythTV"
+msgstr "MythTV"
+
+msgctxt "#30025"
+msgid "Internal template"
+msgstr "Plantilla interna"
+
+msgctxt "#30026"
+msgid "Automatically Look Up Metadata"
+msgstr "Mire automáticamente los metadatos"
+
+msgctxt "#30027"
+msgid "Commercial Flag new recordings"
+msgstr "Bandera comercial nuevas grabaciones"
+
+msgctxt "#30028"
+msgid "Transcode new recordings"
+msgstr "Transcodificar nuevas grabaciones"
+
+msgctxt "#30029"
+msgid "Run User Job #1"
+msgstr "Ejecutar trabajo de usuario #1"
+
+msgctxt "#30030"
+msgid "Run User Job #2"
+msgstr "Ejecutar trabajo de usuario #2"
+
+msgctxt "#30031"
+msgid "Run User Job #3"
+msgstr "Ejecutar trabajo de usuario #3"
+
+msgctxt "#30032"
+msgid "Run User Job #4"
+msgstr "Ejecutar trabajo de usuario #4"
+
+msgctxt "#30033"
+msgid "Transcoder"
+msgstr "Transcodificador"
+
+msgctxt "#30034"
+msgid "Allow recordings to expire"
+msgstr "Permitir la caducidad de las grabaciones"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Mostrar 'Fecha original' en lugar de 'Tiempo de grabación'"
+
+msgctxt "#30049"
+msgid "Recording template"
+msgstr "Recording template"
 
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avanzado"
 
+msgctxt "#30052"
+msgid "Enable demuxing MPEG-TS"
+msgstr "Habilitar demuxing MPEG-TS"
+
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr "Retardo de sintonización (seg)"
+
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr "Grabaciones de grupo por título"
+
 msgctxt "#30055"
 msgid "Always"
 msgstr "Siempre"
+
+msgctxt "#30056"
+msgid "Only for series"
+msgstr "Sólo para series"
 
 msgctxt "#30057"
 msgid "Never"
 msgstr "Nunca"
 
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Habilitar saltos comerciales (EDL)"
+
 msgctxt "#30059"
 msgid "Always"
 msgstr "Siempre"
+
+msgctxt "#30060"
+msgid "Dialog"
+msgstr "Diálogo"
 
 msgctxt "#30061"
 msgid "Never"
 msgstr "Nunca"
 
+msgctxt "#30062"
+msgid "Block backend shutdown"
+msgstr "Bloquear el cierre del backend"
+
+msgctxt "#30063"
+msgid "Enable channel icons"
+msgstr "Activar iconos de canal"
+
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Habilitar grabación fanart/miniaturas"
+
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Limitar los intentos de ajuste del canal"
+
+msgctxt "#30066"
+msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgstr "Mostrar todos inactivos por defecto (alternativo/registrado/expirado)"
+
+msgctxt "#30100"
+msgid "Protocol version: %i - Database version: %i"
+msgstr "Versión del protocolo:%i - Versión de la base de datos: %i"
+
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr "Habilitación de EDL"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "Se ha encontrado una lista de cortes o saltos comerciales.\n¿Desea activar la funcionalidad EDL para este programa?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "La conexión falló"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Quieres volver a intentarlo ?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Error al conectar el backend de MythTV con las versiones de protocolo conocidas. Compruebe el mapa de compatibilidad del complemento y actualice el backend a una versión compatible."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Error al conectar los servicios de API del backend de MythTV. Compruebe su código PIN o la configuración del backend. El código PIN debe configurarse en el backend para permitir la conexión."
+
+msgctxt "#30302"
+msgid "Connection to MythTV backend lost"
+msgstr "Conexión al backend de MythTV perdido"
+
+msgctxt "#30303"
+msgid "Connection to MythTV restored"
+msgstr "Conexión a MythTV restaurada"
+
+msgctxt "#30304"
+msgid "No response from MythTV backend"
+msgstr "No hay respuesta de MythTV backend"
+
 msgctxt "#30305"
 msgid "Channel unavailable"
 msgstr "Canal no disponible"
+
+msgctxt "#30306"
+msgid "Recorder unavailable"
+msgstr "Grabador no disponible"
+
+msgctxt "#30307"
+msgid "Canceling conflicting recording: %s"
+msgstr "Cancelando conflictos de grabación: %s"
+
+msgctxt "#30308"
+msgid "Stopping Live TV due to conflicting recording: %s"
+msgstr "Detención de TV en directo debido a una grabación en conflicto: %s"
+
+msgctxt "#30309"
+msgid "Not recording"
+msgstr "Not recording"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -84,6 +272,142 @@ msgctxt "#30311"
 msgid "Disabled"
 msgstr "Deshabilitado"
 
+msgctxt "#30312"
+msgid "No broadcast found"
+msgstr "No se ha encontrado ninguna emisora"
+
+msgctxt "#30411"
+msgid "Delete and re-record"
+msgstr "Eliminar y volver a grabar"
+
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Seguir grabando"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Alternar visualización de alternativas/grabadas /caducadas"
+
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr "Actualizar caché para los iconos de canal"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Actualización de los canales de activación"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Mostrar el estado de la programación"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "sin tratamiento"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "próximo"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Sustituido"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "No grabe"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Próximos manuales"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativo"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Actualmente grabado"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Grabación caducado"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Grabar uno"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Grabar semanal"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Grabar diario"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Grabar todo"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Grabar esto"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Grabar series"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Buscar la palabra clave"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Buscar personas"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regla desactivada"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "No coincidir con duplicados"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Coincidir duplicados usando subtítulos"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Coincidir duplicados usando descripción"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Coincidir duplicados usando subtítutlos y descripción"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Coincidir duplicados usando subtítulos y entonces descripción"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Las grabaciones nunca caducan"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Permitir la caducidad de las grabaciones"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Mantener hasta %d grabaciones"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Mantener %d más reciente y caducados"

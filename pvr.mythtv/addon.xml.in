@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="4.11.2"
+  version="4.11.3"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -17,7 +17,7 @@
     <summary lang="af_ZA">Kodi voorprogram vir MythTV</summary>
     <summary lang="be_BY">Kodi frontend for MythTV</summary>
     <summary lang="bg_BG">Kodi клиент за MythTV</summary>
-    <summary lang="ca_ES">Interfície del Kodi pel MythTV</summary>
+    <summary lang="ca_ES">Frontal de Kodi per a MythTV</summary>
     <summary lang="cs_CZ">Rozhraní Kodi pro MythTV</summary>
     <summary lang="cy_GB">Blaen Kodi ar gyfer MythTV</summary>
     <summary lang="da_DK">Kodi frontend til MythTV</summary>
@@ -30,7 +30,7 @@
     <summary lang="es_AR">Front-end de Kodi para MythTV</summary>
     <summary lang="es_ES">Front-end de Kodi para MythTV</summary>
     <summary lang="es_MX">Kodi frontend para MythTV</summary>
-    <summary lang="fi_FI">Kodi:n MythTV-tuki</summary>
+    <summary lang="fi_FI">Kodin MythTV-asiakasohjelma</summary>
     <summary lang="fr_CA">Frontal Kodi pour MythTV</summary>
     <summary lang="fr_FR">Interface logicielle pour MythTV</summary>
     <summary lang="gl_ES">Interface de Kodi para MythTV</summary>
@@ -48,7 +48,7 @@
     <summary lang="ms_MY">Bahagian hadapan Kodi untuk MythTV</summary>
     <summary lang="nb_NO">Kodi-klient for MythTV</summary>
     <summary lang="nl_NL">Kodi frontend voor MythTV</summary>
-    <summary lang="pl_PL">Klient telewizyjny dla MythTV</summary>
+    <summary lang="pl_PL">Klient telewizji dla MythTV</summary>
     <summary lang="pt_BR">Kodi frontend para MythTV</summary>
     <summary lang="pt_PT">Interface Kodi para MythTV</summary>
     <summary lang="ro_RO">Interfața Kodi pentru MythTV</summary>
@@ -58,12 +58,14 @@
     <summary lang="sr_RS">Kodi интерфејс за MythTV</summary>
     <summary lang="sr_RS@latin">Kodi interfejs za MythTV</summary>
     <summary lang="sv_SE">Kodi-gränssnitt mot MythTV</summary>
+    <summary lang="szl">Klijynt telewizyjny dlŏ MythTV</summary>
     <summary lang="tr_TR">MythTV için Kodi ön ucu</summary>
     <summary lang="zh_CN">Kodi 的 MythTV 前端</summary>
+    <summary lang="zh_TW">MythTV的Kodi前端介面</summary>
     <description lang="af_ZA">MythTV voorprogram (tot MythTV 0.28). Ondersteun stroom van Lewendige TV &amp; Opnames, luister na Radio kanale, EPG en Tydhouers.</description>
     <description lang="be_BY">MythTV frontend (up to MythTV 0.28). Supports streaming of Live TV &amp; Recordings, listening to Radio channels, EPG and Timers.</description>
     <description lang="bg_BG">MythTV клиент (обновен до MythTV 0.28). Поддържа поточна телевизия и записване, слушане на радио канали, електронен програмен справочник и броячи.</description>
-    <description lang="ca_ES">Front-end de MythTV (fins a MythTV 0.28). Suport de transmissions de TV en directe i enregistraments, escoltar canals de radi, guia electrònica de programes (EPG) i temporitzadors.</description>
+    <description lang="ca_ES">Frontal de MythTV (fins a MythTV 0.28). És compatible amb les transmissions en línia de TV en directe i enregistraments, escolta d'emissores de ràdio, guia electrònica de programació (EPG) i temporitzadors.</description>
     <description lang="cs_CZ">Rozhraní MythTV (do verze MythTV 0.28). Podporuje proudové vysílání živého vysílání a nahrávek, poslech kanálů rádia a EPG, a časovače.</description>
     <description lang="cy_GB">Blaen MythTV (hyd at MythTV 0.28). Cynnal ffrydio Teledu Byw a Recordiadau, gwrando ar sianeli radio, amserlenni rhaglenni electronig ac amseryddion.</description>
     <description lang="da_DK">MythTV frontend (op til MythTV 0.28) Understøtter streaming af Live TV &amp; Optagelser, Radiokanaler, EPG samt tidsplaner.</description>
@@ -75,7 +77,8 @@
     <description lang="en_US">MythTV frontend (up to MythTV 0.28). Supports streaming of Live TV &amp; Recordings, listening to Radio channels, EPG and Timers.</description>
     <description lang="es_AR">Front-end de MythTV (hasta MythTV 0.28). Soporte de transmisiones de TV en Vivo y Grabaciones, escuchar canales de Radio, Guía Electrónica de Programas (EPG) y Temporizadores. </description>
     <description lang="es_ES">Front-end de MythTV (hasta MythTV 0.28). Soporte de transmisiones de TV en Vivo y Grabaciones, escuchar canales de Radio, Guía Electrónica de Programas (EPG) y Temporizadores. </description>
-    <description lang="fi_FI">MythTV asiakasohjelma (MythTV 0.28). Tukee LIVE TV:n toistoa &amp; tallennuksia, radiokanavia, ohjelmaopasta sekä ajastuksia. </description>
+    <description lang="es_MX">MythTV frontend (hasta MythTV 0.28). Soporta transmisión de TV y grabaciones en vivo, escucha de canales de radio, EPG y temporizadores.</description>
+    <description lang="fi_FI">MythTV-asiakasohjelma (MythTV 0.28). Tukee suorien tv-lähetysten ja tallennusten katsomista, radiokanavia, ohjelmaopasta ja ohjelmien ajastamista.</description>
     <description lang="fr_CA">Frontal de MythTV (jusqu'à MythTV 0.2) prenant en charge la diffusion en continu des télés en direct &amp; les enregistrements, l'écoute de chaînes radio, le GÉP et les minuteries.</description>
     <description lang="fr_FR">Interface logicielle MythTV (jusqu'à la version 0.28). Permet la diffusion de la TV en direct, des enregistrements, des stations de radios, ainsi que le guide électronique des programmes TV et les programmations.</description>
     <description lang="gl_ES">Interface de MythTV (maior da MythTV 0.28). Compatíbel coa transmisión de TV ao vivo, gravacións e escoita de canles de Radio, EPG e temporizadores.</description>
@@ -93,7 +96,7 @@
     <description lang="ms_MY">Bahagian hadapan MythTV (sehingga MythTV 0.28). Menyokong penstirman TV Langsung &amp; Rakaman, mendengar saluran Radio, EPG dan Pemasa.</description>
     <description lang="nb_NO">MythTV-klienten (opp til MythTV 0.28). Støtter strømming av Live TV og opptak, avspilling av radiokanaler, EPG og nedtelling.</description>
     <description lang="nl_NL">MythTV frontend (tot MythTV 0.28). Ondersteunt streaming van Live TV &amp; opnames, luisteren naar radiokanalen, EPG en Timers.</description>
-    <description lang="pl_PL">Klient telewizyjny dla MythTV (wersja 0.28 i wcześniejsze) obsługuje strumieniowanie kanałów radiowych i telewizyjnych, nagrywanie i harmonogram nagrań oraz funkcje przewodnika telewizyjnego.</description>
+    <description lang="pl_PL">Klient telewizji dla MythTV (wersja 0.28 i wcześniejsze) obsługuje transmisję kanałów radiowych i telewizyjnych, nagrywanie i harmonogram nagrań oraz funkcje przewodnika telewizyjnego.</description>
     <description lang="pt_BR">MythTV frontend (up para MythTV 0.28). Suporta streaming de TV ao Vivo &amp; Gravações, Escutar canais de rádios, EPG e Agendamentos.</description>
     <description lang="pt_PT">Interface MythTV (até MythTV 0.28). Permite televisão em direto, gravações, estações de rádio, EPG e temporizadores.</description>
     <description lang="ro_RO">Frontend MythTV (până la MythTV 0.28). Suportă difuzare în flux a televiziunii în direct și a înregistrăriilor, ascultarea posturilor de radio, EPG și Cronometre.</description>
@@ -103,12 +106,14 @@
     <description lang="sr_RS">MythTV интерфејс (до MythTV 0.28). Подржава стримовање ТВ Уживо &amp; Снимака, слушање Радио канала, EPG и Тајмере.</description>
     <description lang="sr_RS@latin">MythTV interfejs (do MythTV 0.28). Podržava strimovanje TV Uživo &amp; Snimaka, slušanje Radio kanala, EPG i Tajmere.</description>
     <description lang="sv_SE">MythTV-frontend (upp till MythTV 0.28). Stödjer strömning av direktsänd TV &amp; inspelningar, radiolyssning, EPG och timers.</description>
+    <description lang="szl">Klijynt telewizyjny dlŏ MythTV (wersyjŏ 0.28 i wczaśniyjsze) ôbsuguje szpricowanie kanałōw radyjowych i telewizyjnych, nagrowanie i harmōnogram nagrań, a tyż funkcyje ôkludzŏcza telewizyjnygo.</description>
     <description lang="tr_TR">MythTV ön ucu (MythTV 0.28'ye kadar). Canlı TV akışı ve kayıt yapabilme, radyo kanalları dinleme, EPG ve zamanlayıcıları destekler.</description>
     <description lang="zh_CN">MythTV 前端 ( MythTV 0.28 及之后版本) 。支持直播电视和录像节目的流媒体转发，收听广播频道，电子节目表及定时器功能。</description>
+    <description lang="zh_TW">MythTV 前端介面 (最高至MythTV 0.28)。支援電視直播串流及錄影，收聽廣播，電子節目表及定時器。</description>
     <disclaimer lang="af_ZA">Hierdie is onstabiele sagteware! Die outeurs is op geen manier verantwoordelik vir gefaalde opnames, inkorrekte tydhouers, vermorsde ure, of enige ander ongewensde effekte.</disclaimer>
     <disclaimer lang="be_BY">This is unstable software! The authors are in no way responsible for failed recordings, incorrect timers, wasted hours, or any other undesirable effects.</disclaimer>
     <disclaimer lang="bg_BG">Тази програма е нестабилна! Авторите не носят отговорност за неуспешно записване, некоректни броячи, пропиляното време и други нежелани ефекти.</disclaimer>
-    <disclaimer lang="ca_ES">Aquest programari és inestable! Els autors no són en cap cas responsables per enregistraments fallits, temporitzadors incorrectes, hores malgastades o qualsevol altre efecte indesitjable.</disclaimer>
+    <disclaimer lang="ca_ES">Aquest programari és inestable! En cap cas els autors són els responsables dels enregistraments fallits, temporitzadors incorrectes, hores malgastades o qualsevol altre efecte indesitjable.</disclaimer>
     <disclaimer lang="cs_CZ">Tento software není stabilní. Autoři nejsou žádným způsobem zodpovědní za selhání při nahrávání, neplatné časovače, ztracený čas, či jakékoliv jiné nežádoucí události...</disclaimer>
     <disclaimer lang="cy_GB">Mae'r feddalwedd hon yn fregus! Nid yw'r awduron yn gyfrifol mewn unrhyw ffordd am fethu recordio, amseru gwallus, oriau wedi eu gwastraffu nac effeithiau annymunol eraill.</disclaimer>
     <disclaimer lang="da_DK">Denne software er ustabil. Udviklerne er på ingen måde ansvarlige for mislykkede optagelser, fejlagtige tidsindstillinger, spildte timer eller andre uhensigtsmæssigheder.</disclaimer>
@@ -120,8 +125,9 @@
     <disclaimer lang="en_US">This is unstable software! The authors are in no way responsible for failed recordings, incorrect timers, wasted hours, or any other undesirable effects.</disclaimer>
     <disclaimer lang="es_AR">¡Este software es inestable! Los autores no se responsabilizan por grabaciones fallidas, temporizadores incorrectos, horas perdidas, o cualquier otro efecto no deseado..</disclaimer>
     <disclaimer lang="es_ES">¡Este software es inestable! Los autores no son en ningún caso responsables por grabaciones fallidas, temporizadores incorrectos, horas desperdiciadas o cualquier otro efecto indeseable.</disclaimer>
+    <disclaimer lang="es_MX">¡Este es un software inestable! Los autores no son responsables en absoluto de grabaciones fallidas, temporizadores incorrectos, desperdicio de horas, o cualquier otro efecto indeseable.</disclaimer>
     <disclaimer lang="et_EE">See on ebastabiilne tarkvara! Autorid ei ole kuidagi moodi vastutavad nurjunud salvestiste, ebaõige aegrelee, raisatud tundide ega muude soovimatute asjade eest.</disclaimer>
-    <disclaimer lang="fi_FI">Tämä on epävakaa ohjelma! Ohjelman kirjoittavat eivät vastaa millään tavalla epäonnistuneista nauhoituksista, ajastimen väärästä toiminnasta, hukatusta ajasta tai muista ei-halutuista tapahtumista.</disclaimer>
+    <disclaimer lang="fi_FI">Tämä on epävakaa ohjelma! Sen tekijät eivät ole millään muotoa vastuussa epäonnistuneista tallennuksista, virheellisistä ajastuksista, haaskatusta ajasta, verenpaineen noususta tai mistään muusta epäsuotuisasta vaikutuksesta.</disclaimer>
     <disclaimer lang="fr_CA">Ce logiciel est instable! Les auteurs ne sont aucunement responsables des enregistrements défaillants, des minuteries erronées, des heures perdues ou tout autre effet indésirable.</disclaimer>
     <disclaimer lang="fr_FR">Logiciel en cours d'élaboration ! Les auteurs ne sont en aucun cas responsables de l'échec des enregistrements, programmations défectueuses, temps perdu ou autres effets indésirables.</disclaimer>
     <disclaimer lang="gl_ES">Este é software non estable, os autores non se fan responsábeis dos erros na gravacións, temporizadores incorrectos, e outros efectos non desexados.</disclaimer>
@@ -142,13 +148,14 @@
     <disclaimer lang="pl_PL">To oprogramowanie jest niestabilne! Autorzy w żaden sposób nie odpowiadają za nieudane nagrania, błędy w harmonogramie nagrań, stracone godziny czy też jakiekolwiek inne niepożądane efekty.</disclaimer>
     <disclaimer lang="pt_BR">Este é um software instável! Os autores não são responsáveis por falhas nas gravações, agendamentos incorretos, horas dispendidas, ou quaisquer outro efeito indesejado.</disclaimer>
     <disclaimer lang="pt_PT">Este software é instável! Os autores não podem ser responsabilizados por gravações falhadas, temporizadores incorretos, horas desperdiçadas ou qualquer outro tipo de efeitos indesejáveis...</disclaimer>
-    <disclaimer lang="ro_RO">Acest software nu este stabil! Autorii nu sunt responsabili în niciun caz pentru înregistrările eșuate, cronometre incorecte, ore pierdute sau orice alt efect nedorit.</disclaimer>
+    <disclaimer lang="ro_RO">Această parte din program nu este stabilă! Autorii nu sunt responsabili în niciun caz pentru înregistrările eșuate, cronometre incorecte, ore pierdute sau orice alt efect nedorit.</disclaimer>
     <disclaimer lang="ru_RU">Это тестовая программа! Авторы не несут никакой ответственности за испорченные записи, неверные таймеры, потраченное время и за прочие нежелательные эффекты.</disclaimer>
     <disclaimer lang="sk_SK">Toto nie je stabilný software! Autori nie sú zodpovední za zlýhané nahrávky, nesprávne časovače, premrhané hodiny a iné nežiadúce efekty.</disclaimer>
     <disclaimer lang="sl_SI">To je nestabilna programska oprema! Avtorji niso odgovorni za neuspela snemanja, nepravilne časovnike, zapravljen čas in katerikoli drug neželen učinek.</disclaimer>
     <disclaimer lang="sr_RS">Овај софтвер је нестабилан! Аутори ни на који начин нису одговорни за неуспела снимања, неисправне тајмере, изгубљене сате, или било које друге нежељене ефекте.</disclaimer>
     <disclaimer lang="sr_RS@latin">Ovaj softver je nestabilan! Autori ni na koji način nisu odgovorni za neuspela snimanja, neispravne tajmere, izgubljene sate, ili bilo koje druge neželjene efekte.</disclaimer>
     <disclaimer lang="sv_SE">Denna mjukvara är instabil! Utvecklarna är inte ansvariga för misslyckade inspelningar, felaktiga timers, bortkastade timmar eller några andra olyckliga effekter.</disclaimer>
+    <disclaimer lang="szl">To software je niysztabilne! Autory w żŏdyn knif niy ôdpadajōm za niypodarzōne nagrania, felery w harmōnogramie nagrań, potracōne godziny a tyż jake ino inksze niynazdane efekty.</disclaimer>
     <disclaimer lang="tr_TR">Bu kararsız bir yazılımdır! Yazılımcılar oynatma hatası, yanlış EPG tarihleri, hatalı saatler ya da diğer etkilerden sorumlu değiller.</disclaimer>
     <disclaimer lang="uk_UA">Це нестабільна програма! Автор не несуть жодної відповідальності за зіпсуті записи, неправильні таймери, потрачений час, та інші небажані ефекти.</disclaimer>
     <disclaimer lang="vi_VN">Đây là phần mềm không ổn định! Các tác giả sẽ không chịu trách nhiệm nào với các bản ghi thất bại, bị đặt giờ sai, giờ lãng phí, hoặc các tác dụng không mong muốn khác..</disclaimer>

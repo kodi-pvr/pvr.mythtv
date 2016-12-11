@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "מחיקה והקלטה מחדש"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "הצג/הסתר בקרוב לא פעיל"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "רענן מטמון סמלי ערוץ"

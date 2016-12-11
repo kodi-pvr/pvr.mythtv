@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Wis uit en neem weer op"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Wys / versteek onaktiewe opkomendes"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Verfris kas vir kanaal ikone"

@@ -272,9 +272,9 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Ta bort och spela in på nytt"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Visa/dölj inaktiva uppkommande"
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Fortsätt spela in"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"

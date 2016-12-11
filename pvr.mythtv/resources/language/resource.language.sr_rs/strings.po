@@ -272,10 +272,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Избриши и поново сними"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Прикажи/сакриј неактивне предстојеће"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Освежи кеш за иконе канала"

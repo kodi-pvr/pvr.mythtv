@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Benarkan rakaman menjadi luput"
 
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Tunjuk 'Tarikh Keudara Asal' selain dari 'Masa Rakaman'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Templat rakaman"
@@ -195,6 +199,10 @@ msgstr "Benarkan seni peminat/lakaran kenit rakaman"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Hadkan cubaan penalaan saluran"
+
+msgctxt "#30066"
+msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgstr "Tunjuk semua yang mendatang tak aktif secara lalai (alternatif/dirakam/luput)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -277,8 +285,8 @@ msgid "Keep recording"
 msgstr "Kekal merakam"
 
 msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Tunjuk/sembunyi akan datang yang tidak aktif"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Togol paparan bagi alternatif/dirakam/luput"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -316,6 +324,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternatif"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Kini dirakam"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Rakaman luput"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -351,6 +371,10 @@ msgstr "Gelintar kata kunci"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Gelintar individu"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Peraturan dilumpuhkan"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

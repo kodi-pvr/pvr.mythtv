@@ -18,7 +18,7 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "MythTV-taustaosan konenimi tai IP"
+msgstr "MythTV-taustaosan isäntänimi tai IP-osoite"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
@@ -38,15 +38,15 @@ msgstr "MythTV-tietokannan tietokantanimi"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Sisällytä enemmän debug tietoa lokitiedostoon"
+msgstr "Sisällytä enemmän virheenkorjaustietoja lokitiedostoon"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Ota tv-lähetys käyttöön"
+msgstr "Salli tv-lähetysten katsominen"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Salli suorien lähetysten siirtää ajastuksia"
+msgstr "Salli tv-lähetysten siirtää ajastuksia"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,7 +54,7 @@ msgstr "Ristiriitojen käsittely"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Suosi suoraa lähetystä, kun tallennuksella on myöhäisempi ajankohta"
+msgstr "Suosi tv-lähetystä, jos tallennus alkaa myöhemmin"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
@@ -62,15 +62,15 @@ msgstr "Suosi tallennuksia ja pysäytä tv-lähetys"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Suosi tv-lähetystä ja peru päällekkäiset tallennukset"
+msgstr "Suosi tv-lähetystä ja peru ristiriitainen tallennus"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "MythTV:n taustaosan ethernet osoite (WOL)"
+msgstr "MythTV:n taustaosan verkko-osoite (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "MythTV:n taustaosan portti API palveluille"
+msgstr "MythTV:n taustaosan portti API-palveluille"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -78,11 +78,11 @@ msgstr "MythTV:n API-palveluiden Pin-koodi "
 
 msgctxt "#30019"
 msgid "General"
-msgstr "Yleinen"
+msgstr "Yleiset"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Väliaikainen tarjoaja"
+msgstr "Mallin tarjoaja"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -110,19 +110,19 @@ msgstr "Transkoodaa uudet tallennukset"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
-msgstr "Aja käyttäjän tehtävä #1"
+msgstr "Suorita tehtävä #1"
 
 msgctxt "#30030"
 msgid "Run User Job #2"
-msgstr "Aja käyttäjän tehtävä #2"
+msgstr "Suorita tehtävä #2"
 
 msgctxt "#30031"
 msgid "Run User Job #3"
-msgstr "Aja käyttäjän tehtävä #3"
+msgstr "Suorita tehtävä #3"
 
 msgctxt "#30032"
 msgid "Run User Job #4"
-msgstr "Aja käyttäjän tehtävä #4"
+msgstr "Suorita tehtävä #4"
 
 msgctxt "#30033"
 msgid "Transcoder"
@@ -131,6 +131,10 @@ msgstr "Transkooderi"
 msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Salli tallennusten vanheta"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Näytä ensiesityksen päivämäärä tallennuspäivän sijaan"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -150,7 +154,7 @@ msgstr "Viritysviive (sek)"
 
 msgctxt "#30054"
 msgid "Group recordings by title"
-msgstr "Ryhmitä tallennukset nimien perusteella"
+msgstr "Järjestä tallennukset kansioihin"
 
 msgctxt "#30055"
 msgid "Always"
@@ -158,7 +162,7 @@ msgstr "Aina"
 
 msgctxt "#30056"
 msgid "Only for series"
-msgstr "Vain sarjoihin"
+msgstr "Vain sarjat"
 
 msgctxt "#30057"
 msgid "Never"
@@ -166,7 +170,7 @@ msgstr "Ei koskaan"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Mainosten ohitus päälle (EDL)"
+msgstr "Hyppää mainoskatkojen yli (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -174,7 +178,7 @@ msgstr "Aina"
 
 msgctxt "#30060"
 msgid "Dialog"
-msgstr "Dialogi"
+msgstr "Kysy"
 
 msgctxt "#30061"
 msgid "Never"
@@ -186,7 +190,7 @@ msgstr "Estä taustaosan sammutus"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Käytä kanavakuvakkeita"
+msgstr "Näytä kanavalogot"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
@@ -194,7 +198,11 @@ msgstr "Näytä tallennusten fanitaide/kuvakkeet"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Rajoita kanavanhaku yritykset"
+msgstr "Rajoita kanavan viritysyritysten määrää"
+
+msgctxt "#30066"
+msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgstr "Näytä kaikki epäaktiiviset ajastukset (vaihtoehtoiset/tallennetut/vanhentuneet)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -277,8 +285,8 @@ msgid "Keep recording"
 msgstr "Jatka tallentamista"
 
 msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Näytä/piilota käytöstä poistetut"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Näytä vaihtoehtoiset/tallennetut/vanhentuneet"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -316,6 +324,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Vaihtoehtoinen"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Tällä hetkellä tallennettava"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Vanhentunut tallennus"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuaalisesti"
@@ -352,25 +372,29 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Etsi ihmisiä"
 
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Sääntö poistettu käytöstä"
+
 msgctxt "#30501"
 msgid "Don't match duplicates"
 msgstr "Älä etsi kaksoiskappaleita"
 
 msgctxt "#30502"
 msgid "Match duplicates using subtitle"
-msgstr "Selvitä kaksoiskappaleet tekstityksen avulla"
+msgstr "Selvitä kaksoiskappaleet juonitiivistelmän avulla"
 
 msgctxt "#30503"
 msgid "Match duplicates using description"
-msgstr "Selvitä kaksoiskappaleet selostuksen avulla"
+msgstr "Selvitä kaksoiskappaleet juonen avulla"
 
 msgctxt "#30504"
 msgid "Match duplicates using subtitle & description"
-msgstr "Selvitä kaksoiskappaleet tekstityksen ja selostuksen avulla"
+msgstr "Selvitä kaksoiskappaleet juonitiivistelmän ja juonen avulla"
 
 msgctxt "#30505"
 msgid "Match duplicates using subtitle then description"
-msgstr "Selvitä kaksoiskappaleet ensijaisesti tekstityksen, sitten vasta selostuksen perusteella"
+msgstr "Selvitä kaksoiskappaleet ensijaisesti juonitiivistelmän, sitten vasta juonen perusteella"
 
 msgctxt "#30506"
 msgid "Recordings never expire"

@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Aufnahme fortsetzen"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Anzeigen/Verstecken inaktiv Programmierung"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Cache für Senderlogos aktualisieren"

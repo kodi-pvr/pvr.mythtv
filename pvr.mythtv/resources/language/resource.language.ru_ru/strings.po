@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Сохранять запись"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Показывать/скрыть не активные входящие"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Обновить кэш для иконок каналов"

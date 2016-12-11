@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Nastavi snimanje"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Prikaži/Sakrij neaktivne nadolazeće"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Osvježi predmemoriju za prikaz ikona programa"

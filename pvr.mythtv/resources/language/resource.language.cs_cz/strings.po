@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Ponechat nahrávku"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Ukázat/Schovat neaktivní naplánované položky"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Obnov cache pro ikonky kanálů"

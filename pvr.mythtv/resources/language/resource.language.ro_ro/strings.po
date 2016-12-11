@@ -82,7 +82,7 @@ msgstr "General"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Folosește format predefinit"
+msgstr "Furnizor șablon"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -94,7 +94,7 @@ msgstr "MythTV"
 
 msgctxt "#30025"
 msgid "Internal template"
-msgstr "Format predefinit intern"
+msgstr "Șablon intern"
 
 msgctxt "#30026"
 msgid "Automatically Look Up Metadata"
@@ -134,7 +134,7 @@ msgstr "Permite expirarea înregistrării"
 
 msgctxt "#30049"
 msgid "Recording template"
-msgstr "Inregistrare în format predefinit"
+msgstr "Șablon înregistrare"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -190,7 +190,7 @@ msgstr "Activează pictograme canale"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activează înregistrare creație artistică/miniaturi"
+msgstr "Activează înregistrare decor/miniaturi"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -272,9 +272,9 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Sterge si reinregistraza"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Arată/ascunde viitoare inactive"
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Continu să înregistrezi"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
