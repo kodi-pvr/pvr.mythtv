@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Mantener grabación"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Mostrar/ocultar programación inactivo"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar cache de los iconos para los canales"
@@ -316,6 +312,14 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Grabado actualmente"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Grabación expirada"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -351,6 +355,10 @@ msgstr "Buscar palabra clave"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Buscar gente"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regla deshabilitada"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

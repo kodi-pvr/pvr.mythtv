@@ -16,33 +16,245 @@ msgstr ""
 "Language: szl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+msgctxt "#30000"
+msgid "MythTV Backend Hostname or IP"
+msgstr "Miano lebo adresa serwera"
+
+msgctxt "#30001"
+msgid "MythTV Backend Port"
+msgstr "Port serwera"
+
+msgctxt "#30002"
+msgid "MythTV Database Username"
+msgstr "Używŏcz bazy"
+
+msgctxt "#30003"
+msgid "MythTV Database Password"
+msgstr "Hasło używŏcza bazy"
+
+msgctxt "#30004"
+msgid "MythTV Database Databasename"
+msgstr "Miano bazy danych"
+
+msgctxt "#30005"
+msgid "Include more debug information in the log file"
+msgstr "Registruj detajlowe informacyje we zbiorze dziynnika"
+
+msgctxt "#30006"
+msgid "Enable Live TV"
+msgstr "Aktywuj mynedżera telewizyje"
+
+msgctxt "#30007"
+msgid "Allow Live TV to move scheduled shows"
+msgstr "Przizwŏlej na przenoszynie nasztalowanych programōw"
+
+msgctxt "#30008"
+msgid "Conflict handling"
+msgstr "Reskyrowanie kōnfliktami"
+
+msgctxt "#30009"
+msgid "Prefer Live TV when recording has later slot"
+msgstr "Preferuj ôdtwŏrzanie, kej nagranie napoczynŏ sie niyskorzij"
+
+msgctxt "#30010"
+msgid "Prefer recording and stop Live TV"
+msgstr "Preferuj nagrować i zastŏwiej ôdtwŏrzanie telewizyje"
+
+msgctxt "#30011"
+msgid "Prefer Live TV and cancel conflicting recording"
+msgstr "Preferuj ôdtwŏrzanie telewizyje i pociepnij konfliktowe nagrowania"
+
+msgctxt "#30012"
+msgid "MythTV Backend Ethernet address (WOL)"
+msgstr "Adresa MAC ôd serwera (WOL)"
+
+msgctxt "#30013"
+msgid "MythTV Backend Port for API services"
+msgstr "Port posugōw API"
+
+msgctxt "#30014"
+msgid "MythTV Security Pin for API services"
+msgstr "Kod bezpiyczyństwa dlŏ posugōw API"
+
 msgctxt "#30019"
 msgid "General"
 msgstr "Głōwnŏ"
+
+msgctxt "#30020"
+msgid "Template provider"
+msgstr "Liferant szablōn"
+
+msgctxt "#30021"
+msgid "Internal"
+msgstr "Wnōntrzny"
+
+msgctxt "#30022"
+msgid "MythTV"
+msgstr "MythTV"
+
+msgctxt "#30025"
+msgid "Internal template"
+msgstr "Wnōntrznŏ szablōna"
+
+msgctxt "#30026"
+msgid "Automatically Look Up Metadata"
+msgstr "Zeszukuj metadaty autōmatycznie"
+
+msgctxt "#30027"
+msgid "Commercial Flag new recordings"
+msgstr "Cechuj ryklamy w nowych nagraniach"
+
+msgctxt "#30028"
+msgid "Transcode new recordings"
+msgstr "Transkoduj nowe nagrania"
+
+msgctxt "#30029"
+msgid "Run User Job #1"
+msgstr "Sztartnij auftrag #1"
+
+msgctxt "#30030"
+msgid "Run User Job #2"
+msgstr "Sztartnij auftrag #2"
+
+msgctxt "#30031"
+msgid "Run User Job #3"
+msgstr "Sztartnij auftrag #3"
+
+msgctxt "#30032"
+msgid "Run User Job #4"
+msgstr "Sztartnij auftrag #4"
+
+msgctxt "#30033"
+msgid "Transcoder"
+msgstr "Transkoder"
+
+msgctxt "#30034"
+msgid "Allow recordings to expire"
+msgstr "Przizwŏlej na przedŏwnianie nagrań"
+
+msgctxt "#30049"
+msgid "Recording template"
+msgstr "Szablōna nagrowaniŏ"
 
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Zaawansowane"
 
+msgctxt "#30052"
+msgid "Enable demuxing MPEG-TS"
+msgstr "Używej dekodowaniŏ MPEG-TS"
+
+msgctxt "#30053"
+msgid "Tuning delay (sec)"
+msgstr "Zniyskorzynie dostrŏjaniŏ (w sekundach)"
+
+msgctxt "#30054"
+msgid "Group recordings by title"
+msgstr "Zortuj nagrania po tytule"
+
 msgctxt "#30055"
 msgid "Always"
 msgstr "zawdy"
+
+msgctxt "#30056"
+msgid "Only for series"
+msgstr "Ino dlŏ seriolōw"
 
 msgctxt "#30057"
 msgid "Never"
 msgstr "Nigdy"
 
+msgctxt "#30058"
+msgid "Enable commercial skips (EDL)"
+msgstr "Używej funkcyje pōmijaniŏ ryklam (EDL)"
+
 msgctxt "#30059"
 msgid "Always"
 msgstr "zawdy"
+
+msgctxt "#30060"
+msgid "Dialog"
+msgstr "Dialog"
 
 msgctxt "#30061"
 msgid "Never"
 msgstr "Nigdy"
 
+msgctxt "#30062"
+msgid "Block backend shutdown"
+msgstr "Zniymożebniej szaltrowanie serwera"
+
+msgctxt "#30063"
+msgid "Enable channel icons"
+msgstr "Pokŏzuj ikōny kanałōw"
+
+msgctxt "#30064"
+msgid "Enable recording fanart/thumbnails"
+msgstr "Pokŏzuj fototapety i miniatury nagrań"
+
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr "Ukrōcej prōby dostrŏjaniŏ kanału"
+
+msgctxt "#30100"
+msgid "Protocol version: %i - Database version: %i"
+msgstr "Wersyjŏ protokołu: %i - wersyjŏ bazy datōw: %i"
+
+msgctxt "#30110"
+msgid "Enabling EDL"
+msgstr "Używej funkcyje EDL"
+
+msgctxt "#30111"
+msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgstr "Ôdnŏdniynto było wykŏz wytniyntych scyn abo pōmijaniŏ ryklam.\nChcesz użyć funkcyje EDL dlŏ tego seriolu?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Niypodarzōne skuplowanie"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Chcesz sprōbować zaś?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Niypodarzōne skuplowanie z serwerym MythTV przi pōmocy znanych wersyji protokołu. Wybadej wykŏz kōmpatybilności przidŏwka i zaktualizuj serwer do dopōmŏganyj wersyje."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Niypodarzōne skuplowanie z posugami API serwera MythTV. Wybadej wkludzōny kod PIN lebo kōnfiguracyjõ serwera. Kod PIN musi być  nŏjprzōd skōnfigurowany na serwerze, coby skuplowanie było możebne."
+
+msgctxt "#30302"
+msgid "Connection to MythTV backend lost"
+msgstr "Serwane skuplowanie z serwerym MythTV"
+
+msgctxt "#30303"
+msgid "Connection to MythTV restored"
+msgstr "Wrōcōno było skuplowanie z MythTV"
+
+msgctxt "#30304"
+msgid "No response from MythTV backend"
+msgstr "Serwer MythTV niy ôdpadŏ"
+
 msgctxt "#30305"
 msgid "Channel unavailable"
 msgstr "Kanał je niydostympny"
+
+msgctxt "#30306"
+msgid "Recorder unavailable"
+msgstr "Funkcyjŏ nagrowaniŏ niydostympnŏ"
+
+msgctxt "#30307"
+msgid "Canceling conflicting recording: %s"
+msgstr "Pociepniyńcie nagraniŏ, co sprŏwiŏ kōnflikt: %s"
+
+msgctxt "#30308"
+msgid "Stopping Live TV due to conflicting recording: %s"
+msgstr "Zastŏwianie ôdtwŏrzaniŏ skiż konfliktowygo nagraniŏ: %s"
+
+msgctxt "#30309"
+msgid "Not recording"
+msgstr "Nagrowanie niyaktywne"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -52,6 +264,122 @@ msgctxt "#30311"
 msgid "Disabled"
 msgstr "Zastawiōny"
 
+msgctxt "#30312"
+msgid "No broadcast found"
+msgstr "Niy ma transmisyje "
+
+msgctxt "#30411"
+msgid "Delete and re-record"
+msgstr "Skasuj i nagrej zaś "
+
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Spamiyntej nagranie"
+
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr "Ôdświyż bufōr ikōn kanałōw"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Aktualizuj kanały"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Pokŏzuj stan harmōnogramu auftragōw"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Niypodpiyrane"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Nŏjbliższe"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Pōmiyniōne"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Niy nagrowej"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Manualnie nŏjbliższe"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manualnie"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Nagrej rŏz"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Nagrowej co tydziyń"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Nagrowej dziynnie"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Nagrowej wszyjsko"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Nagrej to"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Nagrowej seriol"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Zeszukej pdl. klucza"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Zeszukej pdl. ôsob"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Niy zeszukuj tuplikatōw"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Zeszukuj tuplikaty przi używaniu podtytułu"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Zeszukuj tuplikaty przi używaniu ôpisu"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Zeszukuj tuplikaty przi używaniu podtytułu i ôpisu"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Zeszukuj tuplikaty przi używaniu nŏjprzōd podtytułu, a potym ôpisu"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Nagrania sie nikej niy przedŏwniajōm"
+
+msgctxt "#30507"
+msgid "Allow recordings to expire"
+msgstr "Przizwŏlej na przedŏwnianie nagrań"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Spamiyntuj do %d nagrań "
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Spamiyntuj %d nŏjnowszych nagrań, a stare przedŏwniej"

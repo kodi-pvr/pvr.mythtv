@@ -256,10 +256,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Keep recording"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Show/hide inactive upcomings"
-
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"

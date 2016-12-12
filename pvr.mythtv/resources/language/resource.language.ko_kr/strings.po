@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "계속 녹화"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "비활성된 방송 예정 보이기/숨기기"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "채널 아이콘 캐시 새로 고침"

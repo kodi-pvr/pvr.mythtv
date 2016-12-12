@@ -256,10 +256,6 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slet og optag på ny"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Vis/Skjul inaktive programmering"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Opdater cachen for kanalikoner"

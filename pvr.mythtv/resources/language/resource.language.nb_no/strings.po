@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Tillat opptak å utløpe"
 
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Vis 'Opprinnelig Sendedato' i stedte for 'Opptakstid'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Opptaksmal"
@@ -195,6 +199,10 @@ msgstr "Aktiver fanart/miniatyrbilder for optak"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Begrens kanal justerings forsøk"
+
+msgctxt "#30066"
+msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgstr "Vis alle inaktive kommende som standard (alternativ/tatt opp/gått ut)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -277,8 +285,8 @@ msgid "Keep recording"
 msgstr "Behold opptak"
 
 msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Vis/skjul inaktive kommende"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Veksle skjerm for alternativ/tatt opp/utgått"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -316,6 +324,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativ"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "For øyeblikket tatt opp"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Utgåtte opptak"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuelt"
@@ -351,6 +371,10 @@ msgstr "Søk nøkkelord"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Søk personer"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regel utkoblet"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

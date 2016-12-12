@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permitir gravações expirar"
 
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Mostrar 'Data Original em que foi ao ar'  ao invés de 'Tempo de Gravação'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Gravando modelo"
@@ -195,6 +199,10 @@ msgstr "Ativar miniaturas/fanarts nas gravações"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limite de tentativas de sintonização dos canais"
+
+msgctxt "#30066"
+msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgstr "Mostrar todos os por vir inativos por padrão (alternativo / gravado / expirado)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -277,8 +285,8 @@ msgid "Keep recording"
 msgstr "Manter gravação"
 
 msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Mostrar/Ocultar por vir inativo"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Alternar mostrar entre alternativo/gravado/expirado"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -316,6 +324,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zumbie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativo"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Gravações atuais"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Gravações expiradas"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -351,6 +371,10 @@ msgstr "Procura por palavras chaves"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Procurar pessoas"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regras desabilitada"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

@@ -276,10 +276,6 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Felvétel megtartása"
 
-msgctxt "#30421"
-msgid "Show/hide inactive upcomings"
-msgstr "Inaktív hamarosan érkezők mutatása/elrejtése"
-
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Csatornaikon gyorsítótár frissítése"
