@@ -1,3 +1,6 @@
+v4.11.5
+- Replaced custom Dialog class with standard Kodi API call
+
 v4.11.2
 - Sync cppmyth upstream (2.9.1)
 
