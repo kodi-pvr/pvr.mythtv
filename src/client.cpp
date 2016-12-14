@@ -335,7 +335,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   // Create our addon
   XBMC->Log(LOG_DEBUG, "Creating MythTV client...");
   g_client = new PVRClientMythTV();
-  if (!g_client->Connect())
+  while (!g_client->Connect())
   {
     switch(g_client->GetConnectionError())
     {
@@ -346,11 +346,9 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
         // Do you want to retry ?
         std::string msg = XBMC->GetLocalizedString(30300);
         msg.append("\n").append(XBMC->GetLocalizedString(30113));
-	bool canceled = false;
-	if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
+        bool canceled = false;
+        if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
           m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
-        else
-          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
         break;
       }
       case PVRClientMythTV::CONN_ERROR_API_UNAVAILABLE:
@@ -360,29 +358,41 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
         // Do you want to retry ?
         std::string msg = XBMC->GetLocalizedString(30301);
         msg.append("\n").append(XBMC->GetLocalizedString(30113));
-	bool canceled = false;
-	if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
+        bool canceled = false;
+        if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
           m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
-        else
-          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
         break;
       }
       default:
-        if (g_bNotifyAddonFailure)
+      {
+        if (!g_bNotifyAddonFailure)
+          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
+        else
         {
-          XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30304)); // No response from MythTV backend
-          g_bNotifyAddonFailure = false; // No more notification
+          // HEADING: Connection failed
+          // No response from MythTV backend.
+          // Do you want to retry ?
+          std::string msg = XBMC->GetLocalizedString(30304);
+          msg.append("\n").append(XBMC->GetLocalizedString(30113));
+          bool canceled = false;
+          if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
+            m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
         }
-        m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
+        break;
+      }
     }
-    SAFE_DELETE(g_client);
-    SAFE_DELETE(CODEC);
-    SAFE_DELETE(GUI);
-    SAFE_DELETE(PVR);
-    SAFE_DELETE(XBMC);
-    return m_CurStatus;
+    if (m_CurStatus == ADDON_STATUS_PERMANENT_FAILURE || m_CurStatus == ADDON_STATUS_NEED_SETTINGS)
+    {
+      SAFE_DELETE(g_client);
+      SAFE_DELETE(CODEC);
+      SAFE_DELETE(GUI);
+      SAFE_DELETE(PVR);
+      SAFE_DELETE(XBMC);
+      return m_CurStatus;
+    }
   }
   XBMC->Log(LOG_DEBUG, "Creating MythTV client...done");
+  PVR->ConnectionStateChange(g_client->GetBackendName(), PVR_CONNECTION_STATE_CONNECTED, g_client->GetBackendVersion());
 
   /* Read setting "LiveTV Priority" from backend database */
   bool savedLiveTVPriority;
