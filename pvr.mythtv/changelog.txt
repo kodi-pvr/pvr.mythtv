@@ -1,3 +1,10 @@
+v5.0.4
+- Replaced custom Dialog class with standard Kodi API call
+- Upgrade the demuxer to support hevc stream
+- Add a dialog to retry connect the backend on startup
+- An option to prompt to delete a recording after finishing it
+- Adding new section 'Preferences' in settings
+
 v5.0.2
 - Sync cppmyth upstream (2.9.1)
 
