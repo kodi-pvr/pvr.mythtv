@@ -140,7 +140,7 @@ msgstr ""
 #empty strings from id 30035 to 30046
 
 msgctxt "#30047"
-msgid "Prompt to delete at end of recording"
+msgid "Prompt to delete the watched recording"
 msgstr ""
 
 msgctxt "#30048"
@@ -155,7 +155,9 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr ""
 
-#empty string with id 30051
+msgctxt "#30051"
+msgid "Preferences"
+msgstr ""
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -214,7 +216,7 @@ msgid "Limit channel tuning attempts"
 msgstr ""
 
 msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr ""
 
 #empty strings from id 30067 to 30099
