@@ -887,9 +887,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
       tag.iChannelUid = FindPVRChannelUid(it->second.ChannelID());
-
-      /* TODO: PVR API 5.1.0: Implement this */
-      tag.channelType = PVR_RECORDING_CHANNEL_TYPE_UNKNOWN;
+      tag.channelType = PVR_RECORDING_CHANNEL_TYPE_TV;
 
       int genre = m_categories.Category(it->second.Category());
       tag.iGenreSubType = genre&0x0F;
@@ -1005,6 +1003,8 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
       }
       PVR_STRCPY(tag.strPlot, it->second.Description().c_str());
       PVR_STRCPY(tag.strChannelName, it->second.ChannelName().c_str());
+      tag.iChannelUid = FindPVRChannelUid(it->second.ChannelID());
+      tag.channelType = PVR_RECORDING_CHANNEL_TYPE_TV;
 
       int genre = m_categories.Category(it->second.Category());
       tag.iGenreSubType = genre&0x0F;
@@ -1073,7 +1073,6 @@ void PVRClientMythTV::ForceUpdateRecording(ProgramInfoMap::iterator it)
     MythProgramInfo prog(m_control->GetRecorded(it->second.ChannelID(), it->second.RecordingStartTime()));
     if (!prog.IsNull())
     {
-      CLockObject lock(m_recordingsLock);
       // Copy props
       prog.CopyProps(it->second);
       // Update recording
