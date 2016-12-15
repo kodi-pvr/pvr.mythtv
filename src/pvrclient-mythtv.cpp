@@ -24,7 +24,6 @@
 #include "client.h"
 #include "tools.h"
 #include "avinfo.h"
-#include "guidialogyesno.h"
 
 #include <time.h>
 #include <set>
@@ -1210,19 +1209,33 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Set watched state for %s", __FUNCTION__, recording.strRecordingId);
       ForceUpdateRecording(it);
-      return PVR_ERROR_NO_ERROR;
     }
     else
     {
       XBMC->Log(LOG_DEBUG, "%s: Failed setting watched state for: %s", __FUNCTION__, recording.strRecordingId);
-      return PVR_ERROR_NO_ERROR;
     }
+
+    if (g_bPromptDeleteAtEnd && count > 0)
+    {
+      std::string dispTitle = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
+      if (GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(122),
+              XBMC->GetLocalizedString(19112), "", dispTitle.c_str(),
+              "", XBMC->GetLocalizedString(117)))
+      {
+        if (m_control->DeleteRecording(*(it->second.GetPtr())))
+          XBMC->Log(LOG_DEBUG, "%s: Deleted recording %s", __FUNCTION__, it->first.c_str());
+        else
+          XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %s", __FUNCTION__, it->first.c_str());
+      }
+    }
+
+    return PVR_ERROR_NO_ERROR;
   }
   else
   {
     XBMC->Log(LOG_DEBUG, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
+    return PVR_ERROR_FAILED;
   }
-  return PVR_ERROR_FAILED;
 }
 
 PVR_ERROR PVRClientMythTV::SetRecordingLastPlayedPosition(const PVR_RECORDING &recording, int lastplayedposition)
@@ -1330,9 +1343,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   // Open dialog
   if (g_iEnableEDL == ENABLE_EDL_DIALOG && !skpList->empty())
   {
-    GUIDialogYesNo dialog(XBMC->GetLocalizedString(30110), XBMC->GetLocalizedString(30111), 1);
-    dialog.Open();
-    if (dialog.IsNo())
+    bool canceled = false;
+    if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30110), XBMC->GetLocalizedString(30111), canceled) && !canceled)
       return PVR_ERROR_NO_ERROR;
   }
 

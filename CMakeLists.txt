@@ -34,10 +34,9 @@ set(MYTHTV_SOURCES src/avinfo.cpp
                    src/demuxer/ES_AC3.cpp
                    src/demuxer/elementaryStream.cpp
                    src/demuxer/ES_MPEGVideo.cpp
+                   src/demuxer/ES_hevc.cpp
                    src/demuxer/tsDemuxer.cpp
                    src/demux.cpp
-                   src/guidialogbase.cpp
-                   src/guidialogyesno.cpp
                    src/pvrclient-mythtv.cpp
                    src/cppmyth/MythScheduleManager.cpp
                    src/cppmyth/MythScheduleHelperNoHelper.cpp
