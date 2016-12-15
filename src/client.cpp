@@ -60,8 +60,8 @@ bool          g_bUseAirdate             = DEFAULT_USE_AIRDATE;
 int           g_iEnableEDL              = ENABLE_EDL_ALWAYS;
 bool          g_bBlockMythShutdown      = DEFAULT_BLOCK_SHUTDOWN;
 bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
-bool          g_bShowNotRecording       = false;
-bool          g_bPromptDeleteAtEnd      = false;
+bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
+bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
