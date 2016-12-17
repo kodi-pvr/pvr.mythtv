@@ -1,3 +1,6 @@
+v5.0.6
+- Fix content inflate
+
 v5.0.5
 - Fill flag 'has bookmark' on recordings
 
