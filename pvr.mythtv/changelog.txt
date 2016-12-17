@@ -1,3 +1,6 @@
+v4.12.2
+- Fill flag 'has bookmark' on recordings
+
 v4.12.0
 - An option to prompt to delete a recording after finishing it
 - Adding new section 'Preferences' in settings
