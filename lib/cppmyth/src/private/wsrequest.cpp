@@ -57,8 +57,8 @@ WSRequest::WSRequest(const std::string& server, unsigned port)
 {
   if (port == 443)
     m_secure_uri = true;
-  // by default allow content encoding if possible
-  RequestAcceptEncoding(true);
+  //FIXME: by default allow content encoding if possible
+  RequestAcceptEncoding(false);
 }
 
 WSRequest::WSRequest(const std::string& server, unsigned port, bool secureURI)
@@ -72,8 +72,8 @@ WSRequest::WSRequest(const std::string& server, unsigned port, bool secureURI)
 , m_contentType(CT_FORM)
 , m_contentData()
 {
-  // by default allow content encoding if possible
-  RequestAcceptEncoding(true);
+  //FIXME: by default allow content encoding if possible
+  RequestAcceptEncoding(false);
 }
 
 WSRequest::WSRequest(const URIParser& uri, HRM_t method)
@@ -99,8 +99,8 @@ WSRequest::WSRequest(const URIParser& uri, HRM_t method)
   if (uri.Path())
     m_service_url.append(uri.Path());
 
-  // by default allow content encoding if possible
-  RequestAcceptEncoding(true);
+  //FIXME: by default allow content encoding if possible
+  RequestAcceptEncoding(false);
 }
 
 WSRequest::~WSRequest()
