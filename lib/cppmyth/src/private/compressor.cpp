@@ -33,7 +33,7 @@
 #endif
 
 #define GZIP_WINDOWS_BIT  15 + 16
-#define GZIP_CHUNK_SIZE   1 * 1024
+#define GZIP_CHUNK_SIZE   16384
 #define MIN(a,b)          (a > b ? b : a)
 #define MAX(a,b)          (a > b ? a : b)
 
