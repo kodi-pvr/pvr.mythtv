@@ -1,3 +1,6 @@
+v4.12.4
+- Fix content inflate
+
 v4.12.2
 - Fill flag 'has bookmark' on recordings
 
