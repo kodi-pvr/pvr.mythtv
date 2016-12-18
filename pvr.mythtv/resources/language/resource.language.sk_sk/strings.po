@@ -200,10 +200,6 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Obmedziť počet pokusov o ladenie kanálu"
 
-msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
-msgstr "Štandardne zobraziť všetky neaktívne následujúce výskyty (alternatívne/nahrané/vypršané)"
-
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Verzia protokolu: %i - Verzia databázy: %i"

@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "允許錄影過期"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "刪除已看過的錄影前先提示"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "顯示\"原始的播出時間\"而不是\"錄影當下時間\""
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "錄影範本"
@@ -139,6 +147,10 @@ msgstr "錄影範本"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "進階"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "喜好設定"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "開啟錄影檔的劇照/縮圖"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "限制選台動作"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "顯示已不活躍的下集預告(有其他選擇/已錄製/過期)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "保留錄影檔"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "切換顯示有其他選擇的/已錄製的/過期的"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "更新頻道圖示的快取資料"
@@ -312,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "不再更新的的"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "有其他選擇的"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "目前錄影的"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "已過期的錄影"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "手動"
@@ -347,6 +379,10 @@ msgstr "搜尋關鍵字"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "搜尋人名"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "規則已禁用"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

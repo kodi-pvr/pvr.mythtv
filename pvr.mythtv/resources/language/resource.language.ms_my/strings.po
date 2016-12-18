@@ -200,10 +200,6 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Hadkan cubaan penalaan saluran"
 
-msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
-msgstr "Tunjuk semua yang mendatang tak aktif secara lalai (alternatif/dirakam/luput)"
-
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokol versi: %i = Pangkalan data versi: %i"

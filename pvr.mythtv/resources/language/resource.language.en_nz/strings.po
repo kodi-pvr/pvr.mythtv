@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Allow recordings to expire"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Prompt to delete the watched recording"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Show 'Original Airdate' instead of 'Recording Time'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Recording template"
@@ -139,6 +147,10 @@ msgstr "Recording template"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Advanced"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferences"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Enable recording fanart/thumbnails"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limit channel tuning attempts"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Show inactive upcomings (alternative/recorded/expired)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Keep recording"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Toggle display of alternative/recorded/expired"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refresh cache for channel icons"
@@ -312,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternative"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Currently recorded"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Expired recording"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -347,6 +379,10 @@ msgstr "Search keyword"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Search people"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Rule disabled"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"
