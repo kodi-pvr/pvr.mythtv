@@ -1,5 +1,5 @@
-v5.0.6
-- Fix content inflate
+v5.0.7
+- Sync upstream cppmyth (2.9.2)
 
 v5.0.5
 - Fill flag 'has bookmark' on recordings
