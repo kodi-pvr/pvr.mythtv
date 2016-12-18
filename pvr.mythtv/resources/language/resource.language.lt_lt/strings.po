@@ -200,10 +200,6 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Apriboti kanalo nustatymo bandymus"
 
-msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
-msgstr "Rodyti visus neaktyvius būsimus įvykius pagal nutylėjimą (alternatyvus/įrašytas/nebegaliojantis)"
-
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokolo versija: %i - Duomenų bazės versija: %i"

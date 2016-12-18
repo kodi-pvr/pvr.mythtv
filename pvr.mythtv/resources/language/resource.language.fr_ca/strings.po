@@ -200,10 +200,6 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limiter les tentatives de syntonisation des chaînes"
 
-msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
-msgstr "Afficher par défaut tous les À venir inactifs (autre/enregistré/expiré)"
-
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole : %i - Version de la base de données : %i"

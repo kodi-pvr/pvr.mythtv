@@ -200,10 +200,6 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Kanal düzeltme denemelerini sınırla"
 
-msgctxt "#30066"
-msgid "Show all inactive upcomings by default (alternative/recorded/expired)"
-msgstr "Etkin olmayan tüm yaklaşanları varsayılan olarak göster (alternatif/kayıtlı/süresi dolan)"
-
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokol sürümü: %i - Veritabanı sürümü: %i"

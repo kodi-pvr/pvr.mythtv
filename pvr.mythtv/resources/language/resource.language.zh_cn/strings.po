@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "允许录像过期"
 
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "显示“原始播出时间”而不是“录制时间”"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "录像模板"
@@ -276,6 +280,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "保留录像"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "切换显示替代/已录制/已过期"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "刷新频道图标缓存"
@@ -312,6 +320,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "僵尸"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "替代"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "当前已录制"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "已过期录像"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "手动"
@@ -347,6 +367,10 @@ msgstr "搜索关键字"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "搜索人"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "已禁用规则"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"
