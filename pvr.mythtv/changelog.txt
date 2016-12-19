@@ -1,3 +1,7 @@
+v5.0.8
+- Sync demuxer upstream
+- Fix incorrect hours to display when g_bUseAirdate was set
+
 v5.0.7
 - Sync upstream cppmyth (2.9.2)
 
