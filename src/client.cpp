@@ -459,6 +459,10 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   return m_CurStatus;
 }
 
+void ADDON_Stop()
+{
+}
+
 void ADDON_Destroy()
 {
   if (g_bCreated)
@@ -471,10 +475,6 @@ void ADDON_Destroy()
     SAFE_DELETE(GUI);
   }
   m_CurStatus = ADDON_STATUS_UNKNOWN;
-}
-
-void ADDON_Announce(const char *flag, const char *sender, const char *message, const void *data)
-{
 }
 
 ADDON_STATUS ADDON_GetStatus()
@@ -715,14 +715,8 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   return ADDON_STATUS_OK;
 }
 
-void ADDON_Stop()
-{
-  //ADDON_Destroy();
-}
-
 void ADDON_FreeSettings()
 {
-  return;
 }
 
 
