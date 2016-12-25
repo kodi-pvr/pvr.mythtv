@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permetti alle registrazioni di scadere"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Scegliere per cancellare le registrazioni visualizzate"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Mostra 'Data di messa in onda originale' invece di 'Ora di registrazione'"
@@ -143,6 +147,10 @@ msgstr "Modello registrazione"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avanzate"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferenze"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Abilita fanart/thumbnails per le registrazioni"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limite i tentativi di regolazione"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Mostra tutte le ultime inattività (alternativi/registrati/scaduti)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Autoriser les enregistrements à expirer"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Proposer de supprimer l'enregistrement visionné"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Afficher la « Date de diffusion » au lieu de la « Date d'enregistrement »"
@@ -143,6 +147,10 @@ msgstr "Modèle d'enregistrement"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avancé"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Préférences"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -178,7 +186,7 @@ msgstr "Toujours"
 
 msgctxt "#30060"
 msgid "Dialog"
-msgstr "Fenêtre de dialogue"
+msgstr "Boîte de dialogue"
 
 msgctxt "#30061"
 msgid "Never"
@@ -199,6 +207,10 @@ msgstr "Activer l'enregistrement des FanArts/miniatures"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limiter les tentatives de syntonisation"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Afficher les programmes à venir inactifs (alternatifs/enregistrés/expirés)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -222,7 +234,7 @@ msgstr "Faut-il réessayer ?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Impossible de se connecter au serveur MythTV avec les versions connues du protocole. Merci de vérifier le mappage de compatibilité de l'extension et de mettre à jour le serveur vers une version gérée."
+msgstr "Impossible de se connecter au serveur MythTV avec les versions connues du protocole. Merci de vérifier la compatibilité de l'extension et de mettre à jour le serveur vers une version prise en charge."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
@@ -282,7 +294,7 @@ msgstr "Conserver l'enregistrement"
 
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
-msgstr "Commuter l'affichage entre alternatif/enregistré/expiré"
+msgstr "Afficher/Masquer les programmes à venir inactifs"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -302,7 +314,7 @@ msgstr "Non géré"
 
 msgctxt "#30452"
 msgid "Upcoming"
-msgstr "Programmé"
+msgstr "Programme à venir"
 
 msgctxt "#30453"
 msgid "Overriden"
@@ -314,7 +326,7 @@ msgstr "Ne pas enregistrer"
 
 msgctxt "#30455"
 msgid "Upcoming manual"
-msgstr "Programmé/manuel"
+msgstr "Programme à venir manuel"
 
 msgctxt "#30456"
 msgid "Zombie"

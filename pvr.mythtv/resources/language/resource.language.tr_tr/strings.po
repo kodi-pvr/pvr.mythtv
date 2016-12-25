@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Kayıtların geçerliliğini yitirmesine izin ver"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "İzlenmiş kaydı silmeyi teklif et"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "'Kayıt Tarihi' yerine 'Yayın Tarihi'ni göster"
@@ -143,6 +147,10 @@ msgstr "Kaydetme şablonu"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Gelişmiş"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Tercihler"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Kayıt için fanart ve küçük resimleri etkinleştir "
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Kanal düzeltme denemelerini sınırla"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Etkin olmayan yaklaşanları göster (alternatif/kayıtlı/süresi dolan)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

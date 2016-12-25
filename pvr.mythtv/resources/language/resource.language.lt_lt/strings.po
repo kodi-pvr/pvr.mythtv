@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Leisti įrašymu galiojimo laiką"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Prašyti patvirtinti peržiūrėto įrašo trynimą"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Rodyti 'Premjeros datą' vietoje 'Įrašymo laiko'"
@@ -143,6 +147,10 @@ msgstr "Įrašo šablonas"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Pažangus"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Nustatymai"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Įjungti fanart/miniatiūrų įrašymą"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Apriboti kanalo nustatymo bandymus"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Rodyti neaktyvius būsimus įvykius (alternatyvius/įrašytus/nebegaliojančius)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

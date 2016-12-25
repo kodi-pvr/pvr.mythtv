@@ -140,6 +140,10 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avançat"
 
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferències"
+
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr "Habilita el desmultiplexatge MPEG-TS"
@@ -276,6 +280,10 @@ msgctxt "#30454"
 msgid "Don't record"
 msgstr "No enregistris"
 
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Enregistrant actualment"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -303,6 +311,10 @@ msgstr "Enregistra aquest"
 msgctxt "#30466"
 msgid "Record series"
 msgstr "Enregistra les sèries"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regla inhabilitada"
 
 msgctxt "#30506"
 msgid "Recordings never expire"

@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Allow recordings to expire"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Prompt to delete the watched recording"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Show 'Original Airdate' instead of 'Recording Time'"
@@ -143,6 +147,10 @@ msgstr "Recording template"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Advanced"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferences"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Enable recording fanart/thumbnails"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limit channel tuning attempts"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Show inactive upcomings (alternative/recorded/expired)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

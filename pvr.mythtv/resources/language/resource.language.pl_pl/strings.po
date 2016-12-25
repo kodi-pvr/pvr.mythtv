@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Zezwalaj na przedawnianie nagrań"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Potwierdzaj usunięcie obejrzanych nagrań"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Pokazuj datę pierwszej emisji zamiast daty nagrania"
@@ -143,6 +147,10 @@ msgstr "Szablon nagrywania"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Zaawansowane"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferencje"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Pokazuj fototapety i miniatury nagrań"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Ograniczaj próby dostrajania kanału"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Pokazuj nieaktywne zadania (inne/nagrane/przeterminowane)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

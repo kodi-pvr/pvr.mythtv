@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Salli tallennusten vanheta"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Kysy poistetaanko katsottu tallennus"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Näytä ensiesityksen päivämäärä tallennuspäivän sijaan"
@@ -143,6 +147,10 @@ msgstr "Tallennusmalli"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Lisäasetukset"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Asetukset"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Näytä tallennusten fanitaide/kuvakkeet"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Rajoita kanavan viritysyritysten määrää"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Näytä epäaktiiviset ajastukset (vaihtoehtoiset/tallennetut/vanhentuneet)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

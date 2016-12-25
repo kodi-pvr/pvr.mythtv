@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permitir gravações expirar"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Prompt para deletar gravação assistida"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Mostrar 'Data Original em que foi ao ar'  ao invés de 'Tempo de Gravação'"
@@ -143,6 +147,10 @@ msgstr "Gravando modelo"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avançado"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferências"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Ativar miniaturas/fanarts nas gravações"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limite de tentativas de sintonização dos canais"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Mostrar os por vir inativo (alternativo/gravado/expirado)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
