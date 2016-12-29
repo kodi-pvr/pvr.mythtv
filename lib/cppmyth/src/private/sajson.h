@@ -25,6 +25,7 @@
 #pragma once
 
 #include <assert.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 #include <math.h>
@@ -102,7 +103,7 @@ namespace sajson {
             return text;
         }
 
-        size_t length() const {
+        const size_t length() const {
             return _length;
         }
 
@@ -232,7 +233,7 @@ namespace sajson {
         char* get_data() const {
             return data;
         }
-        
+
     private:
         refcount uses;
         size_t length;
@@ -322,6 +323,13 @@ namespace sajson {
             return value(get_element_type(element), payload + get_element_value(element), text);
         }
 
+        // valid iff get_type() is TYPE_OBJECT
+        value get_value_of_key(const string& key) const {
+            assert_type(TYPE_OBJECT);
+            size_t i = find_object_key(key);
+            assert_in_bounds(i);
+            return get_object_value(i);
+        }
 
         // valid iff get_type() is TYPE_OBJECT
         // return get_length() if there is no such key
@@ -380,6 +388,10 @@ namespace sajson {
             assert(e1 == get_type() || e2 == get_type());
         }
 
+        void assert_in_bounds(size_t i) const {
+            assert(i < get_length());
+        }
+
         const type value_type;
         const size_t* const payload;
         const char* const text;
@@ -398,6 +410,25 @@ namespace sajson {
             , error_message(error_message)
         {}
 
+#if __cplusplus >= 201103L
+        document(const document&) = delete;
+        void operator=(const document&) = delete;
+
+        document(document&& rhs)
+            : uses(rhs.uses)
+            , input(rhs.input)
+            , structure(rhs.structure)
+            , root_type(rhs.root_type)
+            , root(rhs.root)
+            , error_line(rhs.error_line)
+            , error_column(rhs.error_column)
+            , error_message(rhs.error_message)
+        {}
+#else
+    private:
+        void operator=(const document& rhs);
+
+    public:
         document(const document& rhs)
             : uses(rhs.uses)
             , input(rhs.input)
@@ -408,11 +439,12 @@ namespace sajson {
             , error_column(rhs.error_column)
             , error_message(rhs.error_message)
         {}
+#endif
 
         ~document() {
-          if (uses.count() == 1) {
-            delete[] structure;
-          }
+            if (uses.count() == 1) {
+                delete[] structure;
+            }
         }
 
         bool is_valid() const {
@@ -438,14 +470,12 @@ namespace sajson {
     private:
         refcount uses;
         mutable_string_view input;
-        const size_t* structure;
+        const size_t* const structure;
         const type root_type;
         const size_t* const root;
         const size_t error_line;
         const size_t error_column;
         const std::string error_message;
-
-        document& operator=(const document&);
     };
 
     class parser {
@@ -517,13 +547,43 @@ namespace sajson {
                     default:
                         return *p;
                 }
-            }                
+            }
         }
 
-        error_result error(const char* message) {
+        error_result error(const char* format, ...) {
             error_line = 1;
             error_column = 1;
-            error_message = message;
+
+            char* c = input.get_data();
+            while (c < p) {
+                if (*c == '\r') {
+                    if (c + 1 < p && c[1] == '\n') {
+                        ++error_line;
+                        error_column = 1;
+                        ++c;
+                    } else {
+                        ++error_line;
+                        error_column = 1;
+                    }
+                } else if (*c == '\n') {
+                    ++error_line;
+                    error_column = 1;
+                } else {
+                    // TODO: count UTF-8 characters
+                    ++error_column;
+                }
+                ++c;
+            }
+
+
+            char buf[1024];
+            buf[1023] = 0;
+            va_list ap;
+            va_start(ap, format);
+            vsnprintf(buf, 1023, format, ap);
+            va_end(ap);
+
+            error_message = buf;
             return error_result();
         }
 
@@ -547,19 +607,24 @@ namespace sajson {
             *temp++ = make_element(current_structure_type, ROOT_MARKER);
 
             parse_result result = error_result();
-            
+
             for (;;) {
-                char closing_bracket = (current_structure_type == TYPE_OBJECT ? '}' : ']');
+                const char closing_bracket = (current_structure_type == TYPE_OBJECT ? '}' : ']');
+                const bool is_first_element = temp == current_base + 1;
+                bool had_comma = false;
 
                 c = peek_structure();
-                if (temp > current_base + 1) {
-                    if (c != closing_bracket) {
-                        if (c == ',') {
-                            ++p;
-                            c = peek_structure();
-                        } else {
-                            return error("expected ,");
-                        }
+                if (is_first_element) {
+                    if (c == ',') {
+                        return error("unexpected comma");
+                    }
+                } else {
+                    if (c == ',') {
+                        ++p;
+                        c = peek_structure();
+                        had_comma = true;
+                    } else if (c != closing_bracket) {
+                        return error("expected ,");
                     }
                 }
 
@@ -640,6 +705,9 @@ namespace sajson {
                             return error("expected ]");
                         }
                     pop: {
+                        if (had_comma) {
+                            return error("trailing commas not allowed");
+                        }
                         ++p;
                         size_t element = *current_base;
                         result = (this->*structure_installer)(current_base + 1);
@@ -653,6 +721,8 @@ namespace sajson {
                         current_structure_type = get_element_type(element);
                         break;
                     }
+                    case ',':
+                        return error("unexpected comma");
                     default:
                         return error("cannot parse unknown value");
                 }
@@ -718,7 +788,7 @@ namespace sajson {
             p += 4;
             return TYPE_TRUE;
         }
-        
+
         static double pow10(int exponent) {
             if (exponent > 308) {
                 return std::numeric_limits<double>::infinity();
@@ -800,14 +870,16 @@ namespace sajson {
 
             int i = 0;
             double d = 0.0; // gcc complains that d might be used uninitialized which isn't true. appease the warning anyway.
-            for (;;) {
+            if (*p == '0') {
+                ++p;
+            } else for (;;) {
                 char c = *p;
                 if (c < '0' || c > '9') {
                     break;
                 }
-                
+
                 ++p;
-                if (at_eof()) {
+                if (SAJSON_UNLIKELY(at_eof())) {
                     return error("unexpected end of input");
                 }
 
@@ -864,8 +936,8 @@ namespace sajson {
 
                 bool negativeExponent = false;
                 if ('-' == *p) {
-                    ++p;
                     negativeExponent = true;
+                    ++p;
                     if (at_eof()) {
                         return error("unexpected end of input");
                     }
@@ -877,18 +949,23 @@ namespace sajson {
                 }
 
                 int exp = 0;
+
+                char c = *p;
+                if (SAJSON_UNLIKELY(c < '0' || c > '9')) {
+                    return error("missing exponent");
+                }
                 for (;;) {
-                    char c = *p;
-                    if (c < '0' || c > '9') {
-                        break;
-                    }
+                    exp = 10 * exp + (c - '0');
 
                     ++p;
                     if (at_eof()) {
                         return error("unexpected end of input");
                     }
 
-                    exp = 10 * exp + (c - '0');
+                    c = *p;
+                    if (c < '0' || c > '9') {
+                        break;
+                    }
                 }
                 exponent += (negativeExponent ? -exp : exp);
             }
@@ -964,17 +1041,17 @@ namespace sajson {
                     return error("unexpected end of input");
                 }
 
-                if (SAJSON_UNLIKELY(*p == 0)) {
-                    return error("illegal unprintable codepoint in string");
+                if (SAJSON_UNLIKELY(*p >= 0 && *p < 0x20)) {
+                    *p = 0x20;
                 }
-            
+
                 switch (*p) {
                     case '"':
                         tag[0] = start;
                         tag[1] = p - input.get_data();
                         ++p;
                         return TYPE_STRING;
-                        
+
                     case '\\':
                         return parse_string_slow(tag, start);
 
@@ -1027,16 +1104,16 @@ namespace sajson {
 
         parse_result parse_string_slow(size_t* tag, size_t start) {
             char* end = p;
-            
+
             for (;;) {
                 if (SAJSON_UNLIKELY(p >= input_end)) {
                     return error("unexpected end of input");
                 }
 
-                if (SAJSON_UNLIKELY(*p == 0)) {
-                    return error("illegal unprintable codepoint in string");
+                if (SAJSON_UNLIKELY(*p >= 0 && *p < 0x20)) {
+                    *p = 0x20;
                 }
-            
+
                 switch (*p) {
                     case '"':
                         tag[0] = start;
@@ -1054,7 +1131,7 @@ namespace sajson {
                         switch (*p) {
                             case '"': replacement = '"'; goto replace;
                             case '\\': replacement = '\\'; goto replace;
-                            case '/': replacement = '/'; goto replace; 
+                            case '/': replacement = '/'; goto replace;
                             case 'b': replacement = '\b'; goto replace;
                             case 'f': replacement = '\f'; goto replace;
                             case 'n': replacement = '\n'; goto replace;
@@ -1102,7 +1179,7 @@ namespace sajson {
                                 return error("unknown escape");
                         }
                         break;
-                        
+
                     default:
                         *end++ = *p++;
                         break;
