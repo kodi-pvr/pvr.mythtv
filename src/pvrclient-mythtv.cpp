@@ -1259,10 +1259,10 @@ PVR_ERROR PVRClientMythTV::SetRecordingLastPlayedPosition(const PVR_RECORDING &r
         return PVR_ERROR_NO_ERROR;
       }
     }
-    if (g_bExtraDebug)
-      XBMC->Log(LOG_ERROR, "%s: Setting Bookmark failed", __FUNCTION__);
+    XBMC->Log(LOG_NOTICE, "%s: Setting Bookmark failed", __FUNCTION__);
+    return PVR_ERROR_NO_ERROR;
   }
-  XBMC->Log(LOG_DEBUG, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
+  XBMC->Log(LOG_ERROR, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
   return PVR_ERROR_FAILED;
 }
 
