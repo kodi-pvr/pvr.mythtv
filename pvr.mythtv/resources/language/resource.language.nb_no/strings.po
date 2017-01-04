@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Tillat opptak å utløpe"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Spør før sletting av sette opptak"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Vis 'Opprinnelig Sendedato' i stedte for 'Opptakstid'"
@@ -143,6 +147,10 @@ msgstr "Opptaksmal"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avansert"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Innstillinger"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Aktiver fanart/miniatyrbilder for optak"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Begrens kanal justerings forsøk"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Vis kommende inaktive (alternativer/opptak/utgått)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
