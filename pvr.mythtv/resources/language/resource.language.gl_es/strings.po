@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permitir que expiren as gravacións"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Preguntar ao eliminar as gravacións vistas"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Modelo de gravación"
@@ -139,6 +143,10 @@ msgstr "Modelo de gravación"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avanzado"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferencias"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
