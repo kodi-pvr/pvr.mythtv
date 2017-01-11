@@ -130,7 +130,15 @@ msgstr "Omkodning"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Tillåt inspelningar att gå ut"
+msgstr "Tillåt inspelningar att utgå"
+
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Uppmaning att ta bort den sedda inspelningen"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Visa 'Original Airdate' i stället för 'Recording Time'"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -139,6 +147,10 @@ msgstr "Inspelningsmall"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avancerad"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Inställningar"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -182,7 +194,7 @@ msgstr "Aldrig"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Inaktivera bakgrundsavstägning"
+msgstr "Förhindra avstägning av bakgrundsservern"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -195,6 +207,10 @@ msgstr "Aktivera inspelnings-fanart/tummnaglar"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Begränsa försök för justering av kanal"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Visa inaktiverade kommande (alternativ/inspelningar/utgått)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Fortsätt spela in"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Växla skärm mellan alternativ/inspelningar/utgått"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Förnya cache för kanalikoner"
@@ -312,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativ"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "För närvarande inspelad"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Utgående inspelning"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuell"
@@ -347,6 +379,10 @@ msgstr "Sök nyckelord"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Sök personer"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regel inaktiverad"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Laat opnames toe om te verval"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Vra om die gekykte opname uit te wis"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Wys 'Oorspronklike Lugdatum' in plaas van 'Opname Tyd'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Opneem templaat"
@@ -139,6 +147,10 @@ msgstr "Opneem templaat"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Gevorderde"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Voorkeure"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Stel opneem van ondersteunerkuns / duimnaelsketse in staat"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Beperk kanaal instem pogings"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Wys onaktiewe opkomendes (alternatief/opgeneem/verstreke)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -272,6 +288,14 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Wis uit en neem weer op"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Hou aan met opneem"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Wissel vertoon van alternatief/opgeneem/verstreke"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Verfris kas vir kanaal ikone"
@@ -308,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternatief"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Huidiglik opgeneem"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Verstreke opname"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Handrolies"
@@ -343,6 +379,10 @@ msgstr "Soek sleutelwoord"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Soek mense"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Reël nie in staat gestel"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"
