@@ -20,29 +20,13 @@
  */
 
 #include "wsrequest.h"
+#include "urlencoder.h"
 #include "debug.h"
 
 #include <cstdio>
 #include <cstring> // for strlen
 
 using namespace NSROOT;
-
-static void __form_urlencode(std::string& encoded, const char *str)
-{
-  char buf[4];
-  size_t i, len = 0;
-
-  encoded.clear();
-  if (str != NULL)
-    len = strlen(str);
-  encoded.reserve(len * 3);
-
-  for (i = 0; i < len; ++i)
-  {
-    sprintf(buf, "%%%.2X", (unsigned char)str[i]);
-    encoded.append(buf);
-  }
-}
 
 WSRequest::WSRequest(const std::string& server, unsigned port)
 : m_server(server)
@@ -140,11 +124,9 @@ void WSRequest::SetContentParam(const std::string& param, const std::string& val
 {
   if (m_contentType != CT_FORM)
     return;
-  std::string enc;
-  __form_urlencode(enc, value.c_str());
   if (!m_contentData.empty())
     m_contentData.append("&");
-  m_contentData.append(param).append("=").append(enc);
+  m_contentData.append(param).append("=").append(urlencode(value));
 }
 
 void WSRequest::SetContentCustom(CT_t contentType, const char *content)
