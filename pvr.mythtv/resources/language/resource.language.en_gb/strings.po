@@ -219,6 +219,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr ""
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr ""
+
 #empty strings from id 30067 to 30099
 
 # Systeminformation labels

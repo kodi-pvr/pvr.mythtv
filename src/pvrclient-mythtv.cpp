@@ -813,7 +813,7 @@ int PVRClientMythTV::GetRecordingsAmount()
     CLockObject lock(m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
-      if (!it->second.IsNull() && it->second.IsVisible())
+      if (!it->second.IsNull() && it->second.IsVisible() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
         res++;
     }
     m_recordingsAmount = res;
@@ -837,7 +837,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
     TitlesMap titles;
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
-      if (!it->second.IsNull() && it->second.IsVisible())
+      if (!it->second.IsNull() && it->second.IsVisible() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
       {
         std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.Title());
         TitlesMap::iterator found = titles.find(title);
@@ -859,7 +859,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
-    if (!it->second.IsNull() && it->second.IsVisible())
+    if (!it->second.IsNull() && it->second.IsVisible() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
     {
       PVR_RECORDING tag;
       memset(&tag, 0, sizeof(PVR_RECORDING));
@@ -956,7 +956,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
     CLockObject lock(m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
-      if (!it->second.IsNull() && it->second.IsDeleted())
+      if (!it->second.IsNull() && it->second.IsDeleted() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
         res++;
     }
     m_deletedRecAmount = res;
@@ -976,7 +976,7 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
-    if (!it->second.IsNull() && it->second.IsDeleted())
+    if (!it->second.IsNull() && it->second.IsDeleted() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
     {
       PVR_RECORDING tag;
       memset(&tag, 0, sizeof(PVR_RECORDING));

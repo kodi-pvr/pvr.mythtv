@@ -43,6 +43,7 @@ bool          g_bLiveTVPriority         = DEFAULT_LIVETV_PRIORITY;          ///<
 int           g_iLiveTVConflictStrategy = DEFAULT_LIVETV_CONFLICT_STRATEGY; ///< Conflict resolving strategy (0=
 bool          g_bChannelIcons           = DEFAULT_CHANNEL_ICONS;            ///< Load Channel Icons
 bool          g_bRecordingIcons         = DEFAULT_RECORDING_ICONS;          ///< Load Recording Icons (Fanart/Thumbnails)
+bool          g_bLiveTVRecordings       = DEFAULT_LIVETV_RECORDINGS;        ///< Show LiveTV recordings
 int           g_iRecTemplateType        = DEFAULT_RECORD_TEMPLATE;          ///< Template type for new record (0=Internal, 1=MythTV)
 bool          g_bRecAutoMetadata        = true;
 bool          g_bRecAutoCommFlag        = false;
@@ -336,6 +337,14 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     /* If setting is unknown fallback to defaults */
     XBMC->Log(LOG_ERROR, "Couldn't get 'prompt_delete' setting, falling back to '%b' as default", DEFAULT_PROMPT_DELETE);
     g_bPromptDeleteAtEnd = DEFAULT_PROMPT_DELETE;
+  }
+
+  /* Read setting "livetv_recordings" from settings.xml */
+  if (!XBMC->GetSetting("livetv_recordings", &g_bLiveTVRecordings))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'livetv_recordings' setting, falling back to '%b' as default", DEFAULT_LIVETV_RECORDINGS);
+    g_bLiveTVRecordings = DEFAULT_LIVETV_RECORDINGS;
   }
 
   free (buffer);
@@ -711,6 +720,15 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     XBMC->Log(LOG_INFO, "Changed Setting 'prompt_delete' from %b to %b", g_bPromptDeleteAtEnd, *(bool*)settingValue);
     if (g_bPromptDeleteAtEnd != *(bool*)settingValue)
       g_bPromptDeleteAtEnd = *(bool*)settingValue;
+  }
+  else if (str == "livetv_recordings")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'livetv_recordings' from %b to %b", g_bLiveTVRecordings, *(bool*)settingValue);
+    if (g_bLiveTVRecordings != *(bool*)settingValue)
+    {
+      g_bLiveTVRecordings = *(bool*)settingValue;
+      PVR->TriggerRecordingUpdate();
+    }
   }
   return ADDON_STATUS_OK;
 }
