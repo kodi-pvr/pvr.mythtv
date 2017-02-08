@@ -198,11 +198,11 @@ msgstr "Bloquer l'extinction de la dorsale"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Activer les icônes de chaînes"
+msgstr "Afficher les icônes des chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activer l'enregistrement du fanart/des imagettes"
+msgstr "Afficher les FanArts/imagettes des enregistrements"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
