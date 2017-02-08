@@ -159,10 +159,13 @@ private:
   bool m_hang;
   bool m_powerSaving;
 
+  /// Returns true when streaming recorded or live
+  bool IsPlaying() const;
+
   // Backend
   FileOps *m_fileOps;
   MythScheduleManager *m_scheduleManager;
-  P8PLATFORM::CMutex m_lock;
+  mutable P8PLATFORM::CMutex m_lock;
 
   // Categories
   Categories m_categories;

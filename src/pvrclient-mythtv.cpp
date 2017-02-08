@@ -719,6 +719,14 @@ PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR
   return PVR_ERROR_NO_ERROR;
 }
 
+bool PVRClientMythTV::IsPlaying() const
+{
+  P8PLATFORM::CLockObject lock(m_lock);
+  if (m_liveStream || m_dummyStream || m_recordingStream)
+    return true;
+  return false;
+}
+
 int PVRClientMythTV::FillChannelsAndChannelGroups()
 {
   if (!m_control)
@@ -1214,7 +1222,8 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
       XBMC->Log(LOG_DEBUG, "%s: Failed setting watched state for: %s", __FUNCTION__, recording.strRecordingId);
     }
 
-    if (g_bPromptDeleteAtEnd && count > 0)
+    //@FIXME: Open dialog while playing cause dead lock
+    if (g_bPromptDeleteAtEnd && count > 0 && !IsPlaying())
     {
       std::string dispTitle = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
       if (GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(122),
