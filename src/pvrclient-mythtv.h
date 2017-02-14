@@ -55,7 +55,7 @@ public:
     CONN_ERROR_API_UNAVAILABLE,
   } CONN_ERROR;
 
-  void SetDebug();
+  void SetDebug(bool silent = false);
   bool Connect();
   CONN_ERROR GetConnectionError() const;
   unsigned GetBackendAPIVersion();

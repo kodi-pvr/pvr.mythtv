@@ -95,11 +95,13 @@ static void Log(int level, char *msg)
   }
 }
 
-void PVRClientMythTV::SetDebug()
+void PVRClientMythTV::SetDebug(bool silent /*= false*/)
 {
   // Setup libcppmyth logging
   if (g_bExtraDebug)
     Myth::DBGAll();
+  else if (silent)
+    Myth::DBGLevel(MYTH_DBG_NONE);
   else
     Myth::DBGLevel(MYTH_DBG_ERROR);
   Myth::SetDBGMsgCallback(Log);
@@ -107,7 +109,7 @@ void PVRClientMythTV::SetDebug()
 
 bool PVRClientMythTV::Connect()
 {
-  SetDebug();
+  SetDebug(true);
   m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
   if (!m_control->IsOpen())
   {
@@ -120,7 +122,7 @@ bool PVRClientMythTV::Connect()
         m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
     }
     SAFE_DELETE(m_control);
-    XBMC->Log(LOG_ERROR, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
+    XBMC->Log(LOG_NOTICE, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
     // Try wake up for the next attempt
     if (!g_szMythHostEther.empty())
       XBMC->WakeOnLan(g_szMythHostEther.c_str());
@@ -130,10 +132,11 @@ bool PVRClientMythTV::Connect()
   {
     m_connectionError = CONN_ERROR_API_UNAVAILABLE;
     SAFE_DELETE(m_control);
-    XBMC->Log(LOG_ERROR,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
+    XBMC->Log(LOG_NOTICE,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
     return false;
   }
   m_connectionError = CONN_ERROR_NO_ERROR;
+  SetDebug(false);
 
   // Create event handler and subscription as needed
   unsigned subid = 0;
