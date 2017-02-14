@@ -1951,6 +1951,7 @@ PVR_ERROR PVRClientMythTV::GetTimerTypes(PVR_TIMER_TYPE types[], int *size)
   }
   else
   {
+    memset(&types[index], 0, sizeof(PVR_TIMER_TYPE));
     types[index].iId = 1;
     types[index].iAttributes = PVR_TIMER_TYPE_IS_MANUAL;
     ++index;
