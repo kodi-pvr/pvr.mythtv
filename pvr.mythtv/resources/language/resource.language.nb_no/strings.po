@@ -42,11 +42,11 @@ msgstr "Inkluder mer debug informasjon i logg filen"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Aktiver Live TV"
+msgstr "Skru på direkte-TV"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Tillat at Live TV flytter avtalte programmer"
+msgstr "Tillat at direkte-TV flytter avtalte programmer"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,15 +54,15 @@ msgstr "Konflikthåndtering"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Foretrekk Live TV når opptak er satt til senere"
+msgstr "Foretrekk direkte-TV når opptak er satt til senere"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Foretrekk opptak og stopp Live TV"
+msgstr "Foretrekk opptak og stopp direkte-TV"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Foretrekk Live TV og avbryt motstridende opptak"
+msgstr "Foretrekk direkte-TV og avbryt motstridende opptak"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"

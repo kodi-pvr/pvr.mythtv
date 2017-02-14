@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "אפשר פקיעת תוקף הקלטות"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "בקש אישור כאשר מוחקים הקלטה שנצפתה"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "הראה 'תאריך שידור מקורי' במקום 'שעת הקלטה'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "תבנית הקלטה"
@@ -139,6 +147,10 @@ msgstr "תבנית הקלטה"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "מתקדם"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "העדפות"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "אפשר פאנארט/תמונות ממוזערות של הקלטות"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "הגבל מס' ניסיונות צפייה בערוץ"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "הראה ממשמש ובא לא פעיל (חלופה/הקלטה/לא בתוקף)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -272,6 +288,14 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "מחיקה והקלטה מחדש"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "המשך להקליט"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "הראה חלופה/הקלטה/לא בתוקף"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "רענן מטמון סמלי ערוץ"
@@ -292,13 +316,33 @@ msgctxt "#30452"
 msgid "Upcoming"
 msgstr "בקרוב"
 
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "עקיפה"
+
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "לא להקליט"
 
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "בקרוב ידני"
+
 msgctxt "#30456"
 msgid "Zombie"
 msgstr "זומבי"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "חלופה"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "הקלטות נוכחיות"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "הקלטות שפגו"
 
 msgctxt "#30460"
 msgid "Manual"
@@ -336,6 +380,42 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "חיפוש אנשים"
 
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "חוק מנוטרל"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "אל תתאים כפילויות"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "התאם כפילויות בעזרת כתוביות"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "התאם כפילויות בעזרת תיאור"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "התאם כפילויות בעזרת כתוביות ותיאור"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "התאם כפילויות בעזרת כתוביות ואז תיאור"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "הקלטות לא פגות"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "אפשר פקיעת תוקף הקלטות"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "שמור עד ל %d הקלטות"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "שמור %d חדשים וישנים פגי תוקף"

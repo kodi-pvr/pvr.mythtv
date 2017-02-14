@@ -198,11 +198,11 @@ msgstr "Bloquer l'arrêt du serveur"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Afficher l'icône des chaînes"
+msgstr "Afficher les icônes des chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activer l'enregistrement des FanArts/miniatures"
+msgstr "Afficher les FanArts/miniatures des enregistrements"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"

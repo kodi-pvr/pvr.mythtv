@@ -140,6 +140,10 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr "Haladó"
 
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Beállítások"
+
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
 msgstr "Az MPEG-TS adatfolyamok szétválasztásának engedélyezése"
@@ -312,6 +316,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternatívák"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Mostanában rögzített"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Lejárt felvétel"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Kézi"
@@ -347,6 +363,10 @@ msgstr "Keresés kulcsszóra"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Emberek keresése"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Szabály kikapcsolva"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

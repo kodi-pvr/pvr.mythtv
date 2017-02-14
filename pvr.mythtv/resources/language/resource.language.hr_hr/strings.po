@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Dopusti istek snimanja"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Upitaj za brisnje pogledanih snimaka"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Prikaži 'Izvorni datum emitiranja' umjesto 'Datuma snimanja'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Predlošci snimanja"
@@ -139,6 +147,10 @@ msgstr "Predlošci snimanja"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Napredno"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Osobitosti"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Omogući snimanje postere/minijature"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Ograniči pokušaje podešavanja programa"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Prikaži neaktivne nadolezeće (alternativno/snimljeno/isteklo snimanje)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Nastavi snimanje"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Prebaci prikaz između alternativnog/snimljenog/isteklog snimanja"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Osvježi predmemoriju za prikaz ikona programa"
@@ -312,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativno"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Trenutno snimljeno"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Isteklo snimanje"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ručno"
@@ -347,6 +379,10 @@ msgstr "Pretraži ključnu riječ"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Pretraži ljude"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Pravilo onemogućeno"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"
