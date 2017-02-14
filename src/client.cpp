@@ -22,6 +22,7 @@
 
 #include "client.h"
 #include "pvrclient-mythtv.h"
+#include "pvrclient-launcher.h"
 
 #include <xbmc_pvr_dll.h>
 
@@ -31,7 +32,7 @@ using namespace ADDON;
  * Default values are defined inside client.h
  * and exported to the other source files.
  */
-bool          g_bNotifyAddonFailure     = true;                             ///< Notify user after failure of create function
+bool          g_bNotifyAddonFailure     = false;                            ///< Notify user after failure of addon connection
 std::string   g_szMythHostname          = DEFAULT_HOST;                     ///< The Host name or IP of the mythtv server
 std::string   g_szMythHostEther         = "";                               ///< The Host MAC address of the mythtv server
 int           g_iProtoPort              = DEFAULT_PROTO_PORT;               ///< The mythtv protocol port (default is 6543)
@@ -72,6 +73,7 @@ std::string   g_szUserPath              = "";
 std::string   g_szClientPath            = "";
 
 PVRClientMythTV         *g_client       = NULL;
+PVRClientLauncher       *g_launcher     = NULL;
 
 CHelper_libXBMC_addon   *XBMC           = NULL;
 CHelper_libXBMC_pvr     *PVR            = NULL;
@@ -88,6 +90,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 {
   if (!hdl)
     return ADDON_STATUS_PERMANENT_FAILURE;
+  SAFE_DELETE(g_launcher);
 
   // Register handles
   XBMC = new CHelper_libXBMC_addon;
@@ -350,78 +353,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   free (buffer);
   XBMC->Log(LOG_DEBUG, "Loading settings...done");
 
-  // Create our addon
-  XBMC->Log(LOG_DEBUG, "Creating MythTV client...");
-  g_client = new PVRClientMythTV();
-  while (!g_client->Connect())
-  {
-    switch(g_client->GetConnectionError())
-    {
-      case PVRClientMythTV::CONN_ERROR_UNKNOWN_VERSION:
-      {
-        // HEADING: Connection failed
-        // Failed to connect the MythTV backend with the known protocol versions.
-        // Do you want to retry ?
-        std::string msg = XBMC->GetLocalizedString(30300);
-        msg.append("\n").append(XBMC->GetLocalizedString(30113));
-        bool canceled = false;
-        if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-          m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
-        break;
-      }
-      case PVRClientMythTV::CONN_ERROR_API_UNAVAILABLE:
-      {
-        // HEADING: Connection failed
-        // Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup.
-        // Do you want to retry ?
-        std::string msg = XBMC->GetLocalizedString(30301);
-        msg.append("\n").append(XBMC->GetLocalizedString(30113));
-        bool canceled = false;
-        if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-          m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
-        break;
-      }
-      default:
-      {
-        if (!g_bNotifyAddonFailure)
-          m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
-        else
-        {
-          // HEADING: Connection failed
-          // No response from MythTV backend.
-          // Do you want to retry ?
-          std::string msg = XBMC->GetLocalizedString(30304);
-          msg.append("\n").append(XBMC->GetLocalizedString(30113));
-          bool canceled = false;
-          if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-            m_CurStatus = ADDON_STATUS_NEED_SETTINGS;
-        }
-        break;
-      }
-    }
-    if (m_CurStatus == ADDON_STATUS_PERMANENT_FAILURE || m_CurStatus == ADDON_STATUS_NEED_SETTINGS)
-    {
-      SAFE_DELETE(g_client);
-      SAFE_DELETE(CODEC);
-      SAFE_DELETE(GUI);
-      SAFE_DELETE(PVR);
-      SAFE_DELETE(XBMC);
-      return m_CurStatus;
-    }
-  }
-  XBMC->Log(LOG_DEBUG, "Creating MythTV client...done");
-  PVR->ConnectionStateChange(g_client->GetBackendName(), PVR_CONNECTION_STATE_CONNECTED, g_client->GetBackendVersion());
-
-  /* Read setting "LiveTV Priority" from backend database */
-  bool savedLiveTVPriority;
-  if (!XBMC->GetSetting("livetv_priority", &savedLiveTVPriority))
-    savedLiveTVPriority = DEFAULT_LIVETV_PRIORITY;
-  g_bLiveTVPriority = g_client->GetLiveTVPriority();
-  if (g_bLiveTVPriority != savedLiveTVPriority)
-  {
-    g_client->SetLiveTVPriority(savedLiveTVPriority);
-  }
-
+  // Create menu hooks
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...");
   PVR_MENUHOOK menuHook;
   memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
@@ -462,9 +394,23 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...done");
 
-  XBMC->Log(LOG_DEBUG, "Addon created successfully");
-  m_CurStatus = ADDON_STATUS_OK;
+  // Create our addon
+  XBMC->Log(LOG_DEBUG, "Creating MythTV client...");
+  g_client = new PVRClientMythTV();
   g_bCreated = true;
+
+  g_launcher = new PVRClientLauncher(g_client);
+  if (g_launcher->CreateThread(true))
+  {
+    XBMC->Log(LOG_DEBUG, "Addon created successfully");
+    m_CurStatus = ADDON_STATUS_OK;
+  }
+  else
+  {
+    XBMC->Log(LOG_ERROR, "Addon launcher failure");
+    ADDON_Destroy();
+    m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
+  }
   return m_CurStatus;
 }
 
@@ -477,6 +423,7 @@ void ADDON_Destroy()
   if (g_bCreated)
   {
     g_bCreated = false;
+    SAFE_DELETE(g_launcher);
     SAFE_DELETE(g_client);
     SAFE_DELETE(CODEC);
     SAFE_DELETE(PVR);
