@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Povoliť expiráciu nahrávok"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Ponúkni vymazanie pozretej nahrávky"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Zobraziť 'Pôvodný čas vysielania' namiesto 'Čas nahrávania'"
@@ -143,6 +147,10 @@ msgstr "Šablóna nahrávky"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Pokročilé"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferencie"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Aktivovať náhľad/fanart nahrávok"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Obmedziť počet pokusov o ladenie kanálu"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Zobraz neaktívne nadchádzajúce (alternatívne/nahraté/vypršané)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

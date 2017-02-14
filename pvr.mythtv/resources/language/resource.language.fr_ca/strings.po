@@ -134,7 +134,7 @@ msgstr "Permettre l'expiration des enregistrements"
 
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
-msgstr "Demander de supprimer l'enregistrement regardé"
+msgstr "Demander de supprimer l'enregistrement visionné"
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"

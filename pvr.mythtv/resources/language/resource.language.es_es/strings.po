@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permitir expirar a las grabaciones"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Preguntar si borrar la grabación ya vista"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Mostrar 'Día Emitido' en lugar de 'Día Grabado'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Plantilla de grabación"
@@ -139,6 +147,10 @@ msgstr "Plantilla de grabación"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avanzado"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferencias"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Habilitar guardado de fanart/miniaturas"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limitar los intentos sintonizado"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Mostrar Proximamente inactivos (alternativos/grabados/expirados)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Mantener grabación"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Cambiar entre alternativos/grabados/expirados"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refrescar cache de los iconos para los canales"
@@ -311,6 +331,10 @@ msgstr "Siguiente programa manual"
 msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativo"
 
 msgctxt "#30458"
 msgid "Currently recorded"

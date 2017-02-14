@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Benarkan rakaman menjadi luput"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Maklum sebelum memadam rakaman ditonton"
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Tunjuk 'Tarikh Keudara Asal' selain dari 'Masa Rakaman'"
@@ -143,6 +147,10 @@ msgstr "Templat rakaman"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Lanjutan"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Keutamaan"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Benarkan seni peminat/lakaran kenit rakaman"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Hadkan cubaan penalaan saluran"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Tunjuk mendatang tak aktif (alternatif/dirakam/luput)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
