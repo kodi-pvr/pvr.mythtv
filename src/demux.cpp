@@ -77,6 +77,9 @@ Demux::Demux(Myth::Stream *file)
   , m_mainStreamPID(0xffff)
   , m_DTS(PTS_UNSET)
   , m_PTS(PTS_UNSET)
+  , m_dts(PTS_UNSET)
+  , m_pts(PTS_UNSET)
+  , m_startpts(PTS_UNSET)
   , m_pinTime(0)
   , m_curTime(0)
   , m_endTime(0)
@@ -281,25 +284,14 @@ DemuxPacket* Demux::Read()
 bool Demux::SeekTime(double time, bool backwards, double* startpts)
 {
   // Current PTS must be valid to estimate offset
-  if (m_PTS == PTS_UNSET)
+  if (m_startpts == PTS_UNSET)
     return false;
   // time is in MSEC not PTS_TIME_BASE. Rescale time to PTS (90Khz)
   int64_t pts = (int64_t)(time * PTS_TIME_BASE / 1000);
-  // Compute offset from current PTS
-  int64_t offset = pts - m_PTS;
-  // Limit offset to deal with invalid request or PTS discontinuity
-  // Backwards  : Limiting offset to +6 secs
-  // Forwards   : Limiting offset to -6 secs
-  if (backwards)
-    offset = std::min(offset, (int64_t)(PTS_TIME_BASE * 6));
-  else
-    offset = std::max(offset, (int64_t)(PTS_TIME_BASE * (-6)));
   // Compute desired time position
-  int64_t desired = m_curTime + offset;
+  int64_t desired = pts - m_startpts;
 
-  if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG, LOGTAG "%s: bw:%d tm:%+6.3f tm_pts:%" PRId64 " c_pts:%" PRIu64 " offset:%+6.3f c_tm:%+6.3f n_tm:%+6.3f", __FUNCTION__,
-            backwards, time, pts, m_PTS, (double)offset / PTS_TIME_BASE, (double)m_curTime / PTS_TIME_BASE, (double)desired / PTS_TIME_BASE);
+  XBMC->Log(LOG_DEBUG, LOGTAG "%s: bw:%d desired:%+6.3f buffered:%+6.3f", __FUNCTION__, backwards, (double)desired / PTS_TIME_BASE, (double)m_curTime / PTS_TIME_BASE);
 
   CLockObject lock(m_mutex);
   std::map<int64_t, AV_POSMAP_ITEM>::const_iterator it;
@@ -312,17 +304,17 @@ bool Demux::SeekTime(double time, bool backwards, double* startpts)
     int64_t new_time = it->first;
     uint64_t new_pos = it->second.av_pos;
     uint64_t new_pts = it->second.av_pts;
-    XBMC->Log(LOG_DEBUG, LOGTAG "seek to %" PRId64 " pts=%" PRIu64, new_time, new_pts);
+    XBMC->Log(LOG_DEBUG, LOGTAG "seek to %+6.3f pts=%" PRIu64, (double)new_time / PTS_TIME_BASE, new_pts);
 
     Flush();
     m_AVContext->GoPosition(new_pos);
     m_AVContext->ResetPackets();
     m_curTime = m_pinTime = new_time;
-    m_DTS = m_PTS = new_pts;
+    m_DTS = m_PTS += new_pts - m_pts;
+    m_dts = m_pts = new_pts;
   }
 
-  *startpts = (double)m_PTS * DVD_TIME_BASE / PTS_TIME_BASE;
-
+  *startpts = (double)m_startpts * DVD_TIME_BASE / PTS_TIME_BASE;
   return true;
 }
 
@@ -343,7 +335,25 @@ bool Demux::get_stream_data(TSDemux::STREAM_PKT* pkt)
   if (!es->GetStreamPacket(pkt))
     return false;
 
-  if (pkt->duration > 180000)
+  uint64_t DTS = pkt->dts;
+  uint64_t PTS = pkt->pts;
+  if (m_startpts != PTS_UNSET)
+  {
+    pkt->dts = (DTS != PTS_UNSET ? m_dts + DTS - m_DTS : PTS_UNSET); // rebase dts
+    pkt->pts = (PTS != PTS_UNSET ? m_pts + PTS - m_PTS : PTS_UNSET); // rebase pts
+  }
+  else if (DTS != PTS_UNSET && PTS != PTS_UNSET)
+  {
+    m_startpts = 0x80000000LL;
+    m_dts = pkt->dts = m_startpts; // rebase dts
+    m_pts = pkt->pts = m_startpts + PTS - DTS; // rebase pts
+    m_DTS = DTS;
+    m_PTS = PTS;
+  }
+  else
+    return false;
+
+  if (pkt->duration > PTS_TIME_BASE * 2)
   {
     pkt->duration = 0;
   }
@@ -364,8 +374,10 @@ bool Demux::get_stream_data(TSDemux::STREAM_PKT* pkt)
       }
     }
     // Sync main DTS & PTS
-    m_DTS = pkt->dts;
-    m_PTS = pkt->pts;
+    m_DTS = DTS;
+    m_PTS = PTS;
+    m_dts = pkt->dts;
+    m_pts = pkt->pts;
   }
   return true;
 }

@@ -81,6 +81,9 @@ private:
   uint16_t m_mainStreamPID;     ///< PID of main stream
   uint64_t m_DTS;               ///< absolute decode time of main stream
   uint64_t m_PTS;               ///< absolute presentation time of main stream
+  uint64_t m_dts;               ///< rebased DTS for the program chain
+  uint64_t m_pts;               ///< rebased PTS for the program chain
+  uint64_t m_startpts;          ///< start PTS for the program chain
   int64_t m_pinTime;            ///< pinned relative position (90Khz)
   int64_t m_curTime;            ///< current relative position (90Khz)
   int64_t m_endTime;            ///< last relative marked position (90Khz))
