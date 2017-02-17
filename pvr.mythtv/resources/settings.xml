@@ -35,7 +35,6 @@
   </category>
   <category label="30050">
     <setting id="extradebug" type="bool" label="30005" default="false" />
-    <setting id="demuxing" type="bool" label="30052" default="false" />
     <setting id="block_shutdown" type="bool" label="30062" default="true" />
     <setting id="tunedelay" type="slider" option="int" range="5,1,30" label="30053" />
     <setting id="limit_tune_attempts" type="bool" label="30065" default="true" />

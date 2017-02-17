@@ -24,7 +24,6 @@
 #include "cppmyth.h"
 #include "fileOps.h"
 #include "categories.h"
-#include "demux.h"
 #include "filestreaming.h"
 
 #include <xbmc_pvr_types.h>
@@ -123,12 +122,6 @@ public:
   PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus);
   bool IsRealTimeStream() const { return m_liveStream ? true : false; }
 
-  PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES* pProperties);
-  void DemuxAbort(void);
-  void DemuxFlush(void);
-  DemuxPacket* DemuxRead(void);
-  bool SeekTime(double time, bool backwards, double *startpts);
-
   time_t GetPlayingTime();
   time_t GetBufferTimeStart();
   time_t GetBufferTimeEnd();
@@ -189,9 +182,6 @@ private:
   int FillChannelsAndChannelGroups();
   MythChannel FindChannel(uint32_t channelId) const;
   int FindPVRChannelUid(uint32_t channelId) const;
-
-  // Demuxer TS
-  Demux *m_demux;
 
   // Recordings
   ProgramInfoMap m_recordings;

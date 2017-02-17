@@ -55,7 +55,6 @@ bool          g_bRecAutoRunJob3         = false;
 bool          g_bRecAutoRunJob4         = false;
 bool          g_bRecAutoExpire          = false;
 int           g_iRecTranscoder          = 0;
-bool          g_bDemuxing               = DEFAULT_HANDLE_DEMUXING;
 int           g_iTuneDelay              = DEFAULT_TUNE_DELAY;
 int           g_iGroupRecordings        = GROUP_RECORDINGS_ALWAYS;
 bool          g_bUseAirdate             = DEFAULT_USE_AIRDATE;
@@ -243,14 +242,6 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     g_bRecAutoExpire = false;
   if (!XBMC->GetSetting("rec_transcoder", &g_iRecTranscoder))
     g_iRecTranscoder = 0;
-
-  /* Read setting "demuxing" from settings.xml */
-  if (!XBMC->GetSetting("demuxing", &g_bDemuxing))
-  {
-    /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'demuxing' setting, falling back to '%b' as default", DEFAULT_HANDLE_DEMUXING);
-    g_bDemuxing = DEFAULT_HANDLE_DEMUXING;
-  }
 
   /* Read setting "tunedelay" from settings.xml */
   if (!XBMC->GetSetting("tunedelay", &g_iTuneDelay))
@@ -497,12 +488,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (tmp_sWSSecurityPin != g_szWSSecurityPin)
       return ADDON_STATUS_NEED_RESTART;
   }
-  else if (str == "demuxing")
-  {
-    XBMC->Log(LOG_INFO, "Changed Setting 'demuxing' from %u to %u", g_bDemuxing, *(bool*)settingValue);
-    if (g_bDemuxing != *(bool*)settingValue)
-      return ADDON_STATUS_NEED_RESTART;
-  }
   else if (str == "channel_icons")
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'channel_icons' from %u to %u", g_bChannelIcons, *(bool*)settingValue);
@@ -726,7 +711,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
     pCapabilities->bSupportsTimers                = true;
 
     pCapabilities->bHandlesInputStream            = true;
-    pCapabilities->bHandlesDemuxing               = g_bDemuxing;
+    pCapabilities->bHandlesDemuxing               = false;
 
     pCapabilities->bSupportsRecordings            = true;
     pCapabilities->bSupportsRecordingsUndelete    = true;
@@ -1183,46 +1168,6 @@ long long LengthRecordedStream(void)
 
 
 /*
- * PVR Demux Functions
- */
-
-PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES* pProperties)
-{
-  if (g_client == NULL)
-    return PVR_ERROR_SERVER_ERROR;
-
-  return g_client->GetStreamProperties(pProperties);
-}
-
-void DemuxAbort(void)
-{
-  if (g_client != NULL)
-    g_client->DemuxAbort();
-}
-
-DemuxPacket* DemuxRead(void)
-{
-  if (g_client == NULL)
-    return NULL;
-
-  return g_client->DemuxRead();
-}
-
-void DemuxFlush(void)
-{
-  if (g_client != NULL)
-    g_client->DemuxFlush();
-}
-
-bool SeekTime(double time, bool backwards, double *startpts)
-{
-  if (g_client != NULL)
-    return g_client->SeekTime(time, backwards, startpts);
-  return false;
-}
-
-
-/*
  * PVR Timeshift Functions
  */
 
@@ -1253,6 +1198,11 @@ bool IsTimeshifting(void) { return true; }
  * Unused API Functions
  */
 
+PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
+void DemuxAbort(void) {}
+DemuxPacket* DemuxRead(void) { return NULL; }
+void DemuxFlush(void) {}
+bool SeekTime(double, bool, double *) { return false; }
 void DemuxReset() {}
 const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
