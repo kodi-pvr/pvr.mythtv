@@ -30,7 +30,7 @@ set (CPPMYTH_LIB_SOVERSION "2")
 ###############################################################################
 # add definitions
 if (MSVC)
-  add_definitions ("/D_USE_32BIT_TIME_T /D_CRT_SECURE_NO_WARNINGS")
+  add_definitions ("/D_CRT_SECURE_NO_WARNINGS")
   if (STATIC_CRT)
     set (CMAKE_C_FLAGS_RELEASE "/MT")
     set (CMAKE_C_FLAGS_DEBUG "/MTd")
