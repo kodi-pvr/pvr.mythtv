@@ -66,6 +66,7 @@
 #define DEFAULT_SHOW_NOT_RECORDING          true
 #define DEFAULT_PROMPT_DELETE               false
 #define DEFAULT_LIVETV_RECORDINGS           true
+#define DEFAULT_BACKEND_BOOKMARKS           true
 
 /*!
  * @brief PVR macros for string exchange
@@ -117,6 +118,7 @@ extern bool         g_bBlockMythShutdown;
 extern bool         g_bLimitTuneAttempts;       ///< Limit channel tuning attempts to first card
 extern bool         g_bShowNotRecording;
 extern bool         g_bPromptDeleteAtEnd;
+extern bool         g_bUseBackendBookmarks;
 
 extern ADDON::CHelper_libXBMC_addon *XBMC;
 extern CHelper_libXBMC_pvr          *PVR;

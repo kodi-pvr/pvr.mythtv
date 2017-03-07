@@ -63,6 +63,7 @@ bool          g_bBlockMythShutdown      = DEFAULT_BLOCK_SHUTDOWN;
 bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
 bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
 bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
+bool          g_bUseBackendBookmarks    = DEFAULT_BACKEND_BOOKMARKS;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -196,7 +197,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("extradebug", &g_bExtraDebug))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'extradebug' setting, falling back to '%b' as default", DEFAULT_EXTRA_DEBUG);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'extradebug' setting, falling back to '%u' as default", DEFAULT_EXTRA_DEBUG);
     g_bExtraDebug = DEFAULT_EXTRA_DEBUG;
   }
 
@@ -204,7 +205,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("livetv", &g_bLiveTV))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'livetv' setting, falling back to '%b' as default", DEFAULT_LIVETV);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'livetv' setting, falling back to '%u' as default", DEFAULT_LIVETV);
     g_bLiveTV = DEFAULT_LIVETV;
   }
 
@@ -273,7 +274,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("use_airdate", &g_bUseAirdate))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'use_airdate' setting, falling back to '%b' as default", DEFAULT_USE_AIRDATE);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'use_airdate' setting, falling back to '%u' as default", DEFAULT_USE_AIRDATE);
     g_bUseAirdate = DEFAULT_USE_AIRDATE;
   }
 
@@ -289,7 +290,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("block_shutdown", &g_bBlockMythShutdown))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'block_shutdown' setting, falling back to '%b' as default", DEFAULT_BLOCK_SHUTDOWN);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'block_shutdown' setting, falling back to '%u' as default", DEFAULT_BLOCK_SHUTDOWN);
     g_bBlockMythShutdown = DEFAULT_BLOCK_SHUTDOWN;
   }
 
@@ -297,7 +298,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("channel_icons", &g_bChannelIcons))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'channel_icons' setting, falling back to '%b' as default", DEFAULT_CHANNEL_ICONS);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'channel_icons' setting, falling back to '%u' as default", DEFAULT_CHANNEL_ICONS);
     g_bChannelIcons = DEFAULT_CHANNEL_ICONS;
   }
 
@@ -305,7 +306,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("recording_icons", &g_bRecordingIcons))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'recording_icons' setting, falling back to '%b' as default", DEFAULT_RECORDING_ICONS);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'recording_icons' setting, falling back to '%u' as default", DEFAULT_RECORDING_ICONS);
     g_bRecordingIcons = DEFAULT_RECORDING_ICONS;
   }
 
@@ -313,7 +314,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("limit_tune_attempts", &g_bLimitTuneAttempts))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'limit_tune_attempts' setting, falling back to '%b' as default", DEFAULT_LIMIT_TUNE_ATTEMPTS);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'limit_tune_attempts' setting, falling back to '%u' as default", DEFAULT_LIMIT_TUNE_ATTEMPTS);
     g_bLimitTuneAttempts = DEFAULT_LIMIT_TUNE_ATTEMPTS;
   }
 
@@ -321,15 +322,15 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("inactive_upcomings", &g_bShowNotRecording))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'inactive_upcomings' setting, falling back to '%b' as default", DEFAULT_SHOW_NOT_RECORDING);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'inactive_upcomings' setting, falling back to '%u' as default", DEFAULT_SHOW_NOT_RECORDING);
     g_bShowNotRecording = DEFAULT_SHOW_NOT_RECORDING;
   }
 
-  /* Read setting "use_airdate" from settings.xml */
+  /* Read setting "prompt_delete" from settings.xml */
   if (!XBMC->GetSetting("prompt_delete", &g_bPromptDeleteAtEnd))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'prompt_delete' setting, falling back to '%b' as default", DEFAULT_PROMPT_DELETE);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'prompt_delete' setting, falling back to '%u' as default", DEFAULT_PROMPT_DELETE);
     g_bPromptDeleteAtEnd = DEFAULT_PROMPT_DELETE;
   }
 
@@ -337,8 +338,16 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   if (!XBMC->GetSetting("livetv_recordings", &g_bLiveTVRecordings))
   {
     /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'livetv_recordings' setting, falling back to '%b' as default", DEFAULT_LIVETV_RECORDINGS);
+    XBMC->Log(LOG_ERROR, "Couldn't get 'livetv_recordings' setting, falling back to '%u' as default", DEFAULT_LIVETV_RECORDINGS);
     g_bLiveTVRecordings = DEFAULT_LIVETV_RECORDINGS;
+  }
+
+  /* Read setting "backend_bookmarks" from settings.xml */
+  if (!XBMC->GetSetting("backend_bookmarks", &g_bUseBackendBookmarks))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'backend_bookmarks' setting, falling back to '%u' as default", DEFAULT_BACKEND_BOOKMARKS);
+    g_bUseBackendBookmarks = DEFAULT_BACKEND_BOOKMARKS;
   }
 
   free (buffer);
@@ -500,6 +509,12 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_bRecordingIcons != *(bool*)settingValue)
       return ADDON_STATUS_NEED_RESTART;
   }
+  else if (str == "backend_bookmarks")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'backend_bookmarks' from %u to %u", g_bUseBackendBookmarks, *(bool*)settingValue);
+    if (g_bUseBackendBookmarks != *(bool*)settingValue)
+      return ADDON_STATUS_NEED_RESTART;
+  }
   else if (str == "host_ether")
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'host_ether' from %s to %s", g_szMythHostEther.c_str(), (const char*)settingValue);
@@ -608,7 +623,7 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   }
   else if (str == "use_airdate")
   {
-    XBMC->Log(LOG_INFO, "Changed Setting 'use_airdate' from %b to %b", g_bUseAirdate, *(bool*)settingValue);
+    XBMC->Log(LOG_INFO, "Changed Setting 'use_airdate' from %u to %u", g_bUseAirdate, *(bool*)settingValue);
     if (g_bUseAirdate != *(bool*)settingValue)
     {
       g_bUseAirdate = *(bool*)settingValue;
@@ -649,13 +664,13 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   }
   else if (str == "prompt_delete")
   {
-    XBMC->Log(LOG_INFO, "Changed Setting 'prompt_delete' from %b to %b", g_bPromptDeleteAtEnd, *(bool*)settingValue);
+    XBMC->Log(LOG_INFO, "Changed Setting 'prompt_delete' from %u to %u", g_bPromptDeleteAtEnd, *(bool*)settingValue);
     if (g_bPromptDeleteAtEnd != *(bool*)settingValue)
       g_bPromptDeleteAtEnd = *(bool*)settingValue;
   }
   else if (str == "livetv_recordings")
   {
-    XBMC->Log(LOG_INFO, "Changed Setting 'livetv_recordings' from %b to %b", g_bLiveTVRecordings, *(bool*)settingValue);
+    XBMC->Log(LOG_INFO, "Changed Setting 'livetv_recordings' from %u to %u", g_bLiveTVRecordings, *(bool*)settingValue);
     if (g_bLiveTVRecordings != *(bool*)settingValue)
     {
       g_bLiveTVRecordings = *(bool*)settingValue;
@@ -716,7 +731,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
     pCapabilities->bSupportsRecordings            = true;
     pCapabilities->bSupportsRecordingsUndelete    = true;
     pCapabilities->bSupportsRecordingPlayCount    = (version < 80 ? false : true);
-    pCapabilities->bSupportsLastPlayedPosition    = (version < 88 ? false : true);
+    pCapabilities->bSupportsLastPlayedPosition    = (version < 88 || !g_bUseBackendBookmarks ? false : true);
     pCapabilities->bSupportsRecordingEdl          = true;
     return PVR_ERROR_NO_ERROR;
   }
