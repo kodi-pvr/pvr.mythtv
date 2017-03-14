@@ -1,25 +1,26 @@
-v5.0.8
+v5.0.10
+- get rid of _USE_32BIT_TIME_T
+
+v5.0.9
+- Add new setting to enable/disable usage of backend bookmarks
+- Fix install path for debian build
+- No longer handle demuxing
+- Launch client init in background
+- New setting to show/hide liveTV recordings
+- Fix: Do not open dialog while playing
+- Fix french translations
+- Sync cppmyth upstream (2.9.4)
+- Silent failed bookmark
 - Sync demuxer upstream
+- Cleanup addon api
+- Fix error no error reading bookmark
 - Fix incorrect hours to display when g_bUseAirdate was set
-
-v5.0.7
-- Sync upstream cppmyth (2.9.2)
-
-v5.0.5
 - Fill flag 'has bookmark' on recordings
-
-v5.0.4
-- Replaced custom Dialog class with standard Kodi API call
-- Upgrade the demuxer to support hevc stream
-- Add a dialog to retry connect the backend on startup
 - An option to prompt to delete a recording after finishing it
 - Adding new section 'Preferences' in settings
-
-v5.0.2
-- Sync cppmyth upstream (2.9.1)
-
-v5.0.1
-- Sync cppmyth upstream: fix reader of encoded content
+- Upgrade the demuxer to support hevc stream
+- Add a dialog to retry connect the backend on startup
+- Replaced custom Dialog class with standard Kodi API call
 
 v5.0.0
 - Initial Kodi v18 version
