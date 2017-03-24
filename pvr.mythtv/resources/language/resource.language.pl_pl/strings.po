@@ -390,7 +390,7 @@ msgstr "Nie wyszukuj duplikatów"
 
 msgctxt "#30502"
 msgid "Match duplicates using subtitle"
-msgstr "Wyszukuj duplikaty używając napisów"
+msgstr "Wyszukuj duplikaty używając podtytułu"
 
 msgctxt "#30503"
 msgid "Match duplicates using description"
@@ -398,11 +398,11 @@ msgstr "Wyszukuj duplikaty używając opisu"
 
 msgctxt "#30504"
 msgid "Match duplicates using subtitle & description"
-msgstr "Wyszukuj duplikaty używając napisów i opisu"
+msgstr "Wyszukuj duplikaty używając podtytułu i opisu"
 
 msgctxt "#30505"
 msgid "Match duplicates using subtitle then description"
-msgstr "Wyszukuj duplikaty używając najpierw napisów, a potem opisu"
+msgstr "Wyszukuj duplikaty używając najpierw podtytułu, a potem opisu"
 
 msgctxt "#30506"
 msgid "Recordings never expire"
