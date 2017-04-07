@@ -234,11 +234,11 @@ msgstr "Czy chcesz spróbować ponownie?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Nieudane połączenie z serwerem MythTV przy pomocy znanych wersji protokołu. Sprawdź listę kompatybilności dodatku i zaktualizuj serwer do wspieranej wersji."
+msgstr "Nieudane połączenie z serwerem MythTV przy pomocy znanych wersji protokołu.Zweryfikuj listę kompatybilności dodatku i zaktualizuj serwer do obsługiwanej wersji."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Nieudane połączenie z usługami API serwera MythTV. Sprawdź wprowadzony kod PIN lub konfigurację serwera. Kod Pin musi zostać najpierw skonfigurowany na serwerze, aby połączenie było możliwe."
+msgstr "Nieudane połączenie z usługami API serwera MythTV. Zweryfikuj wprowadzony kod PIN lub konfigurację serwera. Kod Pin musi zostać najpierw skonfigurowany na serwerze, aby połączenie było możliwe."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
