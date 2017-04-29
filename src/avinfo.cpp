@@ -20,7 +20,7 @@
  *
  */
 
-#include <xbmc_codec_types.h>
+#include <xbmc_pvr_types.h>
 
 #include "avinfo.h"
 #include "demuxer/debug.h"
@@ -282,7 +282,7 @@ void AVInfo::populate_pvr_streams()
   for (std::vector<TSDemux::ElementaryStream*>::const_iterator it = es_streams.begin(); it != es_streams.end(); it++)
   {
     const char* codec_name = (*it)->GetStreamCodecName();
-    xbmc_codec_t codec = CODEC->GetCodecByName(codec_name);
+    xbmc_codec_t codec = PVR->GetCodecByName(codec_name);
     if (codec.codec_type != XBMC_CODEC_TYPE_UNKNOWN)
     {
       // Find the main stream:
