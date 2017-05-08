@@ -438,17 +438,6 @@ ADDON_STATUS ADDON_GetStatus()
   return m_CurStatus;
 }
 
-bool ADDON_HasSettings()
-{
-  return true;
-}
-
-unsigned int ADDON_GetSettings(ADDON_StructSetting ***sSet)
-{
-  (void)sSet;
-  return 0;
-}
-
 ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
 {
   if (!g_bCreated)
@@ -679,11 +668,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   }
   return ADDON_STATUS_OK;
 }
-
-void ADDON_FreeSettings()
-{
-}
-
 
 /***********************************************************
  * PVR Client AddOn specific public library functions
