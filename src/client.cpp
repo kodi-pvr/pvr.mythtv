@@ -78,7 +78,6 @@ PVRClientLauncher       *g_launcher     = NULL;
 CHelper_libXBMC_addon   *XBMC           = NULL;
 CHelper_libXBMC_pvr     *PVR            = NULL;
 CHelper_libKODI_guilib  *GUI            = NULL;
-CHelper_libXBMC_codec   *CODEC          = NULL;
 
 extern "C" {
 
@@ -132,18 +131,6 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
   XBMC->Log(LOG_DEBUG, "Register handle @ libXBMC_gui...done");
-
-  XBMC->Log(LOG_DEBUG, "Register handle @ libXBMC_codec...");
-  CODEC = new CHelper_libXBMC_codec;
-  if (!CODEC->RegisterMe(hdl))
-  {
-    SAFE_DELETE(CODEC);
-    SAFE_DELETE(PVR);
-    SAFE_DELETE(XBMC);
-    SAFE_DELETE(GUI);
-    return ADDON_STATUS_PERMANENT_FAILURE;
-  }
-  XBMC->Log(LOG_DEBUG, "Register handle @ libXBMC_codec...done");
 
   m_CurStatus    = ADDON_STATUS_UNKNOWN;
   g_szUserPath   = pvrprops->strUserPath;
@@ -425,7 +412,6 @@ void ADDON_Destroy()
     g_bCreated = false;
     SAFE_DELETE(g_launcher);
     SAFE_DELETE(g_client);
-    SAFE_DELETE(CODEC);
     SAFE_DELETE(PVR);
     SAFE_DELETE(XBMC);
     SAFE_DELETE(GUI);
