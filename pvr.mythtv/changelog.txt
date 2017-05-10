@@ -1,3 +1,8 @@
+.5.0.11
+- set dependency versions automatic during build
+- removed never used kodi to addon functions
+- build system fixes
+
 v5.0.10
 - get rid of _USE_32BIT_TIME_T
 
