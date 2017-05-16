@@ -1,4 +1,5 @@
 .5.0.11
+- removed old no more needed version functions
 - set dependency versions automatic during build
 - removed never used kodi to addon functions
 - build system fixes
