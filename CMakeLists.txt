@@ -23,9 +23,14 @@ if(NOT WIN32)
 endif()
 
 file (GLOB MYTHTV_SOURCES
-  src/demuxer/*.cpp src/demuxer/*.h
-  src/cppmyth/*.cpp src/cppmyth/*.h
-  src/*.cpp src/*.h)
+  src/demuxer/*.cpp
+  src/cppmyth/*.cpp
+  src/*.cpp)
+
+file (GLOB MYTHTV_HEADERS
+  src/demuxer/*.h
+  src/cppmyth/*.h
+  src/*.h)
 
 add_subdirectory(lib/cppmyth)
 
