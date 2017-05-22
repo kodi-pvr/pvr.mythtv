@@ -401,10 +401,6 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   return m_CurStatus;
 }
 
-void ADDON_Stop()
-{
-}
-
 void ADDON_Destroy()
 {
   if (g_bCreated)
