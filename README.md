@@ -2,7 +2,7 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/3115/badge.svg)](https://scan.coverity.com/projects/3115)
 
 # MythTV PVR
-MythTV PVR client addon for [Kodi] (http://kodi.tv)
+MythTV PVR client addon for [Kodi](http://kodi.tv)
 
 ## Build instructions
 When building the addon you have to use the correct branch depending on which version of Kodi you're building against.
@@ -22,5 +22,5 @@ the addon will be available as a system addon.
 
 ##### Useful links
 
-* [Kodi's PVR user support] (http://forum.kodi.tv/forumdisplay.php?fid=170)
-* [Kodi's PVR development support] (http://forum.kodi.tv/forumdisplay.php?fid=136)
+* [Kodi's PVR user support](http://forum.kodi.tv/forumdisplay.php?fid=170)
+* [Kodi's PVR development support](http://forum.kodi.tv/forumdisplay.php?fid=136)
