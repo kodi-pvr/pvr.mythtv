@@ -38,7 +38,7 @@ msgstr "Nafn MythTV gangagrunns"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Ítarlegri villukemdiupplýsingar í atvikaskránni"
+msgstr "Ítarlegri villukembiupplýsingar í atvikaskránni"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -46,23 +46,23 @@ msgstr "Virkja beina útsendingu"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Leyfa Live TV að færa sýningar sem eru komnar á dagskrá"
+msgstr "Leyfa beinum útsendingum að færa til dagskrárliði sem eru komnir á dagskrá"
 
 msgctxt "#30008"
 msgid "Conflict handling"
-msgstr "Höndla árekstra"
+msgstr "Meðhöndlun árekstra"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Kjósa frekar Live TV þegar upptaka á seinni tíma"
+msgstr "Kjósa frekar beina útsendingu þegar upptaka er áætluð síðar"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Kjósa upptöku og stöðva Live TV"
+msgstr "Kjósa upptöku og stöðva beina útsendingu"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Kjósa Live TV og hætta við upptöku sem rekst á"
+msgstr "Kjósa beina útsendingu og hætta við upptöku sem rekst á"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -206,7 +206,7 @@ msgstr "Virkja að sleppa auglýsingum (EDL)"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Skynjaði klippingu á upptökulista eða hopp yfir auglýsingar.\nViltu virkja að sleppa auglýsingum (EDL) fyrir þetta efni ?"
+msgstr "Skynjaði lista yfir klippingar á upptökum eða hopp yfir auglýsingar.\nViltu virkja að sleppa auglýsingum (EDL) fyrir þetta efni ?"
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -234,7 +234,7 @@ msgstr "Hætta við upptöku sem rekst á: "
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Stöðva Live TV vegna upptöku sem rekst á: %s"
+msgstr "Stöðva beina útsendingu vegna upptöku sem rekst á: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -263,6 +263,26 @@ msgstr "Uppfæra flýtiminni fyrir táknmyndir rása"
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Handvirkt"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Taka upp einn"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Taka upp vikulega"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Taka upp daglega"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Taka allt upp"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Leita að stikkorði"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"

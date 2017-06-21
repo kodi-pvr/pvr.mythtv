@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Engedélyezed a felvételek lejártát"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Kérdezzen a megtekintett felvétel törlése előtt"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Felvétel minta"

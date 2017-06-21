@@ -206,7 +206,7 @@ msgstr "Pokazuj fototapety i miniatury nagrań"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Ograniczaj próby dostrajania kanału"
+msgstr "Limit prób dostrajania kanału"
 
 msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
@@ -230,7 +230,7 @@ msgstr "Nieudane połączenie"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
-msgstr "Czy chcesz spróbować ponownie?"
+msgstr "Czy chcesz ponowić próbę?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
