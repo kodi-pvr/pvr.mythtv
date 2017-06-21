@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="4.12.14"
+  version="4.12.15"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -30,6 +30,7 @@
     <summary lang="es_AR">Front-end de Kodi para MythTV</summary>
     <summary lang="es_ES">Front-end de Kodi para MythTV</summary>
     <summary lang="es_MX">Kodi frontend para MythTV</summary>
+    <summary lang="et_EE">Kodi liides MythTV'le</summary>
     <summary lang="fi_FI">Kodin MythTV-asiakasohjelma</summary>
     <summary lang="fr_CA">Frontal Kodi pour MythTV</summary>
     <summary lang="fr_FR">Interface logicielle pour MythTV</summary>
@@ -86,7 +87,7 @@
     <description lang="hr_HR">MythTV sučelje (za inačice do MythTV 0.28. Podržava streamanje i snimanje TV programa, slušanje radio programa, elektronski programski vodič (EPG) i zakazana snimanja. </description>
     <description lang="hu_HU">MythTV előtét (MythTv 0.28 verzióig). Élő adások, felvételek és rádióadások támogatása EPG-vel és időzítéssel.</description>
     <description lang="id_ID">Antarmuka MythTV (hingga MythTV 0.28). Mendukung streaming TV Langsung &amp; Rekaman, mendengarkan channel Radio, EPG dan Penghitung waktu.</description>
-    <description lang="is_IS">MythTV framendi (upp að MythTV 0.28). Styður streymingu frá beinum útsendingum og upptökum, hlustun á Útvarp, rafræna dagskrárvísa og tíma upptökur.</description>
+    <description lang="is_IS">MythTV framendi (upp að MythTV 0.28). Styður streymingu frá beinum útsendingum og upptökum, hlustun á útvarp, rafræna dagskrárvísa og tíma upptökur.</description>
     <description lang="it_IT">Frontend MythTV (compatibile fino a MythTV 0.28). Supporta lo streaming TV in diretta, le registrazioni, l'ascolto dei canali radio, EPG e programmazioni.</description>
     <description lang="ja_JP">MythTV (バージョン 0.28 まで) のフロントエンドです。ライブ TV ストリーミング、録画、ラジオ放送の視聴、EPG、タイマーをサポートしています。</description>
     <description lang="ko_KR">MythTV 프론트엔드 (up to MythTV 0.28). 라이브 TV 스트리밍, 녹화, 라디오 채널 청취, EPG, 예약 지원.</description>
@@ -143,7 +144,7 @@
     <disclaimer lang="lv_LV">Šī ir nestabila programmatūra! Autori nav nekādā vaidā atbildīgi par nesanākušiem ierakstiem, nepareiziem taimeriem, iztērētām stundām vai jebkādiem citiem nevēlamiem efektiem.</disclaimer>
     <disclaimer lang="mk_MK">Ова е нестабилен софтвер! Авторите на ниту еден начин не одговараат за неуспешни снимки, неточни тајмери, потрошени часови, или било кои други несакани ефекти.</disclaimer>
     <disclaimer lang="ms_MY">Ini merupakan perisian tidak stabil! Pengarang tidak bertanggungjawab atas kegagalan rakaman, pemasa tidak betul, masa yang dibazirkan, atau apa jua kesan yang tidak dikehendaki..</disclaimer>
-    <disclaimer lang="nb_NO">Dette er ustabil programvare! Forfatterene er på ingen måte ansvarlige for feilaktig opptak, ukorrekte timere, bortkastet tid, eller alle andre uønskede følger. </disclaimer>
+    <disclaimer lang="nb_NO">Dette er ustabil programvare! Forfatterne er på ingen måte ansvarlige for feilaktig opptak, uriktige tidsur, bortkastet tid, eller alle andre uønskede følger. </disclaimer>
     <disclaimer lang="nl_NL">Dit is onstabiele software! De auteurs zijn op geen enkele wijze verantwoordelijk voor mislukte opnames, timers, verspilde tijd of enig ander ongewild bijeffect.</disclaimer>
     <disclaimer lang="pl_PL">To oprogramowanie jest niestabilne! Autorzy w żaden sposób nie odpowiadają za nieudane nagrania, błędy w harmonogramie nagrań, stracone godziny czy też jakiekolwiek inne niepożądane efekty.</disclaimer>
     <disclaimer lang="pt_BR">Este é um software instável! Os autores não são responsáveis por falhas nas gravações, agendamentos incorretos, horas dispendidas, ou quaisquer outro efeito indesejado.</disclaimer>

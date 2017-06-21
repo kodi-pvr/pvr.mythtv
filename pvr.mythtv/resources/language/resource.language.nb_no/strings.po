@@ -138,7 +138,7 @@ msgstr "Spør før sletting av sette opptak"
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
-msgstr "Vis 'Opprinnelig Sendedato' i stedte for 'Opptakstid'"
+msgstr "Vis 'Opprinnelig sendedato' i stedet for 'Opptakstid'"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -234,7 +234,7 @@ msgstr "Ønsker du å prøve på nytt ?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Tilkoblingen feilet til MythTV tjenesten med kjent protokoll versjon. Vennligst sjekk kompatibiliteten for tillegget og oppgrader din tjeneste til en støttet versjon."
+msgstr "Tilkoblingen feilet til MythTV-tjenesten med kjent protokollversjon. Sjekk kompatibiliteten for tillegget og oppgrader din tjeneste til en støttet versjon."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
@@ -302,7 +302,7 @@ msgstr "Oppdater minne for kanal ikoner"
 
 msgctxt "#30423"
 msgid "Trigger channels update"
-msgstr "Sjekk kanal oppdateringer"
+msgstr "Sjekk kanaloppdateringer"
 
 msgctxt "#30424"
 msgid "Show status of scheduling"
@@ -402,11 +402,11 @@ msgstr "Gjenkjen duplikater ved hjelp av undertekster og beskrivelse"
 
 msgctxt "#30505"
 msgid "Match duplicates using subtitle then description"
-msgstr "Gjenkjen duplikater ved hjelp av undertekster så beskrivelse"
+msgstr "Gjenkjenn duplikater ved hjelp av undertekster, dernest beskrivelse"
 
 msgctxt "#30506"
 msgid "Recordings never expire"
-msgstr "Opptak utløper avldri"
+msgstr "Opptak utløper aldri"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
@@ -418,4 +418,4 @@ msgstr "Behold opptil %d opptak"
 
 msgctxt "#30509"
 msgid "Keep %d newest and expire old"
-msgstr "Behold %d nyeste og utløp eldre"
+msgstr "Behold %d nyeste og la eldre utløpe"
