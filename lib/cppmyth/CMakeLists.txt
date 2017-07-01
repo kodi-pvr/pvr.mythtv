@@ -8,8 +8,6 @@ set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 enable_language(CXX)
 enable_language(C)
 
-#include (GNUInstallDirs)
-
 # Options
 OPTION (BUILD_SHARED_LIBS "Build shared libraries." OFF)
 if (MSVC)
@@ -24,7 +22,7 @@ endif ()
 
 ###############################################################################
 # set lib version here
-set (CPPMYTH_LIB_VERSION "2.9.3")
+set (CPPMYTH_LIB_VERSION "2.9.4")
 set (CPPMYTH_LIB_SOVERSION "2")
 
 ###############################################################################
@@ -47,6 +45,7 @@ if (NOT WIN32)
   if (NOT CYGWIN)
     add_definitions ("-fPIC")
   endif ()
+
   add_definitions ("-Wall")
 
   include(CheckCXXCompilerFlag)
