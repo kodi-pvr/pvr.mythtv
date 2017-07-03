@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kodi-pvr/pvr.mythtv.svg?branch=master)](https://travis-ci.org/kodi-pvr/pvr.mythtv)
+[![Build Status](https://travis-ci.org/janbar/pvr.mythtv.svg?branch=master)](https://travis-ci.org/janbar/pvr.mythtv)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/3115/badge.svg)](https://scan.coverity.com/projects/3115)
 
 # MythTV PVR
