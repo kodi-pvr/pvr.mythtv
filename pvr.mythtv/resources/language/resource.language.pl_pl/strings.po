@@ -314,7 +314,7 @@ msgstr "Nieobsługiwane"
 
 msgctxt "#30452"
 msgid "Upcoming"
-msgstr "Nadchodzące"
+msgstr "Wkrótce"
 
 msgctxt "#30453"
 msgid "Overriden"
@@ -326,7 +326,7 @@ msgstr "Nie nagrywaj"
 
 msgctxt "#30455"
 msgid "Upcoming manual"
-msgstr "Manualnie nadchodzące"
+msgstr "Wkrótce manualnie"
 
 msgctxt "#30456"
 msgid "Zombie"
