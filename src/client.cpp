@@ -677,6 +677,10 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
     pCapabilities->bSupportsRecordingPlayCount    = (version < 80 ? false : true);
     pCapabilities->bSupportsLastPlayedPosition    = (version < 88 || !g_bUseBackendBookmarks ? false : true);
     pCapabilities->bSupportsRecordingEdl          = true;
+    pCapabilities->bSupportsRecordingsRename      = false;
+    pCapabilities->bSupportsRecordingsLifetimeChange = false;
+    pCapabilities->bSupportsDescrambleInfo = false;
+
     return PVR_ERROR_NO_ERROR;
   }
   else
@@ -1166,5 +1170,7 @@ void DemuxReset() {}
 const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
 PVR_ERROR SetEPGTimeFrame(int) { return PVR_ERROR_NOT_IMPLEMENTED; }
+PVR_ERROR GetDescrambleInfo(PVR_DESCRAMBLE_INFO*) { return PVR_ERROR_NOT_IMPLEMENTED; }
+PVR_ERROR SetRecordingLifetime(const PVR_RECORDING*) { return PVR_ERROR_NOT_IMPLEMENTED; }
 
 } //end extern "C"
