@@ -16,7 +16,7 @@ if (MSVC)
   OPTION (STATIC_CRT "Link the static CRT libraries" OFF)
 endif ()
 
-if (NOT WIN32)
+if (NOT MSVC)
   OPTION (REQUIRE_CXX_98 "Require standard c++98" OFF)
 endif ()
 
@@ -41,7 +41,7 @@ if (MSVC)
   set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W3 /Od /RTC1 /EHsc /nologo")
 endif ()
 
-if (NOT WIN32)
+if (NOT MSVC)
   if (NOT CYGWIN)
     add_definitions ("-fPIC")
   endif ()
@@ -131,10 +131,10 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src/.)
 ###############################################################################
 # add sources
 file (GLOB SRC_FILES
-  src/private/mythdto/*.cpp src/private/mythdto/*.h
-  src/private/*.c src/private/*.cpp src/private/*.h
-  src/proto/*.cpp src/proto/*.h
-  src/*.cpp src/*.h)
+  src/private/mythdto/*.cpp
+  src/private/*.c src/private/*.cpp
+  src/proto/*.cpp
+  src/*.cpp)
 
 file (GLOB OS_SRC_FILES
   src/private/os/threads/threadpool.cpp)
@@ -147,6 +147,18 @@ endif ()
 set (CPPMYTH_SOURCES
   ${SRC_FILES} ${OS_SRC_FILES})
 
+file (GLOB HDR_FILES
+  src/private/mythdto/*.h
+  src/private/*.h
+  src/proto/*.h
+  src/*.h)
+
+file (GLOB OS_HDR_FILES
+  src/private/os/threads/*.h)
+
+set (CPPMYTH_HEADERS
+  ${HDR_FILES} ${OS_HDR_FILES})
+
 ###############################################################################
 # add targets
 set (cppmyth_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
@@ -156,7 +168,7 @@ endif ()
 #if (OPENSSL_FOUND)
 #  list (APPEND cppmyth_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
 #endif ()
-if (WIN32)
+if (MSVC)
   list (APPEND cppmyth_LIBRARIES ws2_32)
 else ()
   list (APPEND cppmyth_LIBRARIES m)
@@ -168,4 +180,3 @@ endif ()
 
 add_library (cppmyth STATIC ${CPPMYTH_SOURCES})
 target_link_libraries (cppmyth ${cppmyth_LIBRARIES})
-
