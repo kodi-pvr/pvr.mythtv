@@ -1,3 +1,7 @@
+v5.1.2
+- Sync upstream cppmyth (2.9.5)
+- Fix http chunked data transfer
+
 v5.1.0
 - Updated to PVR addon API v5.3.0
 
