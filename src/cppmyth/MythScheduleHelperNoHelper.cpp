@@ -55,6 +55,7 @@ bool MythScheduleHelperNoHelper::SameTimeslot(const MythRecordingRule &first, co
 bool MythScheduleHelperNoHelper::FillTimerEntryWithRule(MythTimerEntry& entry, const MythRecordingRuleNode& node) const
 {
   (void)node;
+  entry.isRule = true;
   entry.timerType = TIMER_TYPE_UNHANDLED;
   return true;
 }

@@ -58,6 +58,7 @@ typedef enum
 
 struct MythTimerEntry
 {
+  bool          isRule;
   bool          isInactive;
   TimerTypeId   timerType;
   bool          epgCheck;
@@ -81,7 +82,8 @@ struct MythTimerEntry
   uint32_t      parentIndex;
   Myth::RS_t    recordingStatus;
   MythTimerEntry()
-  : isInactive(false)
+  : isRule(false)
+  , isInactive(false)
   , timerType(TIMER_TYPE_UNHANDLED)
   , epgCheck(false)
   , chanid(0)

@@ -475,6 +475,9 @@ bool MythScheduleHelper75::FillTimerEntryWithRule(MythTimerEntry& entry, const M
   // Assign timer type regarding rule attributes. The match SHOULD be opposite to
   // that which is applied in function 'NewFromTimer'
 
+  // Check rule flag for this entry
+  entry.isRule = true;
+
   MythRecordingRule rule = node.GetRule();
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "75::%s: Rule %u", __FUNCTION__, rule.RecordID());
