@@ -1525,6 +1525,10 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
     tag.startTime = (*it)->startTime;
     tag.endTime = (*it)->endTime;
 
+    // Discard upcoming without valid channel uid
+    if (tag.iClientChannelUid == PVR_CHANNEL_INVALID_UID && !(*it)->isRule)
+      continue;
+
     // Status: Match recording status with PVR_TIMER status
     switch ((*it)->recordingStatus)
     {
