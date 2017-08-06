@@ -626,7 +626,6 @@ PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
           PVR_STRCPY(tag.strIconPath, "");
 
         // Unimplemented
-        PVR_STRCPY(tag.strStreamURL, "");
         PVR_STRCPY(tag.strInputFormat, "");
         tag.iEncryptionSystem = 0;
 
@@ -2048,23 +2047,6 @@ int PVRClientMythTV::ReadLiveStream(unsigned char *pBuffer, unsigned int iBuffer
   if (m_dummyStream)
     return m_dummyStream->Read(pBuffer, iBufferSize);
   return -1;
-}
-
-bool PVRClientMythTV::SwitchChannel(const PVR_CHANNEL &channel)
-{
-  if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG,"%s: chanid: %u, channum: %u", __FUNCTION__, channel.iUniqueId, channel.iChannelNumber);
-
-  // Begin critical section
-  CLockObject lock(m_lock);
-  // Stop the live for reopening
-  if (m_liveStream)
-    m_liveStream->StopLiveTV();
-  SAFE_DELETE(m_dummyStream);
-  // Try reopening for channel
-  if (OpenLiveStream(channel))
-    return true;
-  return false;
 }
 
 long long PVRClientMythTV::SeekLiveStream(long long iPosition, int iWhence)

@@ -774,11 +774,6 @@ PVR_ERROR GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time
  * PVR Channel Functions
  */
 
-unsigned int GetChannelSwitchDelay(void)
-{
-  return 0;
-}
-
 int GetChannelsAmount()
 {
   if (g_client == NULL)
@@ -1014,14 +1009,6 @@ int ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize)
   return dataread;
 }
 
-bool SwitchChannel(const PVR_CHANNEL &channel)
-{
-  if (g_client == NULL)
-    return false;
-
-  return g_client->SwitchChannel(channel);
-}
-
 PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
 {
   if (g_client == NULL)
@@ -1161,6 +1148,7 @@ bool IsTimeshifting(void) { return true; }
  * Unused API Functions
  */
 
+PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
 PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
 void DemuxAbort(void) {}
 DemuxPacket* DemuxRead(void) { return NULL; }
