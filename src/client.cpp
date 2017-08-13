@@ -946,7 +946,6 @@ PVR_ERROR GetTimers(ADDON_HANDLE handle)
   if (g_client == NULL)
     return PVR_ERROR_SERVER_ERROR;
 
-  /* TODO: Change implementation to get support for the timer features introduced with PVR API 1.9.7 */
   return g_client->GetTimers(handle);
 }
 
@@ -1155,10 +1154,11 @@ DemuxPacket* DemuxRead(void) { return NULL; }
 void DemuxFlush(void) {}
 bool SeekTime(double, bool, double *) { return false; }
 void DemuxReset() {}
-const char * GetLiveStreamURL(const PVR_CHANNEL &) { return ""; }
 void SetSpeed(int) {};
 PVR_ERROR SetEPGTimeFrame(int) { return PVR_ERROR_NOT_IMPLEMENTED; }
 PVR_ERROR GetDescrambleInfo(PVR_DESCRAMBLE_INFO*) { return PVR_ERROR_NOT_IMPLEMENTED; }
 PVR_ERROR SetRecordingLifetime(const PVR_RECORDING*) { return PVR_ERROR_NOT_IMPLEMENTED; }
+PVR_ERROR GetChannelStreamProperties(const PVR_CHANNEL*, PVR_NAMED_VALUE*, unsigned int*) { return PVR_ERROR_NOT_IMPLEMENTED; }
+PVR_ERROR GetRecordingStreamProperties(const PVR_RECORDING*, PVR_NAMED_VALUE*, unsigned int*) { return PVR_ERROR_NOT_IMPLEMENTED; }
 
 } //end extern "C"
