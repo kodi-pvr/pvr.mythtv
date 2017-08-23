@@ -548,7 +548,7 @@ PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANN
       tag.strPlot = it->second->description.c_str();
       tag.strGenreDescription = it->second->category.c_str();
       tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
-      tag.iChannelNumber = atoi(it->second->channel.chanNum.c_str());
+      tag.iUniqueChannelId = channel.iUniqueId;
       int genre = m_categories.Category(it->second->category);
       tag.iGenreSubType = genre & 0x0F;
       tag.iGenreType = genre & 0xF0;
