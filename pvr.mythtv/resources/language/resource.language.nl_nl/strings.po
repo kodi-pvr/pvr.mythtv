@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Sta opnames toe te expireren"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "druk om de bekeken opname te verwijderen."
+
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
 msgstr "Toon 'Orginele uitzenddatum' in plaats van 'opnametijd'"
@@ -143,6 +147,10 @@ msgstr "Opname template"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Geavanceerd"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Voorkeuren"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -199,6 +207,10 @@ msgstr "Activeer opname fanart/miniaturen"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limiteer kanaal tuning pogingen"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Toon inactieve aankomende (alternatief/opgenomen/verlopen)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

@@ -38,7 +38,7 @@ msgstr "Nafn MythTV gangagrunns"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Ítarlegri villukemdiupplýsingar í atvikaskránni"
+msgstr "Ítarlegri villukembiupplýsingar í atvikaskránni"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -46,23 +46,23 @@ msgstr "Virkja beina útsendingu"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Leyfa Live TV að færa sýningar sem eru komnar á dagskrá"
+msgstr "Leyfa beinum útsendingum að færa til dagskrárliði sem eru komnir á dagskrá"
 
 msgctxt "#30008"
 msgid "Conflict handling"
-msgstr "Höndla árekstra"
+msgstr "Meðhöndlun árekstra"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Kjósa frekar Live TV þegar upptaka á seinni tíma"
+msgstr "Kjósa frekar beina útsendingu þegar upptaka er áætluð síðar"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Kjósa upptöku og stöðva Live TV"
+msgstr "Kjósa upptöku og stöðva beina útsendingu"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Kjósa Live TV og hætta við upptöku sem rekst á"
+msgstr "Kjósa beina útsendingu og hætta við upptöku sem rekst á"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Leyfa upptökum að renna út?"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Bjóðast til að eyða skoðaðri upptöku"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Birta upprunalegan útsendingartíma í stað upptökutíma"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Sniðmát upptakna"
@@ -139,6 +147,10 @@ msgstr "Sniðmát upptakna"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Ítarlegt"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Kjörstillingar"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -196,6 +208,10 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Takmarka fjölda tilrauna til rásaleitar"
 
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Birta óvirkt á næstunni ('til vara'/'tekið upp'/'útrunnið')"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Útgáfa samskiptareglna: %i - Útgáfa gagnagrunns: %i"
@@ -206,7 +222,23 @@ msgstr "Virkja að sleppa auglýsingum (EDL)"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Skynjaði klippingu á upptökulista eða hopp yfir auglýsingar.\nViltu virkja að sleppa auglýsingum (EDL) fyrir þetta efni ?"
+msgstr "Skynjaði lista yfir klippingar á upptökum eða hopp yfir auglýsingar.\nViltu virkja að sleppa auglýsingum (EDL) fyrir þetta efni ?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Tenging mistókst"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Viltu reyna aftur?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Mistókst að tengja MythTV-bakendann við útgáfur þekktra samskiptamáta. Athugaðu samhæfingarvörpun viðbótarinnar og uppfærðu bakendann í studda útgáfu."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Mistókst að tengja API-þjónustur MythTV-bakenda. Athugaðu PIN-númerið þitt og uppsetningu bakendans. PIN-númerið þarf að vera stillt í bakendanum til að tenging geti komist á."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -234,7 +266,7 @@ msgstr "Hætta við upptöku sem rekst á: "
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Stöðva Live TV vegna upptöku sem rekst á: %s"
+msgstr "Stöðva beina útsendingu vegna upptöku sem rekst á: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -256,14 +288,134 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Eyða og taka upp aftur"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Halda upptöku"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Víxla birtingu á 'til vara'/'tekið upp'/'útrunnið'"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Uppfæra flýtiminni fyrir táknmyndir rása"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Gangsetja uppfærslu rása"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Birta stöðu áætlunar"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Ómeðhöndlað"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Á næstunni"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Yfirtekið"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Ekki taka upp"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Á næstunni handvirkt"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Draugur"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Til vara"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Þegar tekið upp"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Útrunnin upptaka"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Handvirkt"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Taka upp einn"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Taka upp vikulega"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Taka upp daglega"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Taka allt upp"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Taka þetta upp"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Taka upp þáttaröð"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Leita að stikkorði"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Leita að fólki"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regla óvirk"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Ekki samsvara tvítökum"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Samsvara tvítökum með skjátexta"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Samsvara tvítökum með lýsingu"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Samsvara tvítökum með skjátexta og lýsingu"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Samsvara tvítökum með skjátexta og síðan lýsingu"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Upptökur verða aldrei útrunnar"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Leyfa upptökum að renna út?"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Halda allt að %d upptökum"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Halda %d nýjustu og  úrelda þær eldri"

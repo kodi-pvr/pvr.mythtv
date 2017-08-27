@@ -18,23 +18,23 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "MythTV backend värdnamn eller IP"
+msgstr "MythTV Backend Värdnamn eller IP"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "MythTV backend port"
+msgstr "MythTV Backend Port"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
-msgstr "MythTV databasanvändarnamn"
+msgstr "MythTV Databas Användarnamn"
 
 msgctxt "#30003"
 msgid "MythTV Database Password"
-msgstr "MythTV databaslösenord"
+msgstr "MythTV Databas Lösenord"
 
 msgctxt "#30004"
 msgid "MythTV Database Databasename"
-msgstr "MythTV databasnamn"
+msgstr "MythTV Databas Namn"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
@@ -66,11 +66,11 @@ msgstr "Föredra direktsänd TV och avbryt inspelning i konflikt"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "MythTV-backends lokala nätverksadress (WOL)"
+msgstr "MythTV Backend Nätverksadress (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "MythTV Backend-port för API-tjänster"
+msgstr "MythTV Backend Port för API-tjänster"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -202,7 +202,7 @@ msgstr "Aktivera kanalikoner"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Aktivera inspelnings-fanart/tummnaglar"
+msgstr "Aktivera inspelnings-fanart/miniatyrbilder"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"

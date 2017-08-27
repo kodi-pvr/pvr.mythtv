@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "MythTV aizmugursistēmas saimniekvārds vai IP"
+msgstr "MythTV galasistēmas saimniekvārds vai IP"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "MythTV aizmugursistēmas ports"
+msgstr "MythTV galasistēmas ports"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -66,11 +66,11 @@ msgstr "Dot priekšroku tiešraides TV un atcelt konfliktējošo ierakstu"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "MythTV aizmugursistēmas datortīkla adrese (WOL)"
+msgstr "MythTV galasistēmas datortīkla adrese (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "MythTV aizmugursistēmas ports API pakalpojumiem"
+msgstr "MythTV galasistēmas ports API pakalpojumiem"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -182,7 +182,7 @@ msgstr "Nekad"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloķēt aizmugursistēmas izslēgšanu"
+msgstr "Bloķēt galasistēmas izslēgšanu"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -204,17 +204,29 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Atrasts griezumu saraksts vai reklāmu izlaišana.\nVai vēlaties aktivizēt EDL funkciju šajā pārraidē?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Neizdevās pieslēgties"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Neizdevās pieslēgties MythTV galasistēmai ar zināmajām protokola versijām. Lūdzu, pārbaudiet pielikuma savietojamības karti un atjauniniet galasistēmu uz atbalstītu versiju."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Neizdevās pieslēgties API pakalpojumiem MythTV galasistēmā. Lūdzu, pārbaudiet PIN kodu vai galasistēmas uzstādījumus. Lai atļautu pieslēgumu, galasistēmā jākonfigurē PIN kods."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "Zudis savienojums ar MythTV aizmugursistēmu"
+msgstr "Zudis pieslēgums MythTV galasistēmai"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
-msgstr "Savienojums ar MythTV atjaunots"
+msgstr "MythTV pieslēgums atjaunots"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "MythTV aizmugursistēma neatbild."
+msgstr "MythTV galasistēma neatbild."
 
 msgctxt "#30305"
 msgid "Channel unavailable"

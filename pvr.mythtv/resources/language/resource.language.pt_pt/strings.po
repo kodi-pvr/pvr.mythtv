@@ -132,6 +132,10 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permitir que as gravações expirem"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Avisar para eliminar a gravação vista"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Modelo da gravação"
@@ -139,6 +143,10 @@ msgstr "Modelo da gravação"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Avançado"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Preferências"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -312,6 +320,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativo"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Atualmente gravado"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Gravação expirada"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
@@ -347,6 +367,10 @@ msgstr "Pesquisa por palavra-chave"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Procurar pessoas"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regra desativada"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"
