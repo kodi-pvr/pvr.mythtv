@@ -42,11 +42,11 @@ msgstr "Inkluder mer debug informasjon i logg filen"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Aktiver Live TV"
+msgstr "Skru på direkte-TV"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Tillat at Live TV flytter avtalte programmer"
+msgstr "Tillat at direkte-TV flytter avtalte programmer"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,15 +54,15 @@ msgstr "Konflikthåndtering"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Foretrekk Live TV når opptak er satt til senere"
+msgstr "Foretrekk direkte-TV når opptak er satt til senere"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Foretrekk opptak og stopp Live TV"
+msgstr "Foretrekk opptak og stopp direkte-TV"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Foretrekk Live TV og avbryt motstridende opptak"
+msgstr "Foretrekk direkte-TV og avbryt motstridende opptak"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -202,7 +202,7 @@ msgstr "Aktiver kanal-ikoner"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Aktiver fanart/miniatyrbilder for optak"
+msgstr "Aktiver brukerkunstbidragminiatyrbilder for opptak"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -238,7 +238,7 @@ msgstr "Tilkoblingen feilet til MythTV-tjenesten med kjent protokollversjon. Sje
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Tilkobling feilet til API tjensten til MythTV tjenste. Vennligst sjekk din PIN kode eller tjeneste oppsett. PIN koden må konfigureres på din tjeneste for å tillate tilkobling."
+msgstr "Tilkobling feilet til API-tjensten til MythTV-tjenste. Sjekk din PIN-kode eller tjenesteoppsett. PIN-koden må settes opp på din tjeneste for å tillate tilkobling."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"

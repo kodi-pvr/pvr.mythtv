@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Дозволи снимцима да истекну"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Питај за брисање одгледаног снимка"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Приказати 'Оригиналан Датум Емитовања' уместо 'Времена Снимања'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Шаблон снимања"
@@ -139,6 +147,10 @@ msgstr "Шаблон снимања"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Напредно"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Подешавања"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Омогући уметност љубитеља/сличице сним
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Ограничи покушаје промене канала"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Прикажи неактивне надоласке (алтернативно/снимљено/истекло)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -272,6 +288,14 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Избриши и поново сними"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Настави са снимањем"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Мењај приказ алтернативно/снимљено/истекло"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Освежи кеш за иконе канала"
@@ -308,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Зомби"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Алтернативно"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Тренутно снимање"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Истекло снимање"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ручно"
@@ -343,6 +379,10 @@ msgstr "Претражи реч"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Претражи људе"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Правило онемогућено"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

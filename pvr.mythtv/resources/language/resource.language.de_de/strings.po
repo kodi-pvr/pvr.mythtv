@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Erlaube Aufnahmen abzulaufen"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Frage ob gesehene Aufnahme gelöscht werden soll"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Zeige Austrahlungszeitraum anstelle des Aufnahmezeitraums"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Aufnahmevorlage"
@@ -139,6 +147,10 @@ msgstr "Aufnahmevorlage"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Erweitert"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Präferenzen"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Aufnahme von Fankunst/Vorschaubilder aktivieren"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Reduzieren versuche tuning"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Zeige inaktive bevorstehende Aufnahmen (alternativ/aufgenommen/abgelaufen)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -276,6 +292,10 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Aufnahme fortsetzen"
 
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Wechsle zwischen alternative/aufgenomme/abgelaufene Aufnahmen"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Cache für Senderlogos aktualisieren"
@@ -312,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternative"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Momentane Aufnahme"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Abgelaufene Aufnahme"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuell"
@@ -347,6 +379,10 @@ msgstr "Schlüsselwort suchen"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Personen suchen"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regel deaktiviert"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

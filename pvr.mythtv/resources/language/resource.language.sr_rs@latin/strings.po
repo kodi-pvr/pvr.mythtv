@@ -132,6 +132,14 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Dozvoli snimcima da isteknu"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Pitaj za brisanje odgledanog snimka"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Prikazati 'Originalan Datum Emitovanja' umesto 'Vremena Snimanja'"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Šablon snimanja"
@@ -139,6 +147,10 @@ msgstr "Šablon snimanja"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Napredno"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Podešavanja"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -195,6 +207,10 @@ msgstr "Omogući umetnost ljubitelja/sličice snimaka"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Ograniči pokušaje promene kanala"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Prikaži neaktivne nadolaske (alternativno/snimljeno/isteklo)"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -272,6 +288,14 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Izbriši i ponovo snimi"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Nastavi sa snimanjem"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Menjaj prikaz alternativno/snimljeno/isteklo"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Osveži keš za ikone kanala"
@@ -308,6 +332,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombi"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativno"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Trenutno snimanje"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Isteklo snimanje"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ručno"
@@ -343,6 +379,10 @@ msgstr "Pretraži reč"
 msgctxt "#30468"
 msgid "Search people"
 msgstr "Pretraži ljude"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Pravilo onemogućeno"
 
 msgctxt "#30501"
 msgid "Don't match duplicates"

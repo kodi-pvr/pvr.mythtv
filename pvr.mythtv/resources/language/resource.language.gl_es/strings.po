@@ -360,6 +360,10 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Buscar xente"
 
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regra desactivada"
+
 msgctxt "#30501"
 msgid "Don't match duplicates"
 msgstr "Non se atoparon duplicados"
