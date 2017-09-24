@@ -1325,7 +1325,7 @@ const MythTimerType::AttributeList& MythScheduleHelper75::GetRulePriorityList() 
 {
   if (!m_priorityListInit)
   {
-    char buf[4];
+    char buf[5];
     m_priorityListInit = true;
     m_priorityList.reserve(200);
     memset(buf, 0, sizeof(buf));
