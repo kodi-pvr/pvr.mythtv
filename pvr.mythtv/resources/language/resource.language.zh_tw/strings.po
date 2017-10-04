@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "顯示已不活躍的下集預告(有其他選擇/已錄製/過期)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "顯示直播電視的錄影檔"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "通訊協定版本: %i - 資料庫版本: %i"

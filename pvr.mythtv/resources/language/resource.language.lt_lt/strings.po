@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "Rodyti neaktyvius būsimus įvykius (alternatyvius/įrašytus/nebegaliojančius)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Rodyti televizijos įrašus"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokolo versija: %i - Duomenų bazės versija: %i"

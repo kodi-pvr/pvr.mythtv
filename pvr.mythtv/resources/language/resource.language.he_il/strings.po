@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "הראה ממשמש ובא לא פעיל (חלופה/הקלטה/לא בתוקף)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "הצג הקלטות לטלוויזיה חיה"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "גרסת פרוטוקול: %i - גרסת מסד נתונים: %i"

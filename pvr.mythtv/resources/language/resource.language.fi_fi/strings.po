@@ -38,7 +38,7 @@ msgstr "MythTV-tietokannan tietokantanimi"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Sisällytä enemmän virheenkorjaustietoja lokitiedostoon"
+msgstr "Tarkempi virheenkorjaustietojen kirjaaminen"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -66,15 +66,15 @@ msgstr "Suosi tv-lähetystä ja peru ristiriitainen tallennus"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "MythTV:n taustaosan verkko-osoite (WOL)"
+msgstr "MythTV-taustaosan verkko-osoite (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "MythTV:n taustaosan portti API-palveluille"
+msgstr "MythTV-taustaosan API-portti"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "MythTV:n API-palveluiden Pin-koodi "
+msgstr "MythTV-taustaosan API:n Pin-koodi "
 
 msgctxt "#30019"
 msgid "General"
@@ -102,11 +102,11 @@ msgstr "Etsi automaattisesti metatietoja"
 
 msgctxt "#30027"
 msgid "Commercial Flag new recordings"
-msgstr "Tunnista mainokset uusissa tallennuksissa"
+msgstr "Tunnista mainokset uusista tallenteista"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
-msgstr "Transkoodaa uudet tallennukset"
+msgstr "Transkoodaa uudet tallenteet"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
@@ -130,11 +130,11 @@ msgstr "Transkooderi"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Salli tallennusten vanheta"
+msgstr "Salli tallenteiden vanheneminen"
 
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
-msgstr "Kysy poistetaanko katsottu tallennus"
+msgstr "Kysy poistetaanko katsottu tallenne"
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
@@ -202,7 +202,7 @@ msgstr "Näytä kanavalogot"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Näytä tallennusten fanitaide/kuvakkeet"
+msgstr "Näytä tallenteiden fanitaide/kuvat"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -210,7 +210,11 @@ msgstr "Rajoita kanavan viritysyritysten määrää"
 
 msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
-msgstr "Näytä epäaktiiviset ajastukset (vaihtoehtoiset/tallennetut/vanhentuneet)"
+msgstr "Näytä epäaktiiviset ajastukset (tuplat/tallennetut/vanhentuneet)"
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Näytä tallenteet"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"

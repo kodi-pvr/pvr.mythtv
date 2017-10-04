@@ -200,6 +200,10 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limita els intents de sintonització de canals"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Mostra els enregistraments de LiveTV"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Versió del protocol: %i - versió de la base de dades: %i "
