@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "Mostrar Proximamente inactivos (alternativos/grabados/expirados)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Mostrar grabaciones de TV en Directo"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Versión de protocolo: %i - Versión de base de datos: %i"

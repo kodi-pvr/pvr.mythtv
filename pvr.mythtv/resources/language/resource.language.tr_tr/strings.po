@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "Etkin olmayan yaklaşanları göster (alternatif/kayıtlı/süresi dolan)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "CanlıTV kayıtlarını göster"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokol sürümü: %i - Veritabanı sürümü: %i"

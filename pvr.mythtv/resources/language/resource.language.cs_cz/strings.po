@@ -212,6 +212,10 @@ msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
 msgstr "Zobrazit neaktivní nadcházející (alternativní, nahrané, s vypršenou platností)"
 
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Zobrazit nahrávání živého vysílání"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Verze protokolu: %i - Verze databáze: %i"
