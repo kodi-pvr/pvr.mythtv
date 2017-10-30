@@ -136,6 +136,10 @@ msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
 msgstr "Kérdezzen a megtekintett felvétel törlése előtt"
 
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "'Eredeti sugárzásdátum' megjelenítése a 'Felvétel időpontja' helyett"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Felvétel minta"
@@ -203,6 +207,10 @@ msgstr "Felvételhez Fanart/bélyegkép engedéyezése"
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Csatornahangolási kísérletek korlátozása"
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "LiveTV felvételek megjelenítése"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
