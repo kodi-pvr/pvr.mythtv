@@ -1,3 +1,6 @@
+v5.5.0
+- Enable radio flag for channel with suffix '-[RADIO]'
+
 v5.4.4
 - Fix cppmyth build for uwp
 
