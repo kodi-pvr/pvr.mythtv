@@ -18,7 +18,7 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Nom d'hôte ou adresse IP du dorsal MythTV"
+msgstr "Nom d’hôte ou adresse IP du dorsal MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
@@ -26,7 +26,7 @@ msgstr "Port du dorsal MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
-msgstr "Nom d'utilisateur de la base de données MythTV"
+msgstr "Nom d’utilisateur de la base de données MythTV"
 
 msgctxt "#30003"
 msgid "MythTV Database Password"
@@ -38,7 +38,7 @@ msgstr "Nom de la base de données MythTV"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Inclure plus d'informations de débogage dans le fichier journal"
+msgstr "Inclure plus d’informations de débogage dans le fichier journal"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -54,11 +54,11 @@ msgstr "Gestion des conflits"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Préférer la télé en direct quand l'enregistrement a une tranche horaire ultérieure"
+msgstr "Préférer la télé en direct quand l’enregistrement a une tranche horaire ultérieure"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Préférer l'enregistrement et arrêter la télé en direct"
+msgstr "Préférer l’enregistrement et arrêter la télé en direct"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
@@ -70,11 +70,11 @@ msgstr "Adresse Ethernet (WOL) du dorsal MythTV"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Port du dorsal MythTV pour les services d'API"
+msgstr "Port du dorsal MythTV pour les services d’API"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "NIP de sécurité de MthTV pour les services d'API"
+msgstr "NIP de sécurité de MthTV pour les services d’API"
 
 msgctxt "#30019"
 msgid "General"
@@ -110,19 +110,19 @@ msgstr "Transcoder les nouveaux enregistrements"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
-msgstr "Exécuter le travail d'utilisateur no 1"
+msgstr "Exécuter le travail d’utilisateur no 1"
 
 msgctxt "#30030"
 msgid "Run User Job #2"
-msgstr "Exécuter le travail d'utilisateur no 2"
+msgstr "Exécuter le travail d’utilisateur no 2"
 
 msgctxt "#30031"
 msgid "Run User Job #3"
-msgstr "Exécuter le travail d'utilisateur no 3"
+msgstr "Exécuter le travail d’utilisateur no 3"
 
 msgctxt "#30032"
 msgid "Run User Job #4"
-msgstr "Exécuter le travail d'utilisateur no 4"
+msgstr "Exécuter le travail d’utilisateur no 4"
 
 msgctxt "#30033"
 msgid "Transcoder"
@@ -130,19 +130,19 @@ msgstr "Transcodeur"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Permettre l'expiration des enregistrements"
+msgstr "Permettre l’expiration des enregistrements"
 
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
-msgstr "Demander de supprimer l'enregistrement visionné"
+msgstr "Demander de supprimer l’enregistrement visionné"
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
-msgstr "Afficher la date de diffusion originale au lieu de la date d'enregistrement"
+msgstr "Afficher la date de diffusion originale au lieu de la date d’enregistrement"
 
 msgctxt "#30049"
 msgid "Recording template"
-msgstr "Modèle d'enregistrement"
+msgstr "Modèle d’enregistrement"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -194,7 +194,7 @@ msgstr "Jamais"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloquer l'extinction du dorsal"
+msgstr "Bloquer l’extinction du dorsal"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -202,7 +202,7 @@ msgstr "Activer les icônes de chaînes"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activer l'enregistrement du fanart/des imagettes"
+msgstr "Activer l’enregistrement du fanart/des imagettes"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -222,7 +222,7 @@ msgstr "Version du protocole : %i - Version de la base de données : %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
-msgstr "Activation de l'EDL"
+msgstr "Activation de l’EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
@@ -238,11 +238,11 @@ msgstr "Voulez-vous ressayer?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Échec de connexion du dorsal MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l'addiciel et mettre votre dorsal à niveau vers une version prise en charge."
+msgstr "Échec de connexion du dorsal MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l’addiciel et mettre votre dorsal à niveau vers une version prise en charge."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Échec de connexion des services d'API du dorsal MythTV. Veuillez vérifier votre NIP ou la configuration du dorsal. Le NIP doit être configuré dans le dorsal afin de permettre la connexion."
+msgstr "Échec de connexion des services d’API du dorsal MythTV. Veuillez vérifier votre NIP ou la configuration du dorsal. Le NIP doit être configuré dans le dorsal afin de permettre la connexion."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -266,7 +266,7 @@ msgstr "Enregistreur non disponible"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
-msgstr "Annulation de l'enregistrement en conflit : %s"
+msgstr "Annulation de l’enregistrement en conflit : %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
@@ -274,7 +274,7 @@ msgstr "Arrêt de la télé en direct dû à un enregistrement en conflit : %s"
 
 msgctxt "#30309"
 msgid "Not recording"
-msgstr "N'enregistre pas"
+msgstr "N’enregistre pas"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -294,11 +294,11 @@ msgstr "Supprimer et ré-enregistrer"
 
 msgctxt "#30412"
 msgid "Keep recording"
-msgstr "Garder l'enregistrement"
+msgstr "Garder l’enregistrement"
 
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
-msgstr "Activer ou désactiver l'affichage autre/enregistré/expiré"
+msgstr "Activer ou désactiver l’affichage autre/enregistré/expiré"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -310,7 +310,7 @@ msgstr "Déclencher la mise à jour des chaînes"
 
 msgctxt "#30424"
 msgid "Show status of scheduling"
-msgstr "Afficher l'état de la programmation"
+msgstr "Afficher l’état de la programmation"
 
 msgctxt "#30451"
 msgid "Unhandled"
@@ -410,15 +410,15 @@ msgstr "Faire correspondre les doublons en utilisant les sous-titres puis la des
 
 msgctxt "#30506"
 msgid "Recordings never expire"
-msgstr "Les enregistrements n'expirent jamais"
+msgstr "Les enregistrements n’expirent jamais"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
-msgstr "Permettre l'expiration des enregistrements"
+msgstr "Permettre l’expiration des enregistrements"
 
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
-msgstr "Garder jusqu'à %d enregistrements"
+msgstr "Garder jusqu’à %d enregistrements"
 
 msgctxt "#30509"
 msgid "Keep %d newest and expire old"

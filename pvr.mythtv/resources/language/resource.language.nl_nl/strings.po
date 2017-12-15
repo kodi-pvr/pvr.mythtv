@@ -50,11 +50,11 @@ msgstr "Live TV toestaan geplande opnamen te verplaatsen"
 
 msgctxt "#30008"
 msgid "Conflict handling"
-msgstr "Conflict afhandeling"
+msgstr "Conflictafhandeling"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Geef voorkeur aan Live TV indien opname later begint"
+msgstr "Geef voorkeur aan Live-TV indien opname later begint"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
@@ -62,7 +62,7 @@ msgstr "Geef voorkeur aan opname en stop Live TV"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Geef voorkeur aan Live TV en annuleer conflicterende opname"
+msgstr "Geef voorkeur aan Live-TV en annuleer conflicterende opname"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -74,7 +74,7 @@ msgstr "MythTV Backend poort voor API services"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "MythTV beveiliging wachtwoord voor API services"
+msgstr "MythTV-beveiliging wachtwoord voor API services"
 
 msgctxt "#30019"
 msgid "General"
@@ -82,7 +82,7 @@ msgstr "Algemene instellingen"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Template provider"
+msgstr "Templateprovider"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -110,19 +110,19 @@ msgstr "Transcode nieuwe opnames"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
-msgstr "Start Gebruikers Taak #1"
+msgstr "Start gebruikerstaak #1"
 
 msgctxt "#30030"
 msgid "Run User Job #2"
-msgstr "Start Gebruikers Taak #2"
+msgstr "Start gebruikerstaak #2"
 
 msgctxt "#30031"
 msgid "Run User Job #3"
-msgstr "Start Gebruikers Taak #3"
+msgstr "Start gebruikerstaak #3"
 
 msgctxt "#30032"
 msgid "Run User Job #4"
-msgstr "Start Gebruikers Taak #4"
+msgstr "Start gebruikerstaak #4"
 
 msgctxt "#30033"
 msgid "Transcoder"
@@ -130,19 +130,19 @@ msgstr "Transcoder"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Sta opnames toe te expireren"
+msgstr "Sta opnames toe te vervallen"
 
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
-msgstr "druk om de bekeken opname te verwijderen."
+msgstr "Druk om de bekeken opname te verwijderen."
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
-msgstr "Toon 'Orginele uitzenddatum' in plaats van 'opnametijd'"
+msgstr "Toon 'orginele uitzenddatum' in plaats van 'opnametijd'"
 
 msgctxt "#30049"
 msgid "Recording template"
-msgstr "Opname template"
+msgstr "Opnametemplate"
 
 msgctxt "#30050"
 msgid "Advanced"
@@ -158,7 +158,7 @@ msgstr "Activeer Demuxing MPEG-TS"
 
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
-msgstr "Tuner vertraging (sec)"
+msgstr "Tunervertraging (sec)"
 
 msgctxt "#30054"
 msgid "Group recordings by title"
@@ -178,7 +178,7 @@ msgstr "Nooit"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Activeer reclame skips (EDL)"
+msgstr "Activeer reclameskips (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -194,7 +194,7 @@ msgstr "Nooit"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Blokeer backend afsluiten"
+msgstr "Voorkom backend-afsluiting"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -202,7 +202,7 @@ msgstr "Activeer kanaaliconen"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Activeer opname fanart/miniaturen"
+msgstr "Activeer opnamefanart/-miniaturen"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
@@ -210,7 +210,7 @@ msgstr "Limiteer kanaal tuning pogingen"
 
 msgctxt "#30066"
 msgid "Show inactive upcomings (alternative/recorded/expired)"
-msgstr "Toon inactieve aankomende (alternatief/opgenomen/verlopen)"
+msgstr "Toon inactieve aankomende opnames (alternatief/opgenomen/verlopen)"
 
 msgctxt "#30067"
 msgid "Show LiveTV recordings"
@@ -226,11 +226,11 @@ msgstr "Activeren EDL"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "EEN knip lijst of reclame skips zijn gevonden.\nWil je de EDL functionaliteit activeren voor deze uitzending?"
+msgstr "Een kniplijst of reclameskip zijn gevonden.\nWil je de EDL-functionaliteit activeren voor deze uitzending?"
 
 msgctxt "#30112"
 msgid "Connection failed"
-msgstr "Verbinden mislukt"
+msgstr "Verbinding mislukt"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
@@ -238,23 +238,23 @@ msgstr "Wilt u het opnieuw proberen?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Niet gelukt te verbinden met MythTV server met de vertrouwde protocol versies. Controleer de compabiliteitsmap van de add-on en werk de server bij naar een ondersteunende versie."
+msgstr "Verbinding met de MythTV-server via de vertrouwde protocolversies is mislukt. Controleer de compabiliteitsmap van de add-on en werk de server bij naar een ondersteunde versie."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Niet gelukt te verbinden met de API diensten van MythTV server. Controleer uw PIN code of server instellingen. De PIN code moet geconfigureerd zijn in uw server om verbinding toe te staan."
+msgstr "Verbinding met de API-diensten van de MythTV-server is mislukt. Controleer uw PIN-code of serverinstellingen. De PIN-code moet geconfigureerd zijn in uw server om een verbinding toe te staan."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "Verbinding met MythTV backend verbroken"
+msgstr "Verbinding met MythTV-backend verbroken"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
-msgstr "Verbinding met MythTV herstelt"
+msgstr "Verbinding met MythTV hersteld"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Geen antwoord van de MythTV backend"
+msgstr "Geen antwoord van de MythTV-backend"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -270,11 +270,11 @@ msgstr "Annuleer conflicterende opname: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Live TV gestopt in verband met conflicterende opname: %s"
+msgstr "Live-TV gestopt in verband met conflicterende opname: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
-msgstr "niet aan het opnemen"
+msgstr "Niet aan het opnemen"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -290,7 +290,7 @@ msgstr "Geen uitzending gevonden"
 
 msgctxt "#30411"
 msgid "Delete and re-record"
-msgstr "Verwijder en her-opnemen"
+msgstr "Verwijder en opnieuw opnemen"
 
 msgctxt "#30412"
 msgid "Keep recording"
@@ -298,11 +298,11 @@ msgstr "Behoud opname"
 
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
-msgstr "Schakel scherm van alternatie;/opgenomen/verlopen"
+msgstr "Schakel tussen scherm van alternatief/opgenomen/verlopen"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
-msgstr "Ververs geheugen voor de kanaaliconen"
+msgstr "Ververs buffer t.b.v. de kanaaliconen"
 
 msgctxt "#30423"
 msgid "Trigger channels update"
@@ -414,7 +414,7 @@ msgstr "Opnames verlopen nooit"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
-msgstr "Sta opnames toe te expireren"
+msgstr "Sta opnames toe te vervallen"
 
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
@@ -422,4 +422,4 @@ msgstr "Bewaar tot en met %d opnames"
 
 msgctxt "#30509"
 msgid "Keep %d newest and expire old"
-msgstr "Bewaar %d nieuwste en ouden verlopen"
+msgstr "Bewaar %d nieuwste en laat oude opnames verlopen"

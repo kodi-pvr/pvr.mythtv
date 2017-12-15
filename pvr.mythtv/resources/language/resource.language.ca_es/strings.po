@@ -230,7 +230,7 @@ msgstr "Connexió perduda amb el dorsal de MythTV"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
-msgstr "Connexió amb backend de MythTV restaurada"
+msgstr "Connexió restaurada al dorsal de MythTV"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
