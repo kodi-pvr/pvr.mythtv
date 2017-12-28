@@ -707,6 +707,7 @@ PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR
       memset(&tag, 0, sizeof(PVR_CHANNEL_GROUP_MEMBER));
 
       tag.iChannelNumber = ++channelNumber;
+      // tag.iSubChannelNumber = ...; TODO: PVR API 5.8.0
       tag.iChannelUniqueId = itc->iUniqueId;
       PVR_STRCPY(tag.strGroupName, group.strGroupName);
       PVR->TransferChannelGroupMember(handle, &tag);

@@ -802,12 +802,6 @@ PVR_ERROR RenameChannel(const PVR_CHANNEL &channel)
   return PVR_ERROR_NOT_IMPLEMENTED;
 }
 
-PVR_ERROR MoveChannel(const PVR_CHANNEL &channel)
-{
-  (void)channel;
-  return PVR_ERROR_NOT_IMPLEMENTED;
-}
-
 PVR_ERROR OpenDialogChannelSettings(const PVR_CHANNEL &channel)
 {
   (void)channel;
@@ -1039,14 +1033,6 @@ long long SeekLiveStream(long long iPosition, int iWhence)
   return g_client->SeekLiveStream(iPosition,iWhence);
 }
 
-long long PositionLiveStream(void)
-{
-  if (g_client == NULL)
-    return -1;
-
-  return g_client->SeekLiveStream(0,SEEK_CUR);
-}
-
 long long LengthLiveStream(void)
 {
   if (g_client == NULL)
@@ -1099,14 +1085,6 @@ long long SeekRecordedStream(long long iPosition, int iWhence)
   return g_client->SeekRecordedStream(iPosition, iWhence);
 }
 
-long long PositionRecordedStream(void)
-{
-  if (g_client == NULL)
-    return -1;
-
-  return g_client->SeekRecordedStream(0, SEEK_CUR);
-}
-
 long long LengthRecordedStream(void)
 {
   if (g_client == NULL)
@@ -1120,34 +1098,18 @@ long long LengthRecordedStream(void)
  * PVR Timeshift Functions
  */
 
-time_t GetPlayingTime()
-{
-  if (g_client != NULL)
-    return g_client->GetPlayingTime();
-  return 0;
-}
-
-time_t GetBufferTimeStart()
-{
-  if (g_client != NULL)
-    return g_client->GetBufferTimeStart();
-  return 0;
-}
-
-time_t GetBufferTimeEnd()
-{
-  if (g_client != NULL)
-    return g_client->GetBufferTimeEnd();
-  return 0;
-}
-
 bool IsTimeshifting(void) { return true; }
 
 /*
  * Unused API Functions
  */
 
-PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
+PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *)
+{
+  // TODO: Addon API 5.8.0
+  return PVR_ERROR_NOT_IMPLEMENTED;
+}
+
 PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
 void DemuxAbort(void) {}
 DemuxPacket* DemuxRead(void) { return NULL; }
