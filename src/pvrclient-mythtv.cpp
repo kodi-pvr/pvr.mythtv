@@ -698,16 +698,14 @@ PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR
   }
 
   // Transfer the channel group members for the requested group
-  unsigned channelNumber = 0;
   for (PVRChannelList::const_iterator itc = itg->second.begin(); itc != itg->second.end(); ++itc)
   {
     if (itc->bIsRadio == group.bIsRadio)
     {
       PVR_CHANNEL_GROUP_MEMBER tag;
       memset(&tag, 0, sizeof(PVR_CHANNEL_GROUP_MEMBER));
-
-      tag.iChannelNumber = ++channelNumber;
-      // tag.iSubChannelNumber = ...; TODO: PVR API 5.8.0
+      tag.iChannelNumber = itc->iChannelNumber;
+      tag.iSubChannelNumber = itc->iSubChannelNumber;
       tag.iChannelUniqueId = itc->iUniqueId;
       PVR_STRCPY(tag.strGroupName, group.strGroupName);
       PVR->TransferChannelGroupMember(handle, &tag);
@@ -759,6 +757,8 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
       unsigned int chanid = channel.ID();
       PVRChannelItem item;
       item.iUniqueId = chanid;
+      item.iChannelNumber = channel.NumberMajor();
+      item.iSubChannelNumber = channel.NumberMinor();
       item.bIsRadio = channel.IsRadio();
       // Store the new Myth channel in the map
       m_channelsById.insert(std::make_pair(item.iUniqueId, channel));

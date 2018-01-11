@@ -168,6 +168,8 @@ private:
   struct PVRChannelItem
   {
     unsigned int iUniqueId;
+    unsigned int iChannelNumber;
+    unsigned int iSubChannelNumber;
     bool bIsRadio;
     bool operator <(const PVRChannelItem& other) const { return this->iUniqueId < other.iUniqueId; }
   };
