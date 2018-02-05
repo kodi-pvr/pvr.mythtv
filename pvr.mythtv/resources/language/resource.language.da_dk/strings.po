@@ -186,7 +186,7 @@ msgstr "Stop backend nedlukning"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Aktiver kanal ikoner"
+msgstr "Aktiver kanalikoner"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
@@ -194,7 +194,11 @@ msgstr "Aktiver optagelser af Fanart/Thumbnails"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Begræns kanal tunings forsøg"
+msgstr "Begræns kanaltunings forsøg"
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Vis direkte TV-optagelser"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -207,6 +211,14 @@ msgstr "Aktiverer EDL (reklame-skip)"
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "En reklameudeladelsesliste er blevet fundet.\nVil du aktivere automatisk reklame-skip for dette show?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Forbindelsesfejl"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Vil du prøve igen?"
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -256,13 +268,61 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slet og optag på ny"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Gem optagelse"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Opdater cachen for kanalikoner"
 
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Optag ikke"
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuelt"
+
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Optag én gang"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Optag ugentlig"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Optag daglig"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Optag alt"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Optag denne"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Optag serier"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Søg nøgleord"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Søg personer"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regel fravalgt"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Optagelser udløber aldrig"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"

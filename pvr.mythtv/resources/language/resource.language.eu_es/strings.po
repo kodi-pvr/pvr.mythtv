@@ -16,6 +16,10 @@ msgstr ""
 "Language: eu_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgctxt "#30003"
+msgid "MythTV Database Password"
+msgstr "MythTV datu-basearen pasahitza"
+
 msgctxt "#30019"
 msgid "General"
 msgstr "Orokorra"

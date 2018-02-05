@@ -130,7 +130,7 @@ msgstr "Převaděč"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Umožnit aby nahrávky vypršely"
+msgstr "Umožnit aby platnost nahrávek končila"
 
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
@@ -230,7 +230,7 @@ msgstr "Byl nalezen seznam střihů nebo přeskočení reklam.\nChcete aktivovat
 
 msgctxt "#30112"
 msgid "Connection failed"
-msgstr "Připojení selhalo"
+msgstr "Připojení se nezdařilo"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
@@ -410,7 +410,7 @@ msgstr "Porovnat duplicity pomocí podtitulu, pak popisu"
 
 msgctxt "#30506"
 msgid "Recordings never expire"
-msgstr "Nahrávky nikdy nevyprší"
+msgstr "Platnost nahrávek nikdy neskončí"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
