@@ -1106,7 +1106,6 @@ bool IsTimeshifting(void) { return true; }
 
 PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *)
 {
-  // TODO: Addon API 5.8.0
   return PVR_ERROR_NOT_IMPLEMENTED;
 }
 

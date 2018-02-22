@@ -2133,11 +2133,6 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
   return PVR_ERROR_NO_ERROR;
 }
 
-time_t PVRClientMythTV::GetPlayingTime()
-{
-  return (time_t)0;
-}
-
 time_t PVRClientMythTV::GetBufferTimeStart()
 {
   CLockObject lock(m_lock);

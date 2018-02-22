@@ -121,7 +121,6 @@ public:
   PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus);
   bool IsRealTimeStream() const { return m_liveStream ? true : false; }
 
-  time_t GetPlayingTime();
   time_t GetBufferTimeStart();
   time_t GetBufferTimeEnd();
 
