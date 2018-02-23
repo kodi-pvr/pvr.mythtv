@@ -871,6 +871,11 @@ MythRecordingRule MythScheduleHelper75::NewFromTimer(const MythTimerEntry& entry
 
   MythRecordingRule rule;
   XBMC->Log(LOG_DEBUG, "75::%s", __FUNCTION__);
+  // default required fields start, end time
+  time_t now = time(0);
+  rule.SetStartTime(now);
+  rule.SetEndTime(now);
+
   if (withTemplate)
   {
     // Base on template

@@ -23,6 +23,7 @@
 #include "MythScheduleHelper75.h"
 #include "MythScheduleHelper76.h"
 #include "MythScheduleHelper85.h"
+#include "MythScheduleHelper91.h"
 #include "../client.h"
 #include "../tools.h"
 #include "private/cppdef.h"
@@ -162,7 +163,12 @@ void MythScheduleManager::Setup()
   if (m_protoVersion != old)
   {
     SAFE_DELETE(m_versionHelper);
-    if (m_protoVersion >= 85)
+    if (m_protoVersion >= 91)
+    {
+      m_versionHelper = new MythScheduleHelper91(this, m_control);
+      XBMC->Log(LOG_DEBUG, "Using MythScheduleHelper91 and inherited functions");
+    }
+    else if (m_protoVersion >= 85)
     {
       m_versionHelper = new MythScheduleHelper85(this, m_control);
       XBMC->Log(LOG_DEBUG, "Using MythScheduleHelper85 and inherited functions");
@@ -925,7 +931,7 @@ void MythScheduleManager::Update()
       XBMC->Log(LOG_DEBUG, "%s: Recording - recordid: %u, index: %u, status: %d, title: %s", __FUNCTION__,
               (unsigned)it->second->RecordID(), (unsigned)it->first, it->second->Status(), it->second->Title().c_str());
   }
-  
+
   {
     CLockObject lock(m_lock);
     SAFE_DELETE(m_recordingIndexByRuleId);
