@@ -27,6 +27,10 @@
 #include "mythstream.h"
 #include "mytheventhandler.h"
 
+#define MYTH_RECORDING_CHUNK_SIZE 64000
+#define MYTH_RECORDING_CHUNK_MIN  8000
+#define MYTH_RECORDING_CHUNK_MAX  128000
+
 namespace Myth
 {
 
@@ -44,6 +48,8 @@ namespace Myth
     void CloseTransfer();
     bool TransferIsOpen();
 
+    void SetChunk(unsigned size); // to change the size of read chunk
+
     // Implement Stream
     int64_t GetSize() const;
     int Read(void *buffer, unsigned n);
@@ -59,6 +65,12 @@ namespace Myth
     ProtoTransferPtr m_transfer;
     ProgramPtr m_recording;
     volatile bool m_readAhead;
+
+    int _read(void *buffer, unsigned n);
+    int64_t _seek(int64_t offset, WHENCE_t whence);
+    // data buffer
+    unsigned m_chunk; // the size of block to read
+    struct { unsigned pos; unsigned len; unsigned char * data; } m_buffer;
   };
 
 }

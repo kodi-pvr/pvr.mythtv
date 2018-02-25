@@ -52,7 +52,11 @@ LiveTVPlayback::LiveTVPlayback(EventHandler& handler)
 , m_recorder()
 , m_signal()
 , m_chain()
+, m_chunk(MYTH_LIVETV_CHUNK_SIZE)
 {
+  m_buffer.pos = 0;
+  m_buffer.len = 0;
+  m_buffer.data = new unsigned char[m_chunk];
   m_eventSubscriberId = m_eventHandler.CreateSubscription(this);
   m_eventHandler.SubscribeForEvent(m_eventSubscriberId, EVENT_SIGNAL);
   m_eventHandler.SubscribeForEvent(m_eventSubscriberId, EVENT_LIVETV_CHAIN);
@@ -70,7 +74,11 @@ LiveTVPlayback::LiveTVPlayback(const std::string& server, unsigned port)
 , m_recorder()
 , m_signal()
 , m_chain()
+, m_chunk(MYTH_LIVETV_CHUNK_SIZE)
 {
+  m_buffer.pos = 0;
+  m_buffer.len = 0;
+  m_buffer.data = new unsigned char[m_chunk];
   // Private handler will be stopped and closed by destructor.
   m_eventSubscriberId = m_eventHandler.CreateSubscription(this);
   m_eventHandler.SubscribeForEvent(m_eventSubscriberId, EVENT_SIGNAL);
@@ -86,6 +94,7 @@ LiveTVPlayback::~LiveTVPlayback()
   if (m_eventSubscriberId)
     m_eventHandler.RevokeSubscription(m_eventSubscriberId);
   Close();
+  delete[] m_buffer.data;
 }
 
 bool LiveTVPlayback::Open()
@@ -464,6 +473,19 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
   }
 }
 
+void LiveTVPlayback::SetChunk(unsigned size)
+{
+  if (size < MYTH_LIVETV_CHUNK_MIN)
+    size = MYTH_LIVETV_CHUNK_MIN;
+  else if (size > MYTH_LIVETV_CHUNK_MAX)
+    size = MYTH_LIVETV_CHUNK_MAX;
+
+  m_buffer.pos = m_buffer.len = 0;
+  delete[] m_buffer.data;
+  m_buffer.data = new unsigned char[size];
+  m_chunk = size;
+}
+
 int64_t LiveTVPlayback::GetSize() const
 {
   int64_t size = 0;
@@ -474,6 +496,41 @@ int64_t LiveTVPlayback::GetSize() const
 }
 
 int LiveTVPlayback::Read(void* buffer, unsigned n)
+{
+  int c = 0;
+  bool refill = true;
+  for (;;)
+  {
+    // all requested data are in the buffer
+    if (m_buffer.len >= n)
+    {
+      memcpy(static_cast<unsigned char*>(buffer) + c, m_buffer.data + m_buffer.pos, n);
+      c += n;
+      m_buffer.pos += n;
+      m_buffer.len -= n;
+      return c;
+    }
+    // fill with the rest of data before read a new chunk
+    if (m_buffer.len > 0)
+    {
+      memcpy(static_cast<unsigned char*>(buffer) + c, m_buffer.data + m_buffer.pos, m_buffer.len);
+      c += m_buffer.len;
+      n -= m_buffer.len;
+      m_buffer.len = 0;
+    }
+    if (!refill)
+      break;
+    m_buffer.pos = 0;
+    int r = _read(m_buffer.data, m_chunk);
+    if (r < 0)
+      return -1;
+    m_buffer.len += r;
+    refill = false; // won't read again
+  }
+  return c;
+}
+
+int LiveTVPlayback::_read(void* buffer, unsigned n)
 {
   int r = 0;
   bool retry;
@@ -540,6 +597,23 @@ int LiveTVPlayback::Read(void* buffer, unsigned n)
 }
 
 int64_t LiveTVPlayback::Seek(int64_t offset, WHENCE_t whence)
+{
+  if (whence == WHENCE_CUR)
+  {
+    if (offset == 0)
+    {
+      int64_t p = _seek(offset, whence);
+      // it returns the current position of the first byte in buffer
+      return (p >= m_buffer.len ? p - m_buffer.len : p);
+    }
+    // rebase to the first position in the buffer
+    offset -= m_buffer.len;
+  }
+  m_buffer.len = 0; // clear data in buffer
+  return _seek(offset, whence);
+}
+
+int64_t LiveTVPlayback::_seek(int64_t offset, WHENCE_t whence)
 {
   OS::CLockGuard lock(*m_mutex); // Lock chain
   if (!m_recorder || !m_chain.currentSequence)
@@ -625,7 +699,8 @@ int64_t LiveTVPlayback::GetPosition() const
       pos += m_chain.chained[i].first->GetSize();
     pos += m_chain.currentTransfer->GetPosition();
   }
-  return pos;
+  // it returns the current position of first byte in buffer
+  return pos - m_buffer.len;
 }
 
 bool LiveTVPlayback::IsPlaying() const

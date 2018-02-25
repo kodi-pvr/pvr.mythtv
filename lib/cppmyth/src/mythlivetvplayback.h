@@ -31,6 +31,10 @@
 
 #include <vector>
 
+#define MYTH_LIVETV_CHUNK_SIZE  64000
+#define MYTH_LIVETV_CHUNK_MIN   8000
+#define MYTH_LIVETV_CHUNK_MAX   128000
+
 namespace Myth
 {
 
@@ -49,6 +53,8 @@ namespace Myth
     bool SpawnLiveTV(const std::string& chanNum, const ChannelList& channels);
     bool SpawnLiveTV(const ChannelPtr& thisChannel);
     void StopLiveTV();
+
+    void SetChunk(unsigned size); // to change the size of read chunk
 
     // Implement Stream
     int64_t GetSize() const;
@@ -98,6 +104,12 @@ namespace Myth
 
     typedef std::multimap<unsigned, std::pair<CardInputPtr, ChannelPtr> > preferredCards_t;
     preferredCards_t FindTunableCardIds(const std::string& chanNum, const ChannelList& channels);
+
+    int _read(void *buffer, unsigned n);
+    int64_t _seek(int64_t offset, WHENCE_t whence);
+    // data buffer
+    unsigned m_chunk; // the size of block to read
+    struct { unsigned pos; unsigned len; unsigned char * data; } m_buffer;
   };
 
 }
