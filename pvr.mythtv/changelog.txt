@@ -1,3 +1,7 @@
+v5.7.0
+- Sync upstream cppmyth 2.10.0
+- Default start/end time of recording rule for backend pre 0.28
+
 v5.6.0
 - Updated to PVR addon API v5.8.0
 
