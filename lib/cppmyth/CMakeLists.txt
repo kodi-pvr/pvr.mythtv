@@ -131,9 +131,9 @@ endif ()
 
 # configure the public config file
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/src/cppmyth_config.h.in
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/cppmyth_config.h)
+  ${CMAKE_CURRENT_BINARY_DIR}/src/cppmyth_config.h)
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src/.)
+include_directories (${CMAKE_CURRENT_BINARY_DIR}/src/ ${CMAKE_CURRENT_SOURCE_DIR}/src/.)
 
 ###############################################################################
 # add sources
