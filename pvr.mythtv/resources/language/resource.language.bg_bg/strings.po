@@ -18,27 +18,27 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "MythTV хост или IP адрес"
+msgstr "Име или IP адрес на сървъра MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Порт на MythTV сървъра"
+msgstr "Порт на сървъра MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
-msgstr "Потребителско име за MythTV базата данни"
+msgstr "Потребителско име за базата данни на MythTV"
 
 msgctxt "#30003"
 msgid "MythTV Database Password"
-msgstr "Парола за MythTV базата данни"
+msgstr "Парола за базата данни на MythTV"
 
 msgctxt "#30004"
 msgid "MythTV Database Databasename"
-msgstr "Име на базата данни за MythTV"
+msgstr "Име на базата данни на MythTV"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Включи повече дебъг информация в журнала"
+msgstr "Включи повече информация за дебъгване в журнала"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
@@ -66,15 +66,15 @@ msgstr "Предпочитай Live TV и отмени конфликтния з
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "Интернет адрес на MythTV сървъра (WOL)"
+msgstr "Интернет адрес на сървъра MythTV (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Порт на MythTV сървъра за ППИ (API) услугите"
+msgstr "Порт на сървъра MythTV за услугите за ППИ (API)"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "Код за сигурност на MythTV за ППИ (API) услугите"
+msgstr "Код за сигурност на MythTV за услугите за ППИ (API)"
 
 msgctxt "#30019"
 msgid "General"
@@ -208,9 +208,13 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "Открит е списък с отрязвания или пропускане на реклами.\nИскате ли да включите функционалността ПР за това предаване?"
 
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Неуспешно свързване към услугите за ППИ (API) на сървъра MythTV. Моля, проверете ПИН кода си и настройките на сървъра. ПИН кодът трябва да бъде зададен в сървъра, за да може да се осъществи връзка."
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "Избубена е връзката с MythTV сървъра"
+msgstr "Връзката със сървъра MythTV се разпадна"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
@@ -218,7 +222,7 @@ msgstr "Връзка с MythTV е възстановена"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "MythTV сървъра не отговаря"
+msgstr "Сървърът MythTV не отговаря"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
