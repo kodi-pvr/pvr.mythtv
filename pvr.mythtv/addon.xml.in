@@ -60,7 +60,7 @@
     <summary lang="zh_TW">MythTV的Kodi前端介面</summary>
     <description lang="af_ZA">MythTV voorprogram (tot MythTV 29). Ondersteun stroom van Lewendige TV &amp; Opnames, luister na Radio kanale, EPG en Tydhouers.</description>
     <description lang="be_BY">MythTV frontend (up to MythTV 29). Supports streaming of Live TV &amp; Recordings, listening to Radio channels, EPG and Timers.</description>
-    <description lang="bg_BG">MythTV клиент (обновен до MythTV 29). Поддържа поточна телевизия и записване, слушане на радио канали, електронен програмен справочник и броячи.</description>
+    <description lang="bg_BG">Клиент за MythTV (до версия на MythTV 29). Поддържа телевизия на живо и записване, слушане на радио канали, електронен програмен справочник и броячи.</description>
     <description lang="ca_ES">Frontal de MythTV (fins a MythTV 29). És compatible amb les transmissions en línia de TV en directe i enregistraments, escolta d'emissores de ràdio, guia electrònica de programació (EPG) i temporitzadors.</description>
     <description lang="cs_CZ">Rozhraní MythTV (do verze MythTV 29). Podporuje streamování živého vysílání a nahrávání, poslech kanálů rádia, televizní program a časovače.</description>
     <description lang="cy_GB">Blaen MythTV (hyd at MythTV 29). Cynnal ffrydio Teledu Byw a Recordiadau, gwrando ar sianeli radio, amserlenni rhaglenni electronig ac amseryddion.</description>
@@ -75,7 +75,7 @@
     <description lang="es_ES">Front-end de MythTV (hasta MythTV 29). Soporte de transmisiones de TV en Vivo y Grabaciones, escuchar canales de Radio, Guía Electrónica de Programas (EPG) y Temporizadores. </description>
     <description lang="es_MX">MythTV frontend (hasta MythTV 29). Soporta transmisión de TV y grabaciones en vivo, escucha de canales de radio, EPG y temporizadores.</description>
     <description lang="fi_FI">MythTV-asiakasohjelma (MythTV 29). Tukee suorien tv-lähetysten ja tallennusten katsomista, radiokanavia, ohjelmaopasta ja ohjelmien ajastamista.</description>
-    <description lang="fr_CA">Frontal de MythTV (jusqu'à MythTV 29) prenant en charge la diffusion en continu des télés en direct &amp; les enregistrements, l'écoute de chaînes radio, le GÉP et les minuteries.</description>
+    <description lang="fr_CA">Frontal de MythTV (jusqu’à MythTV 29) prenant en charge la diffusion en continu des télés en direct et les enregistrements, l’écoute de chaînes radio, le GÉP et les minuteries.</description>
     <description lang="fr_FR">Interface logicielle MythTV (jusqu'à la version 29). Permet la diffusion de la TV en direct, des enregistrements, des stations de radios, ainsi que le guide électronique des programmes TV et les programmations.</description>
     <description lang="gl_ES">Interface de MythTV (maior da MythTV 29). Compatíbel coa transmisión de TV ao vivo, gravacións e escoita de canles de Radio, EPG e temporizadores.</description>
     <description lang="he_IL">לקוח טלוויזיה חיה של MythTV (עד גרסה 29 של MythTV). תומך בהזרמת שידורים חיים והקלטות, האזנה לרדיו, הצגת לוח שידורים ותזמון הקלטות.</description>
@@ -91,7 +91,7 @@
     <description lang="mk_MK">MythTV интерфејс (се до MythTV 29). Подржува стриминг на Live TV &amp; Снимки, слушање на радио канали, EPG и тајмери.</description>
     <description lang="ms_MY">Bahagian hadapan MythTV (sehingga MythTV 29). Menyokong penstirman TV Langsung &amp; Rakaman, mendengar saluran Radio, EPG dan Pemasa.</description>
     <description lang="nb_NO">MythTV-klienten (opp til MythTV 29). Støtter strømming av direkte-TV og opptak, avspilling av radiokanaler, EPG og nedtelling.</description>
-    <description lang="nl_NL">MythTV frontend (tot MythTV 29). Ondersteunt streaming van Live TV &amp; opnames, luisteren naar radiokanalen, EPG en Timers.</description>
+    <description lang="nl_NL">MythTV frontend (tot MythTV 29). Ondersteunt streaming van Live-TV &amp; opnames, luisteren naar radiokanalen, EPG en timers.</description>
     <description lang="pl_PL">Klient telewizji dla MythTV (wersja 29 i wcześniejsze) obsługuje transmisję kanałów radiowych i telewizyjnych, nagrywanie i harmonogram nagrań oraz funkcje przewodnika telewizyjnego.</description>
     <description lang="pt_BR">MythTV frontend (up para MythTV 29). Suporta streaming de TV ao Vivo &amp; Gravações, Escutar canais de rádios, EPG e Agendamentos.</description>
     <description lang="pt_PT">Interface MythTV (até MythTV 29). Permite televisão em direto, gravações, estações de rádio, EPG e temporizadores.</description>
