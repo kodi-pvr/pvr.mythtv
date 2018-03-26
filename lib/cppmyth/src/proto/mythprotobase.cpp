@@ -398,7 +398,7 @@ int ProtoBase::GetSocketErrNo() const
 
 int ProtoBase::GetSocket() const
 {
-  return (int)(m_socket->GetSocket());
+  return (int)(m_socket->GetHandle());
 }
 
 bool ProtoBase::HasHanging() const
