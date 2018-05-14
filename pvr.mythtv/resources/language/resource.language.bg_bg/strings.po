@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Име или IP адрес на сървъра MythTV"
+msgstr "Име или IP адрес на сървъра на MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Порт на сървъра MythTV"
+msgstr "Порт на сървъра на MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -38,15 +38,15 @@ msgstr "Име на базата данни на MythTV"
 
 msgctxt "#30005"
 msgid "Include more debug information in the log file"
-msgstr "Включи повече информация за дебъгване в журнала"
+msgstr "Повече информация за дебъгване в журнала"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Включи Live TV"
+msgstr "Телевизия на живо"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Разреши Live TV да се превключва към планираното шоу"
+msgstr "Телевизията на живо да премества планираните предавания"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,23 +54,23 @@ msgstr "Обработка на конфликти"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Предпочитай Live TV, при записване чрез по-бавния слот"
+msgstr "Предпочитане на телевизия на живо, когато записът е за по-късно"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Предпочитай записването и спри Live TV"
+msgstr "Предпочитане на записа, спиране на телевизията на живо"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Предпочитай Live TV и отмени конфликтния запис"
+msgstr "Предпочитане на телевизия на живо, отмяна на конфликтния запис"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "Интернет адрес на сървъра MythTV (WOL)"
+msgstr "Интернет адрес на сървъра на MythTV (събуждане по мрежата)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Порт на сървъра MythTV за услугите за ППИ (API)"
+msgstr "Порт на сървъра на MythTV за услугите за ППИ (API)"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -102,27 +102,27 @@ msgstr "Автоматично търсене на метаданни"
 
 msgctxt "#30027"
 msgid "Commercial Flag new recordings"
-msgstr "Маркирай новите записи като комерсиални"
+msgstr "Отбелязване на новите записи като реклами"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
-msgstr "Преобразувай новите записи"
+msgstr "Преобразуване на новите записи"
 
 msgctxt "#30029"
 msgid "Run User Job #1"
-msgstr "Стартирай задача №1"
+msgstr "Стартиране на задача №1"
 
 msgctxt "#30030"
 msgid "Run User Job #2"
-msgstr "Стартирай задача №2"
+msgstr "Стартиране на задача №2"
 
 msgctxt "#30031"
 msgid "Run User Job #3"
-msgstr "Стартирай задача №3"
+msgstr "Стартиране на задача №3"
 
 msgctxt "#30032"
 msgid "Run User Job #4"
-msgstr "Стартирай задача №4"
+msgstr "Стартиране на задача №4"
 
 msgctxt "#30033"
 msgid "Transcoder"
@@ -130,7 +130,15 @@ msgstr "Преобразувател"
 
 msgctxt "#30034"
 msgid "Allow recordings to expire"
-msgstr "Да се разреши ли завършването на записа"
+msgstr "Остаряване на записите"
+
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Питане за изтриване на изгледаните записи"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Показване на „дата на излъчване“ вместо „дата на запис“"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -140,17 +148,21 @@ msgctxt "#30050"
 msgid "Advanced"
 msgstr "Допълнителни"
 
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Предпочитания"
+
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
-msgstr "Включи demuxing MPEG-TS"
+msgstr "Демултиплексиране на MPEG-TS"
 
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
-msgstr "Забавяне при настройка (с)"
+msgstr "Забавяне при настройка (сек)"
 
 msgctxt "#30054"
 msgid "Group recordings by title"
-msgstr "Групирай записите по заглавие"
+msgstr "Групиране на записите по заглавие"
 
 msgctxt "#30055"
 msgid "Always"
@@ -166,7 +178,7 @@ msgstr "Никога"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Включи пропускането на рекламите (ПР)"
+msgstr "Пропускане на рекламите (ПР)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -182,31 +194,51 @@ msgstr "Никога"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Не позволявай спиране от сървъра"
+msgstr "Забраняване на спирането на сървъра"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Включи иконките на каналите"
+msgstr "Иконки на каналите"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Включи записа на фен-арт/миниатюри"
+msgstr "Запис на фен-арт/миниатюри"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Ограничи опитите на настройване на канала."
+msgstr "Ограничаване на опитите на настройване на канала"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Показване на неактивните предстоящи (алтернативни/записани/стари)"
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Показване на записите на телевизия на живо"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Версия на протокола: %i - версия на базата данни: %i"
+msgstr "Версия на протокола: %i – версия на базата данни: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
-msgstr "Включване на ПР"
+msgstr "Пропускане на рекламите"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Открит е списък с отрязвания или пропускане на реклами.\nИскате ли да включите функционалността ПР за това предаване?"
+msgstr "Открит е списък с отрязвания или пропускане на реклами.\nИскате ли да включите пропускането на реклами за това предаване?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Не може да се установи връзка"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Искате ли да опитате отново?"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Свързването със сървъра на MythTV, използвайки познатите версии на протокола, е невъзможно. Моля, проверете таблицата за съвместимост на добавката или обновете сървъра си до поддържана версия."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
@@ -214,15 +246,15 @@ msgstr "Неуспешно свързване към услугите за ПП�
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "Връзката със сървъра MythTV се разпадна"
+msgstr "Връзката със сървъра на MythTV се разпадна"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
-msgstr "Връзка с MythTV е възстановена"
+msgstr "Връзката с MythTV е възстановена"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Сървърът MythTV не отговаря"
+msgstr "Сървърът на MythTV не отговаря"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -230,7 +262,7 @@ msgstr "Каналът не е наличен"
 
 msgctxt "#30306"
 msgid "Recorder unavailable"
-msgstr "Записващото устройство не е налично"
+msgstr "Не е налично записващо устройство"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
@@ -238,11 +270,11 @@ msgstr "Прекъсване на конфликтния запис: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Спиране на Live TV поради конфликтен запис: %s"
+msgstr "Спиране на телевизията на живо заради конфликтен запис: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
-msgstr "Няма записи"
+msgstr "Не се записва"
 
 msgctxt "#30310"
 msgid "Enabled"
@@ -258,20 +290,132 @@ msgstr "Няма открито излъчване"
 
 msgctxt "#30411"
 msgid "Delete and re-record"
-msgstr "Изтрий и повторно запиши"
+msgstr "Изтриване и записване отново"
+
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Продължаване на записа"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Превключване на показването на алтернативни/записани/стари"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
-msgstr "Опресни кеша за иконки на каналите"
+msgstr "Опресняване на кеша за иконки на каналите"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Предизвикване на обновяване на каналите"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Показване на състоянието на планиране"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Необработвано"
 
 msgctxt "#30452"
 msgid "Upcoming"
-msgstr "Предстоящи"
+msgstr "Предстоящо"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Заменено"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Да не се записва"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Предстоящо, ръчно"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Алтернативно"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Текущо записвано"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Остарял запис"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Ръчно"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Еднократен запис"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Ежеседмичен запис"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Ежедневен запис"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Записване на всичко"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Записване на това"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Записване на сериал"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Търсене по ключова дума"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Търсене на хора"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Правилото е изключено"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Да не се откриват еднаквите"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Откриване на еднаквите по субтитрите"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Откриване на еднаквите по описанието"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Откриване на еднаквите по субтитрите и описанието"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Откриване на еднаквите по субтитрите, след това то описанието"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Записите да не остаряват никога"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
-msgstr "Да се разреши ли завършването на записа"
+msgstr "Остаряване на записите"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Съхраняване на до %d записа"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Съхраняване на най-новите %d, другите да се отбелязват като „стари“"

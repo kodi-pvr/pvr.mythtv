@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="5.0.15"
+  version="5.0.16"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -16,7 +16,7 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="af_ZA">Kodi voorprogram vir MythTV</summary>
     <summary lang="be_BY">Kodi frontend for MythTV</summary>
-    <summary lang="bg_BG">Kodi клиент за MythTV</summary>
+    <summary lang="bg_BG">Клиент за MythTV</summary>
     <summary lang="ca_ES">Frontal de Kodi per a MythTV</summary>
     <summary lang="cs_CZ">Rozhraní Kodi pro MythTV</summary>
     <summary lang="cy_GB">Blaen Kodi ar gyfer MythTV</summary>

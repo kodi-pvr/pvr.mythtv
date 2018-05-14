@@ -208,13 +208,17 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Csatornahangolási kísérletek korlátozása"
 
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Inaktív hamarosan érkezők megjelenítése (alternatív/rögzített/lejárt)"
+
 msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "LiveTV felvételek megjelenítése"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Protokol verzió: %i - Adatbázis verzió: %i"
+msgstr "Protokoll verzió: %i – Adatbázis verzió: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
@@ -222,7 +226,7 @@ msgstr "EDL engedélyezése"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Elérhető reklám kivágás lista.\nBe kívánja kapcsolni az EDL funkciót ehhez az adáshoz ?"
+msgstr "Elérhető reklám kivágás lista.\nBekapcsolja az EDL funkciót ehhez az adáshoz?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -234,11 +238,11 @@ msgstr "Megpróbálod újra?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Sikertelen kapcsolódás a MythTV háttér rendszeréhez az ismert protokol verziókon keresztül. Kérlek ellenőrizd a bővítmégy kompatibilitási térképét és frissítsd a háttér rendszert a támogatott verzióra. "
+msgstr "Sikertelen kapcsolódás a MythTV háttérrendszeréhez az ismert protokoll verziókon keresztül. Ellenőrizze a bővítmény kompatibilitási térképét, és frissítse a háttérrendszert a támogatott verzióra. "
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Sikertelen kapcsolódás a MythTV API szolgáltatásához. Kérlek ellenőrizd a PIN kódod, vagy a háttér beállításokat. A háttér rendszerben a PIN-t be kell állítani a kapcsolódáshoz."
+msgstr "Sikertelen kapcsolódás a MythTV API szolgáltatásához. Ellenőrizze a PIN kódját, vagy a háttérrendszer beállításokat. A háttérrendszerben a PIN-t be kell állítani a kapcsolódáshoz."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -291,6 +295,10 @@ msgstr "Törlés és újra-felvétel"
 msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Felvétel megtartása"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Alternatív/rögzített/lejárt adások megjelenítése be/ki"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
