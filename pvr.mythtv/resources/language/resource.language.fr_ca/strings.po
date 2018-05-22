@@ -178,7 +178,7 @@ msgstr "Jamais"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Activer le saut des publicités (EDL)"
+msgstr "Activer le saut des publicités (liste de montage)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -222,11 +222,11 @@ msgstr "Version du protocole : %i - Version de la base de données : %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
-msgstr "Activation de l’EDL"
+msgstr "Activation des listes de montage"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Une liste de coupures ou des sauts publicitaires ont été trouvés.\nVoulez-vous activer la fonctionnalité EDL pour cette émission?"
+msgstr "Une liste de montage ou de saut de publicités a été trouvée.\nVoulez-vous activer la fonction de listes de montage pour cette émission ?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -234,7 +234,7 @@ msgstr "Échec de connexion"
 
 msgctxt "#30113"
 msgid "Do you want to retry ?"
-msgstr "Voulez-vous ressayer?"
+msgstr "Voulez-vous ressayer ?"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
@@ -286,7 +286,7 @@ msgstr "Désactivé"
 
 msgctxt "#30312"
 msgid "No broadcast found"
-msgstr "Aucune diffusion trouvée"
+msgstr "Aucune diffusion n’a été trouvée"
 
 msgctxt "#30411"
 msgid "Delete and re-record"
