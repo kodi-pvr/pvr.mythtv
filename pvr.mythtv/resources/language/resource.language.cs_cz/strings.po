@@ -42,7 +42,7 @@ msgstr "Zahrnout více ladících informací do souboru protokolu"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Povolit živé vysílání"
+msgstr "Zapnout živé vysílání"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
@@ -138,7 +138,7 @@ msgstr "Vyzvat k odstranění zhlédnutých nahrávek"
 
 msgctxt "#30048"
 msgid "Show 'Original Airdate' instead of 'Recording Time'"
-msgstr "Zobrazit 'Původní datum vysílání' namísto 'Čas nahrávky'"
+msgstr "Zobrazit „Původní datum vysílání“ namísto „Okamžik nahrání“"
 
 msgctxt "#30049"
 msgid "Recording template"
@@ -298,7 +298,7 @@ msgstr "Ponechat nahrávku"
 
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
-msgstr "Přepnout zobrazení alternativní, nahrané, s vypršenou platností"
+msgstr "Přepnout zobrazení alternativní, nahrané, se skončenou platností"
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
