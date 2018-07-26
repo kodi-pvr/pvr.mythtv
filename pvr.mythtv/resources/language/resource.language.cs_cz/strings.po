@@ -178,7 +178,7 @@ msgstr "Nikdy"
 
 msgctxt "#30058"
 msgid "Enable commercial skips (EDL)"
-msgstr "Povolit přeskakování reklam (EDL)"
+msgstr "Přeskakovat reklamy (EDL)"
 
 msgctxt "#30059"
 msgid "Always"
@@ -194,7 +194,7 @@ msgstr "Nikdy"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Blokovat vypnutí backendu"
+msgstr "Blokovat vypnutí podpůrné vrstvy"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -218,7 +218,7 @@ msgstr "Zobrazit nahrávání živého vysílání"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Verze protokolu: %i - Verze databáze: %i"
+msgstr "Verze protokolu: %i – verze databáze: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
@@ -414,7 +414,7 @@ msgstr "Platnost nahrávek nikdy neskončí"
 
 msgctxt "#30507"
 msgid "Allow recordings to expire"
-msgstr "Povolit vypršení nahrávek"
+msgstr "Umožnit aby platnost nahrávek končila"
 
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
@@ -422,4 +422,4 @@ msgstr "Ponechat až %d nahrávek"
 
 msgctxt "#30509"
 msgid "Keep %d newest and expire old"
-msgstr "Ponechat %d nejnovějších a nechat vypršet staré"
+msgstr "Ponechat %d nejnovějších a nechat skončit platnost starých"
