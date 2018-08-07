@@ -6,16 +6,16 @@ MythTV PVR client addon for [Kodi](http://kodi.tv)
 
 ## Build instructions
 When building the addon you have to use the correct branch depending on which version of Kodi you're building against.
-For example, if you're building the `Krypton` branch of Kodi you should checkout the `Krypton` branch of this repository.
-Also make sure you follow this README from the branch in question.
+For example, if you're building the `master` branch of Kodi you should checkout the `master` branch of this repository. Also make sure you follow this README from the branch in question.
 
 ### Linux
 
-1. `git clone --branch=Krypton --depth=1 https://github.com/xbmc/xbmc.git`
-2. `git clone --branch=Krypton https://github.com/janbar/pvr.mythtv.git`
-3. `cd pvr.mythtv && mkdir build && cd build`
-4. `cmake -DADDONS_TO_BUILD=pvr.mythtv -DADDON_SRC_PREFIX=../.. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../../xbmc/addons -DPACKAGE_ZIP=ON ../../xbmc/cmake/addons`
-5. `make`
+    git clone --branch=master --depth=1 https://github.com/xbmc/xbmc.git
+    git clone --branch=master https://github.com/janbar/pvr.mythtv.git
+    cd pvr.mythtv && mkdir build && cd build
+    cmake -DADDONS_TO_BUILD=pvr.mythtv -DADDON_SRC_PREFIX=../.. -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_INSTALL_PREFIX=../../xbmc/addons -DPACKAGE_ZIP=ON ../../xbmc/cmake/addons
+    make
 
 The addon files will be placed in `../../xbmc/kodi-build/addons` so if you build Kodi from source and run it directly
 the addon will be available as a system addon.
