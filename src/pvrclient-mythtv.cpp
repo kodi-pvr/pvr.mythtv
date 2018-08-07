@@ -2300,6 +2300,9 @@ long long PVRClientMythTV::SeekRecordedStream(long long iPosition, int iWhence)
   }
 
   long long retval = (long long) m_recordingStream->Seek((int64_t)iPosition, whence);
+  // PVR API needs zero when seeking beyond the end
+  if (retval < 0 && m_recordingStream->GetSize() > 0)
+    retval = 0;
 
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Done - position: %lld", __FUNCTION__, retval);
