@@ -26,6 +26,9 @@
 
 #include <xbmc_pvr_dll.h>
 
+///* undefined constants in pvr API */
+#define SEEK_POSSIBLE 0x10 ///< flag used to check if protocol allows seeks
+
 using namespace ADDON;
 
 /* User adjustable settings are saved here.
@@ -1081,7 +1084,8 @@ long long SeekRecordedStream(long long iPosition, int iWhence)
 {
   if (g_client == NULL)
     return -1;
-
+  if (iWhence == SEEK_POSSIBLE)
+    return 1;
   return g_client->SeekRecordedStream(iPosition, iWhence);
 }
 
