@@ -272,6 +272,7 @@ void PVRClientMythTV::HandleBackendMessage(Myth::EventMessagePtr msg)
       break;
     case Myth::EVENT_HANDLER_TIMER:
       RunHouseKeeping();
+      DeleteLastPlayedRecording();
       break;
     case Myth::EVENT_HANDLER_STATUS:
       if (msg->subject[0] == EVENTHANDLER_DISCONNECTED)
@@ -485,6 +486,27 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
         ++m_recordingChangePinCount;
       }
     }
+  }
+}
+
+void PVRClientMythTV::DeleteLastPlayedRecording()
+{
+  //@FIXME: Open dialog while playing cause dead lock
+  if (IsPlaying())
+    return;
+  Myth::ProgramPtr prog;
+  prog.swap(m_lastPlayedRecording);
+  if (!prog)
+    return;
+  std::string dispTitle = MakeProgramTitle(prog->title, prog->subTitle);
+  if (GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(122),
+          XBMC->GetLocalizedString(19112), "", dispTitle.c_str(),
+          "", XBMC->GetLocalizedString(117)))
+  {
+    if (m_control->DeleteRecording(*prog))
+      XBMC->Log(LOG_DEBUG, "%s: Deleted recording %u", __FUNCTION__, prog->recording.recordedId);
+    else
+      XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %u", __FUNCTION__, prog->recording.recordedId);
   }
 }
 
@@ -1220,22 +1242,10 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
     {
       XBMC->Log(LOG_DEBUG, "%s: Failed setting watched state for: %s", __FUNCTION__, recording.strRecordingId);
     }
-
-    //@FIXME: Open dialog while playing cause dead lock
-    if (g_bPromptDeleteAtEnd && count > 0 && !IsPlaying())
+    if (g_bPromptDeleteAtEnd)
     {
-      std::string dispTitle = MakeProgramTitle(it->second.Title(), it->second.Subtitle());
-      if (GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(122),
-              XBMC->GetLocalizedString(19112), "", dispTitle.c_str(),
-              "", XBMC->GetLocalizedString(117)))
-      {
-        if (m_control->DeleteRecording(*(it->second.GetPtr())))
-          XBMC->Log(LOG_DEBUG, "%s: Deleted recording %s", __FUNCTION__, it->first.c_str());
-        else
-          XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %s", __FUNCTION__, it->first.c_str());
-      }
+      m_lastPlayedRecording = it->second.GetPtr();
     }
-
     return PVR_ERROR_NO_ERROR;
   }
   else
@@ -2259,6 +2269,7 @@ void PVRClientMythTV::CloseRecordedStream()
 
   // Begin critical section
   CLockObject lock(m_lock);
+
   // Destroy my stream
   SAFE_DELETE(m_recordingStream);
   // Resume fileOps

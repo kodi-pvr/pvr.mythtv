@@ -73,6 +73,7 @@ public:
   void HandleScheduleChange();
   void HandleAskRecording(const Myth::EventMessage& msg);
   void HandleRecordingListChange(const Myth::EventMessage& msg);
+  void DeleteLastPlayedRecording();
   void RunHouseKeeping();
 
   // Implement FileConsumer
@@ -195,6 +196,9 @@ private:
   int FillRecordings();
   MythChannel FindRecordingChannel(const MythProgramInfo& programInfo) const;
   bool IsMyLiveRecording(const MythProgramInfo& programInfo);
+
+  // Prompt to delete the last played recording
+  Myth::ProgramPtr m_lastPlayedRecording;
 
   // Timers
   std::map<unsigned int, MYTH_SHARED_PTR<PVR_TIMER> > m_PVRtimerMemorandum;
