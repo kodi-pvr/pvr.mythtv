@@ -46,6 +46,7 @@ void TaskHandler::ScheduleTask(Task *task, unsigned delayMs)
 void TaskHandler::Clear()
 {
   P8PLATFORM::CLockObject lock(m_mutex);
+  m_delayed.clear();
   while (!m_queue.empty())
     m_queue.pop();
 }
