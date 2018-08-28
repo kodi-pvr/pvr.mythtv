@@ -24,6 +24,8 @@
 #include "client.h"
 #include "tools.h"
 #include "avinfo.h"
+#include "filestreaming.h"
+#include "taskhandler.h"
 
 #include <time.h>
 #include <set>
@@ -43,6 +45,7 @@ PVRClientMythTV::PVRClientMythTV()
 , m_powerSaving(false)
 , m_fileOps(NULL)
 , m_scheduleManager(NULL)
+, m_todo(NULL)
 , m_recordingChangePinCount(0)
 , m_recordingsAmountChange(false)
 , m_recordingsAmount(0)
@@ -53,6 +56,7 @@ PVRClientMythTV::PVRClientMythTV()
 
 PVRClientMythTV::~PVRClientMythTV()
 {
+  SAFE_DELETE(m_todo);
   SAFE_DELETE(m_dummyStream);
   SAFE_DELETE(m_liveStream);
   SAFE_DELETE(m_recordingStream);
@@ -152,6 +156,9 @@ bool PVRClientMythTV::Connect()
 
   // Create file operation helper (image caching)
   m_fileOps = new FileOps(this, g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
+
+  // Create the task handler to process various task
+  m_todo = new TaskHandler();
 
   // Start event handler
   m_eventHandler->Start();
@@ -272,7 +279,6 @@ void PVRClientMythTV::HandleBackendMessage(Myth::EventMessagePtr msg)
       break;
     case Myth::EVENT_HANDLER_TIMER:
       RunHouseKeeping();
-      DeleteLastPlayedRecording();
       break;
     case Myth::EVENT_HANDLER_STATUS:
       if (msg->subject[0] == EVENTHANDLER_DISCONNECTED)
@@ -489,24 +495,19 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
   }
 }
 
-void PVRClientMythTV::DeleteLastPlayedRecording()
+void PVRClientMythTV::PromptDeleteRecording(const MythProgramInfo &prog)
 {
-  //@FIXME: Open dialog while playing cause dead lock
-  if (IsPlaying())
+  if (IsPlaying() || prog.IsNull())
     return;
-  Myth::ProgramPtr prog;
-  prog.swap(m_lastPlayedRecording);
-  if (!prog)
-    return;
-  std::string dispTitle = MakeProgramTitle(prog->title, prog->subTitle);
+  std::string dispTitle = MakeProgramTitle(prog.Title(), prog.Subtitle());
   if (GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(122),
           XBMC->GetLocalizedString(19112), "", dispTitle.c_str(),
           "", XBMC->GetLocalizedString(117)))
   {
-    if (m_control->DeleteRecording(*prog))
-      XBMC->Log(LOG_DEBUG, "%s: Deleted recording %u", __FUNCTION__, prog->recording.recordedId);
+    if (m_control->DeleteRecording(*(prog.GetPtr())))
+      XBMC->Log(LOG_DEBUG, "%s: Deleted recording %s", __FUNCTION__, prog.UID().c_str());
     else
-      XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %u", __FUNCTION__, prog->recording.recordedId);
+      XBMC->Log(LOG_ERROR, "%s: Failed to delete recording %s", __FUNCTION__, prog.UID().c_str());
   }
 }
 
@@ -1222,6 +1223,23 @@ PVR_ERROR PVRClientMythTV::DeleteAndForgetRecording(const PVR_RECORDING &recordi
   return PVR_ERROR_FAILED;
 }
 
+class PromptDeleteRecordingTask : public Task
+{
+public:
+  PromptDeleteRecordingTask(PVRClientMythTV* pvr, const MythProgramInfo& prog)
+  : Task()
+  , m_pvr(pvr)
+  , m_prog(prog) { }
+
+  virtual void Execute()
+  {
+    m_pvr->PromptDeleteRecording(m_prog);
+  }
+
+  PVRClientMythTV *m_pvr;
+  MythProgramInfo m_prog;
+};
+
 PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording, int count)
 {
   if (!m_control)
@@ -1244,7 +1262,7 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
     }
     if (g_bPromptDeleteAtEnd)
     {
-      m_lastPlayedRecording = it->second.GetPtr();
+      m_todo->ScheduleTask(new PromptDeleteRecordingTask(this, it->second), 1000);
     }
     return PVR_ERROR_NO_ERROR;
   }
