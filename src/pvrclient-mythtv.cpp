@@ -2161,23 +2161,27 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
   return PVR_ERROR_NO_ERROR;
 }
 
-time_t PVRClientMythTV::GetBufferTimeStart()
+PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
 {
-  CLockObject lock(m_lock);
-  if (!m_liveStream || !m_liveStream->IsPlaying())
-    return 0;
-  return m_liveStream->GetLiveTimeStart();
-}
-
-time_t PVRClientMythTV::GetBufferTimeEnd()
-{
-  CLockObject lock(m_lock);
-  unsigned count;
-  if (!m_liveStream || !(count = m_liveStream->GetChainedCount()))
-    return (time_t)(-1);
+  time_t begTs, endTs;
+  {
+    CLockObject lock(m_lock);
+    if (!m_liveStream || !m_liveStream->IsPlaying())
+      return PVR_ERROR_REJECTED;
+    unsigned seq = m_liveStream->GetChainedCount();
+    if (seq == 0)
+      return PVR_ERROR_REJECTED;
+    begTs = m_liveStream->GetLiveTimeStart();
+    endTs = m_liveStream->GetChainedProgram(seq)->recording.endTs;
+  }
   time_t now = time(NULL);
-  MythProgramInfo prog = MythProgramInfo(m_liveStream->GetChainedProgram(count));
-  return (now > prog.RecordingEndTime() ? prog.RecordingEndTime() : now);
+  if (now < endTs)
+    endTs = now;
+  pStreamTimes->startTime = begTs;
+  pStreamTimes->ptsStart = 0;
+  pStreamTimes->ptsBegin = 0;
+  pStreamTimes->ptsEnd = (endTs - begTs) * DVD_TIME_BASE;
+  return PVR_ERROR_NO_ERROR;
 }
 
 bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)

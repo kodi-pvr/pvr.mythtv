@@ -123,9 +123,7 @@ public:
   long long LengthLiveStream();
   PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus);
   bool IsRealTimeStream() const { return m_liveStream ? true : false; }
-
-  time_t GetBufferTimeStart();
-  time_t GetBufferTimeEnd();
+  PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *pStreamTimes);
 
   // Recording playback
   bool OpenRecordedStream(const PVR_RECORDING &recinfo);

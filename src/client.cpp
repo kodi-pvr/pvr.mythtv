@@ -1108,9 +1108,12 @@ bool IsTimeshifting(void) { return true; }
  * Unused API Functions
  */
 
-PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *)
+PVR_ERROR GetStreamTimes(PVR_STREAM_TIMES *pStreamTimes)
 {
-  return PVR_ERROR_NOT_IMPLEMENTED;
+  if (g_client == NULL)
+    return PVR_ERROR_SERVER_ERROR;
+
+  return g_client->GetStreamTimes(pStreamTimes);
 }
 
 PVR_ERROR GetStreamProperties(PVR_STREAM_PROPERTIES *) { return PVR_ERROR_NOT_IMPLEMENTED; }
