@@ -1,3 +1,7 @@
+v5.8.5
+- Implement new requirements for timeshift support
+- Fix GUI deadlock opening dialog to delete last played recording
+
 v5.8.2
 - Fix playback stop when seeking beyond the end of recorded stream
 
