@@ -40,6 +40,8 @@ PVRClientLauncher::~PVRClientLauncher()
 
 void* PVRClientLauncher::Process()
 {
+  bool notifyAddonFailure = true;
+  // By default this launcher will retry for ever until the user cancel it by a dialog.
   bool retry = true;
   while (!IsStopped() && retry)
   {
@@ -54,42 +56,37 @@ void* PVRClientLauncher::Process()
       if (g_bLiveTVPriority != savedLiveTVPriority)
         m_client->SetLiveTVPriority(savedLiveTVPriority);
       /* End of process */
+
+      // Connected.
+      std::string msg = XBMC->GetLocalizedString(30114);
+      XBMC->QueueNotification(QUEUE_INFO, msg.c_str());
+
       break;
     }
 
-    PVRClientMythTV::CONN_ERROR error = m_client->GetConnectionError();
-    if (error == PVRClientMythTV::CONN_ERROR_UNKNOWN_VERSION)
+    if (notifyAddonFailure)
     {
-      // HEADING: Connection failed
-      // Failed to connect the MythTV backend with the known protocol versions.
-      // Do you want to retry ?
-      std::string msg = XBMC->GetLocalizedString(30300);
-      msg.append("\n").append(XBMC->GetLocalizedString(30113));
-      bool canceled = false;
-      if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-        retry = false;
-    }
-    else if (error == PVRClientMythTV::CONN_ERROR_API_UNAVAILABLE)
-    {
-      // HEADING: Connection failed
-      // Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup.
-      // Do you want to retry ?
-      std::string msg = XBMC->GetLocalizedString(30301);
-      msg.append("\n").append(XBMC->GetLocalizedString(30113));
-      bool canceled = false;
-      if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-        retry = false;
-    }
-    else if (g_bNotifyAddonFailure)
-    {
-      // HEADING: Connection failed
-      // No response from MythTV backend.
-      // Do you want to retry ?
-      std::string msg = XBMC->GetLocalizedString(30304);
-      msg.append("\n").append(XBMC->GetLocalizedString(30113));
-      bool canceled = false;
-      if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30112), msg.c_str(), canceled) && !canceled)
-        retry = false;
+      PVRClientMythTV::CONN_ERROR error = m_client->GetConnectionError();
+      if (error == PVRClientMythTV::CONN_ERROR_UNKNOWN_VERSION)
+      {
+        // Failed to connect the MythTV backend with the known protocol versions.
+        std::string msg = XBMC->GetLocalizedString(30300);
+        XBMC->QueueNotification(QUEUE_ERROR, msg.c_str());
+      }
+      else if (error == PVRClientMythTV::CONN_ERROR_API_UNAVAILABLE)
+      {
+        // Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup.
+        std::string msg = XBMC->GetLocalizedString(30301);
+        XBMC->QueueNotification(QUEUE_ERROR, msg.c_str());
+      }
+      else
+      {
+        // No response from MythTV backend.
+        std::string msg = XBMC->GetLocalizedString(30304);
+        XBMC->QueueNotification(QUEUE_WARNING, msg.c_str());
+      }
+      // No longer notify the failure
+      notifyAddonFailure = false;
     }
     else
     {

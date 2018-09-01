@@ -35,7 +35,6 @@ using namespace ADDON;
  * Default values are defined inside client.h
  * and exported to the other source files.
  */
-bool          g_bNotifyAddonFailure     = false;                            ///< Notify user after failure of addon connection
 std::string   g_szMythHostname          = DEFAULT_HOST;                     ///< The Host name or IP of the mythtv server
 std::string   g_szMythHostEther         = "";                               ///< The Host MAC address of the mythtv server
 int           g_iProtoPort              = DEFAULT_PROTO_PORT;               ///< The mythtv protocol port (default is 6543)
@@ -440,7 +439,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     g_szMythHostname = (const char*)settingValue;
     if (tmp_sHostname != g_szMythHostname)
     {
-      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
     }
   }
@@ -450,7 +448,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_iProtoPort != *(int*)settingValue)
     {
       g_iProtoPort = *(int*)settingValue;
-      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
     }
   }
@@ -460,7 +457,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_iWSApiPort != *(int*)settingValue)
     {
       g_iWSApiPort = *(int*)settingValue;
-      g_bNotifyAddonFailure = true;
       return ADDON_STATUS_NEED_RESTART;
     }
   }
