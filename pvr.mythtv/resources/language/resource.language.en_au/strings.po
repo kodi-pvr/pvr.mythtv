@@ -208,6 +208,18 @@ msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 msgstr "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Connection failed"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Do you want to retry ?"
+
+msgctxt "#30114"
+msgid "Connected"
+msgstr "Connected"
+
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
 msgstr "Connection to MythTV backend lost"

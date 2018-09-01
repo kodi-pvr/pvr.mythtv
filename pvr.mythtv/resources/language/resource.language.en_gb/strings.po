@@ -253,6 +253,10 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr ""
 
+msgctxt "#30114"
+msgid "Connected"
+msgstr ""
+
 #empty strings from id 30114 to 30299
 
 # Notifications

@@ -232,6 +232,10 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Erneut versuchen?"
 
+msgctxt "#30114"
+msgid "Connected"
+msgstr "Verbunden"
+
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
 msgstr "Mit den bekannten Protokoll-Versionen konnte keine Verbindung zum MythTV Backend hergestellt werden. Bitte die Kompatibilitäts-Matrix des Addons überprüfen und auf eine unterstützte Version upgraden."
