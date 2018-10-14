@@ -111,11 +111,12 @@ void PVRClientMythTV::SetDebug(bool silent /*= false*/)
 
 bool PVRClientMythTV::Connect()
 {
+  assert(m_control == NULL);
   SetDebug(true);
-  m_control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
-  if (!m_control->IsOpen())
+  Myth::Control *control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
+  if (!control->IsOpen())
   {
-    switch(m_control->GetProtoError())
+    switch(control->GetProtoError())
     {
       case Myth::ProtoBase::ERROR_UNKNOWN_VERSION:
         m_connectionError = CONN_ERROR_UNKNOWN_VERSION;
@@ -123,21 +124,22 @@ bool PVRClientMythTV::Connect()
       default:
         m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
     }
-    SAFE_DELETE(m_control);
+    delete control;
     XBMC->Log(LOG_NOTICE, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
     // Try wake up for the next attempt
     if (!g_szMythHostEther.empty())
       XBMC->WakeOnLan(g_szMythHostEther.c_str());
     return false;
   }
-  if (!m_control->CheckService())
+  if (!control->CheckService())
   {
     m_connectionError = CONN_ERROR_API_UNAVAILABLE;
-    SAFE_DELETE(m_control);
+    delete control;
     XBMC->Log(LOG_NOTICE,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
     return false;
   }
   m_connectionError = CONN_ERROR_NO_ERROR;
+  m_control = control;
   SetDebug(false);
 
   // Create event handler and subscription as needed
@@ -212,7 +214,7 @@ const char *PVRClientMythTV::GetConnectionString()
 PVR_ERROR PVRClientMythTV::GetDriveSpace(long long *iTotal, long long *iUsed)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
@@ -546,7 +548,7 @@ void PVRClientMythTV::HandleCleanedCache()
 PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time_t iStart, time_t iEnd)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG,"%s: start: %ld, end: %ld, chanid: %u", __FUNCTION__, (long)iStart, (long)iEnd, channel.iUniqueId);
 
@@ -617,6 +619,8 @@ int PVRClientMythTV::GetNumChannels()
 
 PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
 {
+  if (!m_control)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: radio: %s", __FUNCTION__, (bRadio ? "true" : "false"));
 
@@ -674,6 +678,8 @@ int PVRClientMythTV::GetChannelGroupsAmount()
 
 PVR_ERROR PVRClientMythTV::GetChannelGroups(ADDON_HANDLE handle, bool bRadio)
 {
+  if (!m_control)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: radio: %s", __FUNCTION__, (bRadio ? "true" : "false"));
 
@@ -708,6 +714,8 @@ PVR_ERROR PVRClientMythTV::GetChannelGroups(ADDON_HANDLE handle, bool bRadio)
 
 PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR_CHANNEL_GROUP &group)
 {
+  if (!m_control)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: group: %s", __FUNCTION__, group.strGroupName);
 
@@ -857,6 +865,8 @@ int PVRClientMythTV::GetRecordingsAmount()
 
 PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 {
+  if (!m_control)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
@@ -999,6 +1009,8 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
 
 PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
 {
+  if (!m_control)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
@@ -1146,7 +1158,7 @@ int PVRClientMythTV::FillRecordings()
 PVR_ERROR PVRClientMythTV::DeleteRecording(const PVR_RECORDING &recording)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   CLockObject lock(m_recordingsLock);
@@ -1186,7 +1198,7 @@ PVR_ERROR PVRClientMythTV::DeleteRecording(const PVR_RECORDING &recording)
 PVR_ERROR PVRClientMythTV::DeleteAndForgetRecording(const PVR_RECORDING &recording)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   CLockObject lock(m_recordingsLock);
@@ -1243,7 +1255,7 @@ public:
 PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording, int count)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   CLockObject lock(m_recordingsLock);
@@ -1338,7 +1350,7 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
 PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   *size = 0;
   if (g_iEnableEDL == ENABLE_EDL_NEVER)
     return PVR_ERROR_NO_ERROR;
@@ -1443,7 +1455,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
 PVR_ERROR PVRClientMythTV::UndeleteRecording(const PVR_RECORDING &recording)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   CLockObject lock(m_recordingsLock);
@@ -1472,7 +1484,7 @@ PVR_ERROR PVRClientMythTV::UndeleteRecording(const PVR_RECORDING &recording)
 PVR_ERROR PVRClientMythTV::PurgeDeletedRecordings()
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   bool err = false;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
@@ -1530,6 +1542,8 @@ int PVRClientMythTV::GetTimersAmount(void)
 
 PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
 {
+  if (!m_scheduleManager)
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
@@ -1537,8 +1551,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
   {
     CLockObject lock(m_lock);
     m_PVRtimerMemorandum.clear();
-    if (m_scheduleManager)
-      entries = m_scheduleManager->GetTimerEntries();
+    entries = m_scheduleManager->GetTimerEntries();
   }
   for (MythTimerEntryList::const_iterator it = entries.begin(); it != entries.end(); ++it)
   {
@@ -1643,7 +1656,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
 PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
 {
   if (!m_scheduleManager)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
   {
     XBMC->Log(LOG_DEBUG, "%s: iClientIndex = %d", __FUNCTION__, timer.iClientIndex);
@@ -1715,7 +1728,7 @@ PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
 PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool force)
 {
   if (!m_scheduleManager)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
   {
     XBMC->Log(LOG_DEBUG, "%s: iClientIndex = %d", __FUNCTION__, timer.iClientIndex);
@@ -1920,7 +1933,7 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
 PVR_ERROR PVRClientMythTV::UpdateTimer(const PVR_TIMER &timer)
 {
   if (!m_scheduleManager)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
   if (g_bExtraDebug)
   {
     XBMC->Log(LOG_DEBUG, "%s: iClientIndex = %d", __FUNCTION__, timer.iClientIndex);
@@ -1974,20 +1987,18 @@ PVR_ERROR PVRClientMythTV::GetTimerTypes(PVR_TIMER_TYPE types[], int *size)
   unsigned index = 0;
   if (m_scheduleManager)
   {
-    CLockObject lock(m_lock);
     MythTimerTypeList typeList = m_scheduleManager->GetTimerTypes();
     assert(typeList.size() <= static_cast<unsigned>(*size));
     for (MythTimerTypeList::const_iterator it = typeList.begin(); it != typeList.end(); ++it)
       (*it)->Fill(&types[index++]);
+    *size = index;
+    return PVR_ERROR_NO_ERROR;
   }
-  else
-  {
-    memset(&types[index], 0, sizeof(PVR_TIMER_TYPE));
-    types[index].iId = 1;
-    types[index].iAttributes = PVR_TIMER_TYPE_IS_MANUAL;
-    ++index;
-  }
-  *size = index;
+  //@FIXME: Returning ERROR or empty types will break PVR manager
+  memset(&types[index], 0, sizeof(PVR_TIMER_TYPE));
+  types[index].iId = 1;
+  types[index].iAttributes = PVR_TIMER_TYPE_IS_MANUAL;
+  *size = ++index;
   return PVR_ERROR_NO_ERROR;
 }
 
@@ -2137,7 +2148,7 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
 
   CLockObject lock(m_lock);
   if (!m_liveStream)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
 
   char buf[50];
   sprintf(buf, "Myth Recorder %u", (unsigned)m_liveStream->GetCardId());
@@ -2166,7 +2177,9 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
   time_t begTs, endTs;
   {
     CLockObject lock(m_lock);
-    if (!m_liveStream || !m_liveStream->IsPlaying())
+    if (!m_liveStream)
+      return PVR_ERROR_FAILED;
+    if (!m_liveStream->IsPlaying())
       return PVR_ERROR_REJECTED;
     unsigned seq = m_liveStream->GetChainedCount();
     if (seq == 0)
@@ -2362,7 +2375,7 @@ long long PVRClientMythTV::LengthRecordedStream()
 PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_MENUHOOK_DATA &item)
 {
   if (!m_control)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_FAILED;
 
   if (menuhook.iHookId == MENUHOOK_REC_DELETE_AND_RERECORD && item.cat == PVR_MENUHOOK_RECORDING) {
     return DeleteAndForgetRecording(item.data.recording);
