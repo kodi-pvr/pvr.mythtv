@@ -1,3 +1,6 @@
+v5.8.8
+- Return PVR_ERROR_FAILED on API calls while addon is not initialized
+
 v5.8.6
 - Removing the dialog to notify connection failure because a deadlock
 
