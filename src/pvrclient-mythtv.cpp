@@ -2177,15 +2177,25 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
   time_t begTs, endTs;
   {
     CLockObject lock(m_lock);
-    if (!m_liveStream)
+    if (m_liveStream)
+    {
+      if (!m_liveStream->IsPlaying())
+        return PVR_ERROR_REJECTED;
+      unsigned seq = m_liveStream->GetChainedCount();
+      if (seq == 0)
+        return PVR_ERROR_REJECTED;
+      begTs = m_liveStream->GetLiveTimeStart();
+      endTs = m_liveStream->GetChainedProgram(seq)->recording.endTs;
+    }
+    else if (m_recordingStream && !m_recordingStreamInfo.IsNull())
+    {
+      begTs = m_recordingStreamInfo.RecordingStartTime();
+      endTs = m_recordingStreamInfo.RecordingEndTime();
+    }
+    else
+    {
       return PVR_ERROR_FAILED;
-    if (!m_liveStream->IsPlaying())
-      return PVR_ERROR_REJECTED;
-    unsigned seq = m_liveStream->GetChainedCount();
-    if (seq == 0)
-      return PVR_ERROR_REJECTED;
-    begTs = m_liveStream->GetLiveTimeStart();
-    endTs = m_liveStream->GetChainedProgram(seq)->recording.endTs;
+    }
   }
   time_t now = time(NULL);
   if (now < endTs)
@@ -2236,6 +2246,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
     else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
     {
+      m_recordingStreamInfo = prog;
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
       // Fill AV info for later use
@@ -2254,6 +2265,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       m_recordingStream = new Myth::RecordingPlayback(*m_eventHandler);
       if (m_recordingStream->IsOpen() && m_recordingStream->OpenTransfer(prog.GetPtr()))
       {
+        m_recordingStreamInfo = prog;
         if (g_bExtraDebug)
           XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
         // Fill AV info for later use
@@ -2281,6 +2293,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
       XBMC->QueueNotification(QUEUE_ERROR, XBMC->GetLocalizedString(30302)); // MythTV backend unavailable
     else if (m_recordingStream->OpenTransfer(prog.GetPtr()))
     {
+      m_recordingStreamInfo = prog;
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
       // Fill AV info for later use
@@ -2307,6 +2320,8 @@ void PVRClientMythTV::CloseRecordedStream()
 
   // Destroy my stream
   SAFE_DELETE(m_recordingStream);
+  // Reset my info
+  m_recordingStreamInfo = MythProgramInfo();
   // Resume fileOps
   if (m_fileOps)
     m_fileOps->Resume();

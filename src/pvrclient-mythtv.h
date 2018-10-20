@@ -147,6 +147,7 @@ private:
   Myth::Control *m_control;
   Myth::LiveTVPlayback *m_liveStream;
   Myth::RecordingPlayback *m_recordingStream;
+  MythProgramInfo m_recordingStreamInfo;
   FileStreaming *m_dummyStream;
   bool m_hang;
   bool m_powerSaving;
