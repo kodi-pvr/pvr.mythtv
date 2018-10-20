@@ -35,6 +35,7 @@
 #define TICK_USEC             100000  // valid range: 10000 - 999999
 #define START_TIMEOUT         2000    // millisec
 #define AHEAD_TIMEOUT         10000   // millisec
+#define BREAK_TIMEOUT         4000    // millisec
 
 using namespace Myth;
 
@@ -403,9 +404,9 @@ void LiveTVPlayback::HandleBackendMessage(EventMessagePtr msg)
             /*
              * Last recording is now completed but watch signal is ON.
              * Then force live tv chain update for the new current
-             * program. We will retry for 2s before returning.
+             * program. We will retry for a short period before returning.
              */
-            OS::CTimeout timeout(2000);
+            OS::CTimeout timeout(BREAK_TIMEOUT);
             do
             {
               usleep(500000); // wait for 500 ms
