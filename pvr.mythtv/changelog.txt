@@ -1,3 +1,6 @@
+v5.8.9
+- Sync upstream cppmyth (2.10.2)
+
 v5.8.8
 - Return PVR_ERROR_FAILED on API calls while addon is not initialized
 
