@@ -1,3 +1,6 @@
+v5.8.10
+- Fix timeshift info for recording being recorded
+
 v5.8.9
 - Sync upstream cppmyth (2.10.2)
 
