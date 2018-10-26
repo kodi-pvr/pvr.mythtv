@@ -1316,6 +1316,18 @@ PVR_ERROR PVRClientMythTV::SetRecordingLastPlayedPosition(const PVR_RECORDING &r
 
 int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recording)
 {
+  //@FIXME: in some circumstances PVR calls this function in loop. To avoid
+  //        backend stressing the previous value is cached and will be returned
+  //        next time for this recording.
+  static uint64_t _recid = 0;
+  static int _bookmark = 0;
+  uint64_t recid = (static_cast<uint64_t>(recording.iChannelUid) << 32) | static_cast<uint64_t>(recording.recordingTime);
+  if (recid == _recid)
+  {
+    XBMC->Log(LOG_DEBUG, "%s: Returning cached Bookmark for: %s", __FUNCTION__, recording.strTitle);
+    return _bookmark;
+  }
+
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Reading Bookmark for: %s", __FUNCTION__, recording.strTitle);
 
@@ -1329,13 +1341,14 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
       lock.Unlock();
       if (prog)
       {
-        long long duration = m_control->GetSavedBookmark(*prog, 2); // returns 0 if no bookmark was found
+        int64_t duration = m_control->GetSavedBookmark(*prog, 2); // returns 0 if no bookmark was found
         if (duration > 0)
         {
-          int bookmark = (int)(duration / 1000);
+            _recid = recid;
+            _bookmark = (int)(duration / 1000);
           if (g_bExtraDebug)
-            XBMC->Log(LOG_DEBUG, "%s: Bookmark: %d", __FUNCTION__, bookmark);
-          return bookmark;
+            XBMC->Log(LOG_DEBUG, "%s: Bookmark: %d", __FUNCTION__, _bookmark);
+          return _bookmark;
         }
       }
     }
@@ -1344,7 +1357,9 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
   }
   else
     XBMC->Log(LOG_ERROR, "%s: Recording %s does not exist", __FUNCTION__, recording.strRecordingId);
-  return 0;
+  _recid = recid;
+  _bookmark = 0;
+  return _bookmark;
 }
 
 PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_EDL_ENTRY entries[], int *size)
