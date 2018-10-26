@@ -1,3 +1,6 @@
+v5.8.11
+- Add a workaround to prevent the backend from being stressed by repeated calls from PVR
+
 v5.8.10
 - Fix timeshift info for recording being recorded
 
