@@ -42,7 +42,7 @@ msgstr "Tilføj mere debug-information i logfilen"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Aktiver TV"
+msgstr "Aktivér TV"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
@@ -70,11 +70,11 @@ msgstr "MythTV Backend Ethernet-adressen (WOL)"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "MythTV Backend port API serviceser"
+msgstr "MythTV Backend API service port"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
-msgstr "MythTV Sikkerheds Pin til API servicer"
+msgstr "MythTV PIN kode til API service"
 
 msgctxt "#30019"
 msgid "General"
@@ -82,7 +82,7 @@ msgstr "Generelt"
 
 msgctxt "#30020"
 msgid "Template provider"
-msgstr "Skabelonleverandør"
+msgstr "Skabelonhåndtering"
 
 msgctxt "#30021"
 msgid "Internal"
@@ -98,11 +98,11 @@ msgstr "Intern skabelon"
 
 msgctxt "#30026"
 msgid "Automatically Look Up Metadata"
-msgstr "Automatisk fundne Metadata"
+msgstr "Automatisk hentning af Metadata"
 
 msgctxt "#30027"
 msgid "Commercial Flag new recordings"
-msgstr "Marker nye optagelser kommercielt"
+msgstr "Markér reklamer i nye optagelser"
 
 msgctxt "#30028"
 msgid "Transcode new recordings"
@@ -132,17 +132,29 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Tillad at optagelser udløber"
 
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr "Spørg om sletning efter visning af optagelse"
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr "Vis oprindelig udsendelsestid i stedet for optagelsestid"
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Optagelsesskabelon"
 
 msgctxt "#30050"
 msgid "Advanced"
-msgstr "Udvidet"
+msgstr "Avanceret"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr "Indstillinger"
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
-msgstr "Aktiver demuxing MPEG-TS"
+msgstr "Aktivér demuxing MPEG-TS"
 
 msgctxt "#30053"
 msgid "Tuning delay (sec)"
@@ -182,19 +194,31 @@ msgstr "Aldrig"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Stop backend nedlukning"
+msgstr "Blokér backend nedlukning"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
-msgstr "Aktiver kanal ikoner"
+msgstr "Aktivér kanal ikoner"
 
 msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
-msgstr "Aktiver optagelser af Fanart/Thumbnails"
+msgstr "Aktivér optagelser af Fanart/Thumbnails"
 
 msgctxt "#30065"
 msgid "Limit channel tuning attempts"
-msgstr "Begræns kanal tunings forsøg"
+msgstr "Begræns kanal tuningsforsøg"
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr "Vis inaktive optagelsesregler (alternativ/optaget/udløbet)"
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr "Vis 'LiveTV' optagelser"
+
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Brug bogmærker fra MythTV backenden"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -206,7 +230,27 @@ msgstr "Aktiverer EDL (reklame-skip)"
 
 msgctxt "#30111"
 msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "En reklameudeladelsesliste er blevet fundet.\nVil du aktivere automatisk reklame-skip for dette show?"
+msgstr "En reklameudeladelsesliste (EDL) er blevet fundet.\nVil du aktivere automatisk reklame-skip for dette show?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Forbindelse fejlede"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Vil du prøve igen?"
+
+msgctxt "#30114"
+msgid "Connected"
+msgstr "Forbundet"
+
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr "Kunne ikke forbinde til MythTV backend med den aktuelle protokolversion. Tjek venligst kompatibiliteten af tilføjelsen og opgrader din backend til en understøttet version."
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr "Kunne ikke forbinde til MythTV backend API service. Tjek venligst din PIN kode eller backend opsætning. PIN koden skal være opsat i backenden for at tillade forbindelse."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -218,7 +262,7 @@ msgstr "Forbindelse til MythTV genoprettet"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Inden reaktion fra MythTV backend"
+msgstr "Ingen svar fra MythTV backend"
 
 msgctxt "#30305"
 msgid "Channel unavailable"
@@ -230,11 +274,11 @@ msgstr "Optager ikke tilgængelig"
 
 msgctxt "#30307"
 msgid "Canceling conflicting recording: %s"
-msgstr "Aflys modstridende optagelse: %s"
+msgstr "Aflyser modstridende optagelse: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Stopper Live TV på grund af modstridende optagelse: %s"
+msgstr "Stopper direkte TV på grund af modstridende optagelse: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
@@ -256,14 +300,134 @@ msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slet og optag på ny"
 
+msgctxt "#30412"
+msgid "Keep recording"
+msgstr "Behold optagelse"
+
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr "Skift visning af alternativ/optaget/udløbet"
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
-msgstr "Opdater cachen for kanalikoner"
+msgstr "Opdatér kanal ikoner"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr "Opdatér kanaler"
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr "Vis planlægningsstatus"
+
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr "Uhåndteret"
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr "Fremtidig"
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr "Tilsidesat"
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr "Optag ikke"
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr "Fremtidig manuel"
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr "Zombie"
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr "Alternativ"
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr "Aktuelt optaget"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr "Udløbet optagelse"
 
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manuelt"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr "Optag én gang"
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr "Optag ugentligt"
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr "Optag dagligt"
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr "Optag alle"
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr "Optag denne"
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr "Optag serie"
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr "Søg nøgleord"
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr "Søg medvirkende"
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr "Regel deaktiveret"
+
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr "Identificér ikke dubletter"
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr "Identificér dubletter ved hjælp af undertitel"
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr "Identificér dubletter ved hjælp af beskrivelse"
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr "Identificér dubletter ved hjælp af undertitel & beskrivelse"
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr "Identificér dubletter ved hjælp af undertitel, derefter beskrivelse"
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr "Optagelser udløber aldrig"
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Tillad at optagelser udløber"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr "Behold op til %d optagelser"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr "Behold %d nyeste og lad ældre udløbe"
