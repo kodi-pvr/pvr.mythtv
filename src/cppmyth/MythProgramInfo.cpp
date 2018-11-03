@@ -333,3 +333,8 @@ time_t MythProgramInfo::Airdate() const
 {
   return (m_proginfo ? m_proginfo->airdate : 0);
 }
+
+bool MythProgramInfo::IsDamaged() const
+{
+  return ((m_proginfo && (m_proginfo->videoProps & 0x0020)) ? true : false);
+}

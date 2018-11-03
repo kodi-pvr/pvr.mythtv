@@ -83,6 +83,7 @@ public:
   uint16_t Season() const;
   uint16_t Episode() const;
   time_t Airdate() const;
+  bool IsDamaged() const;
 
 private:
   Myth::ProgramPtr m_proginfo;

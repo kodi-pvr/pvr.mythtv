@@ -914,8 +914,16 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
 
       std::string id = it->second.UID();
 
+      std::string str; // a temporary string to build formating label
+      std::string title(it->second.Title());
+      if (it->second.IsDamaged())
+      {
+        str.assign(title);
+        title.assign("[COLOR yellow]").append(str).append("[/COLOR]");
+      }
+
       PVR_STRCPY(tag.strRecordingId, id.c_str());
-      PVR_STRCPY(tag.strTitle, it->second.Title().c_str());
+      PVR_STRCPY(tag.strTitle, title.c_str());
       PVR_STRCPY(tag.strEpisodeName, it->second.Subtitle().c_str());
       tag.iSeriesNumber = it->second.Season();
       tag.iEpisodeNumber = it->second.Episode();
@@ -963,6 +971,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
         if (it->second.HasFanart())
           strFanartPath = m_fileOps->GetArtworkPath(it->second, FileOps::FileTypeFanart);
       }
+
       PVR_STRCPY(tag.strIconPath, strIconPath.c_str());
       PVR_STRCPY(tag.strThumbnailPath, strThumbnailPath.c_str());
       PVR_STRCPY(tag.strFanartPath, strFanartPath.c_str());
