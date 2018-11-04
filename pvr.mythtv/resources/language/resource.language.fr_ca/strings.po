@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KODI Main\n"
-"Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
+"Report-Msgid-Bugs-To: https://github.com/xbmc/xbmc/issues/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Kodi Translation Team\n"
@@ -18,11 +18,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
-msgstr "Nom d’hôte ou adresse IP du dorsal MythTV"
+msgstr "Nom d’hôte ou adresse IP de la dorsale MythTV"
 
 msgctxt "#30001"
 msgid "MythTV Backend Port"
-msgstr "Port du dorsal MythTV"
+msgstr "Port de la dorsale MythTV"
 
 msgctxt "#30002"
 msgid "MythTV Database Username"
@@ -66,11 +66,11 @@ msgstr "Préférer la télé en direct et arrêter les enregistrements en confli
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
-msgstr "Adresse Ethernet (WOL) du dorsal MythTV"
+msgstr "Adresse Ethernet (WOL) de la dorsale MythTV"
 
 msgctxt "#30013"
 msgid "MythTV Backend Port for API services"
-msgstr "Port du dorsal MythTV pour les services d’API"
+msgstr "Port de la dorsale MythTV pour les services d’API"
 
 msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
@@ -194,7 +194,7 @@ msgstr "Jamais"
 
 msgctxt "#30062"
 msgid "Block backend shutdown"
-msgstr "Bloquer l’extinction du dorsal"
+msgstr "Bloquer l’extinction de la dorsale"
 
 msgctxt "#30063"
 msgid "Enable channel icons"
@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Afficher les enregistrements de la télé en direct"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Utiliser les signets de la dorsale MythTV"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole : %i - Version de la base de données : %i"
@@ -236,17 +240,21 @@ msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Voulez-vous ressayer ?"
 
+msgctxt "#30114"
+msgid "Connected"
+msgstr "Connecté"
+
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
-msgstr "Échec de connexion du dorsal MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l’addiciel et mettre votre dorsal à niveau vers une version prise en charge."
+msgstr "Échec de connexion de la dorsale MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l’addiciel et mettre votre dorsale à niveau vers une version prise en charge."
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Échec de connexion des services d’API du dorsal MythTV. Veuillez vérifier votre NIP ou la configuration du dorsal. Le NIP doit être configuré dans le dorsal afin de permettre la connexion."
+msgstr "Échec de connexion des services d’API de la dorsale MythTV. Veuillez vérifier votre NIP ou la configuration de la dorsale. Le NIP doit être configuré dans la dorsale afin de permettre la connexion."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
-msgstr "La connexion du dorsal MythTV a été perdue"
+msgstr "La connexion de la dorsale MythTV a été perdue"
 
 msgctxt "#30303"
 msgid "Connection to MythTV restored"
@@ -254,7 +262,7 @@ msgstr "La connexion à MythTV est rétablie"
 
 msgctxt "#30304"
 msgid "No response from MythTV backend"
-msgstr "Aucune réponse du dorsal MythTV"
+msgstr "Aucune réponse de la dorsale MythTV"
 
 msgctxt "#30305"
 msgid "Channel unavailable"

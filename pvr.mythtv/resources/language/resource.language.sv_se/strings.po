@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KODI Main\n"
-"Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
+"Report-Msgid-Bugs-To: https://github.com/xbmc/xbmc/issues/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Kodi Translation Team\n"
@@ -42,11 +42,11 @@ msgstr "Inkludera mer debugginformation i loggfilen"
 
 msgctxt "#30006"
 msgid "Enable Live TV"
-msgstr "Aktivera direktsänd TV"
+msgstr "Aktivera Live-tv"
 
 msgctxt "#30007"
 msgid "Allow Live TV to move scheduled shows"
-msgstr "Tillåt direktsänd TV att flytta schemalagda program"
+msgstr "Tillåt Live-tv att flytta schemalagda program"
 
 msgctxt "#30008"
 msgid "Conflict handling"
@@ -54,15 +54,15 @@ msgstr "Konflikthantering"
 
 msgctxt "#30009"
 msgid "Prefer Live TV when recording has later slot"
-msgstr "Föredra direktsänd TV när inspelning har ett senare tillfälle"
+msgstr "Föredra Live-tv när inspelning har ett senare tillfälle"
 
 msgctxt "#30010"
 msgid "Prefer recording and stop Live TV"
-msgstr "Föredra inspelning och stoppa direktsänd TV"
+msgstr "Föredra inspelning och stoppa Live-tv"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Föredra direktsänd TV och avbryt inspelning i konflikt"
+msgstr "Föredra Live-tv och avbryt inspelning i konflikt"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -214,7 +214,11 @@ msgstr "Visa inaktiverade kommande (alternativ/inspelningar/utgått)"
 
 msgctxt "#30067"
 msgid "Show LiveTV recordings"
-msgstr "Visa direktsänd TV inspelningar"
+msgstr "Visa Live-tv-inspelningar"
+
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Använd bokmärken från backend MythTV"
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -235,6 +239,10 @@ msgstr "Anslutningen misslyckades"
 msgctxt "#30113"
 msgid "Do you want to retry ?"
 msgstr "Vill du försöka igen?"
+
+msgctxt "#30114"
+msgid "Connected"
+msgstr "Ansluten"
 
 msgctxt "#30300"
 msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
@@ -270,7 +278,7 @@ msgstr "Avbryter inspelning med konflikt: %s"
 
 msgctxt "#30308"
 msgid "Stopping Live TV due to conflicting recording: %s"
-msgstr "Stoppar direktsänd TV pga konflikt med inspelning: %s"
+msgstr "Stoppar Live-tv pga konflikt med inspelning: %s"
 
 msgctxt "#30309"
 msgid "Not recording"
