@@ -1,3 +1,6 @@
+v5.8.14
+- Fix time conversion for 32 bits platform
+
 v5.8.13
 - Update Danish translation
 
