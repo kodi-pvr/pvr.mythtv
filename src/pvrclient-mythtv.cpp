@@ -2227,7 +2227,7 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
   pStreamTimes->startTime = begTs;
   pStreamTimes->ptsStart = 0;
   pStreamTimes->ptsBegin = 0;
-  pStreamTimes->ptsEnd = (endTs - begTs) * DVD_TIME_BASE;
+  pStreamTimes->ptsEnd = static_cast<int64_t>(difftime(endTs, begTs)) * DVD_TIME_BASE;
   return PVR_ERROR_NO_ERROR;
 }
 
