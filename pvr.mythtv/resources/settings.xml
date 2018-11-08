@@ -14,7 +14,7 @@
     <setting id="channel_icons" type="bool" label="30063" default="true" />
     <setting id="recording_icons" type="bool" label="30064" default="true" />
     <setting id="livetv_recordings" type="bool" label="30067" default="true" />
-    <setting id="group_recordings" type="enum" label="30054" lvalues="30055|30056|30057" default="0" />
+    <setting id="group_recordings" type="enum" label="30054" lvalues="30055|30056|30057" default="1" />
     <setting id="use_airdate" type="bool" label="30048" default="false" />
     <setting id="enable_edl" type="enum" label="30058" lvalues="30059|30060|30061" default="0" />
     <setting id="inactive_upcomings" type="bool" label="30066" default="true" />
@@ -36,7 +36,7 @@
   <category label="30050">
     <setting id="extradebug" type="bool" label="30005" default="false" />
     <setting id="block_shutdown" type="bool" label="30062" default="true" />
-    <setting id="tunedelay" type="slider" option="int" range="5,1,30" label="30053" />
+    <setting id="tunedelay" type="slider" option="int" range="5,1,30" label="30053" default="5" />
     <setting id="limit_tune_attempts" type="bool" label="30065" default="true" />
     <setting id="backend_bookmarks" type="bool" label="30068" default="true" />
   </category>
