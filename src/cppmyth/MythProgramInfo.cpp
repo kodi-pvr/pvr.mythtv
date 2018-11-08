@@ -338,3 +338,36 @@ bool MythProgramInfo::IsDamaged() const
 {
   return ((m_proginfo && (m_proginfo->videoProps & 0x0020)) ? true : false);
 }
+
+#include <locale>
+#include <codecvt>
+
+std::string MythProgramInfo::FormattedTitle() const
+{
+  if (!m_proginfo || !m_formattedTitle.empty())
+    return m_formattedTitle;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::wstring wt = converter.from_bytes(m_proginfo->title);
+  // truncate title at the first left parenthesis
+  size_t p = wt.find(L'\x0028');
+  if (p == std::wstring::npos || p == 0)
+    p = wt.length();
+  // trim trailing spaces
+  while (p > 0 && iswspace((wint_t)(wt[p - 1])))
+    --p;
+  std::wstring wb;
+  // erase special characters
+  for (int i = 0; i < p; ++i)
+  {
+    wchar_t c = wt[i];
+    if (c != L'\x002f'            // slash
+            && c != L'\x005c'     // back-slash
+            && c != L'\x005b'     // [
+            && c != L'\x005d'     // ]
+            )
+      wb.push_back(c);
+    else
+      wb.push_back(L'\x0020');
+  }
+  return m_formattedTitle = converter.to_bytes(wb);
+}

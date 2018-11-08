@@ -881,7 +881,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
     {
       if (!it->second.IsNull() && it->second.IsVisible() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
       {
-        std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.Title());
+        std::pair<std::string, std::string> title = std::make_pair(it->second.RecordingGroup(), it->second.FormattedTitle());
         TitlesMap::iterator found = titles.find(title);
         if (found != titles.end())
         {
@@ -946,7 +946,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       // Add recording title to directory to group everything according to its name just like MythTV does
       std::string strDirectory(it->second.RecordingGroup());
       if (g_iGroupRecordings == GROUP_RECORDINGS_ALWAYS || (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES && it->second.GetPropsSerie()))
-        strDirectory.append("/").append(it->second.Title());
+        strDirectory.append("/").append(it->second.FormattedTitle());
       PVR_STRCPY(tag.strDirectory, strDirectory.c_str());
 
       // Images
