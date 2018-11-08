@@ -1,3 +1,6 @@
+v5.8.15
+- Update default settings
+
 v5.8.14
 - Fix time conversion for 32 bits platform
 
