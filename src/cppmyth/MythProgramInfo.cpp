@@ -342,22 +342,20 @@ bool MythProgramInfo::IsDamaged() const
 #include <locale>
 #include <codecvt>
 
-std::string MythProgramInfo::FormattedTitle() const
+std::string MythProgramInfo::GroupingTitle() const
 {
-  if (!m_proginfo || !m_formattedTitle.empty())
-    return m_formattedTitle;
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  if (!m_proginfo || !m_groupingTitle.empty())
+    return m_groupingTitle;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t> > converter;
   std::wstring wt = converter.from_bytes(m_proginfo->title);
   // truncate title at the first left parenthesis
+  // i.e: "Ad Vitam (1/6)" => "Ad Vitam "
   size_t p = wt.find(L'\x0028');
   if (p == std::wstring::npos || p == 0)
     p = wt.length();
-  // trim trailing spaces
-  while (p > 0 && iswspace((wint_t)(wt[p - 1])))
-    --p;
+  // clean special characters
   std::wstring wb;
-  // erase special characters
-  for (int i = 0; i < p; ++i)
+  for (size_t i = 0; i < p; ++i)
   {
     wchar_t c = wt[i];
     if (c != L'\x002f'            // slash
@@ -369,5 +367,10 @@ std::string MythProgramInfo::FormattedTitle() const
     else
       wb.push_back(L'\x0020');
   }
-  return m_formattedTitle = converter.to_bytes(wb);
+  // trim trailing spaces
+  p = wb.length();
+  while (p > 0 && iswspace((wint_t)(wb[p - 1])))
+    --p;
+  wb.resize(p);
+  return m_groupingTitle = converter.to_bytes(wb);
 }
