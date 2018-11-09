@@ -1,3 +1,6 @@
+v5.8.16
+- Clean recorded directory name containing special characters
+
 v5.8.15
 - Update default settings
 
