@@ -339,38 +339,39 @@ bool MythProgramInfo::IsDamaged() const
   return ((m_proginfo && (m_proginfo->videoProps & 0x0020)) ? true : false);
 }
 
-#include <locale>
-#include <codecvt>
-
 std::string MythProgramInfo::GroupingTitle() const
 {
   if (!m_proginfo || !m_groupingTitle.empty())
     return m_groupingTitle;
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t> > converter;
-  std::wstring wt = converter.from_bytes(m_proginfo->title);
+
+  // UTF-8 is safe when interpreting 7-bit ASCII characters. Therefore, the following
+  // treatments do not require special care about locale
+
+  std::string& sin = m_proginfo->title;
+
   // truncate title at the first left parenthesis
   // i.e: "Ad Vitam (1/6)" => "Ad Vitam "
-  size_t p = wt.find(L'\x0028');
-  if (p == std::wstring::npos || p == 0)
-    p = wt.length();
+  size_t p = sin.find('\x28');
+  if (p == std::string::npos || p == 0)
+    p = sin.length();
   // clean special characters
-  std::wstring wb;
+  std::string buf;
   for (size_t i = 0; i < p; ++i)
   {
-    wchar_t c = wt[i];
-    if (c != L'\x002f'            // slash
-            && c != L'\x005c'     // back-slash
-            && c != L'\x005b'     // [
-            && c != L'\x005d'     // ]
+    char c = sin[i];
+    if (c != '\x2f'             // slash
+            && c != '\x5c'      // back-slash
+            && c != '\x5b'      // [
+            && c != '\x5d'      // ]
             )
-      wb.push_back(c);
+      buf.push_back(c);
     else
-      wb.push_back(L'\x0020');
+      buf.push_back('\x20');
   }
   // trim trailing spaces
-  p = wb.length();
-  while (p > 0 && iswspace((wint_t)(wb[p - 1])))
+  p = buf.length();
+  while (p > 0 && isspace((int)(buf[p - 1])))
     --p;
-  wb.resize(p);
-  return m_groupingTitle = converter.to_bytes(wb);
+  buf.resize(p);
+  return m_groupingTitle = buf;
 }
