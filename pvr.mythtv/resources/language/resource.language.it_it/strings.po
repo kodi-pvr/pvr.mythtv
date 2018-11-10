@@ -308,6 +308,10 @@ msgctxt "#30424"
 msgid "Show status of scheduling"
 msgstr "Mostra stato operazioni pianificate"
 
+msgctxt "#30425"
+msgid "Show status of recording"
+msgstr "Mostra stato della registrazione"
+
 msgctxt "#30451"
 msgid "Unhandled"
 msgstr "Non gestito"

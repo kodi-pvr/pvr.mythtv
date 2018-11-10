@@ -358,6 +358,12 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   PVR->AddMenuHook(&menuHook);
 
   memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
+  menuHook.category = PVR_MENUHOOK_RECORDING;
+  menuHook.iHookId = MENUHOOK_INFO_RECORDING;
+  menuHook.iLocalizedStringId = 30425;
+  PVR->AddMenuHook(&menuHook);
+
+  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
   menuHook.category = PVR_MENUHOOK_TIMER;
   menuHook.iHookId = MENUHOOK_TIMER_BACKEND_INFO;
   menuHook.iLocalizedStringId = 30424;
