@@ -2632,6 +2632,10 @@ time_t PVRClientMythTV::GetRecordingTime(time_t airtt, time_t recordingtt)
   airtm.tm_hour = rectm.tm_hour;
   airtm.tm_min = rectm.tm_min;
   airtm.tm_sec = rectm.tm_sec;
-
+  if (airtm.tm_yday == 0)
+  {
+    airtm.tm_mday = rectm.tm_mday;
+    airtm.tm_mon = rectm.tm_mon;
+  }
   return mktime(&airtm);
 }
