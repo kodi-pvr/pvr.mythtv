@@ -2210,11 +2210,13 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
         return PVR_ERROR_REJECTED;
       begTs = m_liveStream->GetLiveTimeStart();
       endTs = m_liveStream->GetChainedProgram(seq)->recording.endTs;
+      pStreamTimes->startTime = begTs;
     }
     else if (m_recordingStream && !m_recordingStreamInfo.IsNull())
     {
       begTs = m_recordingStreamInfo.RecordingStartTime();
       endTs = m_recordingStreamInfo.RecordingEndTime();
+      pStreamTimes->startTime = 0; // for recordings, this must be zero
     }
     else
     {
@@ -2224,9 +2226,8 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
   time_t now = time(NULL);
   if (now < endTs)
     endTs = now;
-  pStreamTimes->startTime = begTs;
-  pStreamTimes->ptsStart = 0;
-  pStreamTimes->ptsBegin = 0;
+  pStreamTimes->ptsStart = 0; // it is started from 0 by the ffmpeg demuxer
+  pStreamTimes->ptsBegin = 0; // earliest pts player can seek back
   pStreamTimes->ptsEnd = static_cast<int64_t>(difftime(endTs, begTs)) * DVD_TIME_BASE;
   return PVR_ERROR_NO_ERROR;
 }
