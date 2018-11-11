@@ -52,6 +52,7 @@
 #define MENUHOOK_REFRESH_CHANNEL_ICONS      5
 #define MENUHOOK_TRIGGER_CHANNEL_UPDATE     6
 #define MENUHOOK_INFO_RECORDING             7
+#define MENUHOOK_INFO_EPG                   8
 
 #define DEFAULT_TUNE_DELAY                  5
 #define GROUP_RECORDINGS_ALWAYS             0

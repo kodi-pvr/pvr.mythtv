@@ -324,6 +324,10 @@ msgctxt "#30425"
 msgid "Show status of recording"
 msgstr "Vis optagelsestatus"
 
+msgctxt "#30426"
+msgid "Show status of broadcast"
+msgstr "Vis udsendelsestatus"
+
 msgctxt "#30451"
 msgid "Unhandled"
 msgstr "Uhåndteret"

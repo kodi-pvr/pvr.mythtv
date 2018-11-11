@@ -2596,22 +2596,28 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
       epgInfo = MythEPGInfo(epgit->second);
       if (g_bExtraDebug)
         XBMC->Log(LOG_DEBUG, "%s: Found EPG program (%d) chanid: %u attime: %lu", __FUNCTION__, item.data.iEpgUid, chanid, attime);
-      //if (m_scheduleManager)
-      //{
-      //  MythTimerEntry entry;
-      //  switch(menuhook.iHookId)
-      //  {
-      //    case MENUHOOK_EPG_REC_CHAN_ALL_SHOWINGS:
-      //    case MENUHOOK_EPG_REC_CHAN_WEEKLY:
-      //    case MENUHOOK_EPG_REC_CHAN_DAILY:
-      //    case MENUHOOK_EPG_REC_ONE_SHOWING:
-      //    case MENUHOOK_EPG_REC_NEW_EPISODES:
-      //    default:
-      //      return PVR_ERROR_NOT_IMPLEMENTED;
-      //  }
-      //  if (m_scheduleManager->SubmitTimer(entry) == MythScheduleManager::MSM_ERROR_SUCCESS)
-      //    return PVR_ERROR_NO_ERROR;
-      //}
+
+      if (menuhook.iHookId == MENUHOOK_INFO_EPG)
+      {
+        const unsigned sz = 8;
+        std::string items[sz];
+        const char* entries[sz];
+        items[0] = "BID " + std::to_string((unsigned)item.data.iEpgUid);
+        items[1] = Myth::TimeToString(epgInfo.StartTime());
+        items[2] = Myth::TimeToString(epgInfo.EndTime());
+        items[3] = epgInfo.ChannelName();
+        items[4] = epgInfo.ChannelNumber();
+        items[5] = epgInfo.Category();
+        items[6] = epgInfo.CategoryType();
+        items[7] = epgInfo.SeriesID();
+
+        for (unsigned i = 0; i < sz; ++i)
+          entries[i] = items[i].c_str();
+        GUI->Dialog_Select(epgInfo.Title().c_str(), entries, sz);
+
+        return PVR_ERROR_NO_ERROR;
+      }
+
     }
     else
     {

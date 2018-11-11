@@ -312,6 +312,10 @@ msgctxt "#30425"
 msgid "Show status of recording"
 msgstr "Mostrar el estado de la grabación"
 
+msgctxt "#30426"
+msgid "Show status of broadcast"
+msgstr "Mostrar el estado de la emisión"
+
 msgctxt "#30451"
 msgid "Unhandled"
 msgstr "sin tratamiento"

@@ -345,7 +345,11 @@ msgctxt "#30425"
 msgid "Show status of recording"
 msgstr ""
 
-# empty strings from id 30426 to 30450
+msgctxt "#30426"
+msgid "Show status of broadcast"
+msgstr ""
+
+# empty strings from id 30427 to 30450
 
 msgctxt "#30451"
 msgid "Unhandled"
