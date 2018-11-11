@@ -1,3 +1,9 @@
+v5.8.18
+- Add new hook to show recording status
+- Add new hook to show broadcast status
+- Update translations for FR,ES,DA,IT,DE,NL
+- Supply fr_FR map for EIT categories
+
 v5.8.16
 - Clean recorded directory name containing special characters
 
