@@ -2513,12 +2513,12 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
 
     items[10].append("VIDEO [ ");
     unsigned vp = pinfo.GetPtr()->videoProps;
-    items[10].append((vp & 0x01) ? "0" : "_");
-    items[10].append((vp & 0x02) ? "1" : "_");
-    items[10].append((vp & 0x04) ? "2" : "_");
-    items[10].append((vp & 0x08) ? "3" : "_");
-    items[10].append((vp & 0x10) ? "4" : "_");
-    items[10].append((vp & 0x20) ? "5" : "_");
+    items[10].append((vp & 0x01) ? "0 " : "_ ");
+    items[10].append((vp & 0x02) ? "1 " : "_ ");
+    items[10].append((vp & 0x04) ? "2 " : "_ ");
+    items[10].append((vp & 0x08) ? "3 " : "_ ");
+    items[10].append((vp & 0x10) ? "4 " : "_ ");
+    items[10].append((vp & 0x20) ? "5 " : "_ ");
     items[10].append((vp & 0x40) ? "6 ]" : "_ ]");
 
     items[11] = (pinfo.GetPropsVideoFrameRate() > 0.0 ? std::to_string(pinfo.GetPropsVideoFrameRate()) : "");
