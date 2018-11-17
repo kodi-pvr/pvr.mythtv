@@ -66,9 +66,6 @@ bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
 bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
 bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
 bool          g_bUseBackendBookmarks    = DEFAULT_BACKEND_BOOKMARKS;
-bool          g_bCacheChannelIcons      = DEFAULT_CACHE_CHANNEL_ICONS;
-bool          g_bCachePreviews          = DEFAULT_CACHE_PREVIEWS;
-bool          g_bCacheArtworks          = DEFAULT_CACHE_ARTWORKS;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -342,24 +339,6 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     g_bUseBackendBookmarks = DEFAULT_BACKEND_BOOKMARKS;
   }
 
-  /* Read setting "cache_channel_icons" from settings.xml */
-  if (!XBMC->GetSetting("cache_channel_icons", &g_bCacheChannelIcons))
-  {
-    /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'cache_channel_icons' setting, falling back to '%u' as default", DEFAULT_CACHE_CHANNEL_ICONS);
-    g_bCacheChannelIcons = DEFAULT_CACHE_CHANNEL_ICONS;
-  }
-
-  /* Read setting "cache_recording_icons" from settings.xml */
-  if (!XBMC->GetSetting("cache_recording_icons", &g_bCacheArtworks))
-  {
-    /* If setting is unknown fallback to defaults */
-    XBMC->Log(LOG_ERROR, "Couldn't get 'cache_recording_icons' setting, falling back to '%u' as default", DEFAULT_CACHE_ARTWORKS);
-    g_bCacheArtworks = g_bCachePreviews = DEFAULT_CACHE_ARTWORKS;
-  }
-  else
-    g_bCachePreviews = g_bCacheArtworks;
-
   free (buffer);
   XBMC->Log(LOG_DEBUG, "Loading settings...done");
 
@@ -508,18 +487,6 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   {
     XBMC->Log(LOG_INFO, "Changed Setting 'backend_bookmarks' from %u to %u", g_bUseBackendBookmarks, *(bool*)settingValue);
     if (g_bUseBackendBookmarks != *(bool*)settingValue)
-      return ADDON_STATUS_NEED_RESTART;
-  }
-  else if (str == "cache_channel_icons")
-  {
-    XBMC->Log(LOG_INFO, "Changed Setting 'cache_channel_icons' from %u to %u", g_bCacheChannelIcons, *(bool*)settingValue);
-    if (g_bCacheChannelIcons != *(bool*)settingValue)
-      return ADDON_STATUS_NEED_RESTART;
-  }
-  else if (str == "cache_recording_icons")
-  {
-    XBMC->Log(LOG_INFO, "Changed Setting 'cache_recording_icons' from %u to %u", g_bCacheArtworks, *(bool*)settingValue);
-    if (g_bCacheArtworks != *(bool*)settingValue)
       return ADDON_STATUS_NEED_RESTART;
   }
   else if (str == "host_ether")

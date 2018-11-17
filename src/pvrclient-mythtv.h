@@ -22,7 +22,7 @@
  */
 
 #include "cppmyth.h"
-#include "fileOps.h"
+#include "artworksmanager.h"
 #include "categories.h"
 
 #include <xbmc_pvr_types.h>
@@ -41,7 +41,7 @@
 class FileStreaming;
 class TaskHandler;
 
-class PVRClientMythTV : public Myth::EventSubscriber, FileConsumer
+class PVRClientMythTV : public Myth::EventSubscriber
 {
 public:
   PVRClientMythTV();
@@ -78,9 +78,6 @@ public:
   void HandleRecordingListChange(const Myth::EventMessage& msg);
   void PromptDeleteRecording(const MythProgramInfo &prog);
   void RunHouseKeeping();
-
-  // Implement FileConsumer
-  void HandleCleanedCache();
 
   // EPG
   PVR_ERROR GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time_t iStart, time_t iEnd);
@@ -157,7 +154,7 @@ private:
   bool IsPlaying() const;
 
   // Backend
-  FileOps *m_fileOps;
+  ArtworkManager *m_artworksManager;
   MythScheduleManager *m_scheduleManager;
   mutable P8PLATFORM::CMutex m_lock;
 

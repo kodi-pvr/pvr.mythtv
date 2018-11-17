@@ -227,15 +227,7 @@ msgctxt "#30068"
 msgid "Use bookmarks of the backend MythTV"
 msgstr ""
 
-msgctxt "#30069"
-msgid "Enable cache for channel icons"
-msgstr ""
-
-msgctxt "#30070"
-msgid "Enable cache for fanart/thumbnails"
-msgstr ""
-
-# empty strings from id 30071 to 30099
+# empty strings from id 30069 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
