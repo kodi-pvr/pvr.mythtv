@@ -66,6 +66,9 @@ bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
 bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
 bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
 bool          g_bUseBackendBookmarks    = DEFAULT_BACKEND_BOOKMARKS;
+bool          g_bCacheChannelIcons      = DEFAULT_CACHE_CHANNEL_ICONS;
+bool          g_bCachePreviews          = DEFAULT_CACHE_PREVIEWS;
+bool          g_bCacheArtworks          = DEFAULT_CACHE_ARTWORKS;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -376,13 +379,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   PVR->AddMenuHook(&menuHook);
 
   memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
-  menuHook.category = PVR_MENUHOOK_SETTING;
-  menuHook.iHookId = MENUHOOK_REFRESH_CHANNEL_ICONS;
-  menuHook.iLocalizedStringId = 30422;
-  PVR->AddMenuHook(&menuHook);
-
-  memset(&menuHook, 0, sizeof(PVR_MENUHOOK));
-  menuHook.category = PVR_MENUHOOK_SETTING;
+  menuHook.category = PVR_MENUHOOK_CHANNEL;
   menuHook.iHookId = MENUHOOK_TRIGGER_CHANNEL_UPDATE;
   menuHook.iLocalizedStringId = 30423;
   PVR->AddMenuHook(&menuHook);

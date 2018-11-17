@@ -33,6 +33,8 @@
 #define FILEOPS_CHANNEL_DUMMY_ICON    "channel.png"
 #define FILEOPS_RECORDING_DUMMY_ICON  "recording.png"
 
+#define CHANNEL_ICON_WIDTH            300
+
 using namespace ADDON;
 using namespace P8PLATFORM;
 
@@ -69,6 +71,9 @@ std::string FileOps::GetChannelIconPath(const MythChannel& channel)
   if (!g_bChannelIcons)
     return g_szClientPath + PATH_SEPARATOR_STRING + "resources" + PATH_SEPARATOR_STRING + FILEOPS_CHANNEL_DUMMY_ICON;
 
+  if (!g_bCacheChannelIcons)
+    return m_wsapi->GetChannelIconUrl(channel.ID(), CHANNEL_ICON_WIDTH);
+
   std::string uid = Myth::IdToString(channel.ID());
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: channel: %s", __FUNCTION__, uid.c_str());
@@ -100,6 +105,9 @@ std::string FileOps::GetPreviewIconPath(const MythProgramInfo& recording)
     return "";
   if (!g_bRecordingIcons)
     return g_szClientPath + PATH_SEPARATOR_STRING + "resources" + PATH_SEPARATOR_STRING + FILEOPS_RECORDING_DUMMY_ICON;
+
+  if (!g_bCachePreviews)
+    return m_wsapi->GetPreviewImageUrl(recording.ChannelID(), recording.RecordingStartTime());
 
   std::string uid = recording.UID();
   if (g_bExtraDebug)
@@ -139,6 +147,9 @@ std::string FileOps::GetArtworkPath(const MythProgramInfo& recording, FileType t
     default:
       return "";
     }
+
+  if (!g_bCacheArtworks)
+    return m_wsapi->GetRecordingArtworkUrl(GetTypeNameByFileType(type), recording.Inetref(), recording.Season());
 
   std::string uid = recording.UID();
   if (g_bExtraDebug)
@@ -191,6 +202,9 @@ void FileOps::Resume()
 
 void FileOps::CleanChannelIcons()
 {
+  if (!g_bCacheChannelIcons)
+    return;
+
   // Currently XBMC's addon lib doesn't provide a way to list files in a directory.
   // Therefore we currently can't clean only leftover files.
 
@@ -268,7 +282,7 @@ void *FileOps::Process()
         fileStream = m_wsapi->GetPreviewImage(job.m_recording.ChannelID(), job.m_recording.RecordingStartTime());
         break;
       case FileTypeChannelIcon:
-        fileStream = m_wsapi->GetChannelIcon(job.m_channel.ID());
+        fileStream = m_wsapi->GetChannelIcon(job.m_channel.ID(), CHANNEL_ICON_WIDTH);
         break;
       case FileTypeCoverart:
       case FileTypeFanart:
@@ -445,16 +459,48 @@ void FileOps::InitBasePath()
     XBMC->Log(LOG_ERROR,"%s: Failed to create cache directory %s", __FUNCTION__, m_localBasePath.c_str());
     return;
   }
-  if (!XBMC->FileExists(m_localBaseStampName.c_str(), false))
+
+  // Purge unused cache folders depending of global settings
+  std::vector<std::string> purge;
+  if (!g_bCacheChannelIcons)
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeChannelIcon));
+  if (!g_bCachePreviews)
   {
-    m_localBaseStamp = time(NULL);
-    WriteCacheStamp(m_localBaseStampName.c_str(), m_localBaseStamp);
-    return;
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeThumbnail));
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeScreenshot));
   }
-  m_localBaseStamp = ReadCacheStamp(m_localBaseStampName.c_str());
-  XBMC->Log(LOG_DEBUG,"%s: Cache stamp is %s", __FUNCTION__, ctime(&m_localBaseStamp));
-  if (difftime(time(NULL), m_localBaseStamp) >= c_cacheMaxAge)
-    CleanCache();
+  if (!g_bCacheArtworks)
+  {
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeBackcover));
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeCoverart));
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeFanart));
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypeInsidecover));
+    purge.push_back(m_localBasePath + GetTypeNameByFileType(FileTypePoster));
+  }
+  for (std::vector<std::string>::const_iterator pit = purge.begin(); pit != purge.end(); ++pit)
+  {
+    if (XBMC->DirectoryExists(pit->c_str()))
+      XBMC->RemoveDirectory(pit->c_str());
+  }
+
+  if (g_bCachePreviews || g_bCacheArtworks)
+  {
+    // Setup cache cleaning
+    if (!XBMC->FileExists(m_localBaseStampName.c_str(), false))
+    {
+      m_localBaseStamp = time(NULL);
+      WriteCacheStamp(m_localBaseStampName.c_str(), m_localBaseStamp);
+      return;
+    }
+    m_localBaseStamp = ReadCacheStamp(m_localBaseStampName.c_str());
+    XBMC->Log(LOG_DEBUG,"%s: Cache stamp is %s", __FUNCTION__, ctime(&m_localBaseStamp));
+    if (difftime(time(NULL), m_localBaseStamp) >= c_cacheMaxAge)
+      CleanCache();
+  }
+  else
+  {
+    m_localBaseStamp = FILEOPS_NOSTAMP;
+  }
 }
 
 void FileOps::CleanCache()

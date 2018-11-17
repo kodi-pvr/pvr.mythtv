@@ -2568,17 +2568,13 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     }
   }
 
-  if (menuhook.category == PVR_MENUHOOK_SETTING)
+  if (menuhook.category == PVR_MENUHOOK_CHANNEL)
   {
-    if (menuhook.iHookId == MENUHOOK_REFRESH_CHANNEL_ICONS && m_fileOps)
+    if (menuhook.iHookId == MENUHOOK_TRIGGER_CHANNEL_UPDATE)
     {
       CLockObject lock(m_channelsLock);
-      m_fileOps->CleanChannelIcons();
-      PVR->TriggerChannelUpdate();
-      return PVR_ERROR_NO_ERROR;
-    }
-    else if (menuhook.iHookId == MENUHOOK_TRIGGER_CHANNEL_UPDATE)
-    {
+      if (m_fileOps)
+        m_fileOps->CleanChannelIcons();
       PVR->TriggerChannelUpdate();
       return PVR_ERROR_NO_ERROR;
     }
