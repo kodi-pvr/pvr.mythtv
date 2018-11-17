@@ -384,6 +384,16 @@ namespace Myth
     }
 
     /**
+     * @brief Returns URL for channel icon
+     */
+    std::string GetChannelIconUrl(uint32_t chanid, unsigned width = 0, unsigned height = 0)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Content);
+      if (wsv.ranking >= 0x00010020) return GetChannelIconUrl1_32(chanid, width, height);
+      return "";
+    }
+
+    /**
      * @brief GET Content/GetPreviewImage
      */
     WSStreamPtr GetPreviewImage(uint32_t chanid, time_t recstartts, unsigned width = 0, unsigned height = 0)
@@ -394,6 +404,16 @@ namespace Myth
     }
 
     /**
+     * @brief Returns URL for preview image
+     */
+    std::string GetPreviewImageUrl(uint32_t chanid, time_t recstartts, unsigned width = 0, unsigned height = 0)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Content);
+      if (wsv.ranking >= 0x00010020) return GetPreviewImageUrl1_32(chanid, recstartts, width, height);
+      return "";
+    }
+
+    /**
      * @brief GET Content/GetRecordingArtwork
      */
     WSStreamPtr GetRecordingArtwork(const std::string& type, const std::string& inetref, uint16_t season, unsigned width = 0, unsigned height = 0)
@@ -401,6 +421,16 @@ namespace Myth
       WSServiceVersion_t wsv = CheckService(WS_Content);
       if (wsv.ranking >= 0x00010020) return GetRecordingArtwork1_32(type, inetref, season, width, height);
       return WSStreamPtr();
+    }
+
+    /**
+     * @brief Returns URL for recording artwork
+     */
+    std::string GetRecordingArtworkUrl(const std::string& type, const std::string& inetref, uint16_t season, unsigned width = 0, unsigned height = 0)
+    {
+      WSServiceVersion_t wsv = CheckService(WS_Content);
+      if (wsv.ranking >= 0x00010020) return GetRecordingArtworkUrl1_32(type, inetref, season, width, height);
+      return "";
     }
 
     /**
@@ -533,8 +563,11 @@ namespace Myth
 
     WSStreamPtr GetFile1_32(const std::string& filename, const std::string& sgname);
     WSStreamPtr GetChannelIcon1_32(uint32_t chanid, unsigned width, unsigned height);
+    std::string GetChannelIconUrl1_32(uint32_t chanid, unsigned width, unsigned height);
     WSStreamPtr GetPreviewImage1_32(uint32_t chanid, time_t recstartts, unsigned width, unsigned height);
+    std::string GetPreviewImageUrl1_32(uint32_t chanid, time_t recstartts, unsigned width, unsigned height);
     WSStreamPtr GetRecordingArtwork1_32(const std::string& type, const std::string& inetref, uint16_t season, unsigned width, unsigned height);
+    std::string GetRecordingArtworkUrl1_32(const std::string& type, const std::string& inetref, uint16_t season, unsigned width, unsigned height);
     ArtworkListPtr GetRecordingArtworkList1_32(uint32_t chanid, time_t recstartts);
   };
 

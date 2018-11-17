@@ -43,6 +43,8 @@ using namespace Myth;
 #define WS_ROOT_CONTENT       "/Content"
 #define WS_ROOT_DVR           "/Dvr"
 
+static std::string encodeParam(const std::string& str);
+
 WSAPI::WSAPI(const std::string& server, unsigned port, const std::string& securityPin)
 : m_mutex(new OS::CMutex)
 , m_server(server)
@@ -2361,6 +2363,15 @@ WSStreamPtr WSAPI::GetFile1_32(const std::string& filename, const std::string& s
   req.SetContentParam("StorageGroup", sgname);
   req.SetContentParam("FileName", filename);
   WSResponse *resp = new WSResponse(req);
+  /* try redirection if any */
+  if (resp->GetStatusCode() == 301 && !resp->Redirection().empty())
+  {
+    URIParser uri(resp->Redirection());
+    WSRequest rreq(ResolveHostName(uri.Host()), uri.Port());
+    rreq.RequestService(std::string("/").append(uri.Path()));
+    delete resp;
+    resp = new WSResponse(rreq);
+  }
   if (!resp->IsSuccessful())
   {
     DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
@@ -2381,40 +2392,13 @@ WSStreamPtr WSAPI::GetChannelIcon1_32(uint32_t chanid, unsigned width, unsigned 
   req.RequestService("/Guide/GetChannelIcon");
   uint32_to_string(chanid, buf);
   req.SetContentParam("ChanId", buf);
-  if (width && height)
+  if (width)
   {
     uint32_to_string(width, buf);
     req.SetContentParam("Width", buf);
-    uint32_to_string(height, buf);
-    req.SetContentParam("Height", buf);
   }
-  WSResponse *resp = new WSResponse(req);
-  if (!resp->IsSuccessful())
+  if (height)
   {
-    DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
-    delete resp;
-    return ret;
-  }
-  ret.reset(new WSStream(resp));
-  return ret;
-}
-
-WSStreamPtr WSAPI::GetPreviewImage1_32(uint32_t chanid, time_t recstartts, unsigned width, unsigned height)
-{
-  WSStreamPtr ret;
-  char buf[32];
-
-  // Initialize request header
-  WSRequest req = WSRequest(m_server, m_port);
-  req.RequestService("/Content/GetPreviewImage");
-  uint32_to_string(chanid, buf);
-  req.SetContentParam("ChanId", buf);
-  time_to_iso8601utc(recstartts, buf);
-  req.SetContentParam("StartTime", buf);
-  if (width && height)
-  {
-    uint32_to_string(width, buf);
-    req.SetContentParam("Width", buf);
     uint32_to_string(height, buf);
     req.SetContentParam("Height", buf);
   }
@@ -2438,6 +2422,104 @@ WSStreamPtr WSAPI::GetPreviewImage1_32(uint32_t chanid, time_t recstartts, unsig
   return ret;
 }
 
+std::string WSAPI::GetChannelIconUrl1_32(uint32_t chanid, unsigned width, unsigned height)
+{
+  char buf[32];
+  std::string uri;
+  uri.reserve(95);
+  uri.append("http://").append(m_server);
+  if (m_port != 80)
+  {
+    uint32_to_string(m_port, buf);
+    uri.append(":").append(buf);
+  }
+  uri.append("/Guide/GetChannelIcon");
+  uint32_to_string(chanid, buf);
+  uri.append("?ChanId=").append(buf);
+  if (width)
+  {
+    uint32_to_string(width, buf);
+    uri.append("&Width=").append(buf);
+  }
+  if (height)
+  {
+    uint32_to_string(height, buf);
+    uri.append("&Height=").append(buf);
+  }
+  return uri;
+}
+
+WSStreamPtr WSAPI::GetPreviewImage1_32(uint32_t chanid, time_t recstartts, unsigned width, unsigned height)
+{
+  WSStreamPtr ret;
+  char buf[32];
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestService("/Content/GetPreviewImage");
+  uint32_to_string(chanid, buf);
+  req.SetContentParam("ChanId", buf);
+  time_to_iso8601utc(recstartts, buf);
+  req.SetContentParam("StartTime", buf);
+  if (width)
+  {
+    uint32_to_string(width, buf);
+    req.SetContentParam("Width", buf);
+  }
+  if (height)
+  {
+    uint32_to_string(height, buf);
+    req.SetContentParam("Height", buf);
+  }
+  WSResponse *resp = new WSResponse(req);
+  /* try redirection if any */
+  if (resp->GetStatusCode() == 301 && !resp->Redirection().empty())
+  {
+    URIParser uri(resp->Redirection());
+    WSRequest rreq(ResolveHostName(uri.Host()), uri.Port());
+    rreq.RequestService(std::string("/").append(uri.Path()));
+    delete resp;
+    resp = new WSResponse(rreq);
+  }
+  if (!resp->IsSuccessful())
+  {
+    DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    delete resp;
+    return ret;
+  }
+  ret.reset(new WSStream(resp));
+  return ret;
+}
+
+std::string WSAPI::GetPreviewImageUrl1_32(uint32_t chanid, time_t recstartts, unsigned width, unsigned height)
+{
+  char buf[32];
+  std::string uri;
+  uri.reserve(95);
+  uri.append("http://").append(m_server);
+  if (m_port != 80)
+  {
+    uint32_to_string(m_port, buf);
+    uri.append(":").append(buf);
+  }
+  uri.append("/Content/GetPreviewImage");
+  uint32_to_string(chanid, buf);
+  uri.append("?ChanId=").append(buf);
+  time_to_iso8601utc(recstartts, buf);
+  uri.append("&StartTime=").append(encodeParam(buf));
+  if (width)
+  {
+    uint32_to_string(width, buf);
+    uri.append("&Width=").append(buf);
+  }
+  if (height)
+  {
+    uint32_to_string(height, buf);
+    uri.append("&Height=").append(buf);
+  }
+  return uri;
+}
+
 WSStreamPtr WSAPI::GetRecordingArtwork1_32(const std::string& type, const std::string& inetref, uint16_t season, unsigned width, unsigned height)
 {
   WSStreamPtr ret;
@@ -2450,14 +2532,26 @@ WSStreamPtr WSAPI::GetRecordingArtwork1_32(const std::string& type, const std::s
   req.SetContentParam("Inetref", inetref.c_str());
   uint16_to_string(season, buf);
   req.SetContentParam("Season", buf);
-  if (width && height)
+  if (width)
   {
     uint32_to_string(width, buf);
     req.SetContentParam("Width", buf);
+  }
+  if (height)
+  {
     uint32_to_string(height, buf);
     req.SetContentParam("Height", buf);
   }
   WSResponse *resp = new WSResponse(req);
+  /* try redirection if any */
+  if (resp->GetStatusCode() == 301 && !resp->Redirection().empty())
+  {
+    URIParser uri(resp->Redirection());
+    WSRequest rreq(ResolveHostName(uri.Host()), uri.Port());
+    rreq.RequestService(std::string("/").append(uri.Path()));
+    delete resp;
+    resp = new WSResponse(rreq);
+  }
   if (!resp->IsSuccessful())
   {
     DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
@@ -2466,6 +2560,35 @@ WSStreamPtr WSAPI::GetRecordingArtwork1_32(const std::string& type, const std::s
   }
   ret.reset(new WSStream(resp));
   return ret;
+}
+
+std::string WSAPI::GetRecordingArtworkUrl1_32(const std::string& type, const std::string& inetref, uint16_t season, unsigned width, unsigned height)
+{
+  char buf[32];
+  std::string uri;
+  uri.reserve(127);
+  uri.append("http://").append(m_server);
+  if (m_port != 80)
+  {
+    uint32_to_string(m_port, buf);
+    uri.append(":").append(buf);
+  }
+  uri.append("/Content/GetRecordingArtwork");
+  uri.append("?Type=").append(encodeParam(type));
+  uri.append("&Inetref=").append(encodeParam(inetref));
+  uint16_to_string(season, buf);
+  uri.append("&Season=").append(buf);
+  if (width)
+  {
+    uint32_to_string(width, buf);
+    uri.append("&Width=").append(buf);
+  }
+  if (height)
+  {
+    uint32_to_string(height, buf);
+    uri.append("&Height=").append(buf);
+  }
+  return uri;
 }
 
 ArtworkListPtr WSAPI::GetRecordingArtworkList1_32(uint32_t chanid, time_t recstartts)
@@ -2511,4 +2634,12 @@ ArtworkListPtr WSAPI::GetRecordingArtworkList1_32(uint32_t chanid, time_t recsta
     ret->push_back(artwork);
   }
   return ret;
+}
+
+// Internal
+#include "private/urlencoder.h"
+
+static std::string encodeParam(const std::string& str)
+{
+  return urlencode(str);
 }
