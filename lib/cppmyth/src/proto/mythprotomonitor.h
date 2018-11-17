@@ -37,6 +37,7 @@ namespace Myth
   public:
     ProtoMonitor(const std::string& server, unsigned port);
     ProtoMonitor(const std::string& server, unsigned port, bool blockShutdown);
+    ProtoMonitor(const std::string& server, unsigned port, bool blockShutdown, bool frontend);
 
     virtual bool Open();
     virtual void Close();
@@ -117,9 +118,11 @@ namespace Myth
     }
 
   private:
+    bool m_frontend;
     bool m_blockShutdown;
 
     bool Announce75();
+    bool Announce88();
     ProtoRecorderPtr GetRecorderFromNum75(int rnum);
     bool QueryFreeSpaceSummary75(int64_t *total, int64_t *used);
     std::string GetSetting75(const std::string& hostname, const std::string& setting);

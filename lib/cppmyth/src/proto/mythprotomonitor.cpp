@@ -38,12 +38,21 @@ using namespace Myth;
 
 ProtoMonitor::ProtoMonitor(const std::string& server, unsigned port)
 : ProtoBase(server, port)
+, m_frontend(false)
 , m_blockShutdown(false)
 {
 }
 
 ProtoMonitor::ProtoMonitor(const std::string& server, unsigned port, bool blockShutdown)
 : ProtoBase(server, port)
+, m_frontend(false)
+, m_blockShutdown(blockShutdown)
+{
+}
+
+ProtoMonitor::ProtoMonitor(const std::string& server, unsigned port, bool blockShutdown, bool frontend)
+: ProtoBase(server, port)
+, m_frontend(frontend)
 , m_blockShutdown(blockShutdown)
 {
 }
@@ -55,12 +64,11 @@ bool ProtoMonitor::Open()
   if (!OpenConnection(PROTO_MONITOR_RCVBUF))
     return false;
 
-  switch (m_protoVersion)
-  {
-    case 75:
-    default:
-      ok = Announce75();
-  }
+  if (m_protoVersion >= 88)
+    ok = Announce88();
+  else
+    ok = Announce75();
+
   if (ok)
   {
     if (m_blockShutdown)
@@ -91,6 +99,25 @@ bool ProtoMonitor::Announce75()
   OS::CLockGuard lock(*m_mutex);
 
   std::string cmd("ANN Monitor ");
+  cmd.append(m_socket->GetMyHostName()).append(" 0");
+  if (!SendCommand(cmd.c_str()))
+    return false;
+
+  std::string field;
+  if (!ReadField(field) || !IsMessageOK(field))
+    goto out;
+  return true;
+
+out:
+  FlushMessage();
+  return false;
+}
+
+bool ProtoMonitor::Announce88()
+{
+  OS::CLockGuard lock(*m_mutex);
+
+  std::string cmd((m_frontend ? "ANN Frontend " : "ANN Monitor "));
   cmd.append(m_socket->GetMyHostName()).append(" 0");
   if (!SendCommand(cmd.c_str()))
     return false;

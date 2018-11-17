@@ -34,6 +34,7 @@ namespace Myth
   public:
     Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin);
     Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin, bool blockShutdown);
+    Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin, bool blockShutdown, bool frontend);
     ~Control();
 
     bool Open();

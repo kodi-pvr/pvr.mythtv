@@ -37,6 +37,13 @@ Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPo
   Open();
 }
 
+Control::Control(const std::string& server, unsigned protoPort, unsigned wsapiPort, const std::string& wsapiSecurityPin, bool blockShutdown, bool frontend)
+: m_monitor(server, protoPort, blockShutdown, frontend)
+, m_wsapi(server, wsapiPort, wsapiSecurityPin)
+{
+  Open();
+}
+
 Control::~Control()
 {
   Close();
@@ -52,6 +59,7 @@ bool Control::Open()
 void Control::Close()
 {
   m_monitor.Close();
+  m_wsapi.InvalidateService();
 }
 
 std::string Control::GetBackendServerIP(const std::string& hostName)
