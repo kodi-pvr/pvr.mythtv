@@ -113,7 +113,7 @@ bool PVRClientMythTV::Connect()
 {
   assert(m_control == NULL);
   SetDebug(true);
-  Myth::Control *control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown);
+  Myth::Control *control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown, true);
   if (!control->IsOpen())
   {
     switch(control->GetProtoError())
