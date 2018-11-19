@@ -790,9 +790,9 @@ ChannelPtr WSAPI::GetChannel1_2(uint32_t chanid)
 ////
 //// Guide service
 ////
-ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_t endtime)
+std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide1_0(uint32_t chanid, uint8_t numChannels, time_t starttime, time_t endtime)
 {
-  ProgramMapPtr ret(new ProgramMap);
+  std::map<uint32_t, ProgramMapPtr> ret;
   char buf[32];
   int32_t count = 0;
   unsigned proto = (unsigned)m_version.protocol;
@@ -808,7 +808,8 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
   req.RequestService("/Guide/GetProgramGuide");
   uint32_to_string(chanid, buf);
   req.SetContentParam("StartChanId", buf);
-  req.SetContentParam("NumChannels", "1");
+  uint8_to_string(numChannels, buf);
+  req.SetContentParam("NumChannels", buf);
   time_to_iso8601utc(starttime, buf);
   req.SetContentParam("StartTime", buf);
   time_to_iso8601utc(endtime, buf);
@@ -849,6 +850,8 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
     const JSON::Node& chan = chans.GetArrayElement(ci);
     Channel channel;
     JSON::BindObject(chan, &channel, bindchan);
+    ProgramMapPtr pmap(new ProgramMap);
+    ret.insert(std::make_pair(channel.chanId, pmap));
     // Object: Programs[]
     const JSON::Node& progs = chan.GetObjectValue("Programs");
     // Iterates over the sequence elements.
@@ -861,12 +864,21 @@ ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_
       // Bind the new program
       JSON::BindObject(prog, program.get(), bindprog);
       program->channel = channel;
-      ret->insert(std::make_pair(program->startTime, program));
+      pmap->insert(std::make_pair(program->startTime, program));
     }
   }
   DBG(DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
 
   return ret;
+}
+
+ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_t endtime)
+{
+  std::map<uint32_t, ProgramMapPtr> ret = GetProgramGuide1_0(chanid, 1, starttime, endtime);
+  std::map<uint32_t, ProgramMapPtr>::iterator it = ret.find(chanid);
+  if (it != ret.end())
+    return it->second;
+  return ProgramMapPtr(new ProgramMap);
 }
 
 ProgramMapPtr WSAPI::GetProgramList2_2(uint32_t chanid, time_t starttime, time_t endtime)
