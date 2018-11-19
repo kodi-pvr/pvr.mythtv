@@ -1,3 +1,9 @@
+v5.9.1
+- Fix display for video flags
+- Sync upstream cppmyth (2.11.2)
+- Announce as frontend
+- Add hack to work around the PVR startup flow issue
+
 v5.9.0
 - Builtin files cache is deprecated: Prefer file caching supplied by Kodi
 - Builtin files cache is disabled by default (see advanced settings)
