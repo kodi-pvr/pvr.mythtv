@@ -38,6 +38,11 @@ PVRClientLauncher::~PVRClientLauncher()
   this->StopThread(0); // Wait for thread to stop
 }
 
+bool PVRClientLauncher::WaitForCompletion(unsigned timeout)
+{
+  return m_alarm.Wait(timeout);
+}
+
 void* PVRClientLauncher::Process()
 {
   bool notifyAddonFailure = true;
@@ -94,5 +99,7 @@ void* PVRClientLauncher::Process()
     }
   }
   XBMC->Log(LOG_NOTICE, "Launcher stopped");
+  // Signal the launcher has finished
+  m_alarm.Broadcast();
   return 0;
 }

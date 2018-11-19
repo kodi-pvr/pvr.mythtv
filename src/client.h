@@ -67,6 +67,7 @@
 #define DEFAULT_PROMPT_DELETE               false
 #define DEFAULT_LIVETV_RECORDINGS           true
 #define DEFAULT_BACKEND_BOOKMARKS           true
+#define DEFAULT_INIT_TIMEOUT                120
 #define DEFAULT_CACHE_CHANNEL_ICONS         false
 #define DEFAULT_CACHE_PREVIEWS              false
 #define DEFAULT_CACHE_ARTWORKS              false
@@ -120,6 +121,7 @@ extern bool         g_bLimitTuneAttempts;       ///< Limit channel tuning attemp
 extern bool         g_bShowNotRecording;
 extern bool         g_bPromptDeleteAtEnd;
 extern bool         g_bUseBackendBookmarks;
+extern int          g_iInitTimeout;             ///< Delay in seconds to wait for the addon starts
 extern bool         g_bCacheChannelIcons;
 extern bool         g_bCachePreviews;
 extern bool         g_bCacheArtworks;

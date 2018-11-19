@@ -32,6 +32,8 @@ public:
   PVRClientLauncher(PVRClientMythTV* client);
   ~PVRClientLauncher();
 
+  bool WaitForCompletion(unsigned timeout);
+
 protected:
   void *Process();
 

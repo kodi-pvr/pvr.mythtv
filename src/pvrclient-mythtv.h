@@ -51,6 +51,7 @@ public:
   typedef enum
   {
     CONN_ERROR_NO_ERROR,
+    CONN_ERROR_NOT_CONNECTED,
     CONN_ERROR_SERVER_UNREACHABLE,
     CONN_ERROR_UNKNOWN_VERSION,
     CONN_ERROR_API_UNAVAILABLE,
@@ -58,6 +59,7 @@ public:
 
   void SetDebug(bool silent = false);
   bool Connect();
+  bool IsReadyToUse() const { return GetConnectionError() == CONN_ERROR_NO_ERROR; }
   CONN_ERROR GetConnectionError() const;
   unsigned GetBackendAPIVersion();
   const char *GetBackendName();

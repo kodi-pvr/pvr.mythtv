@@ -66,6 +66,7 @@ bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
 bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
 bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
 bool          g_bUseBackendBookmarks    = DEFAULT_BACKEND_BOOKMARKS;
+int           g_iInitTimeout            = DEFAULT_INIT_TIMEOUT;
 bool          g_bCacheChannelIcons      = DEFAULT_CACHE_CHANNEL_ICONS;
 bool          g_bCachePreviews          = DEFAULT_CACHE_PREVIEWS;
 bool          g_bCacheArtworks          = DEFAULT_CACHE_ARTWORKS;
@@ -342,6 +343,14 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     g_bUseBackendBookmarks = DEFAULT_BACKEND_BOOKMARKS;
   }
 
+  /* Read setting "init_timeout" from settings.xml */
+  if (!XBMC->GetSetting("init_timeout", &g_iInitTimeout))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_NOTICE, "Couldn't get 'init_timeout' setting, falling back to '%d' as default", DEFAULT_INIT_TIMEOUT);
+    g_iInitTimeout = DEFAULT_INIT_TIMEOUT;
+  }
+
   /* Read setting "cache_channel_icons" from settings.xml */
   if (!XBMC->GetSetting("cache_channel_icons", &g_bCacheChannelIcons))
   {
@@ -411,24 +420,24 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   XBMC->Log(LOG_DEBUG, "Creating menu hooks...done");
 
   // Create our addon
-  XBMC->Log(LOG_DEBUG, "Creating MythTV client...");
+  XBMC->Log(LOG_DEBUG, "Starting the client...");
   g_client = new PVRClientMythTV();
+  g_launcher = new PVRClientLauncher(g_client);
   g_bCreated = true;
 
-  XBMC->Log(LOG_DEBUG, "Creating launcher...");
-  g_launcher = new PVRClientLauncher(g_client);
   if (g_launcher->CreateThread(true))
   {
-    XBMC->Log(LOG_NOTICE, "Addon created successfully");
-    m_CurStatus = ADDON_STATUS_OK;
+    g_launcher->WaitForCompletion(g_iInitTimeout * 1000);
+    if (g_client->IsReadyToUse())
+    {
+      XBMC->Log(LOG_NOTICE, "Addon started successfully");
+      return (m_CurStatus = ADDON_STATUS_OK);
+    }
   }
-  else
-  {
-    XBMC->Log(LOG_ERROR, "Addon launcher failure");
-    ADDON_Destroy();
-    m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
-  }
-  return m_CurStatus;
+
+  XBMC->Log(LOG_ERROR, "Addon failed to start");
+  ADDON_Destroy();
+  return (m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE);
 }
 
 void ADDON_Destroy()
@@ -697,7 +706,7 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
 
 PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES *pCapabilities)
 {
-  if (g_client != NULL)
+  if (g_client != NULL && g_client->IsReadyToUse())
   {
     unsigned version = g_client->GetBackendAPIVersion();
     pCapabilities->bSupportsTV                    = g_bLiveTV;
