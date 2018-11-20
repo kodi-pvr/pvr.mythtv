@@ -111,60 +111,57 @@ void PVRClientMythTV::SetDebug(bool silent /*= false*/)
 
 bool PVRClientMythTV::Connect()
 {
+  assert(m_control == NULL);
+
+  SetDebug(true);
+  Myth::Control *control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown, true);
+  if (!control->IsOpen())
   {
-    CLockObject lock(m_lock);
-    assert(m_control == NULL);
-
-    SetDebug(true);
-    Myth::Control *control = new Myth::Control(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin, g_bBlockMythShutdown, true);
-    if (!control->IsOpen())
+    switch(control->GetProtoError())
     {
-      switch(control->GetProtoError())
-      {
-        case Myth::ProtoBase::ERROR_UNKNOWN_VERSION:
-          m_connectionError = CONN_ERROR_UNKNOWN_VERSION;
-          break;
-        default:
-          m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
-      }
-      delete control;
-      XBMC->Log(LOG_NOTICE, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
-      // Try wake up for the next attempt
-      if (!g_szMythHostEther.empty())
-        XBMC->WakeOnLan(g_szMythHostEther.c_str());
-      return false;
+      case Myth::ProtoBase::ERROR_UNKNOWN_VERSION:
+        m_connectionError = CONN_ERROR_UNKNOWN_VERSION;
+        break;
+      default:
+        m_connectionError = CONN_ERROR_SERVER_UNREACHABLE;
     }
-    if (!control->CheckService())
-    {
-      m_connectionError = CONN_ERROR_API_UNAVAILABLE;
-      delete control;
-      XBMC->Log(LOG_NOTICE,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
-      return false;
-    }
-    m_connectionError = CONN_ERROR_NO_ERROR;
-    m_control = control;
-    SetDebug(false);
-
-    // Create event handler and subscription as needed
-    unsigned subid = 0;
-    m_eventHandler = new Myth::EventHandler(g_szMythHostname, g_iProtoPort);
-    subid = m_eventHandler->CreateSubscription(this);
-    m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_STATUS);
-    m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_TIMER);
-    m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_ASK_RECORDING);
-    m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_RECORDING_LIST_CHANGE);
-
-    // Create schedule manager and new subscription handled by dedicated thread
-    m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin);
-    subid = m_eventHandler->CreateSubscription(this);
-    m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_SCHEDULE_CHANGE);
-
-    // Create file operation helper (image caching)
-    m_fileOps = new FileOps(this, g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
-
-    // Create the task handler to process various task
-    m_todo = new TaskHandler();
+    delete control;
+    XBMC->Log(LOG_NOTICE, "Failed to connect to MythTV backend on %s:%d", g_szMythHostname.c_str(), g_iProtoPort);
+    // Try wake up for the next attempt
+    if (!g_szMythHostEther.empty())
+      XBMC->WakeOnLan(g_szMythHostEther.c_str());
+    return false;
   }
+  if (!control->CheckService())
+  {
+    m_connectionError = CONN_ERROR_API_UNAVAILABLE;
+    delete control;
+    XBMC->Log(LOG_NOTICE,"Failed to connect to MythTV backend on %s:%d with pin %s", g_szMythHostname.c_str(), g_iWSApiPort, g_szWSSecurityPin.c_str());
+    return false;
+  }
+  m_connectionError = CONN_ERROR_NO_ERROR;
+  m_control = control;
+  SetDebug(false);
+
+  // Create event handler and subscription as needed
+  unsigned subid = 0;
+  m_eventHandler = new Myth::EventHandler(g_szMythHostname, g_iProtoPort);
+  subid = m_eventHandler->CreateSubscription(this);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_STATUS);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_HANDLER_TIMER);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_ASK_RECORDING);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_RECORDING_LIST_CHANGE);
+
+  // Create schedule manager and new subscription handled by dedicated thread
+  m_scheduleManager = new MythScheduleManager(g_szMythHostname, g_iProtoPort, g_iWSApiPort, g_szWSSecurityPin);
+  subid = m_eventHandler->CreateSubscription(this);
+  m_eventHandler->SubscribeForEvent(subid, Myth::EVENT_SCHEDULE_CHANGE);
+
+  // Create file operation helper (image caching)
+  m_fileOps = new FileOps(this, g_szMythHostname, g_iWSApiPort, g_szWSSecurityPin);
+
+  // Create the task handler to process various task
+  m_todo = new TaskHandler();
 
   // Now all is ready: Start event handler
   m_eventHandler->Start();
@@ -173,7 +170,6 @@ bool PVRClientMythTV::Connect()
 
 PVRClientMythTV::CONN_ERROR PVRClientMythTV::GetConnectionError() const
 {
-  CLockObject lock(m_lock);
   return m_connectionError;
 }
 

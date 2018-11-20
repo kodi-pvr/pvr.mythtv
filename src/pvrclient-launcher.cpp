@@ -29,6 +29,7 @@ using namespace P8PLATFORM;
 PVRClientLauncher::PVRClientLauncher(PVRClientMythTV* client)
 : m_client(client)
 {
+  PVR->ConnectionStateChange(m_client->GetBackendName(), PVR_CONNECTION_STATE_CONNECTING, m_client->GetBackendVersion());
 }
 
 PVRClientLauncher::~PVRClientLauncher()

@@ -59,7 +59,6 @@ public:
 
   void SetDebug(bool silent = false);
   bool Connect();
-  bool IsReadyToUse() const { return GetConnectionError() == CONN_ERROR_NO_ERROR; }
   CONN_ERROR GetConnectionError() const;
   unsigned GetBackendAPIVersion();
   const char *GetBackendName();
