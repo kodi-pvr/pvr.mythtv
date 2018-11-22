@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "LiveTV felvételek megjelenítése"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Használja a backend MythTV könyvjelzőit"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokoll verzió: %i – Adatbázis verzió: %i"

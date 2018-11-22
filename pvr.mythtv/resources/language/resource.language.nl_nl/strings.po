@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Toon LiveTV opnamen"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Gebruik bookmarks van de MythTV-backend"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol versie: %i - Database versie: %i"

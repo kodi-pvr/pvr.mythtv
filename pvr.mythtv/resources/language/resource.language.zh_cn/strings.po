@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "显示直播电视录像"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "使用 MythTV 后端的书签"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "协议版本：%i - 数据库版本：%i"

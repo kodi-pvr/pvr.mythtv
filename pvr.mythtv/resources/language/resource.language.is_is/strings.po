@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Sýna upptökur á beinum útsendingum"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Nota bókamerki MythTV-bakvinnslukerfisins"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Útgáfa samskiptareglna: %i - Útgáfa gagnagrunns: %i"
