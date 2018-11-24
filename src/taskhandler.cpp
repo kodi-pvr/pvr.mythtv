@@ -46,9 +46,19 @@ void TaskHandler::ScheduleTask(Task *task, unsigned delayMs)
 void TaskHandler::Clear()
 {
   P8PLATFORM::CLockObject lock(m_mutex);
+  for (std::vector<Scheduled>::const_iterator it = m_delayed.begin(); it != m_delayed.end(); ++it)
+  {
+    delete it->second;
+    delete it->first;
+  }
   m_delayed.clear();
   while (!m_queue.empty())
+  {
+    Scheduled& item = m_queue.front();
+    delete item.second;
+    delete item.first;
     m_queue.pop();
+  }
 }
 
 void TaskHandler::Suspend()
