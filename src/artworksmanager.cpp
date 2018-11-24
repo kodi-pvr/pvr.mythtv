@@ -36,11 +36,6 @@ ArtworkManager::ArtworkManager(const std::string& server, unsigned wsapiport, co
 , m_localBasePath(g_szUserPath.c_str())
 {
   m_wsapi = new Myth::WSAPI(server, wsapiport, wsapiSecurityPin);
-
-  // Purge cached files that were created by older version
-  std::string dir = m_localBasePath + "cache";
-  if (XBMC->DirectoryExists(dir.c_str()) && !XBMC->RemoveDirectory(dir.c_str()))
-    XBMC->Log(LOG_ERROR, "%s: Failed to remove cache folder", __FUNCTION__);
 }
 
 ArtworkManager::~ArtworkManager()
