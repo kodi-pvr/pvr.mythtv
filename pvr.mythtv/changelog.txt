@@ -1,3 +1,6 @@
+v5.10.0
+- No longer handle file caching
+
 v5.9.2
 - Fix initial state of the addon at startup
 - Sync upstream cppmyth (2.12.0)
