@@ -308,16 +308,14 @@ namespace Myth
     }
 
     /**
-     * @brief Query the guide information for a particular time period and a range of channels
-     * @param chanid
-     * @param numChannels
+     * @brief Query the guide information for a particular time period
      * @param starttime
      * @param endtime
-     * @return ProgramMapPtr
+     * @return map
      */
-    std::map<uint32_t, ProgramMapPtr> GetProgramGuide(uint32_t chanid, uint8_t numChannels, time_t starttime, time_t endtime)
+    std::map<uint32_t, ProgramMapPtr> GetProgramGuide(time_t starttime, time_t endtime)
     {
-      return m_wsapi.GetProgramGuide(chanid, numChannels, starttime, endtime);
+      return m_wsapi.GetProgramGuide(starttime, endtime);
     }
 
     /**
@@ -453,7 +451,7 @@ namespace Myth
      * @param chanid
      * @param width (default 0)
      * @param height (default 0)
-     * @return WSStreamPtr
+     * @return url
      */
     std::string GetChannelIconUrl(uint32_t chanid, unsigned width = 0, unsigned height = 0)
     {
@@ -477,7 +475,7 @@ namespace Myth
      * @param program
      * @param width (default 0)
      * @param height (default 0)
-     * @return WSStreamPtr
+     * @return url
      */
     std::string GetPreviewImageUrl(const Program& program, unsigned width = 0, unsigned height = 0)
     {

@@ -67,3 +67,11 @@ int64_t WSStream::Seek(int64_t offset, WHENCE_t whence)
   (void)whence;
   return GetPosition();
 }
+
+std::string WSStream::GetContentType() const
+{
+  std::string val;
+  if (m_response->GetHeaderValue("CONTENT-TYPE", val))
+    return val.substr(0, val.find(';'));
+  return val;
+}

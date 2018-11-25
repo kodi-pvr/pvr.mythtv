@@ -33,6 +33,7 @@
 
 #define BOOLSTR(a)  ((a) ? "true" : "false")
 #define FETCHSIZE   100
+#define FETCHSIZE_L 1000
 
 using namespace Myth;
 
@@ -790,7 +791,7 @@ ChannelPtr WSAPI::GetChannel1_2(uint32_t chanid)
 ////
 //// Guide service
 ////
-std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide1_0(uint32_t chanid, uint8_t numChannels, time_t starttime, time_t endtime)
+std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide1_0(time_t starttime, time_t endtime)
 {
   std::map<uint32_t, ProgramMapPtr> ret;
   char buf[32];
@@ -806,10 +807,8 @@ std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide1_0(uint32_t chanid, uin
   WSRequest req = WSRequest(m_server, m_port);
   req.RequestAccept(CT_JSON);
   req.RequestService("/Guide/GetProgramGuide");
-  uint32_to_string(chanid, buf);
-  req.SetContentParam("StartChanId", buf);
-  uint8_to_string(numChannels, buf);
-  req.SetContentParam("NumChannels", buf);
+  req.SetContentParam("StartChanId", "0");
+  req.SetContentParam("NumChannels", "0");
   time_to_iso8601utc(starttime, buf);
   req.SetContentParam("StartTime", buf);
   time_to_iso8601utc(endtime, buf);
@@ -874,18 +873,188 @@ std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide1_0(uint32_t chanid, uin
 
 ProgramMapPtr WSAPI::GetProgramGuide1_0(uint32_t chanid, time_t starttime, time_t endtime)
 {
-  std::map<uint32_t, ProgramMapPtr> ret = GetProgramGuide1_0(chanid, 1, starttime, endtime);
-  std::map<uint32_t, ProgramMapPtr>::iterator it = ret.find(chanid);
-  if (it != ret.end())
-    return it->second;
-  return ProgramMapPtr(new ProgramMap);
+  ProgramMapPtr ret(new ProgramMap);
+  char buf[32];
+  int32_t count = 0;
+  unsigned proto = (unsigned)m_version.protocol;
+
+  // Get bindings for protocol version
+  const bindings_t *bindlist = MythDTO::getListBindArray(proto);
+  const bindings_t *bindchan = MythDTO::getChannelBindArray(proto);
+  const bindings_t *bindprog = MythDTO::getProgramBindArray(proto);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Guide/GetProgramGuide");
+  uint32_to_string(chanid, buf);
+  req.SetContentParam("StartChanId", buf);
+  req.SetContentParam("NumChannels", "1");
+  time_to_iso8601utc(starttime, buf);
+  req.SetContentParam("StartTime", buf);
+  time_to_iso8601utc(endtime, buf);
+  req.SetContentParam("EndTime", buf);
+  req.SetContentParam("Details", "true");
+
+  WSResponse resp(req);
+  if (!resp.IsSuccessful())
+  {
+    DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+    return ret;
+  }
+  const JSON::Document json(resp);
+  const JSON::Node& root = json.GetRoot();
+  if (!json.IsValid() || !root.IsObject())
+  {
+    DBG(DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+    return ret;
+  }
+  DBG(DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+  // Object: ProgramGuide
+  const JSON::Node& glist = root.GetObjectValue("ProgramGuide");
+  ItemList list = ItemList(); // Using default constructor
+  JSON::BindObject(glist, &list, bindlist);
+  // List has ProtoVer. Check it or sound alarm
+  if (list.protoVer != proto)
+  {
+    InvalidateService();
+    return ret;
+  }
+  // Object: Channels[]
+  const JSON::Node& chans = glist.GetObjectValue("Channels");
+  // Iterates over the sequence elements.
+  size_t cs = chans.Size();
+  for (size_t ci = 0; ci < cs; ++ci)
+  {
+    const JSON::Node& chan = chans.GetArrayElement(ci);
+    Channel channel;
+    JSON::BindObject(chan, &channel, bindchan);
+    if (channel.chanId != chanid)
+      continue;
+    // Object: Programs[]
+    const JSON::Node& progs = chan.GetObjectValue("Programs");
+    // Iterates over the sequence elements.
+    size_t ps = progs.Size();
+    for (size_t pi = 0; pi < ps; ++pi)
+    {
+      ++count;
+      const JSON::Node& prog = progs.GetArrayElement(pi);
+      ProgramPtr program(new Program());  // Using default constructor
+      // Bind the new program
+      JSON::BindObject(prog, program.get(), bindprog);
+      program->channel = channel;
+      ret->insert(std::make_pair(program->startTime, program));
+    }
+    break;
+  }
+  DBG(DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
+
+  return ret;
+}
+
+std::map<uint32_t, ProgramMapPtr> WSAPI::GetProgramGuide2_2(time_t starttime, time_t endtime)
+{
+  std::map<uint32_t, ProgramMapPtr> ret;
+  char buf[32];
+  uint32_t req_index = 0, req_count = FETCHSIZE, count = 0, total = 0;
+  unsigned proto = (unsigned)m_version.protocol;
+
+  // Adjust the fetch count according to the number of requested days
+  double d = difftime(endtime, starttime);
+  if (d > 0)
+    req_count = FETCHSIZE / (int)(1.0 + d / (3 * 86400));
+
+  // Get bindings for protocol version
+  const bindings_t *bindlist = MythDTO::getListBindArray(proto);
+  const bindings_t *bindprog = MythDTO::getProgramBindArray(proto);
+  const bindings_t *bindchan = MythDTO::getChannelBindArray(proto);
+
+  // Initialize request header
+  WSRequest req = WSRequest(m_server, m_port);
+  req.RequestAccept(CT_JSON);
+  req.RequestService("/Guide/GetProgramGuide");
+
+  do
+  {
+    req.ClearContent();
+    uint32_to_string(req_index, buf);
+    req.SetContentParam("StartIndex", buf);
+    uint32_to_string(req_count, buf);
+    req.SetContentParam("Count", buf);
+    time_to_iso8601utc(starttime, buf);
+    req.SetContentParam("StartTime", buf);
+    time_to_iso8601utc(endtime, buf);
+    req.SetContentParam("EndTime", buf);
+    req.SetContentParam("Details", "true");
+
+    DBG(DBG_DEBUG, "%s: request index(%d) count(%d)\n", __FUNCTION__, req_index, req_count);
+    WSResponse resp(req);
+    if (!resp.IsSuccessful())
+    {
+      DBG(DBG_ERROR, "%s: invalid response\n", __FUNCTION__);
+      break;
+    }
+    const JSON::Document json(resp);
+    const JSON::Node& root = json.GetRoot();
+    if (!json.IsValid() || !root.IsObject())
+    {
+      DBG(DBG_ERROR, "%s: unexpected content\n", __FUNCTION__);
+      break;
+    }
+    DBG(DBG_DEBUG, "%s: content parsed\n", __FUNCTION__);
+
+    // Object: ProgramGuide
+    const JSON::Node& glist = root.GetObjectValue("ProgramGuide");
+    ItemList list = ItemList(); // Using default constructor
+    JSON::BindObject(glist, &list, bindlist);
+    // List has ProtoVer. Check it or sound alarm
+    if (list.protoVer != proto)
+    {
+      InvalidateService();
+      break;
+    }
+    count = 0;
+    // Object: Channels[]
+    const JSON::Node& chans = glist.GetObjectValue("Channels");
+    // Iterates over the sequence elements.
+    size_t cs = chans.Size();
+    for (size_t ci = 0; ci < cs; ++ci)
+    {
+      ++count;
+      const JSON::Node& chan = chans.GetArrayElement(ci);
+      Channel channel;
+      JSON::BindObject(chan, &channel, bindchan);
+      ProgramMapPtr pmap(new ProgramMap);
+      ret.insert(std::make_pair(channel.chanId, pmap));
+      // Object: Programs[]
+      const JSON::Node& progs = chan.GetObjectValue("Programs");
+      // Iterates over the sequence elements.
+      size_t ps = progs.Size();
+      for (size_t pi = 0; pi < ps; ++pi)
+      {
+        const JSON::Node& prog = progs.GetArrayElement(pi);
+        ProgramPtr program(new Program());  // Using default constructor
+        // Bind the new program
+        JSON::BindObject(prog, program.get(), bindprog);
+        program->channel = channel;
+        pmap->insert(std::make_pair(program->startTime, program));
+      }
+      ++total;
+    }
+    DBG(DBG_DEBUG, "%s: received count(%d)\n", __FUNCTION__, count);
+    req_index += count; // Set next requested index
+  }
+  while (count == req_count);
+
+  return ret;
 }
 
 ProgramMapPtr WSAPI::GetProgramList2_2(uint32_t chanid, time_t starttime, time_t endtime)
 {
   ProgramMapPtr ret(new ProgramMap);
   char buf[32];
-  uint32_t req_index = 0, req_count = FETCHSIZE, count = 0, total = 0;
+  uint32_t req_index = 0, req_count = FETCHSIZE_L, count = 0, total = 0;
   unsigned proto = (unsigned)m_version.protocol;
 
   // Get bindings for protocol version

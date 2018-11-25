@@ -44,6 +44,8 @@ namespace Myth
     int64_t GetPosition() const;
     int64_t Seek(int64_t offset, WHENCE_t whence);
 
+    std::string GetContentType() const;
+
   private:
     WSResponse *m_response;
     int64_t m_position;
