@@ -216,6 +216,14 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Toon LiveTV opnamen"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Gebruik bladwijzers van de backend MythTV"
+
+msgctxt "#30069"
+msgid "Show default recording group as root"
+msgstr "Toon standaard opnamegroep als root"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protocol versie: %i - Database versie: %i"

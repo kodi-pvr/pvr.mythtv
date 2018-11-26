@@ -220,6 +220,10 @@ msgctxt "#30068"
 msgid "Use bookmarks of the backend MythTV"
 msgstr "Utiliser les signets du serveur MythTV"
 
+msgctxt "#30069"
+msgid "Show default recording group as root"
+msgstr "Afficher le groupe par défaut à la racine"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole : %i - Version de la base de données : %i"

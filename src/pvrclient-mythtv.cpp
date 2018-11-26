@@ -936,7 +936,9 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
       tag.iGenreType = genre&0xF0;
 
       // Add recording title to directory to group everything according to its name just like MythTV does
-      std::string strDirectory(it->second.RecordingGroup());
+      std::string strDirectory;
+      if (!g_bRootDefaultGroup || it->second.RecordingGroup().compare("Default") != 0)
+        strDirectory.append(it->second.RecordingGroup());
       if (g_iGroupRecordings == GROUP_RECORDINGS_ALWAYS || (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES && it->second.GetPropsSerie()))
         strDirectory.append("/").append(it->second.GroupingTitle());
       PVR_STRCPY(tag.strDirectory, strDirectory.c_str());

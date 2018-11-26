@@ -66,6 +66,7 @@ bool          g_bLimitTuneAttempts      = DEFAULT_LIMIT_TUNE_ATTEMPTS;
 bool          g_bShowNotRecording       = DEFAULT_SHOW_NOT_RECORDING;
 bool          g_bPromptDeleteAtEnd      = DEFAULT_PROMPT_DELETE;
 bool          g_bUseBackendBookmarks    = DEFAULT_BACKEND_BOOKMARKS;
+bool          g_bRootDefaultGroup       = DEFAULT_ROOT_DEFAULT_GROUP;
 
 ///* Client member variables */
 ADDON_STATUS  m_CurStatus               = ADDON_STATUS_UNKNOWN;
@@ -337,6 +338,14 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
     /* If setting is unknown fallback to defaults */
     XBMC->Log(LOG_ERROR, "Couldn't get 'backend_bookmarks' setting, falling back to '%u' as default", DEFAULT_BACKEND_BOOKMARKS);
     g_bUseBackendBookmarks = DEFAULT_BACKEND_BOOKMARKS;
+  }
+
+  /* Read setting "root_default_group" from settings.xml */
+  if (!XBMC->GetSetting("root_default_group", &g_bRootDefaultGroup))
+  {
+    /* If setting is unknown fallback to defaults */
+    XBMC->Log(LOG_ERROR, "Couldn't get 'root_default_group' setting, falling back to '%u' as default", DEFAULT_ROOT_DEFAULT_GROUP);
+    g_bRootDefaultGroup = DEFAULT_ROOT_DEFAULT_GROUP;
   }
 
   free (buffer);
@@ -648,6 +657,15 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
     if (g_bLiveTVRecordings != *(bool*)settingValue)
     {
       g_bLiveTVRecordings = *(bool*)settingValue;
+      PVR->TriggerRecordingUpdate();
+    }
+  }
+  else if (str == "root_default_group")
+  {
+    XBMC->Log(LOG_INFO, "Changed Setting 'root_default_group' from %u to %u", g_bRootDefaultGroup, *(bool*)settingValue);
+    if (g_bRootDefaultGroup != *(bool*)settingValue)
+    {
+      g_bRootDefaultGroup = *(bool*)settingValue;
       PVR->TriggerRecordingUpdate();
     }
   }

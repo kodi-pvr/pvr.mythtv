@@ -227,7 +227,11 @@ msgctxt "#30068"
 msgid "Use bookmarks of the backend MythTV"
 msgstr ""
 
-# empty strings from id 30069 to 30099
+msgctxt "#30069"
+msgid "Show default recording group as root"
+msgstr ""
+
+# empty strings from id 30070 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
