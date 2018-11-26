@@ -1,11 +1,12 @@
+v5.10.2
 - Add option to set default recording group as root for recordings
+- Sync upstream cppmyth (2.12.0)
 
 v5.10.0
 - No longer handle file caching
 
 v5.9.2
 - Fix initial state of the addon at startup
-- Sync upstream cppmyth (2.12.0)
 
 v5.9.1
 - Fix display for video flags
