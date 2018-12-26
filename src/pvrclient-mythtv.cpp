@@ -1400,14 +1400,54 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
       return PVR_ERROR_NO_ERROR;
   }
 
-  // Search for marks with defined unit
-  Myth::MarkListPtr skpList = m_control->GetCommBreakList(*(prog.GetPtr()), unit);
-  XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, skpList->size(), recording.strTitle);
+  Myth::MarkList skpList;
+
+  // Search for commbreak list with defined unit
+  Myth::MarkListPtr comList = m_control->GetCommBreakList(*(prog.GetPtr()), unit);
+  XBMC->Log(LOG_DEBUG, "%s: Found %d commercial breaks for: %s", __FUNCTION__, comList->size(), recording.strTitle);
+  if (!comList->empty())
+  {
+    if (comList->front()->markType == Myth::MARK_COMM_END)
+    {
+      Myth::MarkPtr m(new Myth::Mark());
+      m->markType = Myth::MARK_COMM_START;
+      m->markValue = 0L;
+      skpList.push_back(m);
+    }
+    skpList.insert(skpList.end(), comList->begin(), comList->end());
+    if (comList->back()->markType == Myth::MARK_COMM_START)
+    {
+      Myth::MarkPtr m(new Myth::Mark());
+      m->markType = Myth::MARK_COMM_END;
+      m->markValue = (int64_t)(prog.Duration()) * rate;
+      skpList.push_back(m);
+    }
+  }
+
+  // Search for cutting list with defined unit
   Myth::MarkListPtr cutList = m_control->GetCutList(*(prog.GetPtr()), unit);
   XBMC->Log(LOG_DEBUG, "%s: Found %d cut list entries for: %s", __FUNCTION__, cutList->size(), recording.strTitle);
-  skpList->insert(skpList->end(), cutList->begin(), cutList->end());
+  if (!cutList->empty())
+  {
+    if (cutList->front()->markType == Myth::MARK_CUT_END)
+    {
+      Myth::MarkPtr m(new Myth::Mark());
+      m->markType = Myth::MARK_CUT_START;
+      m->markValue = 0L;
+      skpList.push_back(m);
+    }
+    skpList.insert(skpList.end(), cutList->begin(), cutList->end());
+    if (cutList->back()->markType == Myth::MARK_CUT_START)
+    {
+      Myth::MarkPtr m(new Myth::Mark());
+      m->markType = Myth::MARK_CUT_END;
+      m->markValue = (int64_t)(prog.Duration()) * rate;
+      skpList.push_back(m);
+    }
+  }
+
   // Open dialog
-  if (g_iEnableEDL == ENABLE_EDL_DIALOG && !skpList->empty())
+  if (g_iEnableEDL == ENABLE_EDL_DIALOG && !skpList.empty())
   {
     bool canceled = false;
     if (!GUI->Dialog_YesNo_ShowAndGetInput(XBMC->GetLocalizedString(30110), XBMC->GetLocalizedString(30111), canceled) && !canceled)
@@ -1418,15 +1458,13 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   int index = 0;
   Myth::MarkList::const_iterator it;
   Myth::MarkPtr startPtr;
-  for (it = skpList->begin(); it != skpList->end(); ++it)
+  for (it = skpList.begin(); it != skpList.end(); ++it)
   {
     if (index >= PVR_ADDON_EDL_LENGTH)
       break;
     switch ((*it)->markType)
     {
       case Myth::MARK_COMM_START:
-        startPtr = *it;
-        break;
       case Myth::MARK_CUT_START:
         startPtr = *it;
         break;
@@ -1436,8 +1474,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
           PVR_EDL_ENTRY entry;
           double s = (double)(startPtr->markValue) / rate;
           double e = (double)((*it)->markValue) / rate;
-          entry.start = (int64_t)(s * 1000);
-          entry.end = (int64_t)(e * 1000);
+          entry.start = (int64_t)(s * 1000.0);
+          entry.end = (int64_t)(e * 1000.0);
           entry.type = PVR_EDL_TYPE_COMBREAK;
           entries[index] = entry;
           index++;
@@ -1452,8 +1490,8 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
           PVR_EDL_ENTRY entry;
           double s = (double)(startPtr->markValue) / rate;
           double e = (double)((*it)->markValue) / rate;
-          entry.start = (int64_t)(s * 1000);
-          entry.end = (int64_t)(e * 1000);
+          entry.start = (int64_t)(s * 1000.0);
+          entry.end = (int64_t)(e * 1000.0);
           entry.type = PVR_EDL_TYPE_CUT;
           entries[index] = entry;
           index++;
@@ -1466,6 +1504,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
         startPtr.reset();
     }
   }
+
   *size = index;
   return PVR_ERROR_NO_ERROR;
 }
