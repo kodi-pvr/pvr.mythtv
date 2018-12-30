@@ -1,3 +1,6 @@
+v5.10.3
+- Add the implicit marks for begin or end of EDL
+
 v5.10.2
 - Add option to set default recording group as root for recordings
 - Sync upstream cppmyth (2.12.0)
