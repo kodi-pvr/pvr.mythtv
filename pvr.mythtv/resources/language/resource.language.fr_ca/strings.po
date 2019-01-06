@@ -2,20 +2,23 @@
 # Addon Name: MythTV PVR Client
 # Addon id: pvr.mythtv
 # Addon Provider: Christian Fetzer, Jean-Luc Barrière
+# Translators:
+# Jean-Luc Barrière <jlbarriere68@gmail.com>, 2018-2019
 msgid ""
 msgstr ""
-"Project-Id-Version: KODI Main\n"
+"Project-Id-Version: pvr.mythtv\n"
 "Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Kodi Translation Team\n"
-"Language-Team: French (Canada) (http://www.transifex.com/projects/p/kodi-main/language/fr_CA/)\n"
+"PO-Revision-Date: 2019-01-06 13:13+0000\n"
+"Last-Translator: Jean-Luc Barrière <jlbarriere68@gmail.com>\n"
+"Language-Team: French (Canada) (http://www.transifex.com/janbar/pvrmythtv/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_CA\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+# Settings labels
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
 msgstr "Nom d'hôte ou adresse IP du dorsal MythTV"
@@ -76,6 +79,7 @@ msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
 msgstr "NIP de sécurité de MthTV pour les services d'API"
 
+# empty strings from id 30015 to 30018
 msgctxt "#30019"
 msgid "General"
 msgstr "Général"
@@ -92,6 +96,7 @@ msgctxt "#30022"
 msgid "MythTV"
 msgstr "MythTV"
 
+# empty strings from id 30023 to 30024
 msgctxt "#30025"
 msgid "Internal template"
 msgstr "Modèle interne"
@@ -132,6 +137,7 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permettre l'expiration des enregistrements"
 
+# empty strings from id 30035 to 30046
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
 msgstr "Demander de supprimer l'enregistrement visionné"
@@ -222,18 +228,24 @@ msgstr "Utiliser les signets du serveur MythTV"
 
 msgctxt "#30069"
 msgid "Show default recording group as root"
-msgstr "Afficher le groupe par défaut à la racine"
+msgstr "Groupe d'enregistrement par défaut à la racine"
 
+# empty strings from id 30070 to 30099
+# Systeminformation labels
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Version du protocole : %i - Version de la base de données : %i"
 
+# empty strings from id 30101 to 30109
+# Dialog labels
 msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "Activation des listes de montage"
 
 msgctxt "#30111"
-msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgid ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
 msgstr "Une liste de montage ou de saut de publicités a été trouvée.\nVoulez-vous activer la fonction de listes de montage pour cette émission ?"
 
 msgctxt "#30112"
@@ -248,12 +260,20 @@ msgctxt "#30114"
 msgid "Connected"
 msgstr "Connecté"
 
+# empty strings from id 30114 to 30299
+# Notifications
 msgctxt "#30300"
-msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgid ""
+"Failed to connect the MythTV backend with the known protocol versions. "
+"Please check the compatibility map of the addon and upgrade your backend to "
+"a supported version."
 msgstr "Échec de connexion du dorsal MythTV avec les versions de protocoles connus. Veuillez consulter la carte de compatibilité de l'addiciel et mettre votre dorsal à niveau vers une version prise en charge."
 
 msgctxt "#30301"
-msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgid ""
+"Failed to connect the API services of MythTV backend. Please check your PIN "
+"code or backend setup. The PIN code has to be configured in your backend to "
+"allow connection."
 msgstr "Échec de connexion des services d'API du dorsal MythTV. Veuillez vérifier votre NIP ou la configuration du dorsal. Le NIP doit être configuré dans le dorsal afin de permettre la connexion."
 
 msgctxt "#30302"
@@ -300,6 +320,8 @@ msgctxt "#30312"
 msgid "No broadcast found"
 msgstr "Aucune diffusion n’a été trouvée"
 
+# empty strings from id 30313 to 30410
+# Menu Hooks
 msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Supprimer et ré-enregistrer"
@@ -308,6 +330,7 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Garder l'enregistrement"
 
+# empty strings from id 30413 to 30420
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
 msgstr "Activer ou désactiver l'affichage autre/enregistré/expiré"
@@ -332,6 +355,7 @@ msgctxt "#30426"
 msgid "Show status of broadcast"
 msgstr "Afficher l'état de l'émission"
 
+# empty strings from id 30427 to 30450
 msgctxt "#30451"
 msgid "Unhandled"
 msgstr "Non géré"
@@ -408,6 +432,7 @@ msgctxt "#30469"
 msgid "Rule disabled"
 msgstr "La règle est désactivée"
 
+# empty strings from id 30470 to 30500
 msgctxt "#30501"
 msgid "Don't match duplicates"
 msgstr "Ne pas faire correspondre les doublons"

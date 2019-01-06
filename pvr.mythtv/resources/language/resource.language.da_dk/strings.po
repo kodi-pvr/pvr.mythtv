@@ -2,20 +2,23 @@
 # Addon Name: MythTV PVR Client
 # Addon id: pvr.mythtv
 # Addon Provider: Christian Fetzer, Jean-Luc Barrière
+# Translators:
+# Jean-Luc Barrière <jlbarriere68@gmail.com>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version: KODI Main\n"
+"Project-Id-Version: pvr.mythtv\n"
 "Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Kodi Translation Team\n"
-"Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/kodi-main/language/da_DK/)\n"
+"PO-Revision-Date: 2019-01-06 13:14+0000\n"
+"Last-Translator: Jean-Luc Barrière <jlbarriere68@gmail.com>\n"
+"Language-Team: Danish (Denmark) (http://www.transifex.com/janbar/pvrmythtv/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da_DK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+# Settings labels
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
 msgstr "MythTV Backend værtsnavn eller IP"
@@ -76,6 +79,7 @@ msgctxt "#30014"
 msgid "MythTV Security Pin for API services"
 msgstr "MythTV PIN kode til API service"
 
+# empty strings from id 30015 to 30018
 msgctxt "#30019"
 msgid "General"
 msgstr "Generelt"
@@ -92,6 +96,7 @@ msgctxt "#30022"
 msgid "MythTV"
 msgstr "MythTV"
 
+# empty strings from id 30023 to 30024
 msgctxt "#30025"
 msgid "Internal template"
 msgstr "Intern skabelon"
@@ -132,6 +137,7 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Tillad at optagelser udløber"
 
+# empty strings from id 30035 to 30046
 msgctxt "#30047"
 msgid "Prompt to delete the watched recording"
 msgstr "Spørg om sletning efter visning af optagelse"
@@ -224,16 +230,22 @@ msgctxt "#30069"
 msgid "Show default recording group as root"
 msgstr "Vis standard optagegruppe som root"
 
+# empty strings from id 30070 to 30099
+# Systeminformation labels
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokolversion: %i - Databaseversion: %i"
 
+# empty strings from id 30101 to 30109
+# Dialog labels
 msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "Aktiverer EDL (reklame-skip)"
 
 msgctxt "#30111"
-msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgid ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
 msgstr "En reklameudeladelsesliste (EDL) er blevet fundet.\nVil du aktivere automatisk reklame-skip for dette show?"
 
 msgctxt "#30112"
@@ -248,12 +260,20 @@ msgctxt "#30114"
 msgid "Connected"
 msgstr "Forbundet"
 
+# empty strings from id 30114 to 30299
+# Notifications
 msgctxt "#30300"
-msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgid ""
+"Failed to connect the MythTV backend with the known protocol versions. "
+"Please check the compatibility map of the addon and upgrade your backend to "
+"a supported version."
 msgstr "Kunne ikke forbinde til MythTV backend med den aktuelle protokolversion. Tjek venligst kompatibiliteten af tilføjelsen og opgrader din backend til en understøttet version."
 
 msgctxt "#30301"
-msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgid ""
+"Failed to connect the API services of MythTV backend. Please check your PIN "
+"code or backend setup. The PIN code has to be configured in your backend to "
+"allow connection."
 msgstr "Kunne ikke forbinde til MythTV backend API service. Tjek venligst din PIN kode eller backend opsætning. PIN koden skal være opsat i backenden for at tillade forbindelse."
 
 msgctxt "#30302"
@@ -300,6 +320,8 @@ msgctxt "#30312"
 msgid "No broadcast found"
 msgstr "Ingen udsendelse fundet"
 
+# empty strings from id 30313 to 30410
+# Menu Hooks
 msgctxt "#30411"
 msgid "Delete and re-record"
 msgstr "Slet og optag på ny"
@@ -308,6 +330,7 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Behold optagelse"
 
+# empty strings from id 30413 to 30420
 msgctxt "#30421"
 msgid "Toggle display of alternative/recorded/expired"
 msgstr "Skift visning af alternativ/optaget/udløbet"
@@ -332,6 +355,7 @@ msgctxt "#30426"
 msgid "Show status of broadcast"
 msgstr "Vis udsendelsestatus"
 
+# empty strings from id 30427 to 30450
 msgctxt "#30451"
 msgid "Unhandled"
 msgstr "Uhåndteret"
@@ -408,6 +432,7 @@ msgctxt "#30469"
 msgid "Rule disabled"
 msgstr "Regel deaktiveret"
 
+# empty strings from id 30470 to 30500
 msgctxt "#30501"
 msgid "Don't match duplicates"
 msgstr "Identificér ikke dubletter"
