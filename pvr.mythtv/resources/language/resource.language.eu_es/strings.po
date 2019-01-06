@@ -44,6 +44,14 @@ msgctxt "#30061"
 msgid "Never"
 msgstr "Inoiz ez"
 
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr "Konexioak huts egin du"
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr "Berriro saiatu nahi duzu?"
+
 msgctxt "#30114"
 msgid "Connected"
 msgstr "Konektatuta"
