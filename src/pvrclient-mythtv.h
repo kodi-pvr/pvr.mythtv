@@ -149,6 +149,7 @@ private:
   FileStreaming *m_dummyStream;
   bool m_hang;
   bool m_powerSaving;
+  bool m_stopTV;
 
   /// Returns true when streaming recorded or live
   bool IsPlaying() const;

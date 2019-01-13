@@ -43,6 +43,7 @@ PVRClientMythTV::PVRClientMythTV()
 , m_dummyStream(NULL)
 , m_hang(false)
 , m_powerSaving(false)
+, m_stopTV(false)
 , m_artworksManager(NULL)
 , m_scheduleManager(NULL)
 , m_todo(NULL)
@@ -370,7 +371,7 @@ void PVRClientMythTV::HandleAskRecording(const Myth::EventMessage& msg)
     else // LIVETV_CONFLICT_STRATEGY_STOPTV
     {
       XBMC->QueueNotification(QUEUE_WARNING, XBMC->GetLocalizedString(30308), title.c_str()); // Stopping Live TV due to conflicting recording: %s
-      CloseLiveStream();
+      m_stopTV = true; // that will close live stream as soon as possible
     }
   }
 }
@@ -2121,6 +2122,9 @@ void PVRClientMythTV::CloseLiveStream()
   SAFE_DELETE(m_liveStream);
   SAFE_DELETE(m_dummyStream);
 
+  // Reset stop request
+  m_stopTV = false;
+
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Done", __FUNCTION__);
 }
@@ -2128,11 +2132,18 @@ void PVRClientMythTV::CloseLiveStream()
 int PVRClientMythTV::ReadLiveStream(unsigned char *pBuffer, unsigned int iBufferSize)
 {
   // Keep unlocked
-  if (m_liveStream)
-    return m_liveStream->Read(pBuffer, iBufferSize);
-  if (m_dummyStream)
-    return m_dummyStream->Read(pBuffer, iBufferSize);
-  return -1;
+  if (m_stopTV)
+  {
+    CloseLiveStream();
+  }
+  else
+  {
+    if (m_liveStream)
+      return m_liveStream->Read(pBuffer, iBufferSize);
+    if (m_dummyStream)
+      return m_dummyStream->Read(pBuffer, iBufferSize);
+  }
+  return 0;
 }
 
 long long PVRClientMythTV::SeekLiveStream(long long iPosition, int iWhence)
