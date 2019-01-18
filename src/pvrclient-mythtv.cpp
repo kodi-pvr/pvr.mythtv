@@ -1923,19 +1923,26 @@ MythTimerEntry PVRClientMythTV::PVRtoTimerEntry(const PVR_TIMER& timer, bool che
       XBMC->Log(LOG_DEBUG, "%s: original chanid is overridden with id %u", __FUNCTION__, bid);
     }
     Myth::ProgramMapPtr epg = m_control->GetProgramGuide(bid, bst, bst);
-    Myth::ProgramMap::reverse_iterator epgit = epg->rbegin(); // Get last found
-    if (epgit != epg->rend())
+    Myth::ProgramMap::iterator epgit = epg->begin();
+    // Get the last and longer
+    for (Myth::ProgramMap::iterator it = epgit; it != epg->end(); ++it)
+    {
+      if (it->second->startTime > epgit->second->startTime ||
+              (it->second->startTime == epgit->second->startTime && it->second->endTime > epgit->second->endTime))
+        epgit = it;
+    }
+    if (epgit != epg->end())
     {
       entry.epgInfo = MythEPGInfo(epgit->second);
       entry.chanid = epgit->second->channel.chanId;
       entry.callsign = epgit->second->channel.callSign;
       st = entry.epgInfo.StartTime();
       et = entry.epgInfo.EndTime();
-      XBMC->Log(LOG_DEBUG,"%s: Found EPG program: %u %lu %s", __FUNCTION__, entry.chanid, entry.startTime, entry.epgInfo.Title().c_str());
+      XBMC->Log(LOG_NOTICE, "%s: select EPG program: %u %lu %s", __FUNCTION__, entry.chanid, st, entry.epgInfo.Title().c_str());
     }
     else
     {
-      XBMC->Log(LOG_NOTICE,"%s: EPG program not found: %u %lu", __FUNCTION__, bid, bst);
+      XBMC->Log(LOG_NOTICE, "%s: EPG program not found: %u %lu", __FUNCTION__, bid, bst);
       hasEpg = false;
     }
   }
