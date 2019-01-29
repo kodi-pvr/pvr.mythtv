@@ -1,5 +1,5 @@
 /*
- *      Copyright (C) 2014-2015 Jean-Luc Barriere
+ *      Copyright (C) 2014-2019 Jean-Luc Barriere
  *
  *  This library is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published
@@ -147,11 +147,17 @@ static int __connectAddr(struct addrinfo *addr, net_socket_t *s, int rcvbuf)
   if (getsockopt(*s, SOL_SOCKET, SO_RCVBUF, (char *)&opt_rcvbuf, &size))
     DBG(DBG_WARN, "%s: could not get rcvbuf from socket (%d)\n", __FUNCTION__, LASTERROR);
 
+#ifdef SO_NOSIGPIPE
+  int opt_set = 1;
+  if (setsockopt(*s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt_set, sizeof(int)))
+    DBG(DBG_WARN, "%s: could not set nosigpipe from socket (%d)\n", __FUNCTION__, LASTERROR);
+#endif
+
 #ifndef __WINDOWS__
   old_sighandler = signal(SIGALRM, __sigHandler);
   old_alarm = alarm(5);
-#endif
   my_socket = *s;
+#endif
   if (connect(*s, addr->ai_addr, addr->ai_addrlen) < 0)
   {
     err = LASTERROR;
@@ -163,8 +169,8 @@ static int __connectAddr(struct addrinfo *addr, net_socket_t *s, int rcvbuf)
 #endif
     return err;
   }
-  my_socket = INVALID_SOCKET_VALUE;
 #ifndef __WINDOWS__
+  my_socket = INVALID_SOCKET_VALUE;
   signal(SIGALRM, old_sighandler);
   alarm(old_alarm);
 #endif
@@ -231,7 +237,16 @@ bool TcpSocket::SendData(const char *msg, size_t size)
 {
   if (IsValid())
   {
+#if !defined(__WINDOWS__) && !defined(MSG_NOSIGNAL) && !defined(SO_NOSIGPIPE)
+    void (*old_sighandler)(int);
+    old_sighandler = signal(SIGPIPE, SIG_IGN);
     size_t s = send(m_socket, msg, size, 0);
+    signal(SIGPIPE, old_sighandler);
+#elif defined(MSG_NOSIGNAL)
+    size_t s = send(m_socket, msg, size, MSG_NOSIGNAL);
+#else
+    size_t s = send(m_socket, msg, size, 0);
+#endif
     if (s != size)
     {
       m_errno = LASTERROR;
