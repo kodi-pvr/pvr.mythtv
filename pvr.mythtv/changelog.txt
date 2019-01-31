@@ -1,3 +1,6 @@
+v5.10.5
+- Sync upstream cppmyth (2.12.1)
+
 v5.10.4
 - Try to fix the player hanging after the liveTV conflict
 - Get the best candidate in EPG for the new timer
