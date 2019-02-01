@@ -1475,13 +1475,22 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
           PVR_EDL_ENTRY entry;
           double s = (double)(startPtr->markValue) / rate;
           double e = (double)((*it)->markValue) / rate;
-          entry.start = (int64_t)(s * 1000.0);
-          entry.end = (int64_t)(e * 1000.0);
-          entry.type = PVR_EDL_TYPE_COMBREAK;
+          // Use scene marker instead commercial break
+          if (g_iEnableEDL == ENABLE_EDL_SCENE)
+          {
+            entry.start = entry.end = (int64_t)(e * 1000.0);
+            entry.type = PVR_EDL_TYPE_SCENE;
+            XBMC->Log(LOG_DEBUG, "%s: SCENE %9.3f", __FUNCTION__, e);
+          }
+          else
+          {
+            entry.start = (int64_t)(s * 1000.0);
+            entry.end = (int64_t)(e * 1000.0);
+            entry.type = PVR_EDL_TYPE_COMBREAK;
+            XBMC->Log(LOG_DEBUG, "%s: COMBREAK %9.3f - %9.3f", __FUNCTION__, s, e);
+          }
           entries[index] = entry;
           index++;
-          if (g_bExtraDebug)
-            XBMC->Log(LOG_DEBUG, "%s: COMBREAK %9.3f - %9.3f", __FUNCTION__, s, e);
         }
         startPtr.reset();
         break;

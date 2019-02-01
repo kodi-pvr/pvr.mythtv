@@ -235,7 +235,11 @@ msgctxt "#30069"
 msgid "Show default recording group as root"
 msgstr ""
 
-# empty strings from id 30070 to 30099
+msgctxt "#30070"
+msgid "Scene Only"
+msgstr ""
+
+# empty strings from id 30071 to 30099
 
 # Systeminformation labels
 msgctxt "#30100"
