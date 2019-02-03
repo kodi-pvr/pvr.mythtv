@@ -142,8 +142,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 
   // Read settings
   XBMC->Log(LOG_DEBUG, "Loading settings...");
-  char *buffer;
-  buffer = (char*)malloc(1024);
+  char *buffer = new char [1024];
   buffer[0] = 0; /* Set the end of string */
 
   /* Read setting "host" from settings.xml */
@@ -351,7 +350,15 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 
   /* Read setting "damaged_color" from settings.xml */
   if (XBMC->GetSetting("damaged_color", buffer))
-    g_szDamagedColor = buffer;
+  {
+    char* p = buffer;
+    while (*p != '\0' && *p != ']') ++p;
+    std::string s = std::string(buffer, p - buffer);
+    if (sscanf(s.c_str(), "[COLOR %s", buffer) == 1)
+      g_szDamagedColor = buffer;
+    else
+      g_szDamagedColor = "";
+  }
   else
   {
     /* If setting is unknown fallback to defaults */
@@ -360,7 +367,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   }
   buffer[0] = 0;
 
-  free (buffer);
+  delete [] buffer;
   XBMC->Log(LOG_DEBUG, "Loading settings...done");
 
   // Create menu hooks
@@ -683,10 +690,18 @@ ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
   }
   else if (str == "damaged_color")
   {
-    std::string tmp_sDamagedColor;
-    XBMC->Log(LOG_INFO, "Changed Setting 'damaged_color' from %s to %s", g_szDamagedColor.c_str(), (const char*)settingValue);
-    tmp_sDamagedColor = g_szDamagedColor;
-    g_szDamagedColor = (const char*)settingValue;
+    std::string tmp_sDamagedColor = g_szDamagedColor;
+    char *buffer = new char [1024];
+    const char* v = (const char*)settingValue;
+    const char* p = v;
+    while (*p != '\0' && *p != ']') ++p;
+    std::string s = std::string(v, p - v);
+    if (sscanf(s.c_str(), "[COLOR %s", buffer) == 1)
+      g_szDamagedColor = buffer;
+    else
+      g_szDamagedColor = "";
+    delete [] buffer;
+    XBMC->Log(LOG_INFO, "Changed Setting 'damaged_color' from %s to %s", tmp_sDamagedColor.c_str(), g_szDamagedColor.c_str());
     if (tmp_sDamagedColor != g_szDamagedColor)
     {
       PVR->TriggerRecordingUpdate();

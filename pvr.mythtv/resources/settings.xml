@@ -20,7 +20,9 @@
     <setting id="inactive_upcomings" type="bool" label="30066" default="true" />
     <setting id="prompt_delete" type="bool" label="30047" default="false" />
     <setting id="root_default_group" type="bool" label="30069" default="false" />
-    <setting id="damaged_color" type="text" label="30046" default="yellow" />
+    <setting id="damaged_color" type="labelenum" label="30046"  default="[COLOR yellow]yellow[/COLOR]"
+             values="neutral|[COLOR yellow]yellow[/COLOR]|[COLOR red]red[/COLOR]|[COLOR green]green[/COLOR]|[COLOR blue]blue[/COLOR]|[COLOR orange]orange[/COLOR]|[COLOR lime]lime[/COLOR]|[COLOR pink]pink[/COLOR]|[COLOR magenta]magenta[/COLOR]|[COLOR brown]brown[/COLOR]|[COLOR cyan]cyan[/COLOR]|[COLOR indigo]indigo[/COLOR]|[COLOR gray]gray[/COLOR]|[COLOR olive]olive[/COLOR]|[COLOR purple]purple[/COLOR]|[COLOR sienna]sienna[/COLOR]|[COLOR teal]teal[/COLOR]|[COLOR tomato]tomato[/COLOR]|[COLOR violet]violet[/COLOR]"
+    />
   </category>
   <category label="30049">
     <setting id="rec_template_provider" type="enum" label="30020" lvalues="30021|30022" default="1" />
