@@ -1,3 +1,7 @@
+v5.10.6
+- Allow user to configure color display for damaged recordings
+- Add setting option be sent all EDL as SCENE rather than COMM_BREAK
+
 v5.10.5
 - Sync upstream cppmyth (2.12.1)
 
