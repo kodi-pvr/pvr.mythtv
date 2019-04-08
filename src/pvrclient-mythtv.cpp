@@ -252,8 +252,7 @@ void PVRClientMythTV::OnWake()
 
 void PVRClientMythTV::OnDeactivatedGUI()
 {
-  if (g_bBlockMythShutdown)
-    AllowBackendShutdown();
+  AllowBackendShutdown();
   m_powerSaving = true;
 }
 
