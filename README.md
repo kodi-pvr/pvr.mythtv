@@ -10,8 +10,8 @@ For example, if you're building the `master` branch of Kodi you should checkout 
 
 ### Linux
 
-    git clone --branch=master --depth=1 https://github.com/xbmc/xbmc.git
-    git clone --branch=master https://github.com/janbar/pvr.mythtv.git
+    git clone --branch Leia --depth=1 https://github.com/xbmc/xbmc.git
+    git clone --branch Leia https://github.com/janbar/pvr.mythtv.git
     cd pvr.mythtv && mkdir build && cd build
     cmake -DADDONS_TO_BUILD=pvr.mythtv -DADDON_SRC_PREFIX=../.. -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX=../../xbmc/addons -DPACKAGE_ZIP=ON ../../xbmc/cmake/addons
