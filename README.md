@@ -10,7 +10,7 @@ For example, if you're building the `master` branch of Kodi you should checkout 
 
 ### Linux
 
-    git clone --branch Matrix --depth=1 https://github.com/xbmc/xbmc.git
+    git clone --branch master --depth=1 https://github.com/xbmc/xbmc.git
     git clone --branch Matrix https://github.com/janbar/pvr.mythtv.git
     cd pvr.mythtv && mkdir build && cd build
     cmake -DADDONS_TO_BUILD=pvr.mythtv -DADDON_SRC_PREFIX=../.. -DCMAKE_BUILD_TYPE=Debug \
