@@ -816,12 +816,12 @@ void OnPowerSavingDeactivated()
  * PVR EPG Functions
  */
 
-PVR_ERROR GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time_t iStart, time_t iEnd)
+PVR_ERROR GetEPGForChannel(ADDON_HANDLE handle, int iChannelUid, time_t iStart, time_t iEnd)
 {
   if (g_client == NULL)
     return PVR_ERROR_SERVER_ERROR;
 
-  return g_client->GetEPGForChannel(handle, channel, iStart, iEnd);
+  return g_client->GetEPGForChannel(handle, iChannelUid, iStart, iEnd);
 }
 
 /*
@@ -1148,13 +1148,6 @@ long long LengthRecordedStream(void)
   return g_client->LengthRecordedStream();
 }
 
-
-/*
- * PVR Timeshift Functions
- */
-
-bool IsTimeshifting(void) { return true; }
-
 /*
  * Unused API Functions
  */
@@ -1173,6 +1166,7 @@ DemuxPacket* DemuxRead(void) { return NULL; }
 void DemuxFlush(void) {}
 bool SeekTime(double, bool, double *) { return false; }
 void DemuxReset() {}
+void FillBuffer(bool mode) {}
 void SetSpeed(int) {};
 PVR_ERROR SetEPGTimeFrame(int) { return PVR_ERROR_NOT_IMPLEMENTED; }
 PVR_ERROR GetDescrambleInfo(PVR_DESCRAMBLE_INFO*) { return PVR_ERROR_NOT_IMPLEMENTED; }

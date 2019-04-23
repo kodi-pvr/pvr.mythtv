@@ -537,61 +537,58 @@ void PVRClientMythTV::RunHouseKeeping()
   }
 }
 
-PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &channel, time_t iStart, time_t iEnd)
+PVR_ERROR PVRClientMythTV::GetEPGForChannel(ADDON_HANDLE handle, int iChannelUid, time_t iStart, time_t iEnd)
 {
   if (!m_control)
     return PVR_ERROR_SERVER_ERROR;
   if (g_bExtraDebug)
-    XBMC->Log(LOG_DEBUG,"%s: start: %ld, end: %ld, chanid: %u", __FUNCTION__, (long)iStart, (long)iEnd, channel.iUniqueId);
+    XBMC->Log(LOG_DEBUG,"%s: start: %ld, end: %ld, chanid: %u", __FUNCTION__, (long)iStart, (long)iEnd, iChannelUid);
 
-  if (!channel.bIsHidden)
+
+  Myth::ProgramMapPtr EPG = m_control->GetProgramGuide(iChannelUid, iStart, iEnd);
+  // Transfer EPG for the given channel
+  for (Myth::ProgramMap::reverse_iterator it = EPG->rbegin(); it != EPG->rend(); ++it)
   {
-    Myth::ProgramMapPtr EPG = m_control->GetProgramGuide(channel.iUniqueId, iStart, iEnd);
-    // Transfer EPG for the given channel
-    for (Myth::ProgramMap::reverse_iterator it = EPG->rbegin(); it != EPG->rend(); ++it)
-    {
-      EPG_TAG tag;
-      memset(&tag, 0, sizeof(EPG_TAG));
-      tag.startTime = it->first;
-      tag.endTime = it->second->endTime;
-      // Reject bad entry
-      if (tag.endTime <= tag.startTime)
-        continue;
+    EPG_TAG tag;
+    memset(&tag, 0, sizeof(EPG_TAG));
+    tag.startTime = it->first;
+    tag.endTime = it->second->endTime;
+    // Reject bad entry
+    if (tag.endTime <= tag.startTime)
+      continue;
 
-      // EPG_TAG expects strings as char* and not as copies (like the other PVR types).
-      // Therefore we have to make sure that we don't pass invalid (freed) memory to TransferEpgEntry.
-      // In particular we have to use local variables and must not pass returned string values directly.
-      tag.strTitle = it->second->title.c_str();
-      tag.strPlot = it->second->description.c_str();
-      tag.strGenreDescription = it->second->category.c_str();
-      tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
-      tag.iUniqueChannelId = channel.iUniqueId;
-      int genre = m_categories.Category(it->second->category);
-      tag.iGenreSubType = genre & 0x0F;
-      tag.iGenreType = genre & 0xF0;
-      tag.strEpisodeName = it->second->subTitle.c_str();
-      tag.strIconPath = "";
-      tag.strPlotOutline = "";
-      tag.bNotify = false;
-      tag.firstAired = it->second->airdate;
-      tag.iEpisodeNumber = (int)it->second->episode;
-      tag.iEpisodePartNumber = 0;
-      tag.iParentalRating = 0;
-      tag.iSeriesNumber = (int)it->second->season;
-      tag.iStarRating = atoi(it->second->stars.c_str());
-      tag.strOriginalTitle = "";
-      tag.strCast = "";
-      tag.strDirector = "";
-      tag.strWriter = "";
-      tag.iYear = 0;
-      tag.strIMDBNumber = it->second->inetref.c_str();
-      if (!it->second->seriesId.empty())
-        tag.iFlags = EPG_TAG_FLAG_IS_SERIES;
-      else
-        tag.iFlags = EPG_TAG_FLAG_UNDEFINED;
+    // EPG_TAG expects strings as char* and not as copies (like the other PVR types).
+    // Therefore we have to make sure that we don't pass invalid (freed) memory to TransferEpgEntry.
+    // In particular we have to use local variables and must not pass returned string values directly.
+    tag.strTitle = it->second->title.c_str();
+    tag.strPlot = it->second->description.c_str();
+    tag.strGenreDescription = it->second->category.c_str();
+    tag.iUniqueBroadcastId = MythEPGInfo::MakeBroadcastID(it->second->channel.chanId, it->first);
+    tag.iUniqueChannelId = iChannelUid;
+    int genre = m_categories.Category(it->second->category);
+    tag.iGenreSubType = genre & 0x0F;
+    tag.iGenreType = genre & 0xF0;
+    tag.strEpisodeName = it->second->subTitle.c_str();
+    tag.strIconPath = "";
+    tag.strPlotOutline = "";
+    tag.firstAired = it->second->airdate;
+    tag.iEpisodeNumber = (int)it->second->episode;
+    tag.iEpisodePartNumber = 0;
+    tag.iParentalRating = 0;
+    tag.iSeriesNumber = (int)it->second->season;
+    tag.iStarRating = atoi(it->second->stars.c_str());
+    tag.strOriginalTitle = "";
+    tag.strCast = "";
+    tag.strDirector = "";
+    tag.strWriter = "";
+    tag.iYear = 0;
+    tag.strIMDBNumber = it->second->inetref.c_str();
+    if (!it->second->seriesId.empty())
+      tag.iFlags = EPG_TAG_FLAG_IS_SERIES;
+    else
+      tag.iFlags = EPG_TAG_FLAG_UNDEFINED;
 
-      PVR->TransferEpgEntry(handle, &tag);
-    }
+    PVR->TransferEpgEntry(handle, &tag);
   }
 
   if (g_bExtraDebug)
