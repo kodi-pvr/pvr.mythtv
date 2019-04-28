@@ -22,29 +22,73 @@
 
 #include "pvrclient-launcher.h"
 #include "client.h"
+#include "private/os/threads/event.h"
+#include "private/os/threads/thread.h"
 
 using namespace ADDON;
-using namespace P8PLATFORM;
+
+class PVRClientLauncherPrivate : private Myth::OS::CThread
+{
+public:
+  PVRClientLauncherPrivate(PVRClientMythTV* client);
+  virtual ~PVRClientLauncherPrivate();
+
+  bool Start();
+  bool WaitForCompletion(unsigned timeout);
+
+protected:
+  void *Process();
+
+private:
+  PVRClientMythTV* m_client;
+  Myth::OS::CEvent m_alarm;
+};
 
 PVRClientLauncher::PVRClientLauncher(PVRClientMythTV* client)
-: m_client(client)
+: m_p(new PVRClientLauncherPrivate(client))
 {
-  PVR->ConnectionStateChange(m_client->GetBackendName(), PVR_CONNECTION_STATE_CONNECTING, m_client->GetBackendVersion());
 }
 
 PVRClientLauncher::~PVRClientLauncher()
 {
-  this->StopThread(-1); // Set stopping. don't wait as we need to signal the thread first
-  m_alarm.Signal();
-  this->StopThread(0); // Wait for thread to stop
+  delete m_p;
+}
+
+bool PVRClientLauncher::Start()
+{
+  return m_p->Start();
 }
 
 bool PVRClientLauncher::WaitForCompletion(unsigned timeout)
 {
+  return m_p->WaitForCompletion(timeout);
+}
+
+PVRClientLauncherPrivate::PVRClientLauncherPrivate(PVRClientMythTV* client)
+: Myth::OS::CThread()
+, m_client(client)
+{
+  PVR->ConnectionStateChange(m_client->GetBackendName(), PVR_CONNECTION_STATE_CONNECTING, m_client->GetBackendVersion());
+}
+
+PVRClientLauncherPrivate::~PVRClientLauncherPrivate()
+{
+  StopThread(false); // Set stopping. don't wait as we need to signal the thread first
+  m_alarm.Signal();
+  StopThread(true); // Wait for thread to stop
+}
+
+bool PVRClientLauncherPrivate::Start()
+{
+  return StartThread(true);
+}
+
+bool PVRClientLauncherPrivate::WaitForCompletion(unsigned timeout)
+{
   return m_alarm.Wait(timeout);
 }
 
-void* PVRClientLauncher::Process()
+void* PVRClientLauncherPrivate::Process()
 {
   bool notifyAddonFailure = true;
   // By default this launcher will retry for ever until the user cancel it by a dialog.

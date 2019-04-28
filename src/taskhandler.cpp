@@ -21,31 +21,88 @@
  */
 
 #include "taskhandler.h"
+#include "private/os/threads/mutex.h"
+#include "private/os/threads/timeout.h"
+#include "private/os/threads/event.h"
+#include "private/os/threads/thread.h"
+
+class TaskHandlerPrivate : private Myth::OS::CThread
+{
+public:
+  TaskHandlerPrivate();
+  virtual ~TaskHandlerPrivate();
+
+  void ScheduleTask(Task *task, unsigned delayMs = 0);
+  void Clear();
+  void Suspend();
+  bool Resume();
+
+protected:
+    void *Process();
+
+private:
+  typedef std::pair<Task*, Myth::OS::CTimeout*> Scheduled;
+  std::queue<Scheduled> m_queue;
+  std::vector<Scheduled> m_delayed;
+  Myth::OS::CMutex m_mutex;
+  Myth::OS::CEvent m_queueContent;
+};
 
 TaskHandler::TaskHandler()
-: CThread()
+: m_p(new TaskHandlerPrivate)
 {
-  CreateThread(false);
 }
 
 TaskHandler::~TaskHandler()
 {
-  Clear();
-  Suspend();
-  // last chance
-  StopThread(1000);
+  delete m_p;
 }
 
-void TaskHandler::ScheduleTask(Task *task, unsigned delayMs)
+void TaskHandler::ScheduleTask(Task* task, unsigned delayMs)
 {
-  P8PLATFORM::CLockObject lock(m_mutex);
-  m_queue.push(std::make_pair(task, new P8PLATFORM::CTimeout(delayMs)));
-  m_queueContent.Signal();
+  m_p->ScheduleTask(task, delayMs);
 }
 
 void TaskHandler::Clear()
 {
-  P8PLATFORM::CLockObject lock(m_mutex);
+  m_p->Clear();
+}
+
+void TaskHandler::Suspend()
+{
+  m_p->Suspend();
+}
+
+bool TaskHandler::Resume()
+{
+  return m_p->Resume();
+}
+
+
+TaskHandlerPrivate::TaskHandlerPrivate()
+: Myth::OS::CThread()
+{
+  StartThread(false);
+}
+
+TaskHandlerPrivate::~TaskHandlerPrivate()
+{
+  Clear();
+  Suspend();
+  // last chance
+  WaitThread(1000);
+}
+
+void TaskHandlerPrivate::ScheduleTask(Task *task, unsigned delayMs)
+{
+  Myth::OS::CLockGuard lock(m_mutex);
+  m_queue.push(std::make_pair(task, new Myth::OS::CTimeout(delayMs)));
+  m_queueContent.Signal();
+}
+
+void TaskHandlerPrivate::Clear()
+{
+  Myth::OS::CLockGuard lock(m_mutex);
   for (std::vector<Scheduled>::const_iterator it = m_delayed.begin(); it != m_delayed.end(); ++it)
   {
     delete it->second;
@@ -61,32 +118,32 @@ void TaskHandler::Clear()
   }
 }
 
-void TaskHandler::Suspend()
+void TaskHandlerPrivate::Suspend()
 {
   if (IsStopped())
     return;
-  StopThread(-1);
+  StopThread(false);
   m_queueContent.Signal();
 }
 
-bool TaskHandler::resume()
+bool TaskHandlerPrivate::Resume()
 {
   if (!IsStopped())
     return true;
   // wait until stopped
-  if (IsRunning() && !StopThread(0))
+  if (IsRunning() && !WaitThread(5000))
     return false;
   // wait until running
-  return CreateThread(true);
+  return StartThread(true);
 }
 
 
-void *TaskHandler::Process()
+void *TaskHandlerPrivate::Process()
 {
-  P8PLATFORM::CLockObject lock(m_mutex);
+  Myth::OS::CLockGuard lock(m_mutex);
   while (!IsStopped())
   {
-    P8PLATFORM::CTimeout later;
+    Myth::OS::CTimeout later;
     unsigned left = 0;
 
     // refill all delayed in queue
@@ -104,7 +161,7 @@ void *TaskHandler::Process()
         m_delayed.push_back(item);
         lock.Unlock();
         if (!later.IsSet() || later.TimeLeft() > left)
-          later.Init(left);
+          later.Set(left);
       }
       else
       {

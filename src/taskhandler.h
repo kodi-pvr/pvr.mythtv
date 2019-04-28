@@ -21,8 +21,6 @@
  *
  */
 
-#include <p8-platform/threads/threads.h>
-
 #include <queue>
 #include <vector>
 
@@ -33,7 +31,9 @@ public:
   virtual void Execute() = 0;
 };
 
-class TaskHandler : private P8PLATFORM::CThread
+class TaskHandlerPrivate;
+
+class TaskHandler
 {
 public:
   TaskHandler();
@@ -42,15 +42,8 @@ public:
   void ScheduleTask(Task *task, unsigned delayMs = 0);
   void Clear();
   void Suspend();
-  bool resume();
-
-protected:
-    void *Process();
+  bool Resume();
 
 private:
-  typedef std::pair<Task*, P8PLATFORM::CTimeout*> Scheduled;
-  std::queue<Scheduled> m_queue;
-  std::vector<Scheduled> m_delayed;
-  P8PLATFORM::CMutex m_mutex;
-  P8PLATFORM::CEvent m_queueContent;
+  TaskHandlerPrivate *m_p;
 };

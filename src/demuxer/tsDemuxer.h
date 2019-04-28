@@ -24,7 +24,7 @@
 
 #include "tsPacket.h"
 #include "elementaryStream.h"
-#include <p8-platform/threads/mutex.h>
+#include "private/os/threads/mutex.h"
 
 #include <map>
 #include <vector>
@@ -102,7 +102,7 @@ namespace TSDemux
     int parse_ts_pes();
 
     // Critical section
-    mutable P8PLATFORM::CMutex mutex;
+    mutable Myth::OS::CMutex mutex;
 
     // AV stream owner
     TSDemuxer* m_demux;

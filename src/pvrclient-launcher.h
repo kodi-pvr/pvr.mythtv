@@ -22,22 +22,20 @@
 */
 
 #include "pvrclient-mythtv.h"
-#include <p8-platform/threads/threads.h>
 
 #define PVRCLIENT_LAUNCHER_RETRY    30  /* Wait for 30 seconds before retry */
 
-class PVRClientLauncher : public P8PLATFORM::CThread 
+class PVRClientLauncherPrivate;
+
+class PVRClientLauncher
 {
 public:
   PVRClientLauncher(PVRClientMythTV* client);
   ~PVRClientLauncher();
 
+  bool Start();
   bool WaitForCompletion(unsigned timeout);
 
-protected:
-  void *Process();
-
 private:
-  PVRClientMythTV* m_client;
-  P8PLATFORM::CEvent m_alarm;
+  PVRClientLauncherPrivate *m_p;
 };

@@ -26,13 +26,13 @@
 #include "avinfo.h"
 #include "filestreaming.h"
 #include "taskhandler.h"
+#include "private/os/threads/mutex.h"
 
 #include <time.h>
 #include <set>
 #include <cassert>
 
 using namespace ADDON;
-using namespace P8PLATFORM;
 
 PVRClientMythTV::PVRClientMythTV()
 : m_connectionError(CONN_ERROR_NOT_CONNECTED)
@@ -46,7 +46,10 @@ PVRClientMythTV::PVRClientMythTV()
 , m_stopTV(false)
 , m_artworksManager(NULL)
 , m_scheduleManager(NULL)
+, m_lock(new Myth::OS::CMutex)
 , m_todo(NULL)
+, m_channelsLock(new Myth::OS::CMutex)
+, m_recordingsLock(new Myth::OS::CMutex)
 , m_recordingChangePinCount(0)
 , m_recordingsAmountChange(false)
 , m_recordingsAmount(0)
@@ -65,6 +68,9 @@ PVRClientMythTV::~PVRClientMythTV()
   SAFE_DELETE(m_scheduleManager);
   SAFE_DELETE(m_eventHandler);
   SAFE_DELETE(m_control);
+  delete m_recordingsLock;
+  delete m_channelsLock;
+  delete m_lock;
 }
 
 static void Log(int level, char *msg)
@@ -384,7 +390,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
   {
     if (g_bExtraDebug)
       XBMC->Log(LOG_DEBUG, "%s: Reload all recordings", __FUNCTION__);
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     FillRecordings();
     ++m_recordingChangePinCount;
   }
@@ -395,7 +401,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     MythProgramInfo prog(m_control->GetRecorded(chanid, startts));
     if (!prog.IsNull())
     {
-      CLockObject lock(m_recordingsLock);
+      Myth::OS::CLockGuard lock(*m_recordingsLock);
       ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
       if (it == m_recordings.end())
       {
@@ -415,7 +421,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     MythProgramInfo prog(m_control->GetRecorded(recordedid));
     if (!prog.IsNull())
     {
-      CLockObject lock(m_recordingsLock);
+      Myth::OS::CLockGuard lock(*m_recordingsLock);
       ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
       if (it == m_recordings.end())
       {
@@ -431,7 +437,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
   }
   else if (cs == 2 && msg.subject[1] == "UPDATE" && msg.program)
   {
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     MythProgramInfo prog(msg.program);
     ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
     if (it != m_recordings.end())
@@ -460,7 +466,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     MythProgramInfo prog(m_control->GetRecorded(chanid, startts));
     if (!prog.IsNull())
     {
-      CLockObject lock(m_recordingsLock);
+      Myth::OS::CLockGuard lock(*m_recordingsLock);
       ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
       if (it != m_recordings.end())
       {
@@ -480,7 +486,7 @@ void PVRClientMythTV::HandleRecordingListChange(const Myth::EventMessage& msg)
     MythProgramInfo prog(m_control->GetRecorded(recordedid));
     if (!prog.IsNull())
     {
-      CLockObject lock(m_recordingsLock);
+      Myth::OS::CLockGuard lock(*m_recordingsLock);
       ProgramInfoMap::iterator it = m_recordings.find(prog.UID());
       if (it != m_recordings.end())
       {
@@ -527,7 +533,7 @@ void PVRClientMythTV::RunHouseKeeping()
   }
   if (m_recordingChangePinCount)
   {
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     m_recordingsAmountChange = true; // Need count recording amount
     m_deletedRecAmountChange = true; // Need count of deleted amount
     lock.Unlock();
@@ -602,7 +608,7 @@ int PVRClientMythTV::GetNumChannels()
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
   return m_PVRChannels.size();
 }
 
@@ -613,7 +619,7 @@ PVR_ERROR PVRClientMythTV::GetChannels(ADDON_HANDLE handle, bool bRadio)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: radio: %s", __FUNCTION__, (bRadio ? "true" : "false"));
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
 
   // Load channels list
   if (m_PVRChannels.empty())
@@ -661,7 +667,7 @@ int PVRClientMythTV::GetChannelGroupsAmount()
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
   return m_PVRChannelGroups.size();
 }
 
@@ -672,7 +678,7 @@ PVR_ERROR PVRClientMythTV::GetChannelGroups(ADDON_HANDLE handle, bool bRadio)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: radio: %s", __FUNCTION__, (bRadio ? "true" : "false"));
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
 
   // Transfer channel groups of the given type (radio / tv)
   for (PVRChannelGroupMap::iterator itg = m_PVRChannelGroups.begin(); itg != m_PVRChannelGroups.end(); ++itg)
@@ -708,7 +714,7 @@ PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: group: %s", __FUNCTION__, group.strGroupName);
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
 
   PVRChannelGroupMap::iterator itg = m_PVRChannelGroups.find(group.strGroupName);
   if (itg == m_PVRChannelGroups.end())
@@ -740,7 +746,7 @@ PVR_ERROR PVRClientMythTV::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR
 
 bool PVRClientMythTV::IsPlaying() const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (m_liveStream || m_dummyStream || m_recordingStream)
     return true;
   return false;
@@ -753,7 +759,7 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
   int count = 0;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
   m_PVRChannels.clear();
   m_PVRChannelGroups.clear();
   m_PVRChannelUidById.clear();
@@ -815,7 +821,7 @@ int PVRClientMythTV::FillChannelsAndChannelGroups()
 
 MythChannel PVRClientMythTV::FindChannel(uint32_t channelId) const
 {
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
   ChannelIdMap::const_iterator it = m_channelsById.find(channelId);
   if (it != m_channelsById.end())
     return it->second;
@@ -824,7 +830,7 @@ MythChannel PVRClientMythTV::FindChannel(uint32_t channelId) const
 
 int PVRClientMythTV::FindPVRChannelUid(uint32_t channelId) const
 {
-  CLockObject lock(m_channelsLock);
+  Myth::OS::CLockGuard lock(*m_channelsLock);
   PVRChannelMap::const_iterator it = m_PVRChannelUidById.find(channelId);
   if (it != m_PVRChannelUidById.end())
     return it->second;
@@ -839,7 +845,7 @@ int PVRClientMythTV::GetRecordingsAmount()
   if (m_recordingsAmountChange)
   {
     int res = 0;
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
       if (!it->second.IsNull() && it->second.IsVisible() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
@@ -859,7 +865,7 @@ PVR_ERROR PVRClientMythTV::GetRecordings(ADDON_HANDLE handle)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   // Setup series
   if (g_iGroupRecordings == GROUP_RECORDINGS_ONLY_FOR_SERIES)
@@ -994,7 +1000,7 @@ int PVRClientMythTV::GetDeletedRecordingsAmount()
   if (m_deletedRecAmountChange)
   {
     int res = 0;
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
     {
       if (!it->second.IsNull() && it->second.IsDeleted() && (g_bLiveTVRecordings || !it->second.IsLiveTV()))
@@ -1014,7 +1020,7 @@ PVR_ERROR PVRClientMythTV::GetDeletedRecordings(ADDON_HANDLE handle)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   // Transfer to PVR
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
@@ -1161,7 +1167,7 @@ PVR_ERROR PVRClientMythTV::DeleteRecording(const PVR_RECORDING &recording)
     return PVR_ERROR_SERVER_ERROR;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
@@ -1201,7 +1207,7 @@ PVR_ERROR PVRClientMythTV::DeleteAndForgetRecording(const PVR_RECORDING &recordi
     return PVR_ERROR_SERVER_ERROR;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
@@ -1258,7 +1264,7 @@ PVR_ERROR PVRClientMythTV::SetRecordingPlayCount(const PVR_RECORDING &recording,
     return PVR_ERROR_SERVER_ERROR;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
   {
@@ -1290,7 +1296,7 @@ PVR_ERROR PVRClientMythTV::SetRecordingLastPlayedPosition(const PVR_RECORDING &r
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Setting Bookmark for: %s to %d", __FUNCTION__, recording.strTitle, lastplayedposition);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
   {
@@ -1331,7 +1337,7 @@ int PVRClientMythTV::GetRecordingLastPlayedPosition(const PVR_RECORDING &recordi
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s: Reading Bookmark for: %s", __FUNCTION__, recording.strTitle);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
   {
@@ -1374,7 +1380,7 @@ PVR_ERROR PVRClientMythTV::GetRecordingEdl(const PVR_RECORDING &recording, PVR_E
   // Check recording
   MythProgramInfo prog;
   {
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
     if (it == m_recordings.end())
     {
@@ -1521,7 +1527,7 @@ PVR_ERROR PVRClientMythTV::UndeleteRecording(const PVR_RECORDING &recording)
     return PVR_ERROR_SERVER_ERROR;
   XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
   if (it != m_recordings.end())
@@ -1552,7 +1558,7 @@ PVR_ERROR PVRClientMythTV::PurgeDeletedRecordings()
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_recordingsLock);
+  Myth::OS::CLockGuard lock(*m_recordingsLock);
 
   for (ProgramInfoMap::iterator it = m_recordings.begin(); it != m_recordings.end(); ++it)
   {
@@ -1582,7 +1588,7 @@ bool PVRClientMythTV::IsMyLiveRecording(const MythProgramInfo& programInfo)
   if (!programInfo.IsNull())
   {
     // Begin critical section
-    CLockObject lock(m_lock);
+    Myth::OS::CLockGuard lock(*m_lock);
     if (m_liveStream && m_liveStream->IsPlaying())
     {
       MythProgramInfo live(m_liveStream->GetPlayedProgram());
@@ -1612,7 +1618,7 @@ PVR_ERROR PVRClientMythTV::GetTimers(ADDON_HANDLE handle)
 
   MythTimerEntryList entries;
   {
-    CLockObject lock(m_lock);
+    Myth::OS::CLockGuard lock(*m_lock);
     m_PVRtimerMemorandum.clear();
     entries = m_scheduleManager->GetTimerEntries();
   }
@@ -1747,7 +1753,7 @@ PVR_ERROR PVRClientMythTV::AddTimer(const PVR_TIMER &timer)
     XBMC->Log(LOG_DEBUG, "%s: iRecordingGroup = %d", __FUNCTION__, timer.iRecordingGroup);
   }
   XBMC->Log(LOG_DEBUG, "%s: title: %s, start: %ld, end: %ld, chanID: %u", __FUNCTION__, timer.strTitle, timer.startTime, timer.endTime, timer.iClientChannelUid);
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   // Check if our timer is a quick recording of live tv
   // Assumptions: Our live recorder is locked on the same channel and the recording starts
   // at the same time as or before (includes 0) the currently in progress program
@@ -1802,7 +1808,7 @@ PVR_ERROR PVRClientMythTV::DeleteTimer(const PVR_TIMER &timer, bool force)
   // Assumptions: Recorder handle same recording.
   // If true then expire recording, setup recorder and let backend handle the rule.
   {
-    CLockObject lock(m_lock);
+    Myth::OS::CLockGuard lock(*m_lock);
     if (m_liveStream && m_liveStream->IsLiveRecording())
     {
       MythRecordingRuleNodePtr node = m_scheduleManager->FindRuleByIndex(timer.iClientIndex);
@@ -2034,7 +2040,7 @@ PVR_ERROR PVRClientMythTV::UpdateTimer(const PVR_TIMER &timer)
   MythTimerEntry entry;
   // Restore discarded info by PVR manager from our saved timer
   {
-    CLockObject lock(m_lock);
+    Myth::OS::CLockGuard lock(*m_lock);
     std::map<unsigned int, MYTH_SHARED_PTR<PVR_TIMER> >::const_iterator it = m_PVRtimerMemorandum.find(timer.iClientIndex);
     if (it == m_PVRtimerMemorandum.end())
       return PVR_ERROR_INVALID_PARAMETERS;
@@ -2080,7 +2086,7 @@ bool PVRClientMythTV::OpenLiveStream(const PVR_CHANNEL &channel)
     XBMC->Log(LOG_DEBUG,"%s: channel uid: %u, num: %u", __FUNCTION__, channel.iUniqueId, channel.iChannelNumber);
 
   // Begin critical section
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   // First we have to get merged channels for the selected channel
   Myth::ChannelList chanset;
   for (PVRChannelMap::const_iterator it = m_PVRChannelUidById.begin(); it != m_PVRChannelUidById.end(); ++it)
@@ -2129,7 +2135,7 @@ void PVRClientMythTV::CloseLiveStream()
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   // Begin critical section
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   // Destroy my stream
   SAFE_DELETE(m_liveStream);
   SAFE_DELETE(m_dummyStream);
@@ -2217,7 +2223,7 @@ PVR_ERROR PVRClientMythTV::SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
   if (g_bExtraDebug)
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (!m_liveStream)
     return PVR_ERROR_REJECTED;
 
@@ -2247,7 +2253,7 @@ PVR_ERROR PVRClientMythTV::GetStreamTimes(PVR_STREAM_TIMES* pStreamTimes)
 {
   time_t begTs, endTs;
   {
-    CLockObject lock(m_lock);
+    Myth::OS::CLockGuard lock(*m_lock);
     if (m_liveStream)
     {
       if (!m_liveStream->IsPlaying())
@@ -2287,7 +2293,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
     XBMC->Log(LOG_DEBUG, "%s: title: %s, ID: %s, duration: %d", __FUNCTION__, recording.strTitle, recording.strRecordingId, recording.iDuration);
 
   // Begin critical section
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (m_recordingStream)
   {
     XBMC->Log(LOG_NOTICE, "%s: Recorded stream is busy", __FUNCTION__);
@@ -2296,7 +2302,7 @@ bool PVRClientMythTV::OpenRecordedStream(const PVR_RECORDING &recording)
 
   MythProgramInfo prog;
   {
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     ProgramInfoMap::iterator it = m_recordings.find(recording.strRecordingId);
     if (it == m_recordings.end())
     {
@@ -2381,7 +2387,7 @@ void PVRClientMythTV::CloseRecordedStream()
     XBMC->Log(LOG_DEBUG, "%s", __FUNCTION__);
 
   // Begin critical section
-  CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
 
   // Destroy my stream
   SAFE_DELETE(m_recordingStream);
@@ -2460,7 +2466,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
 
   if (menuhook.iHookId == MENUHOOK_KEEP_RECORDING && item.cat == PVR_MENUHOOK_RECORDING)
   {
-    CLockObject lock(m_recordingsLock);
+    Myth::OS::CLockGuard lock(*m_recordingsLock);
     ProgramInfoMap::iterator it = m_recordings.find(item.data.recording.strRecordingId);
     if (it == m_recordings.end())
     {
@@ -2471,7 +2477,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
     // If recording is current live show then keep it and set live recorder
     if (IsMyLiveRecording(it->second))
     {
-      CLockObject lock(m_lock);
+      Myth::OS::CLockGuard lock(*m_lock);
       if (m_liveStream && m_liveStream->KeepLiveRecording(true))
         return PVR_ERROR_NO_ERROR;
       return PVR_ERROR_FAILED;
@@ -2494,7 +2500,7 @@ PVR_ERROR PVRClientMythTV::CallMenuHook(const PVR_MENUHOOK &menuhook, const PVR_
   {
     MythProgramInfo pinfo;
     {
-      CLockObject lock(m_recordingsLock);
+      Myth::OS::CLockGuard lock(*m_recordingsLock);
       ProgramInfoMap::iterator it = m_recordings.find(item.data.recording.strRecordingId);
       if (it == m_recordings.end())
       {

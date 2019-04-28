@@ -23,7 +23,7 @@
 #include "artworksmanager.h"
 #include "client.h"
 
-#include <p8-platform/os.h>
+#include "private/os/os.h"
 
 #define FILEOPS_CHANNEL_DUMMY_ICON    "channel.png"
 #define FILEOPS_RECORDING_DUMMY_ICON  "recording.png"

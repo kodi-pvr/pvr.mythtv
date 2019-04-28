@@ -22,7 +22,7 @@
 
 #include "categories.h"
 #include "client.h"
-#include <p8-platform/os.h>
+#include "private/os/os.h"
 
 #define CATEGORIES_FILENAME       "eit_categories.txt"
 #define CATEGORIES_MAXLINESIZE    255

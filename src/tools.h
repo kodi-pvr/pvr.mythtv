@@ -21,7 +21,8 @@
  *
  */
 
-#include <p8-platform/os.h>
+#include "private/os/os.h"
+
 #include <math.h>
 
 #ifdef __WINDOWS__

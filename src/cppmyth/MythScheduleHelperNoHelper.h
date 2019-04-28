@@ -32,7 +32,7 @@ class MythScheduleHelperNoHelper : public MythScheduleManager::VersionHelper
 {
 public:
   MythScheduleHelperNoHelper();
-  virtual ~MythScheduleHelperNoHelper() {}
+  virtual ~MythScheduleHelperNoHelper();
 
   // Implements VersionHelper
   virtual MythTimerTypeList GetTimerTypes() const;
@@ -73,7 +73,7 @@ protected:
   virtual const MythTimerType::AttributeList& GetRuleExpirationNameList() const;
   virtual const MythTimerType::AttributeList& GetRuleRecordingGroupList() const;
 
-  mutable P8PLATFORM::CMutex m_lock;
+  mutable Myth::OS::CMutex *m_lock;
 
   mutable bool                            m_timerTypeListInit;
   mutable MythTimerTypeList               m_timerTypeList;

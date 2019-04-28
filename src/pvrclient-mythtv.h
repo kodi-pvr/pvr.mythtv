@@ -26,7 +26,6 @@
 #include "categories.h"
 
 #include <xbmc_pvr_types.h>
-#include <p8-platform/threads/mutex.h>
 #include <mythsharedptr.h>
 #include <mythcontrol.h>
 #include <mytheventhandler.h>
@@ -157,7 +156,7 @@ private:
   // Backend
   ArtworkManager *m_artworksManager;
   MythScheduleManager *m_scheduleManager;
-  mutable P8PLATFORM::CMutex m_lock;
+  mutable Myth::OS::CMutex *m_lock;
 
   // Frontend
   TaskHandler *m_todo;
@@ -182,14 +181,14 @@ private:
   PVRChannelGroupMap m_PVRChannelGroups;
   typedef std::map<unsigned int, unsigned int> PVRChannelMap;
   PVRChannelMap m_PVRChannelUidById;
-  mutable P8PLATFORM::CMutex m_channelsLock;
+  mutable Myth::OS::CMutex *m_channelsLock;
   int FillChannelsAndChannelGroups();
   MythChannel FindChannel(uint32_t channelId) const;
   int FindPVRChannelUid(uint32_t channelId) const;
 
   // Recordings
   ProgramInfoMap m_recordings;
-  mutable P8PLATFORM::CMutex m_recordingsLock;
+  mutable Myth::OS::CMutex *m_recordingsLock;
   unsigned m_recordingChangePinCount;
   bool m_recordingsAmountChange;
   int m_recordingsAmount;

@@ -25,9 +25,11 @@
 
 #include "MythScheduleHelperNoHelper.h"
 #include "../client.h"
+#include "private/os/threads/mutex.h"
 
 MythScheduleHelperNoHelper::MythScheduleHelperNoHelper()
-: m_timerTypeListInit(false)
+: m_lock(new Myth::OS::CMutex)
+, m_timerTypeListInit(false)
 , m_priorityListInit(false)
 , m_dupMethodListInit(false)
 , m_expirationMapInit(false)
@@ -38,9 +40,14 @@ MythScheduleHelperNoHelper::MythScheduleHelperNoHelper()
 , m_recGroupByIdInit(false) {
 }
 
+MythScheduleHelperNoHelper::~MythScheduleHelperNoHelper()
+{
+  delete m_lock;
+}
+
 MythTimerTypeList MythScheduleHelperNoHelper::GetTimerTypes() const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   return m_timerTypeList;
 }
 
@@ -104,7 +111,7 @@ static inline uint32_t expiration_key(const MythScheduleHelperNoHelper::RuleExpi
 
 int MythScheduleHelperNoHelper::GetRuleExpirationId(const RuleExpiration& expiration) const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (!m_expirationByKeyInit)
   {
     m_expirationByKeyInit = true;
@@ -120,7 +127,7 @@ int MythScheduleHelperNoHelper::GetRuleExpirationId(const RuleExpiration& expira
 
 MythScheduleHelperNoHelper::RuleExpiration MythScheduleHelperNoHelper::GetRuleExpiration(int id) const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   static RuleExpiration _empty(false, 0, false);
   RuleExpirationMap::const_iterator it = GetRuleExpirationMap().find(id);
   if (it != m_expirationMap.end())
@@ -130,7 +137,7 @@ MythScheduleHelperNoHelper::RuleExpiration MythScheduleHelperNoHelper::GetRuleEx
 
 int MythScheduleHelperNoHelper::GetRuleRecordingGroupId(const std::string& name) const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (!m_recGroupByNameInit)
   {
     m_recGroupByNameInit = true;
@@ -146,7 +153,7 @@ int MythScheduleHelperNoHelper::GetRuleRecordingGroupId(const std::string& name)
 
 std::string MythScheduleHelperNoHelper::GetRuleRecordingGroupName(int id) const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   static std::string _empty = "";
   if (!m_recGroupByIdInit)
   {

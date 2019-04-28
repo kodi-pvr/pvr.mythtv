@@ -423,7 +423,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
   g_launcher = new PVRClientLauncher(g_client);
   g_bCreated = true;
 
-  if (g_launcher->CreateThread(true))
+  if (g_launcher->Start())
   {
     XBMC->Log(LOG_NOTICE, "Addon started successfully");
     return (m_CurStatus = ADDON_STATUS_OK);

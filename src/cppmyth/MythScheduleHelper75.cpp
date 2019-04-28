@@ -26,6 +26,7 @@
 #include "MythScheduleHelper75.h"
 #include "../client.h"
 #include "../tools.h"
+#include "private/os/threads/mutex.h"
 
 #include <cstdio>
 #include <cassert>
@@ -34,7 +35,7 @@ using namespace ADDON;
 
 MythTimerTypeList MythScheduleHelper75::GetTimerTypes() const
 {
-  P8PLATFORM::CLockObject lock(m_lock);
+  Myth::OS::CLockGuard lock(*m_lock);
   if (!m_timerTypeListInit)
   {
     m_timerTypeListInit = true;
