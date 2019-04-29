@@ -22,7 +22,7 @@
 #ifndef ELEMENTARYSTREAM_H
 #define ELEMENTARYSTREAM_H
 
-#include <inttypes.h>
+#include <cstdint>
 #include <cstddef>    // for size_t
 
 #define ES_INIT_BUFFER_SIZE     64000
