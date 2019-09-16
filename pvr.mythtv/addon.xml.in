@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.mythtv"
-  version="5.0.25"
+  version="5.0.26"
   name="MythTV PVR Client"
   provider-name="Christian Fetzer, Jean-Luc Barrière">
   <requires>
@@ -62,7 +62,7 @@
     <summary lang="szl">Klijynt telewizyjny dlŏ MythTV</summary>
     <summary lang="tr_TR">MythTV için Kodi ön ucu</summary>
     <summary lang="zh_CN">Kodi 的 MythTV 前端</summary>
-    <summary lang="zh_TW">MythTV的Kodi前端介面</summary>
+    <summary lang="zh_TW">MythTV 的 Kodi前端介面</summary>
     <description lang="af_ZA">MythTV voorprogram (tot MythTV 0.28). Ondersteun stroom van Lewendige TV &amp; Opnames, luister na Radio kanale, EPG en Tydhouers.</description>
     <description lang="be_BY">MythTV frontend (up to MythTV 0.28). Supports streaming of Live TV &amp; Recordings, listening to Radio channels, EPG and Timers.</description>
     <description lang="bg_BG">Клиент за MythTV (до версия на MythTV 0.28). Поддържа телевизия на живо и записване, слушане на радио канали, електронен програмен справочник и броячи.</description>
