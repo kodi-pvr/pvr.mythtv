@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "הצג הקלטות לטלוויזיה חיה"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "להשתמש בסימניות של ה־MythTV התשתיתי"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "גרסת פרוטוקול: %i - גרסת מסד נתונים: %i"

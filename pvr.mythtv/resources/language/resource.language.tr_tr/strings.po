@@ -216,6 +216,10 @@ msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "CanlıTV kayıtlarını göster"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr "Arka uç MythTV'nin yer işaretlerini kullan"
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Protokol sürümü: %i - Veritabanı sürümü: %i"
