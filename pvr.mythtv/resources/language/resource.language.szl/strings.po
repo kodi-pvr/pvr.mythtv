@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: KODI Main\n"
 "Report-Msgid-Bugs-To: https://github.com/xbmc/xbmc/issues/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Kodi Translation Team\n"
-"Language-Team: Silesian (http://www.transifex.com/projects/p/kodi-main/language/szl/)\n"
+"PO-Revision-Date: 2021-06-28 08:29+0000\n"
+"Last-Translator: Christian Gade <gade@kodi.tv>\n"
+"Language-Team: Silesian <https://kodi.weblate.cloud/projects/kodi-add-ons-pvr-clients/pvr-mythtv/szl/>\n"
+"Language: szl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: szl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.7\n"
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
@@ -132,6 +133,15 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Przizwŏlej na przedŏwnianie nagrań"
 
+# empty strings from id 30035 to 30046
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr ""
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Szablōna nagrowaniŏ"
@@ -139,6 +149,10 @@ msgstr "Szablōna nagrowaniŏ"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Zaawansowane"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr ""
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -196,6 +210,18 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Ukrōcej prōby dostrŏjaniŏ kanału"
 
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Show LiveTV recordings"
+msgstr ""
+
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr ""
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
 msgstr "Wersyjŏ protokołu: %i - wersyjŏ bazy datōw: %i"
@@ -205,8 +231,12 @@ msgid "Enabling EDL"
 msgstr "Używej funkcyje EDL"
 
 msgctxt "#30111"
-msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "Ôdnŏdniynto było wykŏz wytniyntych scyn abo pōmijaniŏ ryklam.\nChcesz użyć funkcyje EDL dlŏ tego seriolu?"
+msgid ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
+msgstr ""
+"Ôdnŏdniynto było wykŏz wytniyntych scyn abo pōmijaniŏ ryklam.\n"
+"Chcesz użyć funkcyje EDL dlŏ tego seriolu?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -226,7 +256,7 @@ msgstr "Niypodarzōne skuplowanie z serwerym MythTV przi pōmocy znanych wersyji
 
 msgctxt "#30301"
 msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
-msgstr "Niypodarzōne skuplowanie z posugami API serwera MythTV. Wybadej wkludzōny kod PIN lebo kōnfiguracyjõ serwera. Kod PIN musi być  nŏjprzōd skōnfigurowany na serwerze, coby skuplowanie było możebne."
+msgstr "Niypodarzōne skuplowanie z posugami API serwera MythTV. Wybadej wkludzōny kod PIN lebo kōnfiguracyjõ serwera. Kod PIN musi być nŏjprzōd skōnfigurowany na serwerze, coby skuplowanie było możebne."
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -270,15 +300,20 @@ msgstr "Zastawiōny"
 
 msgctxt "#30312"
 msgid "No broadcast found"
-msgstr "Niy ma transmisyje "
+msgstr "Niy ma transmisyje"
 
 msgctxt "#30411"
 msgid "Delete and re-record"
-msgstr "Skasuj i nagrej zaś "
+msgstr "Skasuj i nagrej zaś"
 
 msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Spamiyntej nagranie"
+
+# empty strings from id 30413 to 30420
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr ""
 
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
@@ -316,6 +351,18 @@ msgctxt "#30456"
 msgid "Zombie"
 msgstr "Zombie"
 
+msgctxt "#30457"
+msgid "Alternative"
+msgstr ""
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr ""
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr ""
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manualnie"
@@ -352,6 +399,10 @@ msgctxt "#30468"
 msgid "Search people"
 msgstr "Zeszukej pdl. ôsob"
 
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr ""
+
 msgctxt "#30501"
 msgid "Don't match duplicates"
 msgstr "Niy zeszukuj tuplikatōw"
@@ -382,7 +433,7 @@ msgstr "Przizwŏlej na przedŏwnianie nagrań"
 
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
-msgstr "Spamiyntuj do %d nagrań "
+msgstr "Spamiyntuj do %d nagrań"
 
 msgctxt "#30509"
 msgid "Keep %d newest and expire old"

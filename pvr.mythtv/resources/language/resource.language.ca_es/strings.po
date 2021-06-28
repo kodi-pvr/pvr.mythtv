@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: KODI Main\n"
 "Report-Msgid-Bugs-To: https://github.com/xbmc/xbmc/issues/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Kodi Translation Team\n"
-"Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/kodi-main/language/ca_ES/)\n"
+"PO-Revision-Date: 2021-06-28 08:29+0000\n"
+"Last-Translator: Christian Gade <gade@kodi.tv>\n"
+"Language-Team: Catalan (Spain) <https://kodi.weblate.cloud/projects/kodi-add-ons-pvr-clients/pvr-mythtv/ca_es/>\n"
+"Language: ca_es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ca_ES\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.7\n"
 
 msgctxt "#30000"
 msgid "MythTV Backend Hostname or IP"
@@ -62,7 +63,7 @@ msgstr "Preferència per enregistrar i parar la TV en directe"
 
 msgctxt "#30011"
 msgid "Prefer Live TV and cancel conflicting recording"
-msgstr "Prefereix la TV en directe i la cancel·lació del conflicte en l'enregistrament "
+msgstr "Prefereix la TV en directe i la cancel·lació del conflicte en l'enregistrament"
 
 msgctxt "#30012"
 msgid "MythTV Backend Ethernet address (WOL)"
@@ -132,6 +133,15 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Permet el venciment dels enregistraments"
 
+# empty strings from id 30035 to 30046
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr ""
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Plantilla d'enregistrament"
@@ -200,21 +210,33 @@ msgctxt "#30065"
 msgid "Limit channel tuning attempts"
 msgstr "Limita els intents de sintonització de canals"
 
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr ""
+
 msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Mostra els enregistraments de LiveTV"
 
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr ""
+
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
-msgstr "Versió del protocol: %i - versió de la base de dades: %i "
+msgstr "Versió del protocol: %i - versió de la base de dades: %i"
 
 msgctxt "#30110"
 msgid "Enabling EDL"
 msgstr "S'està habilitant EDL"
 
 msgctxt "#30111"
-msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "S'ha trobat una llista de tall o de passar anuncis.\nVoleu activar la funcionalitat EDL per a aquest programa de TV?"
+msgid ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
+msgstr ""
+"S'ha trobat una llista de tall o de passar anuncis.\n"
+"Voleu activar la funcionalitat EDL per a aquest programa de TV?"
 
 msgctxt "#30112"
 msgid "Connection failed"
@@ -227,6 +249,16 @@ msgstr "Voleu tornar-ho a provar?"
 msgctxt "#30114"
 msgid "Connected"
 msgstr "Connectat"
+
+# empty strings from id 30115 to 30299
+# Notifications
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr ""
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr ""
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -280,17 +312,59 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Mantén l'enregistrament"
 
+# empty strings from id 30413 to 30420
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr ""
+
 msgctxt "#30422"
 msgid "Refresh cache for channel icons"
 msgstr "Refresca la memòria cau per a les icones dels canals"
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr ""
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr ""
+
+# empty strings from id 30425 to 30450
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr ""
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr ""
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr ""
 
 msgctxt "#30454"
 msgid "Don't record"
 msgstr "No enregistris"
 
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr ""
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr ""
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr ""
+
 msgctxt "#30458"
 msgid "Currently recorded"
 msgstr "Enregistrant actualment"
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr ""
 
 msgctxt "#30460"
 msgid "Manual"
@@ -320,9 +394,38 @@ msgctxt "#30466"
 msgid "Record series"
 msgstr "Enregistra les sèries"
 
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr ""
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr ""
+
 msgctxt "#30469"
 msgid "Rule disabled"
 msgstr "Regla inhabilitada"
+
+# empty strings from id 30470 to 30500
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr ""
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr ""
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr ""
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr ""
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr ""
 
 msgctxt "#30506"
 msgid "Recordings never expire"
@@ -335,3 +438,7 @@ msgstr "Permet el venciment dels enregistraments"
 msgctxt "#30508"
 msgid "Keep up to %d recordings"
 msgstr "Mantén fins a %d enregistraments"
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr ""
