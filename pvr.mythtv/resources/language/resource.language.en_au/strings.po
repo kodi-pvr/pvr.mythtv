@@ -10,10 +10,10 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Kodi Translation Team\n"
 "Language-Team: English (Australia) (http://www.transifex.com/projects/p/kodi-main/language/en_AU/)\n"
+"Language: en_AU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en_AU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "#30000"
@@ -132,6 +132,15 @@ msgctxt "#30034"
 msgid "Allow recordings to expire"
 msgstr "Allow recordings to expire"
 
+# empty strings from id 30035 to 30046
+msgctxt "#30047"
+msgid "Prompt to delete the watched recording"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Show 'Original Airdate' instead of 'Recording Time'"
+msgstr ""
+
 msgctxt "#30049"
 msgid "Recording template"
 msgstr "Recording template"
@@ -139,6 +148,10 @@ msgstr "Recording template"
 msgctxt "#30050"
 msgid "Advanced"
 msgstr "Advanced"
+
+msgctxt "#30051"
+msgid "Preferences"
+msgstr ""
 
 msgctxt "#30052"
 msgid "Enable demuxing MPEG-TS"
@@ -192,9 +205,21 @@ msgctxt "#30064"
 msgid "Enable recording fanart/thumbnails"
 msgstr "Enable recording fanart/thumbnails"
 
+msgctxt "#30065"
+msgid "Limit channel tuning attempts"
+msgstr ""
+
+msgctxt "#30066"
+msgid "Show inactive upcomings (alternative/recorded/expired)"
+msgstr ""
+
 msgctxt "#30067"
 msgid "Show LiveTV recordings"
 msgstr "Show LiveTV recordings"
+
+msgctxt "#30068"
+msgid "Use bookmarks of the backend MythTV"
+msgstr ""
 
 msgctxt "#30100"
 msgid "Protocol version: %i - Database version: %i"
@@ -205,12 +230,34 @@ msgid "Enabling EDL"
 msgstr "Enabling EDL"
 
 msgctxt "#30111"
-msgid "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
-msgstr "A cut list or commercial skips have been found.\nDo you want to activate EDL functionality for this show ?"
+msgid ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
+msgstr ""
+"A cut list or commercial skips have been found.\n"
+"Do you want to activate EDL functionality for this show ?"
+
+msgctxt "#30112"
+msgid "Connection failed"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Do you want to retry ?"
+msgstr ""
 
 msgctxt "#30114"
 msgid "Connected"
 msgstr "Connected"
+
+# empty strings from id 30115 to 30299
+# Notifications
+msgctxt "#30300"
+msgid "Failed to connect the MythTV backend with the known protocol versions. Please check the compatibility map of the addon and upgrade your backend to a supported version."
+msgstr ""
+
+msgctxt "#30301"
+msgid "Failed to connect the API services of MythTV backend. Please check your PIN code or backend setup. The PIN code has to be configured in your backend to allow connection."
+msgstr ""
 
 msgctxt "#30302"
 msgid "Connection to MythTV backend lost"
@@ -264,10 +311,133 @@ msgctxt "#30412"
 msgid "Keep recording"
 msgstr "Keep recording"
 
+# empty strings from id 30413 to 30420
+msgctxt "#30421"
+msgid "Toggle display of alternative/recorded/expired"
+msgstr ""
+
+msgctxt "#30422"
+msgid "Refresh cache for channel icons"
+msgstr ""
+
+msgctxt "#30423"
+msgid "Trigger channels update"
+msgstr ""
+
+msgctxt "#30424"
+msgid "Show status of scheduling"
+msgstr ""
+
+# empty strings from id 30425 to 30450
+msgctxt "#30451"
+msgid "Unhandled"
+msgstr ""
+
+msgctxt "#30452"
+msgid "Upcoming"
+msgstr ""
+
+msgctxt "#30453"
+msgid "Overriden"
+msgstr ""
+
+msgctxt "#30454"
+msgid "Don't record"
+msgstr ""
+
+msgctxt "#30455"
+msgid "Upcoming manual"
+msgstr ""
+
+msgctxt "#30456"
+msgid "Zombie"
+msgstr ""
+
+msgctxt "#30457"
+msgid "Alternative"
+msgstr ""
+
+msgctxt "#30458"
+msgid "Currently recorded"
+msgstr ""
+
+msgctxt "#30459"
+msgid "Expired recording"
+msgstr ""
+
 msgctxt "#30460"
 msgid "Manual"
 msgstr "Manual"
 
+msgctxt "#30461"
+msgid "Record one"
+msgstr ""
+
+msgctxt "#30462"
+msgid "Record weekly"
+msgstr ""
+
+msgctxt "#30463"
+msgid "Record daily"
+msgstr ""
+
+msgctxt "#30464"
+msgid "Record all"
+msgstr ""
+
+msgctxt "#30465"
+msgid "Record this"
+msgstr ""
+
+msgctxt "#30466"
+msgid "Record series"
+msgstr ""
+
+msgctxt "#30467"
+msgid "Search keyword"
+msgstr ""
+
+msgctxt "#30468"
+msgid "Search people"
+msgstr ""
+
+msgctxt "#30469"
+msgid "Rule disabled"
+msgstr ""
+
+# empty strings from id 30470 to 30500
+msgctxt "#30501"
+msgid "Don't match duplicates"
+msgstr ""
+
+msgctxt "#30502"
+msgid "Match duplicates using subtitle"
+msgstr ""
+
+msgctxt "#30503"
+msgid "Match duplicates using description"
+msgstr ""
+
+msgctxt "#30504"
+msgid "Match duplicates using subtitle & description"
+msgstr ""
+
+msgctxt "#30505"
+msgid "Match duplicates using subtitle then description"
+msgstr ""
+
+msgctxt "#30506"
+msgid "Recordings never expire"
+msgstr ""
+
 msgctxt "#30507"
 msgid "Allow recordings to expire"
 msgstr "Allow recordings to expire"
+
+msgctxt "#30508"
+msgid "Keep up to %d recordings"
+msgstr ""
+
+msgctxt "#30509"
+msgid "Keep %d newest and expire old"
+msgstr ""
